@@ -24,7 +24,7 @@ const email = ref('')
 const password = ref('')
 
 async function send() {
-  const csrfResponse = await fetch('https://www.data.gouv.fr/en/login', {
+  const csrfResponse = await fetch('http://dev.local:7000/en/login', {
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     credentials: 'include',
   })
@@ -32,7 +32,7 @@ async function send() {
 
   console.log(csrf, csrfResponse.headers)
 
-  const response = await fetch('https://www.data.gouv.fr/en/login', {
+  const response = await fetch('http://dev.local:7000/en/login', {
     method: 'POST',
     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -44,11 +44,11 @@ async function send() {
 }
 
 async function sendAxios() {
-  const csrfResponse = await axios.get('https://www.data.gouv.fr/en/login')
+  const csrfResponse = await axios.get('http://dev.local:7000/en/login')
 
   const csrf = csrfResponse.data.response.csrf_token;
 
-  const response = await axios.post('https://www.data.gouv.fr/en/login', {
+  const response = await axios.post('http://dev.local:7000/en/login', {
     email: email.value,
     password: password.value,
   }, {

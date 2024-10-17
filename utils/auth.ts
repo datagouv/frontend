@@ -4,7 +4,7 @@ import { onMounted } from "vue";
 const me = ref(null);
 
 export const reloadAuth = async () => {
-    const response = await get('https://www.data.gouv.fr/api/1/me')
+    const response = await get('http://dev.local:7000/api/1/me')
     me.value = response.data
 }
 
