@@ -23,26 +23,6 @@ import { reloadAuth } from '~/utils/auth';
 const email = ref('')
 const password = ref('')
 
-async function send() {
-  const csrfResponse = await fetch('http://dev.local:7000/en/login', {
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    credentials: 'include',
-  })
-  const csrf = (await csrfResponse.json()).response.csrf_token;
-
-  console.log(csrf, csrfResponse.headers)
-
-  const response = await fetch('http://dev.local:7000/en/login', {
-    method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      email: email.value,
-      password: password.value,
-    }),
-  })
-  console.log(await response.json())
-}
-
 async function sendAxios() {
   const csrfResponse = await axios.get('http://dev.local:7000/en/login')
 
