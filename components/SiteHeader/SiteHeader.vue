@@ -56,7 +56,10 @@
           </div>
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
-              <ul class="fr-btns-group">
+              <div v-if="me">
+                {{ me.first_name }} {{  me.last_name }}
+              </div>
+              <ul class="fr-btns-group" v-else>
                 <li>
                   <NuxtLinkLocale
                     class="fr-btn items-center"
@@ -237,6 +240,9 @@
 </template>
 
 <script setup lang="ts">
+import { useMe } from '~/utils/auth';
+
+  
 const menuModalId = useId()
 const menuButtonId = useId()
 const searchModalId = useId()
@@ -261,4 +267,6 @@ function openMenuModal() {
 function closeMenuModal() {
   menuOpened.value = false
 }
+
+const me = useMe();
 </script>
