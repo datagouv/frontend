@@ -33,6 +33,7 @@ async function sendAxios() {
     password: password.value,
   }, {
     params: {
+      // Not used for now, using the session cookie store by Axios somewhere?
       include_auth_token: true,
     },
     headers: {
