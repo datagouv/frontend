@@ -1,5 +1,5 @@
 <template>
-  <footer role="contentinfo">
+  <!-- <footer role="contentinfo">
     <div class="fr-follow">
       <div class="fr-container">
         <div class="fr-grid-row">
@@ -311,7 +311,7 @@
         {% endcache %}
       </div>
     </div>
-  </footer>
+  </footer> -->
 </template>
 
 <script setup lang="ts">
