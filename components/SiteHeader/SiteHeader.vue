@@ -184,7 +184,10 @@
                 class="fr-nav__link"
                 href="#"
                 target="_self"
-              >accès direct</a>
+              >
+              {{ counter }}
+
+            </a>
             </li>
             <li class="fr-nav__item">
               <a
@@ -232,7 +235,9 @@
                 class="fr-nav__link"
                 href="#"
                 target="_self"
-              >accès direct</a>
+              >
+                {{ counter }}
+            </a>
             </li>
             <li class="fr-nav__item">
               <a
@@ -263,7 +268,9 @@
 </template>
 
 <script setup lang="ts">
-import { useMe } from '~/utils/auth';
+import { useMaybeMe } from '~/utils/auth';
+
+const counter = useState('counter', () => Math.round(Math.random() * 1000))
 
 const menuModalId = useId()
 const menuButtonId = useId()
@@ -290,5 +297,5 @@ function closeMenuModal() {
   menuOpened.value = false
 }
 
-const me = useMe();
+const me = useMaybeMe();
 </script>

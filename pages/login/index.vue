@@ -1,6 +1,8 @@
 <template>
   <div class="fr-container">
-    <form @submit.prevent="sendAxios" class="space-y-4 py-8">
+    <span>{{ counter }}</span>
+
+    <form @submit.prevent="send" class="space-y-4 py-8">
       <div>
         <label class="fr-label" for="email">Email</label>
         <input class="fr-input" type="email" id="email" name="email" v-model="email">
@@ -17,31 +19,39 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
-import { reloadAuth } from '~/utils/auth';
+const { $api } = useNuxtApp()
+const me = useMaybeMe();
+
+const counter = useState('counter', () => Math.round(Math.random() * 1000))
+
+onMounted(async () => {
+  setInterval(() => {
+    counter.value++;
+  }, 1000)
+  
+  if (me.value) {
+    await navigateTo('/en/newadmin') // TODO Check why localisation doesn't work?
+  }
+})
 
 const email = ref('')
 const password = ref('')
 
-async function sendAxios() {
-  const csrfResponse = await axios.get('http://dev.local:7000/en/login')
+async function send() {
+  // The login page is protected by CSRF (unlike the API), so we need to fetch a CSRF
+  // token before making a login request. We could disable this protection inside the
+  // backend (but not sure about the security of this change).
+  const csrfResponse = await $api<{ response: { csrf_token: string }}>('/en/login')
+  const csrfToken = csrfResponse.response.csrf_token
 
-  const csrf = csrfResponse.data.response.csrf_token;
-
-  const response = await axios.post('http://dev.local:7000/en/login', {
-    email: email.value,
-    password: password.value,
-  }, {
-    params: {
-      // Not used for now, using the session cookie store by Axios somewhere?
-      include_auth_token: true,
-    },
-    headers: {
-      'X-CSRF-Token': csrf,
-    },
+  const response = await $api.raw('/en/login?include_auth_token=true', {
+    method: 'POST',
+    body: JSON.stringify({ email: email.value, password: password.value }),
+    headers: { 'X-CSRF-Token': csrfToken },
   })
-  console.log(response.data)
+  console.log(response)
+  console.log(response.headers)
 
-  reloadAuth()
+  await refreshMe(me)
 }
 </script>

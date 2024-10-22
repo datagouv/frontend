@@ -2,15 +2,14 @@
     <h1>Hello World!</h1>
 
     <ul>
-        <li v-for="dataset in datasets">{{ dataset.title }}</li>
+        <li v-for="dataset in datasets.data">{{ dataset.title }}</li>
     </ul>
 
     <NuxtLink href="/fr/newadmin/test">Go to test</NuxtLink>
 </template>
 <script setup lang="ts">
-const runtimeConfig = useRuntimeConfig()
+import type { Dataset } from '@datagouv/components/ts';
+import { type PaginatedArray } from '~/utils/api';
 
-const { data } = await useFetch(`${runtimeConfig.public.apiBase}/api/1/datasets`)
-
-const datasets = computed(() => (data.value as any).data)
+const { data: datasets } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets')
 </script>
