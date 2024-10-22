@@ -77,7 +77,7 @@
                 </li>
                 <li>
                   <button @click="logout" class="fr-btn fr-icon-logout-box-r-line">
-                    Logout
+                    {{ $t('Logout') }}
                   </button>
                 </li>
               </ul>
