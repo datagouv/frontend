@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   },
 
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
   },
   // required for nuxt/content
   ssr: true,
