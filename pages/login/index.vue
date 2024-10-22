@@ -46,8 +46,9 @@ async function send() {
     headers: { 'X-CSRF-Token': csrfToken },
     credentials: 'include',
   })
-  token.value = response.response.user.authentication_token
+  // token.value = response.response.user.authentication_token
 
   await refreshMe(me)
+  await navigateTo('/en/newadmin')
 }
 </script>
