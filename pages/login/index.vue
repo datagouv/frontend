@@ -20,11 +20,7 @@
 const { $api } = useNuxtApp()
 const me = useMaybeMe();
 
-onMounted(async () => {
-  if (me.value) {
-    await navigateTo('/en/newadmin') // TODO Check why localisation doesn't work?
-  }
-})
+definePageMeta({ middleware: ['guest'] });
 
 const email = ref('')
 const password = ref('')
