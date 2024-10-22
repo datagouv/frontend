@@ -76,10 +76,9 @@
                     </a>
                 </li>
                 <li>
-                  <!-- TODO do not use `GET` request for logout -->
-                  <a href="/en/logout" class="fr-btn fr-icon-logout-box-r-line">
+                  <button @click="logout" class="fr-btn fr-icon-logout-box-r-line">
                     Logout
-                  </a>
+                  </button>
                 </li>
               </ul>
               <ul class="fr-btns-group" v-else>
@@ -185,8 +184,7 @@
                 href="#"
                 target="_self"
               >
-              {{ counter }}
-
+              accès direct
             </a>
             </li>
             <li class="fr-nav__item">
@@ -236,7 +234,7 @@
                 href="#"
                 target="_self"
               >
-                {{ counter }}
+                accès direct
             </a>
             </li>
             <li class="fr-nav__item">
@@ -270,8 +268,6 @@
 <script setup lang="ts">
 import { useMaybeMe } from '~/utils/auth';
 
-const counter = useState('counter', () => Math.round(Math.random() * 1000))
-
 const menuModalId = useId()
 const menuButtonId = useId()
 const searchModalId = useId()
@@ -298,4 +294,15 @@ function closeMenuModal() {
 }
 
 const me = useMaybeMe();
+
+const token = useToken();
+const session = useCookie('session')
+const logout = async () => {
+  token.value = null;
+  session.value = null;
+
+  await refreshMe(me);
+  await navigateTo('/en/login');
+}
+
 </script>

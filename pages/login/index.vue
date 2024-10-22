@@ -1,7 +1,5 @@
 <template>
   <div class="fr-container">
-    <span>{{ counter }}</span>
-
     <form @submit.prevent="send" class="space-y-4 py-8">
       <div>
         <label class="fr-label" for="email">Email</label>
@@ -22,13 +20,7 @@
 const { $api } = useNuxtApp()
 const me = useMaybeMe();
 
-const counter = useState('counter', () => Math.round(Math.random() * 1000))
-
 onMounted(async () => {
-  setInterval(() => {
-    counter.value++;
-  }, 1000)
-  
   if (me.value) {
     await navigateTo('/en/newadmin') // TODO Check why localisation doesn't work?
   }
@@ -37,20 +29,24 @@ onMounted(async () => {
 const email = ref('')
 const password = ref('')
 
+const token = useToken();
+
 async function send() {
   // The login page is protected by CSRF (unlike the API), so we need to fetch a CSRF
   // token before making a login request. We could disable this protection inside the
   // backend (but not sure about the security of this change).
-  const csrfResponse = await $api<{ response: { csrf_token: string }}>('/en/login')
+  const csrfResponse = await $api<{ response: { csrf_token: string }}>('/en/login', {
+    credentials: 'include',
+  })
   const csrfToken = csrfResponse.response.csrf_token
 
-  const response = await $api.raw('/en/login?include_auth_token=true', {
+  const response = await $api<{ response: { user: { authentication_token: string }}}>('/en/login?include_auth_token=true', {
     method: 'POST',
     body: JSON.stringify({ email: email.value, password: password.value }),
     headers: { 'X-CSRF-Token': csrfToken },
+    credentials: 'include',
   })
-  console.log(response)
-  console.log(response.headers)
+  token.value = response.response.user.authentication_token
 
   await refreshMe(me)
 }
