@@ -1,6 +1,21 @@
-import type { Me } from '@datagouv/components'
+import type { Organization, User } from '@datagouv/components'
 import { onMounted } from 'vue'
 import { get } from './api'
+
+export type Me = User & {
+  about: string
+  active: boolean
+  apikey: string | null
+  metrics: {
+    datasets: number
+    followers: number
+    following: number
+    reuses: number
+  }
+  organizations: Array<Organization>
+  since: string
+  website: string
+}
 
 const me = ref<Me | null>(null)
 
