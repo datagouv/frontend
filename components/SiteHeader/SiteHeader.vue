@@ -76,9 +76,9 @@
                     </a>
                 </li>
                 <li>
-                  <button @click="logout" class="fr-btn fr-icon-logout-box-r-line">
+                  <a :href="`${config.public.apiBase}/en/logout`" class="fr-btn fr-icon-logout-box-r-line">
                     {{ $t('Logout') }}
-                  </button>
+                  </a>
                 </li>
               </ul>
               <ul class="fr-btns-group" v-else>
@@ -267,6 +267,8 @@
 
 <script setup lang="ts">
 import { useMaybeMe } from '~/utils/auth';
+
+const config = useRuntimeConfig();
 
 const menuModalId = useId()
 const menuButtonId = useId()
