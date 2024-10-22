@@ -24,6 +24,7 @@
     "axios": "^1.7.7",
     "nuxt": "^3.13.0",
     "nuxt-headlessui": "^1.2.0",
+    "ofetch": "^1.4.1",
     "vue": "latest",
     "vue-router": "latest"
   },

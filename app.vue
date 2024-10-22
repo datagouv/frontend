@@ -11,4 +11,7 @@ import '@gouvfr/dsfr/dist/utility/utility.css'
 import '~/assets/css/overrides.css'
 
 provideHeadlessUseId(() => useId())
+
+const me = useMaybeMe();
+await callOnce(async () => await refreshMe(me))
 </script>

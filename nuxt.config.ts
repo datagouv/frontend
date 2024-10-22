@@ -3,8 +3,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://dev.local:7000'
+    },
+  },
+
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
   },
   // required for nuxt/content
   ssr: true,
