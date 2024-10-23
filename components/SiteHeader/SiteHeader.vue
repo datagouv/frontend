@@ -100,12 +100,9 @@
                   </a>
                 </li>
                 <li>
-                  <button
-                    class="fr-btn fr-icon-logout-box-r-line"
-                    @click="logout"
-                  >
+                  <a :href="`${config.public.apiBase}/en/logout`" class="fr-btn fr-icon-logout-box-r-line">
                     {{ $t('Logout') }}
-                  </button>
+                  </a>
                 </li>
               </ul>
               <ul
@@ -304,6 +301,9 @@ import { useMaybeMe } from '~/utils/auth'
 defineProps<{
   fluid?: boolean
 }>()
+
+const config = useRuntimeConfig();
+
 const menuModalId = useId()
 const menuButtonId = useId()
 const searchModalId = useId()
@@ -330,14 +330,4 @@ function closeMenuModal() {
 }
 
 const me = useMaybeMe()
-
-const token = useToken()
-const session = useCookie('session')
-const logout = async () => {
-  token.value = null
-  session.value = null
-
-  await refreshMe(me)
-  await navigateTo('/en/login')
-}
 </script>

@@ -2,6 +2,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     const config = useRuntimeConfig()
     const token = useToken();
     const cookie = useRequestHeader('cookie');
+    const localePath = useLocalePath();
 
     const api = $fetch.create({
       baseURL: config.public.apiBase,
@@ -18,7 +19,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       },
       async onResponseError({ response }) {
         if (response.status === 401) {
-            await nuxtApp.runWithContext(() => navigateTo('/login'))
+            await nuxtApp.runWithContext(() => navigateTo(localePath('/login')))
         }
       }
     })

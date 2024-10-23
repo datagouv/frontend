@@ -21,20 +21,20 @@ export const useMe = () => {
 }
 
 export const useMaybeMe = () => {
-  return useState<Me | null>('me')
+    return useState<Me | null | undefined>('me', () => undefined)
 }
 
 export const useToken = () => {
   return useCookie('token')
 }
 
-export const refreshMe = async (meState: Ref<Me | null>) => {
-  // Here we cannot use the `useAPI` composable because
-  // we don't want the classic error management that redirect
-  // to the login page when a 401 is raised. So we must manually
-  // re-configured the baseURL.
-  const config = useRuntimeConfig()
-  const cookie = useRequestHeader('cookie')
+export const loadMe = async (meState: Ref<Me | null | undefined>) => {
+    // Here we cannot use the `useAPI` composable because
+    // we don't want the classic error management that redirect
+    // to the login page when a 401 is raised. So we must manually
+    // re-configured the baseURL.
+    const config = useRuntimeConfig();
+    const cookie = useRequestHeader('cookie');
 
   const token = useToken()
 

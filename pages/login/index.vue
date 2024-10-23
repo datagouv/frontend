@@ -20,16 +20,13 @@
 const { $api } = useNuxtApp()
 const me = useMaybeMe();
 
-onMounted(async () => {
-  if (me.value) {
-    await navigateTo('/en/newadmin') // TODO Check why localisation doesn't work?
-  }
-})
+definePageMeta({ middleware: ['guest'] });
 
 const email = ref('')
 const password = ref('')
 
 const token = useToken();
+const localePath = useLocalePath()
 
 async function send() {
   // The login page is protected by CSRF (unlike the API), so we need to fetch a CSRF
@@ -48,7 +45,7 @@ async function send() {
   })
   // token.value = response.response.user.authentication_token
 
-  await refreshMe(me)
-  await navigateTo('/en/newadmin')
+  await loadMe(me)
+  await navigateTo(localePath('/newadmin'))
 }
 </script>
