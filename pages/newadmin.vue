@@ -61,7 +61,7 @@ const { t } = useI18n()
 const route = useRoute()
 const localeRoute = useLocaleRoute()
 const router = useRouter()
-const me = useMe()
+const me = useMaybeMe()
 const opened = ref<string>()
 const { setCurrentOrganization } = useCurrentOrganization()
 
