@@ -65,6 +65,8 @@ const me = useMaybeMe()
 const opened = ref<string>()
 const { setCurrentOrganization } = useCurrentOrganization()
 
+definePageMeta({ middleware: ['auth'] });
+
 const mePath = computed(() => {
   const route = localeRoute('/newadmin/me')
   return route != null ? route.path : '/'
