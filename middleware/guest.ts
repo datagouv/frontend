@@ -1,8 +1,9 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const me = await useMaybeMe();
+  console.log('Calling guest middleware')
+  const me = useMaybeMe();
 
-    if (to.path !== '/en/newadmin' && me.value) {
-      return navigateTo('/en/newadmin')
-    }
-  })
-  
+  if (to.path !== '/en/newadmin' && me.value) {
+    console.log('-> redirecting to new admin…')
+    return navigateTo('/en/newadmin')
+  }
+})
