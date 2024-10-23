@@ -76,10 +76,9 @@
                     </a>
                 </li>
                 <li>
-                  <!-- TODO do not use `GET` request for logout -->
-                  <a href="/en/logout" class="fr-btn fr-icon-logout-box-r-line">
-                    Logout
-                  </a>
+                  <button @click="logout" class="fr-btn fr-icon-logout-box-r-line">
+                    {{ $t('Logout') }}
+                  </button>
                 </li>
               </ul>
               <ul class="fr-btns-group" v-else>
@@ -184,7 +183,9 @@
                 class="fr-nav__link"
                 href="#"
                 target="_self"
-              >accès direct</a>
+              >
+              accès direct
+            </a>
             </li>
             <li class="fr-nav__item">
               <a
@@ -232,7 +233,9 @@
                 class="fr-nav__link"
                 href="#"
                 target="_self"
-              >accès direct</a>
+              >
+                accès direct
+            </a>
             </li>
             <li class="fr-nav__item">
               <a
@@ -263,7 +266,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMe } from '~/utils/auth';
+import { useMaybeMe } from '~/utils/auth';
 
 const menuModalId = useId()
 const menuButtonId = useId()
@@ -290,5 +293,16 @@ function closeMenuModal() {
   menuOpened.value = false
 }
 
-const me = useMe();
+const me = useMaybeMe();
+
+const token = useToken();
+const session = useCookie('session')
+const logout = async () => {
+  token.value = null;
+  session.value = null;
+
+  await refreshMe(me);
+  await navigateTo('/en/login');
+}
+
 </script>

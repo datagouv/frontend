@@ -12,4 +12,7 @@ import '@datagouv/components/dist/style.css'
 import '~/assets/css/overrides.css'
 
 provideHeadlessUseId(() => useId())
+
+const me = useMaybeMe();
+await callOnce(async () => await refreshMe(me))
 </script>
