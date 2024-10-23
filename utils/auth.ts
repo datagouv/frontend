@@ -33,7 +33,6 @@ export const refreshMe = async (meState: Ref<Me | null>) => {
   // we don't want the classic error management that redirect
   // to the login page when a 401 is raised. So we must manually
   // re-configured the baseURL.
-  console.log('calling refresh me!')
   const config = useRuntimeConfig()
   const cookie = useRequestHeader('cookie')
 
@@ -42,11 +41,11 @@ export const refreshMe = async (meState: Ref<Me | null>) => {
   const headers: Record<string, string> = {}
 
   if (cookie) {
-    console.log('Cookie is set to ' + cookie)
+    // console.log('Cookie is set to ' + cookie)
     headers['cookie'] = cookie
   }
   if (token.value) {
-    console.log('Token is set to ' + token.value)
+    // console.log('Token is set to ' + token.value)
     headers['Authentication-Token'] = token.value
   }
 
