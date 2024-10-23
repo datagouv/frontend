@@ -34,5 +34,5 @@
 </template>
 
 <script setup lang="ts">
-const me = useMe()
+const { me } = await useMe()
 </script>

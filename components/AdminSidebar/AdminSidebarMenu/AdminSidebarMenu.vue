@@ -45,7 +45,7 @@
           <AdminSidebarLink
             icon="ri:database-2-line"
             :label="$t('Datasets')"
-            :to="{ name: 'me-datasets' }"
+            to="/newadmin/me/datasets"
           />
           <AdminSidebarLink
             icon="ri:line-chart-line"
