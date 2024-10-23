@@ -15,9 +15,8 @@ export type Me = User & {
   website: string
 }
 
-export const useMe = () => {
-  return useAPI<Me>('/api/1/me')
-    .then(response => ({ ...response, me: response.data }))
+export const useMe = (): Ref<Me> => {
+  return useMaybeMe() as Ref<Me> // TODO redirect
 }
 
 export const useMaybeMe = () => {
