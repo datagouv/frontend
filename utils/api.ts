@@ -9,6 +9,9 @@ export type PaginatedArray<T> = {
     total: number;
 };
 
+/*
+  Example : const { data: datasets } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets')
+*/
 export function useAPI<T>(
   url: string | (() => string),
   options?: UseFetchOptions<T>,
