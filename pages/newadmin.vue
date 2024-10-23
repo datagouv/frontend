@@ -57,10 +57,6 @@
 import type { Organization, User } from '@datagouv/components'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'
 
-definePageMeta({
-  layout: 'fluid',
-})
-
 const { t } = useI18n()
 const route = useRoute()
 const localeRoute = useLocaleRoute()
@@ -69,7 +65,10 @@ const me = useMaybeMe()
 const opened = ref<string>()
 const { setCurrentOrganization } = useCurrentOrganization()
 
-definePageMeta({ middleware: ['auth'] });
+definePageMeta({
+  layout: 'fluid',
+  middleware: ['auth'],
+});
 
 const mePath = computed(() => {
   const route = localeRoute('/newadmin/me')
