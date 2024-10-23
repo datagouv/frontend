@@ -1,20 +1,34 @@
-import type { CookieRef } from "#app";
-import type { User } from "@datagouv/components";
+import type { Organization, User } from '@datagouv/components'
+
+export type Me = User & {
+  about: string
+  active: boolean
+  apikey: string | null
+  metrics: {
+    datasets: number
+    followers: number
+    following: number
+    reuses: number
+  }
+  organizations: Array<Organization>
+  since: string
+  website: string
+}
 
 export const useMe = () => {
-    return useAPI<User>('/api/1/me')
-        .then((response) => ({ ...response, me: response.data as any as User}))
+  return useAPI<Me>('/api/1/me')
+    .then(response => ({ ...response, me: response.data }))
 }
 
 export const useMaybeMe = () => {
-    return useState<User | null | undefined>('me', undefined)
+    return useState<Me | null | undefined>('me', () => undefined)
 }
 
 export const useToken = () => {
-    return useCookie('token')
+  return useCookie('token')
 }
 
-export const loadMe = async (meState: Ref<User | null | undefined>) => {
+export const loadMe = async (meState: Ref<Me | null | undefined>) => {
     // Here we cannot use the `useAPI` composable because
     // we don't want the classic error management that redirect
     // to the login page when a 401 is raised. So we must manually
@@ -22,26 +36,28 @@ export const loadMe = async (meState: Ref<User | null | undefined>) => {
     const config = useRuntimeConfig();
     const cookie = useRequestHeader('cookie');
 
-    const token = useToken();
+  const token = useToken()
 
-    let headers: Record<string, string> = {};
+  const headers: Record<string, string> = {}
 
-    if (cookie) {
-        // console.log('Cookie is set to ' + cookie)
-        headers['cookie'] = cookie
-    }
-    if (token.value) {
-        // console.log('Token is set to ' + token.value)
-        headers['Authentication-Token'] = token.value
-    }
+  if (cookie) {
+    // console.log('Cookie is set to ' + cookie)
+    headers['cookie'] = cookie
+  }
+  if (token.value) {
+    // console.log('Token is set to ' + token.value)
+    headers['Authentication-Token'] = token.value
+  }
 
-    try {
-        meState.value = await $fetch<User | null>('/api/1/me', {
-            baseURL: config.public.apiBase,
-            credentials: 'include',
-            headers,
-        })
-    } catch (e) {
-        meState.value = null
-    }
+  try {
+    meState.value = await $fetch<Me | null>('/api/1/me', {
+      baseURL: config.public.apiBase,
+      credentials: 'include',
+      headers,
+    })
+  }
+  catch (e) {
+    console.error(e)
+    meState.value = null
+  }
 }
