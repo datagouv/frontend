@@ -57,6 +57,10 @@
 import type { Organization, User } from '@datagouv/components'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'
 
+definePageMeta({
+  layout: 'fluid',
+})
+
 const { t } = useI18n()
 const route = useRoute()
 const localeRoute = useLocaleRoute()
