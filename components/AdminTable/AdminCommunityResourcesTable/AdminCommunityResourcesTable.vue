@@ -65,8 +65,8 @@
   </AdminTable>
 </template>
 <script setup lang="ts">
-import { formatDate } from '@datagouv/components/ts';
-import type { CommunityResource, Dataset } from '@datagouv/components/ts';
+import { formatDate } from '@datagouv/components';
+import type { CommunityResource, Dataset } from '@datagouv/components';
 import { OhVueIcon as Vicon } from "oh-vue-icons";
 import TextClamp from 'vue3-text-clamp';
 import { useI18n } from 'vue-i18n';

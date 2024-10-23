@@ -1,4 +1,4 @@
-import { CommunityResource, Organization } from "@datagouv/components/ts";
+import { CommunityResource, Organization } from "@datagouv/components";
 import { fn } from "@storybook/test";
 import type { Meta, StoryObj } from "@storybook/vue3";
 import AdminCommunityResourcesTable from "./AdminCommunityResourcesTable.vue";

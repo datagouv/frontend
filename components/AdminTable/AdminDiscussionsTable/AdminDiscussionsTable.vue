@@ -83,7 +83,7 @@
   </AdminTable>
 </template>
 <script setup lang="ts">
-import { AvatarWithName, formatDate } from "@datagouv/components/ts";
+import { AvatarWithName, formatDate } from "@datagouv/components";
 import { OhVueIcon as Vicon } from "oh-vue-icons";
 import { ref, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";

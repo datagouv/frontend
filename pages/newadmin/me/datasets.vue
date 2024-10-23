@@ -20,9 +20,9 @@
     <h1 class="fr-h3 fr-mb-5v">{{ t("Datasets") }}</h1>
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
-        <h2 class="subtitle subtitle--uppercase fr-m-0">{{ t('{n} datasets', pageData.total) }}</h2>
+        <h2 class="subtitle subtitle--uppercase fr-m-0" v-if="status === 'success'">{{ t('{n} datasets', pageData.total) }}</h2>
       </div>
-      <div v-if="oid && pageData.total" class="fr-col-auto fr-grid-row fr-grid-row--middle">
+      <div v-if="status === 'success' && oid && pageData.total" class="fr-col-auto fr-grid-row fr-grid-row--middle">
         <div>
           <a :href="`/organizations/${oid}/datasets.csv`" class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left">
             {{ t('Download catalog') }}
@@ -31,7 +31,7 @@
       </div>
     </div>
     <AdminDatasetsTable
-      v-if="status === 'pending' || pageData.total > 0"
+      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
       :datasets="pageData.data"
       :loading="status === 'pending'"
       :sort-direction="direction"
@@ -51,7 +51,7 @@
       </div>
     </div>
     <Pagination
-      v-if="pageData.total > pageSize"
+      v-if="status === 'success' && pageData.total > pageSize"
       :page="page"
       :page-size="pageSize"
       :total-results="pageData.total"
@@ -60,17 +60,19 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Pagination, type Dataset } from "@datagouv/components/ts";
+import { Pagination, type Dataset } from "@datagouv/components";
 import { refDebounced } from "@vueuse/core";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Breadcrumb from "../../../components/Breadcrumb/Breadcrumb.vue";
+import AdminDatasetsTable from "~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue";
 
 type DatasetSortedBy = 'title' | 'created' | 'last_update' | 'reuses' | 'followers' | 'views';
 export type SortDirection = 'asc' | 'desc';
 
 const { t } = useI18n();
 const props = defineProps<{oid?: string}>();
+const config = useRuntimeConfig();
 
 // const datasets = ref<Array<Dataset>>([]);
 // const loading = ref(false);
@@ -84,7 +86,7 @@ const q = ref("");
 const qDebounced = refDebounced(q, 500); // TODO add 500 in config
 
 const { currentOrganization } = useCurrentOrganization();
-const { me } = await useMe();
+const me = useMe();
 
 function sort(column: DatasetSortedBy, newDirection: SortDirection) {
   sortedBy.value = column;
@@ -94,10 +96,10 @@ function sort(column: DatasetSortedBy, newDirection: SortDirection) {
 const url = computed(() => {
   let url;
   if (props.oid) {
-    url = new URL(`/organizations/${props.oid}/datasets/`)
+    url = new URL(`/api/1/organizations/${props.oid}/datasets/`, config.public.apiBase)
   } else {
-    url = new URL(`/datasets/`)
-    url.searchParams.set('owner', me.id)
+    url = new URL(`/api/1/datasets/`, config.public.apiBase)
+    url.searchParams.set('owner', me.value.id)
   }
 
   url.searchParams.set('sort', sortDirection.value)

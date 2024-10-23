@@ -3,14 +3,13 @@
     <table>
       <slot></slot>
     </table>
-    <Container v-if="loading" class="fr-p-4w text-align-center">
+    <div v-if="loading" class="container fr-p-4w text-align-center">
       <AdminLoader/>
-    </Container>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import AdminLoader from '../../AdminLoader/AdminLoader.vue';
-import Container from '../../Ui/Container/Container.vue';
 
 withDefaults(defineProps<{
   loading?: boolean
@@ -20,13 +19,13 @@ withDefaults(defineProps<{
 </script>
 <style lang="less" scoped>
 
-@import "../../../../less/variables.less";
+// @import "../../../../less/variables.less";
 
-@media @dsfr-query-lg {
-  .fr-table table {
-    display: table;
-  }
-}
+// @media @dsfr-query-lg {
+//   .fr-table table {
+//     display: table;
+//   }
+// }
 
 .fr-table {
   --lh: 1.125rem;

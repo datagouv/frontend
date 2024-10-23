@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import AdminReusesTable from "./AdminReusesTable.vue";
 import { ReuseWithOwner } from "../../Reuse/Reuse.stories";
-import type { Reuse } from "@datagouv/components/ts";
+import type { Reuse } from "@datagouv/components";
 import { fn } from "@storybook/test";
 
 const meta = {
