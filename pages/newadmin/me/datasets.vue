@@ -32,7 +32,7 @@
     </div>
     <AdminDatasetsTable
       v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :datasets="pageData.data"
+      :datasets="pageData ? pageData.data : []"
       :loading="status === 'pending'"
       :sort-direction="direction"
       :sortedBy

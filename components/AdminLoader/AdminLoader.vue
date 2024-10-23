@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO fix animation spin -->
   <Icon
     name="ri:loader-5-line"
     aria-hidden="true"
