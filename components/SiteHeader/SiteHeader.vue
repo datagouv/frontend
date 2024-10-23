@@ -4,7 +4,10 @@
     class="fr-header"
   >
     <div class="fr-header__body">
-      <div class="fr-container">
+      <div
+        class="fr-container"
+        :class="{ '!max-w-none overflow-hidden': fluid }"
+      >
         <div class="fr-header__body-row">
           <div class="fr-header__brand fr-enlarge-link">
             <div class="fr-header__brand-top">
@@ -198,7 +201,10 @@
     <div
       class="fr-header__menu hidden lg:block"
     >
-      <div class="fr-container">
+      <div
+        class="fr-container"
+        :class="{ '!max-w-none overflow-hidden': fluid }"
+      >
         <nav
           class="fr-nav"
           role="navigation"
@@ -295,6 +301,9 @@
 <script setup lang="ts">
 import { useMaybeMe } from '~/utils/auth'
 
+defineProps<{
+  fluid?: boolean
+}>()
 const menuModalId = useId()
 const menuButtonId = useId()
 const searchModalId = useId()

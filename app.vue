@@ -1,8 +1,7 @@
 <template>
-  <div class="datagouv-components">
-    <SiteHeader />
+  <NuxtLayout class="datagouv-components">
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
