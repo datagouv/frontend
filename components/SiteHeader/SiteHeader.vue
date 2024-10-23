@@ -299,12 +299,5 @@ const me = useMaybeMe();
 
 const token = useToken();
 const session = useCookie('session')
-const logout = async () => {
-  token.value = null;
-  session.value = null;
-
-  await refreshMe(me);
-  await navigateTo('/en/login');
-}
 
 </script>

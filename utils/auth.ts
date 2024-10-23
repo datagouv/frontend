@@ -7,14 +7,14 @@ export const useMe = () => {
 }
 
 export const useMaybeMe = () => {
-    return useState<User | null>('me')
+    return useState<User | null | undefined>('me', undefined)
 }
 
 export const useToken = () => {
     return useCookie('token')
 }
 
-export const refreshMe = async (meState: Ref<User | null>) => {
+export const loadMe = async (meState: Ref<User | null | undefined>) => {
     // Here we cannot use the `useAPI` composable because
     // we don't want the classic error management that redirect
     // to the login page when a 401 is raised. So we must manually
