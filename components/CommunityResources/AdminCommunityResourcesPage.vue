@@ -2,14 +2,14 @@
     <div>
       <Breadcrumb>
         <li>
-          <router-link class="fr-breadcrumb__link" to="/">
+          <NuxtLinkLocale class="fr-breadcrumb__link" to="/newadmin">
             {{ t('Administration') }}
-          </router-link>
+          </NuxtLinkLocale>
         </li>
         <li v-if="currentOrganization">
-          <router-link class="fr-breadcrumb__link" to="/TODO">
+          <NuxtLinkLocale class="fr-breadcrumb__link" to="/newadmin">
             {{ currentOrganization.name }}
-          </router-link>
+          </NuxtLinkLocale>
         </li>
         <li>
           <a class="fr-breadcrumb__link" aria-current="page">
@@ -64,7 +64,6 @@ import Breadcrumb from "../Breadcrumb/Breadcrumb.vue";
 import AdminCommunityResourcesTable from "../AdminTable/AdminCommunityResourcesTable/AdminCommunityResourcesTable.vue";
   
   const { t } = useI18n();
-  const props = defineProps<{oid?: string}>();
   const config = useRuntimeConfig();
   
   const page = ref(1);
@@ -85,8 +84,8 @@ import AdminCommunityResourcesTable from "../AdminTable/AdminCommunityResourcesT
   
   const url = computed(() => {
     let url = new URL(`/api/1/datasets/community_resources/`, config.public.apiBase)
-    if (props.oid) {
-      url.searchParams.set('organization', props.oid)
+    if (currentOrganization.value) {
+      url.searchParams.set('organization', currentOrganization.value.id)
     } else {
       url.searchParams.set('owner', me.value.id)
     }

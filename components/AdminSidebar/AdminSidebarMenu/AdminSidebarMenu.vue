@@ -57,13 +57,13 @@
           <AdminSidebarLink
             icon="ri:database-2-line"
             :label="$t('Datasets')"
-            :to="{ name: 'organization-datasets', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/datasets`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
             icon="ri:line-chart-line"
             :label="$t('Reuses')"
-            :to="{ name: 'organization-reuses', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/reuses`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
@@ -87,7 +87,7 @@
           <AdminSidebarLink
             icon="ri:git-pull-request-line"
             :label="$t('Community Resources')"
-            :to="{ name: 'organization-community-resources', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/community-resources`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
