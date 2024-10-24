@@ -6,7 +6,7 @@
     <div class="fr-header__body">
       <div
         class="fr-container"
-        :class="{ '!max-w-none overflow-hidden': fluid }"
+        :class="{ 'max-w-none overflow-hidden': fluid }"
       >
         <div class="fr-header__body-row">
           <div class="fr-header__brand fr-enlarge-link">
@@ -16,7 +16,7 @@
                   République <br>Française
                 </p>
               </div>
-              <div class="lg:!hidden flex flex-row items-start justify-end p-1 -mr-1 mt-1 order-3 flex-1 self-stretch z-[1000] gap-3">
+              <div class="lg:hidden flex flex-row items-start justify-end p-1 -mr-1 mt-1 order-3 flex-1 self-stretch z-[1000] gap-3">
                 <button
                   :id="searchButtonId"
                   class="flex-none inline-block w-10 h-10 text-primary"
@@ -201,7 +201,7 @@
     >
       <div
         class="fr-container"
-        :class="{ '!max-w-none overflow-hidden': fluid }"
+        :class="{ 'max-w-none overflow-hidden': fluid }"
       >
         <nav
           class="fr-nav"

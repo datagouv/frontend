@@ -3,6 +3,19 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
 
+
+  // Inline SSR styles doesn't work with TailwindCSS classes containing `!` in SSR build (Docker for exemple)
+  // See https://github.com/nuxt-modules/tailwindcss/issues/695
+  // :TailwindCSS!Problem
+  // But we cannot disabled it with the following configs… Don't know why…
+  // features: {
+  //   inlineStyles: false,
+  // },
+
+  // experimental: {
+  //   inlineSSRStyles: false,
+  // },
+
   runtimeConfig: {
     public: {
       apiBase: 'http://dev.local:7000',

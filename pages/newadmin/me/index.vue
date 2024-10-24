@@ -20,7 +20,7 @@
     </Breadcrumb>
     <h1
       v-if="me"
-      class="fr-h3 !mb-0"
+      class="fr-h3 mb-0"
     >
       {{ me.first_name }}  {{ me.last_name }}
     </h1>

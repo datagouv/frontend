@@ -35,7 +35,7 @@
       </template>
     </HeadlessDisclosureButton>
     <HeadlessDisclosurePanel>
-      <ul class="fr-sidemenu__list !mx-2 !my-3">
+      <ul class="fr-sidemenu__list mx-2 my-3">
         <template v-if="user">
           <AdminSidebarLink
             icon="ri:account-circle-line"
