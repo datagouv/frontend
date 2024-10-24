@@ -1,14 +1,5 @@
 import type { UseFetchOptions } from 'nuxt/app'
 
-export type PaginatedArray<T> = {
-    data: Array<T>;
-    next_page: string | null;
-    page: number;
-    page_size: number;
-    previous_page: string | null;
-    total: number;
-};
-
 /*
   Example : const { data: datasets } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets')
 */

@@ -122,34 +122,16 @@
 import { formatDate, QualityScore, summarize } from "@datagouv/components";
 import type { Dataset, DatasetV2 } from '@datagouv/components';
 import { useI18n } from 'vue-i18n';
-import TextClamp from 'vue3-text-clamp'
 import QualityScoreTooltipContent from "../../dataset/QualityScore/QualityScoreTooltipContent/QualityScoreTooltipContent.vue";
 import AdminBadge from "../../AdminBadge/AdminBadge.vue";
 import AdminContentWithTooltip from "../../AdminContentWithTooltip/AdminContentWithTooltip.vue";
 import AdminTable from "../Table/AdminTable.vue";
 import AdminTableTh from "../Table/AdminTableTh.vue";
 import Tooltip from '../../Tooltip/Tooltip.vue';
-
-export type DSFRFormDefaultState = "default";
-
-export type DSFRFormFunctionalState = "error" | "success";
-
-export type DSFRFormState = DSFRFormDefaultState | DSFRFormFunctionalState;
-
-export type FormFunctionalState = DSFRFormFunctionalState | "warning";
-
-export type AccordionFunctionalState = FormFunctionalState | "disabled";
-
-export type DSFRInfoState = "info";
-
-export type PublishingFormAccordionState = AccordionFunctionalState | DSFRInfoState;
-
-export type AccordionState = DSFRFormDefaultState | AccordionFunctionalState | DSFRInfoState;
-
-export type AdminBadgeState = DSFRFormDefaultState | FormFunctionalState | DSFRInfoState;
+import type { AdminBadgeState, SortDirection } from "~/types/types";
+import TextClamp from "~/components/TextClamp.vue";
 
 type DatasetSortedBy = 'title' | 'created' | 'last_update' | 'reuses' | 'followers' | 'views';
-export type SortDirection = 'asc' | 'desc';
 
 const emit = defineEmits<{
   (event: 'sort', column: DatasetSortedBy, direction: SortDirection): void

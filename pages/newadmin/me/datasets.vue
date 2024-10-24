@@ -66,6 +66,7 @@ import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import Breadcrumb from "../../../components/Breadcrumb/Breadcrumb.vue";
 import AdminDatasetsTable from "~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue";
+import type { PaginatedArray } from "~/types/types";
 
 type DatasetSortedBy = 'title' | 'created' | 'last_update' | 'reuses' | 'followers' | 'views';
 export type SortDirection = 'asc' | 'desc';
@@ -111,25 +112,4 @@ const url = computed(() => {
 })
 
 const { data: pageData, status } = await useAPI<PaginatedArray<Dataset>>(url, { lazy: true });
-
-// watchEffect(async () => {
-//   loading.value = true;
-//   datasets.value = [];
-//   try {
-//     let response;
-//     if (props.oid) {
-//       response = await getOrganizationDatasets(props.oid, qDebounced.value, page.value, pageSize.value, sortDirection.value);
-//     } else if (me) {
-//       response = await getUserDatasets(me.id, qDebounced.value, page.value, pageSize.value, sortDirection.value);
-//     } else {
-//       return
-//     }
-//     datasets.value = response.data;
-//     page.value = response.page;
-//     pageSize.value = response.page_size;
-//     totalResult.value = response.total;
-//   } finally {
-//     loading.value = false;
-//   }
-// });
 </script>

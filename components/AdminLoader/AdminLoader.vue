@@ -1,11 +1,10 @@
 <template>
-  <!-- TODO fix animation spin -->
   <Icon
     name="ri:loader-5-line"
     aria-hidden="true"
-    animation="spin"
     :scale
     fill="var(--blue-cumulus-sun-368-moon-732)"
+    class="animate-spin"
     />
 </template>
 <script setup lang="ts">
