@@ -50,7 +50,7 @@
           <AdminSidebarLink
             icon="ri:git-pull-request-line"
             :label="$t('Community Resources')"
-            :to="{ name: 'me-community-resources' }"
+            to="/newadmin/me/community-resources"
           />
         </template>
         <template v-else-if="organization">
