@@ -2,14 +2,14 @@
     <div>
       <Breadcrumb>
         <li>
-          <router-link class="fr-breadcrumb__link" to="/">
+          <NuxtLinkLocale class="fr-breadcrumb__link" to="/newadmin">
             {{ t('Administration') }}
-          </router-link>
+          </NuxtLinkLocale>
         </li>
         <li v-if="currentOrganization">
-          <router-link class="fr-breadcrumb__link" to="/">
+          <NuxtLinkLocale class="fr-breadcrumb__link" to="/newadmin">
             {{ currentOrganization.name }}
-          </router-link>
+          </NuxtLinkLocale>
         </li>
         <li>
           <a class="fr-breadcrumb__link" aria-current="page">
@@ -65,7 +65,6 @@
   import AdminReusesTable from "../AdminTable/AdminReusesTable/AdminReusesTable.vue";
   
   const { t } = useI18n();
-  const props = defineProps<{oid?: string}>();
   const config = useRuntimeConfig();
   
   const page = ref(1);
@@ -86,8 +85,8 @@
   
   const url = computed(() => {
     let url;
-    if (props.oid) {
-      url = new URL(`/api/1/organizations/${props.oid}/reuses/`, config.public.apiBase)
+    if (currentOrganization.value) {
+      url = new URL(`/api/1/organizations/${currentOrganization.value.id}/reuses/`, config.public.apiBase)
     } else {
       url = new URL(`/api/1/reuses/`, config.public.apiBase)
       url.searchParams.set('owner', me.value.id)

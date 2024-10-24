@@ -2,14 +2,14 @@
     <div>
       <Breadcrumb>
         <li>
-          <router-link class="fr-breadcrumb__link" to="/">
+          <NuxtLinkLocale class="fr-breadcrumb__link" to="/newadmin">
             {{ t('Administration') }}
-          </router-link>
+          </NuxtLinkLocale>
         </li>
         <li v-if="currentOrganization">
-          <router-link class="fr-breadcrumb__link" to="/TODO">
+          <NuxtLinkLocale class="fr-breadcrumb__link" to="/newadmin">
             {{ currentOrganization.name }}
-          </router-link>
+          </NuxtLinkLocale>
         </li>
         <li>
           <a class="fr-breadcrumb__link" aria-current="page">
@@ -23,8 +23,8 @@
           <h2 class="subtitle subtitle--uppercase fr-m-0" v-if="status === 'success'">{{ t('{n} datasets', pageData.total) }}</h2>
         </div>
         <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-          <div v-if="status === 'success' && oid && pageData.total">
-            <a :href="`/organizations/${oid}/datasets.csv`" class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left">
+          <div v-if="status === 'success' && currentOrganization && pageData.total">
+            <a :href="`/organizations/${currentOrganization.id}/datasets.csv`" class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left">
               {{ t('Download catalog') }}
             </a>
           </div>
@@ -69,7 +69,6 @@
 import Breadcrumb from "../Breadcrumb/Breadcrumb.vue";
   
   const { t } = useI18n();
-  const props = defineProps<{oid?: string}>();
   const config = useRuntimeConfig();
   
   const page = ref(1);
@@ -90,8 +89,8 @@ import Breadcrumb from "../Breadcrumb/Breadcrumb.vue";
   
   const url = computed(() => {
     let url;
-    if (props.oid) {
-      url = new URL(`/api/1/organizations/${props.oid}/datasets/`, config.public.apiBase)
+    if (currentOrganization.value) {
+      url = new URL(`/api/1/organizations/${currentOrganization.value.id}/datasets/`, config.public.apiBase)
     } else {
       url = new URL(`/api/1/datasets/`, config.public.apiBase)
       url.searchParams.set('owner', me.value.id)

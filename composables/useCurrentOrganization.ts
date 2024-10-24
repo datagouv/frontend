@@ -3,7 +3,7 @@ export function useCurrentOrganization() {
   const route = useRoute();
 
   const org = computed(() => {
-    if (route.params.oid && !Array.isArray(route.params.oid)) {
+    if (!route.params.oid || Array.isArray(route.params.oid)) {
       return null
     }
 
