@@ -75,7 +75,7 @@
           <AdminSidebarLink
             icon="ri:parent-line"
             :label="$t('Members')"
-            :to="{ name: 'organization-members', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/members`"
             @click="$emit('click')"
           />
           <AdminSidebarLink

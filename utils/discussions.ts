@@ -2,14 +2,14 @@ import type { Dataservice, Dataset, Reuse } from "@datagouv/components";
 import type { $Fetch } from "ofetch";
 import type { DiscussionSubject, DiscussionSubjectTypes } from "~/types/types";
 
-export async function getSubject(api: $Fetch, subject: DiscussionSubject): Promise<DiscussionSubjectTypes | null> {
+export async function getSubject(subject: DiscussionSubject): Promise<DiscussionSubjectTypes | null> {
   switch (subject.class) {
     case 'Dataservice':
-      return await api<Dataservice>(`/api/1/dataservices/${subject.id}`);
+      return await useNuxtApp().$api<Dataservice>(`/api/1/dataservices/${subject.id}`);
     case 'Dataset':
-      return await api<Dataset>(`/api/1/datasets/${subject.id}`);
+      return await useNuxtApp().$api<Dataset>(`/api/1/datasets/${subject.id}`);
     case 'Reuse':
-      return await api<Reuse>(`/api/1/reuses/${subject.id}`);
+      return await useNuxtApp().$api<Reuse>(`/api/1/reuses/${subject.id}`);
     default:
       return null;
   };

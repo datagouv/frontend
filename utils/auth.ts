@@ -23,6 +23,12 @@ export const useMaybeMe = () => {
     return useState<Me | null | undefined>('me', () => undefined)
 }
 
+export const isAdmin = (me: Me | null): boolean => {
+  if (!me) return false
+
+  return me.roles ? me.roles.includes("admin") : false
+}
+
 export const useToken = () => {
   return useCookie('token')
 }
@@ -58,4 +64,12 @@ export const loadMe = async (meState: Ref<Me | null | undefined>) => {
   catch (e) {
     meState.value = null
   }
+}
+
+
+export default function useUserAvatar(user: User, size: number) {
+  const config = useRuntimeConfig();
+
+  const getIdenticon = (id: string, size: number) => `${config.public.apiBase}/avatars/${id}/${size}`;
+  return user.avatar_thumbnail || getIdenticon(user.id, size);
 }

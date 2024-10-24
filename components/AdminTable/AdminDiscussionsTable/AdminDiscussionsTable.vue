@@ -109,7 +109,6 @@ defineEmits<{
 }>();
 
 const { t } = useI18n();
-const { $api } = useNuxtApp();
 
 const subjects = ref<Record<string, DiscussionSubjectTypes | null>>({});
 const subjectsPromises = ref<Record<string, Promise<void>>>({});
@@ -118,7 +117,7 @@ watchEffect(async () => {
   for (const discussion of props.discussions) {
     if (discussion.subject.id in subjectsPromises.value) continue;
 
-    subjectsPromises.value[discussion.subject.id] = getSubject($api, discussion.subject)
+    subjectsPromises.value[discussion.subject.id] = getSubject(discussion.subject)
       .then((subject) => {
         subjects.value[discussion.subject.id] = subject // Working because there is no conflicts between IDs from different types
       })
