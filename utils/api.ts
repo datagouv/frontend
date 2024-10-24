@@ -27,6 +27,6 @@ export function useAPI<T>(
         // the others HTTP methods.
         // TODO: add a check at the beginning of this function to prevent 
         // miss-use of this function (calling it with other methods)
-        return { ...response, data: response.data as T }
+        return { ...response, data: response.data as Ref<T> }
     })
 }

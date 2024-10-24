@@ -32,8 +32,8 @@ import type { AccordionState } from '~/types/form'
 const props = withDefaults(defineProps<{
   id: string
   title: string
-  opened: boolean
-  state: AccordionState
+  opened?: boolean
+  state?: AccordionState
 }>(), {
   opened: false,
   state: 'default',

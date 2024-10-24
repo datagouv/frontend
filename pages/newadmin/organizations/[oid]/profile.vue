@@ -12,7 +12,7 @@
       <li v-if="currentOrganization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          :to="`/newadmin/${currentOrganization.id}`"
+          :to="`/newadmin/organizations/${currentOrganization.id}`"
         >
           {{ currentOrganization.name }}
         </NuxtLinkLocale>
@@ -169,36 +169,41 @@
 
 <script setup lang="ts">
 import { getRandomId, Placeholder, useOrganizationCertified, type NewOrganization, type Organization } from '@datagouv/components'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import AdminDangerZone from '~/components/AdminDangerZone/AdminDangerZone.vue'
 import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import PaddedContainer from '~/components/PaddedContainer/PaddedContainer.vue'
-import DescribeOrganizationFrom from '../../OrganizationPublishingForm/Step2DescribeOrganization.vue'
-import { getOrganization, updateOrganization, uploadLogo } from '~/api/organizations'
+import DescribeOrganizationFrom from '~/components/OrganizationPublishingForm/Step2DescribeOrganization.vue'
+import { updateOrganization, uploadLogo } from '~/api/organizations'
 
 const { t } = useI18n()
 const { toast } = useToast()
-const props = defineProps<{ oid: string }>()
 const router = useRouter()
+const route = useRoute()
+const oid = route.params.oid as string
 const localPath = useLocalePath()
 const form = ref<InstanceType<typeof DescribeOrganizationFrom> | null>(null)
 
 const { currentOrganization } = useCurrentOrganization()
-const organization = ref<Organization | null>(null)
-const { organizationCertified } = useOrganizationCertified(organization)
+
 const errors = ref([])
-const loading = ref(false)
 const modalId = getRandomId('modal')
 const modalTitleId = getRandomId('modalTitle')
+
+const { data: organization, status } = await useAPI<Organization>(`api/1/organizations/${oid}/`, { lazy: true })
+
+const loading = computed(() => status.value === 'pending')
+
+const { organizationCertified } = useOrganizationCertified(organization)
 
 async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
     loading.value = true
     try {
-      await useAPI(`organizations/${props.oid}/`)
+      await useAPI(`organizations/${oid}/`)
       router.replace(localPath('/newadmin'))
     }
     catch (e) {
@@ -236,14 +241,4 @@ async function updateCurrentOrganization(updatedOrganization: NewOrganization | 
     }
   }
 }
-
-onMounted(async () => {
-  loading.value = true
-  try {
-    organization.value = await getOrganization(props.oid)
-  }
-  finally {
-    loading.value = false
-  }
-})
 </script>

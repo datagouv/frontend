@@ -203,7 +203,7 @@
               :aria-describedby="addDescriptionAccordionId"
               :label="t('Description')"
               :required="true"
-              type="markdown"
+              type="textarea"
               :has-error="fieldHasError('description')"
               :has-warning="fieldHasWarning('description')"
               :error-text="getErrorText('description')"
@@ -230,7 +230,7 @@
             @blur="vWarning$.acronym.$touch"
           >
             <p>{{ t('Logo') }}</p>
-            <UploadGroup
+            <!-- <UploadGroup
               :label="t('Logo')"
               :title="t('Logo')"
               hint-text="Max size: 4Mo. Accepted formats: JPG, JPEG, PNG"
@@ -238,7 +238,7 @@
               :is-valid="!!file"
               :valid-text="t('Your file is valid')"
               @change="addFiles"
-            />
+            /> -->
             <div
               v-show="imagePreview?.src"
               class="text-align-center"
@@ -299,9 +299,9 @@ import { useI18n } from 'vue-i18n'
 import { createMinLengthWarning, createRequired } from '~/utils/i18n'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import Alert from '~/components/Alert/Alert.vue'
-import InputGroup from '../../components/Form/InputGroup/InputGroup.vue'
+import InputGroup from '~/components/InputGroup/InputGroup.vue'
 import LinkedToAccordion from '~/components/LinkedToAccordion/LinkedToAccordion.vue'
-import UploadGroup from '../../components/Form/UploadGroup/UploadGroup.vue'
+// import UploadGroup from '../../components/Form/UploadGroup/UploadGroup.vue'
 // import organizationIcon from '../../../../templates/svg/illustrations/organization.svg'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import type { PublishingFormAccordionState } from '~/types/form'
@@ -452,14 +452,14 @@ watchEffect(() => {
       })
         .then(res => res.data)
         .then((result) => {
-          if (result.total_results === 0) {
+          if (result.value.total_results === 0) {
             checkOrga.value.exists = false
             checkOrga.value.type = 'other'
           }
           else {
-            checkOrga.value.name = result.results[0].nom_complet
-            checkOrga.value.siren = result.results[0].siren
-            checkOrga.value.type = getOrganizationType(result.results[0].complements)
+            checkOrga.value.name = result.value.results[0].nom_complet
+            checkOrga.value.siren = result.value.results[0].siren
+            checkOrga.value.type = getOrganizationType(result.value.results[0].complements)
             checkOrga.value.exists = true
           }
         })

@@ -98,7 +98,7 @@
           <AdminSidebarLink
             icon="ri:user-line"
             :label="$t('Profile')"
-            :to="{ name: 'organization-profile', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/profile`"
             @click="$emit('click')"
           />
         </template>

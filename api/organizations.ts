@@ -6,7 +6,7 @@ type UploadLogoResponse = {
 }
 
 export async function uploadLogo(oid: string, file: File) {
-  const resp = await useAPI<UploadLogoResponse>(`organizations/${oid}/logo`, {
+  const resp = await useAPI<UploadLogoResponse>(`api/1/organizations/${oid}/logo`, {
     method: 'POST',
     body: {
       file: file,
@@ -20,16 +20,11 @@ export async function uploadLogo(oid: string, file: File) {
 
 export async function updateOrganization(organization: MaybeRefOrGetter<Organization>) {
   const organizationValue = toValue(organization)
-  const resp = await useAPI<Organization>(`organizations/${organizationValue.id}/`, {
+  const resp = await useAPI<Organization>(`api/1/organizations/${organizationValue.id}/`, {
     method: 'PUT',
     body: {
       ...organizationValue,
     },
   })
   return resp.data
-}
-
-export async function getOrganization(oid: string) {
-  const res = await useAPI<Organization>(`organizations/${oid}/`)
-  return res.data
 }

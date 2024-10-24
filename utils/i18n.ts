@@ -1,6 +1,20 @@
+import { enUS, es as esES, fr as frFR } from 'date-fns/locale'
 import type { Composer } from 'vue-i18n'
 import type { ValidationRuleWithoutParams } from '@vuelidate/core'
 import { createI18nMessage, minLength as vMinLength, not as vNot, required as vRequired, requiredIf as vRequiredIf, sameAs as vSameAs, helpers, type ValidatorWrapper } from '@vuelidate/validators'
+
+const dateLocales = { frFR, enUS, esES }
+
+const isLangKey = (value: string): value is keyof typeof dateLocales => {
+  return Object.keys(dateLocales).includes(value)
+}
+
+export function getDatepickerLocale(lang: keyof typeof dateLocales | string) {
+  if (isLangKey(lang)) {
+    return dateLocales[lang]
+  }
+  return undefined
+}
 
 const { withMessage } = helpers
 
