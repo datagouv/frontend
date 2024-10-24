@@ -1,6 +1,6 @@
 <template>
   <div class="fr-table fr-mb-2w">
-    <table>
+    <table class="lg:table">
       <slot></slot>
     </table>
     <div v-if="loading" class="container fr-p-4w text-align-center">
@@ -20,12 +20,6 @@ withDefaults(defineProps<{
 <style lang="less" scoped>
 
 // @import "../../../../less/variables.less";
-
-// @media @dsfr-query-lg {
-//   .fr-table table {
-//     display: table;
-//   }
-// }
 
 .fr-table {
   --lh: 1.125rem;
