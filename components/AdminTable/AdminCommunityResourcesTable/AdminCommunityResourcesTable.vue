@@ -68,7 +68,6 @@
 import { formatDate } from '@datagouv/components';
 import type { CommunityResource, Dataset } from '@datagouv/components';
 import { OhVueIcon as Vicon } from "oh-vue-icons";
-import TextClamp from 'vue3-text-clamp';
 import { useI18n } from 'vue-i18n';
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue';
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue';
@@ -79,6 +78,7 @@ import type { AdminBadgeState, CommunityResourceSortedBy, SortDirection } from "
 import { getSubjectTypeIcon } from '../../../api/discussions';
 import { ref, watchEffect } from 'vue';
 import { getDataset } from '../../../api/datasets';
+import TextClamp from '~/components/TextClamp.vue';
 
 const props = defineProps<{
   communityResources: Array<CommunityResource>;

@@ -87,11 +87,11 @@ import { AvatarWithName, formatDate } from "@datagouv/components";
 import { OhVueIcon as Vicon } from "oh-vue-icons";
 import { ref, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
-import TextClamp from "vue3-text-clamp";
 import { formatSubject, getSubject, SubjectSummary } from "../../../api/discussions";
 import AdminTable from "../Table/AdminTable.vue";
 import AdminTableTh from "../Table/AdminTableTh.vue";
 import type { Comment, DiscussionSortedBy, DiscussionSubjectTypes, SortDirection, Thread } from '../../../types';
+import TextClamp from "~/components/TextClamp.vue";
 
 const props = defineProps<{
   discussions: Array<Thread>;
