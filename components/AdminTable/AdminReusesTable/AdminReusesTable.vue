@@ -76,7 +76,6 @@
 <script setup lang="ts">
 import { formatDate, summarize } from '@datagouv/components';
 import type { Reuse } from '@datagouv/components';
-import TextClamp from 'vue3-text-clamp';
 import { useI18n } from 'vue-i18n';
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue';
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue';
@@ -85,6 +84,7 @@ import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip
 import Tooltip from '../../../components/Tooltip/Tooltip.vue';
 import { admin_root } from '../../../config';
 import type { AdminBadgeState, ReuseSortedBy, SortDirection } from "../../../types";
+import TextClamp from '~/components/TextClamp.vue';
 
 const props = defineProps<{
   reuses: Array<Reuse>;

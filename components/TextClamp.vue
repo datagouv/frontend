@@ -1,33 +1,36 @@
 <template>
   <!-- COPY/PASTE from https://github.com/sherwinshen/vue3-text-clamp/blob/master/package/text-clamp.vue because of https://github.com/sherwinshen/vue3-text-clamp/issues/9 -->
-  <div
-    ref="textClampRef"
-    class="text-clamp"
-    :style="{
-      overflow: 'hidden',
-      maxHeight: realMaxHeight,
-    }"
-  >
-    <span ref="contentRef">
-      <slot
-        name="before"
-        :expand="expand"
-        :collapse="collapse"
-        :toggle="toggle"
-        :clamped="isClamped"
-        :expanded="state.localExpanded"
-      ></slot>
-      <span ref="textRef" :aria-label="text"></span>
-      <slot
-        name="after"
-        :expand="expand"
-        :collapse="collapse"
-        :toggle="toggle"
-        :clamped="isClamped"
-        :expanded="state.localExpanded"
-      ></slot>
-    </span>
-  </div>
+   <ClientOnly>
+
+     <div
+       ref="textClampRef"
+       class="text-clamp"
+       :style="{
+         overflow: 'hidden',
+         maxHeight: realMaxHeight,
+       }"
+     >
+       <span ref="contentRef">
+         <slot
+           name="before"
+           :expand="expand"
+           :collapse="collapse"
+           :toggle="toggle"
+           :clamped="isClamped"
+           :expanded="state.localExpanded"
+         ></slot>
+         <span ref="textRef" :aria-label="text"></span>
+         <slot
+           name="after"
+           :expand="expand"
+           :collapse="collapse"
+           :toggle="toggle"
+           :clamped="isClamped"
+           :expanded="state.localExpanded"
+         ></slot>
+       </span>
+     </div>
+   </ClientOnly>
 </template>
 
 <script lang="ts" setup>

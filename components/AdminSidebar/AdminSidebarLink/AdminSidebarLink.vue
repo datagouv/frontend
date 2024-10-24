@@ -21,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import TextClamp from 'vue3-text-clamp'
 import type { RouteLocationRaw } from 'vue-router'
+import TextClamp from '~/components/TextClamp.vue';
 
 const route = useRoute()
 const localePath = useLocalePath()
