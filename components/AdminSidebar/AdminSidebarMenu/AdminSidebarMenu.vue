@@ -50,7 +50,7 @@
           <AdminSidebarLink
             icon="ri:line-chart-line"
             :label="$t('Reuses')"
-            :to="{ name: 'me-reuses' }"
+            to="/newadmin/me/datasets"
           />
           <AdminSidebarLink
             icon="ri:git-pull-request-line"

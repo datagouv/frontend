@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts">
-import type { SortDirection } from "../../../types";
 import { computed } from "vue";
+import type { SortDirection } from "~/types/types";
 export type AdminTableThProps = {
   sorted?: SortDirection | null;
 };

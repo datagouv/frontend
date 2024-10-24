@@ -75,7 +75,7 @@
                 </li>
                 <li>
                   <a
-                    href="/en/admin/"
+                    href="/en/newadmin/"
                     class="fr-btn fr-icon-svg fr-icon--sm"
                   >
                     <span class="fr-mr-1w fr-grid-row">

@@ -67,7 +67,7 @@ import {
 } from "../../../plugins/eventbus";
 import { getResourceIdFromHash } from '../../../helpers';
 import { useHash } from '../../../composables/useHash';
-import { PaginatedArray } from '../../../api/types';
+import type { PaginatedArray } from '~/types/types';
 
 type Props = {
   canEdit?: boolean,
