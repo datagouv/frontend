@@ -69,7 +69,7 @@
           <AdminSidebarLink
             icon="ri:chat-3-line"
             :label="$t('Discussions')"
-            :to="{ name: 'organization-discussions', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/discussions`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
