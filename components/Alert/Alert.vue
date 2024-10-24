@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script script lang="ts">
+<script setup lang="ts">
 import { computed } from 'vue'
 import type { AlertSize, AlertType } from '~/types/alert'
 import type { TitleLevel } from '~/types/html'

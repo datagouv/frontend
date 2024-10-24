@@ -102,10 +102,10 @@
         >
           <div class="fr-grid-row">
             <div class="fr-col-auto fr-mr-3v">
-              <img
+              <!-- <img
                 :src="organizationIcon"
                 alt=""
-              >
+              > -->
             </div>
             <div class="fr-col">
               <p class="fr-m-0 fr-text--bold">
@@ -296,7 +296,7 @@ import { OwnerType, Well, type NewOrganization, type Organization, type Organiza
 import { url } from '@vuelidate/validators'
 import { computed, reactive, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { minLengthWarning, required } from '../../i18n'
+import { createMinLengthWarning, createRequired } from '~/utils/i18n'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import Alert from '~/components/Alert/Alert.vue'
 import InputGroup from '../../components/Form/InputGroup/InputGroup.vue'
@@ -333,12 +333,15 @@ const addWebsiteAccordionId = useId()
 const addLogoAccordionId = useId()
 
 const config = useRuntimeConfig()
-
+const nuxtApp = useNuxtApp()
 const { t } = useI18n()
 
 const organization = reactive<NewOrganization | Organization>({ ...props.organization })
 const file = ref<File | null>(null)
 const imagePreview = ref<HTMLImageElement | null>(null)
+
+const required = createRequired(nuxtApp.$i18n)
+const minLengthWarning = createMinLengthWarning(nuxtApp.$i18n)
 
 const checkOrga = ref({
   name: '',
