@@ -1,14 +1,16 @@
-import type { Organization } from '@datagouv/components'
-
-const currentOrganization = ref<Organization | null>(null)
-
 export function useCurrentOrganization() {
-  const setCurrentOrganization = (organization: Organization) => {
-    currentOrganization.value = organization
-  }
+  const me = useMe();
+  const route = useRoute();
+
+  const org = computed(() => {
+    if (route.params.oid && !Array.isArray(route.params.oid)) {
+      return null
+    }
+
+    return me.value.organizations.find((org) => org.id === route.params.oid)
+  })
 
   return {
-    currentOrganization: readonly(currentOrganization),
-    setCurrentOrganization,
+    currentOrganization: org,
   }
 }

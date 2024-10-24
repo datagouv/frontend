@@ -128,10 +128,8 @@ import AdminContentWithTooltip from "../../AdminContentWithTooltip/AdminContentW
 import AdminTable from "../Table/AdminTable.vue";
 import AdminTableTh from "../Table/AdminTableTh.vue";
 import Tooltip from '../../Tooltip/Tooltip.vue';
-import type { AdminBadgeState, SortDirection } from "~/types/types";
+import type { AdminBadgeState, DatasetSortedBy, SortDirection } from "~/types/types";
 import TextClamp from "~/components/TextClamp.vue";
-
-type DatasetSortedBy = 'title' | 'created' | 'last_update' | 'reuses' | 'followers' | 'views';
 
 const emit = defineEmits<{
   (event: 'sort', column: DatasetSortedBy, direction: SortDirection): void
@@ -144,6 +142,7 @@ const props = defineProps<{
   sortedBy: DatasetSortedBy;
 }>();
 
+const config = useRuntimeConfig()
 const { t } = useI18n();
 
 function updateSort(column: DatasetSortedBy, direction: SortDirection) {
@@ -165,8 +164,7 @@ function getFilesCount(dataset: Dataset | DatasetV2) {
 }
 
 function getDatasetLinkToAdmin(dataset: Dataset | DatasetV2) {
-  return 'TODO'
-  // return `${admin_root}dataset/${dataset.id}/`;
+  return `${config.public.apiBase}/en/admin/dataset/${dataset.id}/`;
 }
 
 function getStatus(dataset: Dataset | DatasetV2): {label: string, type: AdminBadgeState} {

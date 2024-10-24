@@ -26,3 +26,11 @@ export type PaginatedArray<T> = {
     previous_page: string | null;
     total: number;
 };
+
+export type DatasetSortedBy = 'title' | 'created' | 'last_update' | 'reuses' | 'followers' | 'views';
+
+export type ReuseSortedBy = 'title' | 'created' | 'datasets' | 'followers' | 'views';
+
+export type DiscussionSortedBy = 'title' | 'created' | 'closed';
+
+export type CommunityResourceSortedBy = 'created_at_internal' | 'last_modified_internal' | 'title';

@@ -45,7 +45,7 @@
           <AdminSidebarLink
             icon="ri:line-chart-line"
             :label="$t('Reuses')"
-            to="/newadmin/me/datasets"
+            to="/newadmin/me/reuses"
           />
           <AdminSidebarLink
             icon="ri:git-pull-request-line"

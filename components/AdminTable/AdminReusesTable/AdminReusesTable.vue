@@ -1,59 +1,61 @@
 <template>
   <AdminTable :loading>
     <thead>
-      <AdminTableTh
-        @sort="(direction: SortDirection) => $emit('sort', 'title', direction)"
-        :sorted="sorted('title')"
-        scope="col"
-      >
-        {{ t("Reuse title") }}
-      </AdminTableTh>
-      <AdminTableTh>
-        {{ t("Status") }}
-      </AdminTableTh>
-      <AdminTableTh
-        @sort="(direction: SortDirection) => $emit('sort', 'created', direction)"
-        :sorted="sorted('created')"
-        scope="col"
-      >
-        {{ t("Created at") }}
-      </AdminTableTh>
-      <AdminTableTh
-        @sort="(direction: SortDirection) => $emit('sort', 'datasets', direction)"
-        :sorted="sorted('datasets')"
-        scope="col"
-      >
-        {{ t("Datasets") }}
-      </AdminTableTh>
-      <AdminTableTh scope="col">
-        <Tooltip>
-          <span class="fr-icon--sm fr-icon-chat-3-line" aria-hidden="true"></span>
-          <template #tooltip> {{ t('Discussions') }}</template>
-        </Tooltip>
-      </AdminTableTh>
-      <AdminTableTh
-        @sort="(direction: SortDirection) => $emit('sort', 'views', direction)"
-        :sorted="sorted('views')"
-        scope="col"
-      >
-        <Tooltip>
-          <span class="fr-icon--sm fr-icon-eye-line" aria-hidden="true"></span>
-          <template #tooltip> {{ t('Views') }}</template>
-        </Tooltip>
-      </AdminTableTh>
-      <AdminTableTh
-        @sort="(direction: SortDirection) => $emit('sort', 'followers', direction)"
-        :sorted="sorted('followers')"
-        scope="col"
-      >
-        <Tooltip>
-          <span class="fr-icon--sm fr-icon-star-s-line" aria-hidden="true"></span>
-          <template #tooltip> {{ t('Favorites') }}</template>
-        </Tooltip>
-      </AdminTableTh>
+      <tr>
+        <AdminTableTh
+          @sort="(direction: SortDirection) => $emit('sort', 'title', direction)"
+          :sorted="sorted('title')"
+          scope="col"
+        >
+          {{ t("Reuse title") }}
+        </AdminTableTh>
+        <AdminTableTh>
+          {{ t("Status") }}
+        </AdminTableTh>
+        <AdminTableTh
+          @sort="(direction: SortDirection) => $emit('sort', 'created', direction)"
+          :sorted="sorted('created')"
+          scope="col"
+        >
+          {{ t("Created at") }}
+        </AdminTableTh>
+        <AdminTableTh
+          @sort="(direction: SortDirection) => $emit('sort', 'datasets', direction)"
+          :sorted="sorted('datasets')"
+          scope="col"
+        >
+          {{ t("Datasets") }}
+        </AdminTableTh>
+        <AdminTableTh scope="col">
+          <Tooltip>
+            <span class="fr-icon--sm fr-icon-chat-3-line" aria-hidden="true"></span>
+            <template #tooltip> {{ t('Discussions') }}</template>
+          </Tooltip>
+        </AdminTableTh>
+        <AdminTableTh
+          @sort="(direction: SortDirection) => $emit('sort', 'views', direction)"
+          :sorted="sorted('views')"
+          scope="col"
+        >
+          <Tooltip>
+            <span class="fr-icon--sm fr-icon-eye-line" aria-hidden="true"></span>
+            <template #tooltip> {{ t('Views') }}</template>
+          </Tooltip>
+        </AdminTableTh>
+        <AdminTableTh
+          @sort="(direction: SortDirection) => $emit('sort', 'followers', direction)"
+          :sorted="sorted('followers')"
+          scope="col"
+        >
+          <Tooltip>
+            <span class="fr-icon--sm fr-icon-star-s-line" aria-hidden="true"></span>
+            <template #tooltip> {{ t('Favorites') }}</template>
+          </Tooltip>
+        </AdminTableTh>
+      </tr>
     </thead>
     <tbody>
-      <tr v-for="reuse in reuses">
+      <tr v-for="reuse in reuses" :key="reuse.id">
         <td>
           <AdminContentWithTooltip>
             <a class="fr-link fr-reset-link" :href="getReuseLinkToAdmin(reuse)">
@@ -82,9 +84,8 @@ import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue';
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue';
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue';
 import Tooltip from '../../../components/Tooltip/Tooltip.vue';
-import { admin_root } from '../../../config';
-import type { AdminBadgeState, ReuseSortedBy, SortDirection } from "../../../types";
 import TextClamp from '~/components/TextClamp.vue';
+import type { AdminBadgeState, ReuseSortedBy, SortDirection } from '~/types/types';
 
 const props = defineProps<{
   reuses: Array<Reuse>;
@@ -97,6 +98,7 @@ defineEmits<{
   (event: 'sort', column: ReuseSortedBy, direction: SortDirection): void
 }>();
 
+const config = useRuntimeConfig();
 const { t } = useI18n();
 
 function sorted(column: ReuseSortedBy) {
@@ -107,7 +109,7 @@ function sorted(column: ReuseSortedBy) {
 }
 
 function getReuseLinkToAdmin(reuse: Reuse) {
-  return `${admin_root}reuse/${reuse.id}/`;
+  return `${config.public.apiBase}/en/admin/reuse/${reuse.id}/`;
 }
 
 function getStatus(reuse: Reuse): {label: string, type: AdminBadgeState} {

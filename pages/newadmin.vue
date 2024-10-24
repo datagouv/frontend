@@ -32,7 +32,6 @@
                     :defaultOpen="defaultOpenId === organization.id"
                     :key="organization.id"
                     :organization="organization"
-                    @click="() => setCurrentOrganization(organization)"
                   />
                 </ul>
               </HeadlessDisclosurePanel>
@@ -61,7 +60,6 @@ definePageMeta({
 const { t } = useI18n()
 const route = useRoute()
 const me = useMe()
-const { setCurrentOrganization } = useCurrentOrganization()
 
 // Works only because we are using MongoDB and there is no 
 // collision between orgs' IDs and users' IDs.

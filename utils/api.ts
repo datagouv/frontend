@@ -10,7 +10,8 @@ export function useAPI<T>(
     return useFetch(url, {
         ...options,
         $fetch: useNuxtApp().$api
-    }).then((response) => {
+    })
+    .then((response) => {
         // This allow to remove the `null` variant from `useFetch`
         // response. I think the `null` variant is here for `DELETE`
         // responses (without body) but in our case this helper is intended 
