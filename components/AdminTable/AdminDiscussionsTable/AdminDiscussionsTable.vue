@@ -1,29 +1,31 @@
 <template>
   <AdminTable class="fr-table--layout-fixed" :loading>
     <thead>
-      <AdminTableTh
-        @sort="(direction: SortDirection) => $emit('sort', 'title', direction)"
-        :sorted="sorted('title')"
-        scope="col"
-      >
-        {{ t("Discussion") }}
-      </AdminTableTh>
-      <AdminTableTh scope="col">
-        {{ t("Number of comments") }}
-      </AdminTableTh>
-      <AdminTableTh scope="col">
-        {{ t("Last comment") }}
-      </AdminTableTh>
-      <AdminTableTh
-        @sort="(direction: SortDirection) => $emit('sort', 'closed', direction)"
-        :sorted="sorted('closed')"
-        scope="col"
-      >
-        {{ t("Closed at") }}
-      </AdminTableTh>
-      <AdminTableTh scope="col" style="width: 25%;">
-        {{ t("Link to the discussion") }}
-      </AdminTableTh>
+      <tr>
+        <AdminTableTh
+          @sort="(direction: SortDirection) => $emit('sort', 'title', direction)"
+          :sorted="sorted('title')"
+          scope="col"
+        >
+          {{ t("Discussion") }}
+        </AdminTableTh>
+        <AdminTableTh scope="col">
+          {{ t("Number of comments") }}
+        </AdminTableTh>
+        <AdminTableTh scope="col">
+          {{ t("Last comment") }}
+        </AdminTableTh>
+        <AdminTableTh
+          @sort="(direction: SortDirection) => $emit('sort', 'closed', direction)"
+          :sorted="sorted('closed')"
+          scope="col"
+        >
+          {{ t("Closed at") }}
+        </AdminTableTh>
+        <AdminTableTh scope="col" style="width: 25%;">
+          {{ t("Link to the discussion") }}
+        </AdminTableTh>
+      </tr>
     </thead>
     <tbody>
       <tr v-for="discussion in discussions">
@@ -38,12 +40,16 @@
           <p v-if="subjects[discussion.subject.id]">
             <a
               class="fr-link inline-flex"
-              :href="subjects[discussion.subject.id]?.page"
+              :href="getSubjectPage(subjects[discussion.subject.id])"
             >
-              <Vicon :height="12" class="self-center" :name="subjects[discussion.subject.id]?.icon"/>
+              <Icon
+                :name="getSubjectTypeIcon(discussion.subject.class)"
+                class="self-center size-3"
+                aria-hidden="true"
+              />
               <TextClamp
                 class="overflow-wrap-anywhere"
-                :text="subjects[discussion.subject.id]?.title"
+                :text="getSubjectTitle(subjects[discussion.subject.id])"
                 :auto-resize="true"
                 :max-lines="1"
               />
@@ -84,14 +90,12 @@
 </template>
 <script setup lang="ts">
 import { AvatarWithName, formatDate } from "@datagouv/components";
-import { OhVueIcon as Vicon } from "oh-vue-icons";
-import { ref, watchEffect } from "vue";
 import { useI18n } from "vue-i18n";
-import { formatSubject, getSubject, SubjectSummary } from "../../../api/discussions";
 import AdminTable from "../Table/AdminTable.vue";
 import AdminTableTh from "../Table/AdminTableTh.vue";
-import type { Comment, DiscussionSortedBy, DiscussionSubjectTypes, SortDirection, Thread } from '../../../types';
+import type { Comment, DiscussionSortedBy, DiscussionSubjectTypes, SortDirection, Thread } from '~/types/types';
 import TextClamp from "~/components/TextClamp.vue";
+import { getDiscussionUrl, getSubject, getSubjectTypeIcon, getSubjectTitle } from "~/utils/discussions"
 
 const props = defineProps<{
   discussions: Array<Thread>;
@@ -105,27 +109,23 @@ defineEmits<{
 }>();
 
 const { t } = useI18n();
+const { $api } = useNuxtApp();
 
-const subjectPromises = ref<Record<string, Promise<DiscussionSubjectTypes | null>>>({});
-const subjects = ref<Record<string, SubjectSummary | null>>({});
+const subjects = ref<Record<string, DiscussionSubjectTypes | null>>({});
+const subjectsPromises = ref<Record<string, Promise<void>>>({});
 
 watchEffect(async () => {
   for (const discussion of props.discussions) {
-    if(!(discussion.subject.id in subjectPromises.value)) {
-      const subjectPromise = getSubject(discussion.subject);
-      subjectPromises.value[discussion.subject.id] = subjectPromise;
-      const subject = await subjectPromises.value[discussion.subject.id];
-      subjects.value[discussion.subject.id] = formatSubject(subject, discussion.subject.class);
-    }
-  }
-});
+    if (discussion.subject.id in subjectsPromises.value) continue;
 
-function getDiscussionUrl(discussionId: string, subject: SubjectSummary | null) {
-  if(!subject) {
-    return "";
+    subjectsPromises.value[discussion.subject.id] = getSubject($api, discussion.subject)
+      .then((subject) => {
+        subjects.value[discussion.subject.id] = subject // Working because there is no conflicts between IDs from different types
+      })
   }
-  return subject.page + "#/discussions/" + discussionId;
-}
+
+  await Promise.all(Object.values(subjectsPromises.value));
+})
 
 function sorted(column: DiscussionSortedBy) {
   if(props.sortedBy === column) {
