@@ -37,15 +37,19 @@
               <TextClamp :text="communityResource.title" :auto-resize="true" :max-lines="2"/>
             </a>
           </AdminContentWithTooltip>
-          <p v-if="datasets[communityResource.dataset.id]">
+          <p v-if="communityResource.dataset">
             <a
               class="fr-link inline-flex"
-              :href="datasets[communityResource.dataset.id]?.page"
+              :href="communityResource.dataset.page"
             >
-              <Vicon :height="12" class="self-center" :name="getSubjectTypeIcon('Dataset')"/>
+              <Icon
+                name="ri:database-2-line"
+                class="self-center size-3"
+                aria-hidden="true"
+              />
               <TextClamp
                 class="overflow-wrap-anywhere"
-                :text="datasets[communityResource.dataset.id]?.title"
+                :text="communityResource.dataset.title"
                 :auto-resize="true"
                 :max-lines="1"
               />
@@ -67,18 +71,14 @@
 <script setup lang="ts">
 import { formatDate } from '@datagouv/components';
 import type { CommunityResource, Dataset } from '@datagouv/components';
-import { OhVueIcon as Vicon } from "oh-vue-icons";
 import { useI18n } from 'vue-i18n';
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue';
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue';
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue';
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue';
-import { admin_root } from '../../../config';
-import type { AdminBadgeState, CommunityResourceSortedBy, SortDirection } from "../../../types";
-import { getSubjectTypeIcon } from '../../../api/discussions';
 import { ref, watchEffect } from 'vue';
-import { getDataset } from '../../../api/datasets';
 import TextClamp from '~/components/TextClamp.vue';
+import type { AdminBadgeState, CommunityResourceSortedBy, SortDirection } from '~/types/types';
 
 const props = defineProps<{
   communityResources: Array<CommunityResource>;
@@ -91,21 +91,8 @@ defineEmits<{
   (event: 'sort', column: CommunityResourceSortedBy, direction: SortDirection): void
 }>();
 
+const config = useRuntimeConfig()
 const { t } = useI18n();
-
-const datasetPromises = ref<Record<string, Promise<Dataset>>>({});
-const datasets = ref<Record<string, Dataset>>({});
-
-watchEffect(async () => {
-  for (const communityResource of props.communityResources) {
-    if(!(communityResource.dataset.id in datasetPromises.value)) {
-      const datasetPromise = getDataset(communityResource.dataset.id);
-      datasetPromises.value[communityResource.dataset.id] = datasetPromise;
-      const dataset = await datasetPromises.value[communityResource.dataset.id];
-      datasets.value[communityResource.dataset.id] = dataset;
-    }
-  }
-});
 
 function sorted(column: CommunityResourceSortedBy) {
   if(props.sortedBy === column) {
@@ -115,7 +102,7 @@ function sorted(column: CommunityResourceSortedBy) {
 }
 
 function getCommunityResourceLinkToAdmin(communityResource: CommunityResource) {
-  return `${admin_root}dataset/${communityResource.dataset.id}/community-resource/${communityResource.id}/`;
+  return `${config.public.apiBase}/en/admin/dataset/${communityResource.dataset.id}/community-resource/${communityResource.id}/`;
 }
 
 function getStatus(communityResource: CommunityResource): {label: string, type: AdminBadgeState} {

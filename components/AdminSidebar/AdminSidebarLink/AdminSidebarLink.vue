@@ -9,7 +9,7 @@
         class="fr-mr-1w text-sm"
         aria-hidden="true"
       />
-      <NuxtLinkLocale :to="to" :aria-current="route.path === localePath(to)">
+      <NuxtLinkLocale :to="to" :aria-current="route.path === localePath(to) ? 'page': false">
         <TextClamp
           :text="label"
           :auto-resize="true"

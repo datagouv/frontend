@@ -22,12 +22,8 @@
         <div class="fr-col">
           <h2 class="subtitle subtitle--uppercase fr-m-0" v-if="status === 'success'">{{ t('{n} reuses', pageData.total) }}</h2>
         </div>
-        <div v-if="status === 'success' && oid && pageData.total" class="fr-col-auto fr-grid-row fr-grid-row--middle">
-          <div>
-            <a :href="`/organizations/${oid}/reuses.csv`" class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left">
-              {{ t('Download catalog') }}
-            </a>
-          </div>
+        <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
+          <!-- Buttons -->
         </div>
       </div>
       <AdminReusesTable
