@@ -68,7 +68,7 @@ const { setCurrentOrganization } = useCurrentOrganization()
 definePageMeta({
   layout: 'fluid',
   middleware: ['auth'],
-});
+})
 
 const mePath = computed(() => {
   const route = localeRoute('/newadmin/me')
