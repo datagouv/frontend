@@ -99,19 +99,19 @@
             </template>
           </Tooltip>
         </td>
-        <td class="monospace">
+        <td class="font-mono">
           {{ summarize(dataset.metrics.discussions) }}
         </td>
-        <td class="monospace">
+        <td class="font-mono">
           {{ summarize(dataset.metrics.views) }}
         </td>
-        <td class="monospace">
+        <td class="font-mono">
           {{ summarize(dataset.metrics.resources_downloads ?? 0) }}
         </td>
-        <td class="monospace">
+        <td class="font-mono">
           {{ summarize(dataset.metrics.reuses) }}
         </td>
-        <td class="monospace">
+        <td class="font-mono">
           {{ summarize(dataset.metrics.followers) }}
         </td>
       </tr>
