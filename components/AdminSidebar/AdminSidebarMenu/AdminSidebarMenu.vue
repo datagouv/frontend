@@ -1,14 +1,9 @@
 <template>
-  <HeadlessDisclosure
-    as="li"
-    class="fr-sidemenu__item"
-    :class="{ 'fr-sidemenu__item--active': isOpened }"
-    :default-open="isOpened"
-  >
+  <HeadlessDisclosure v-slot="{ open }" :defaultOpen>
+  <li class="fr-sidemenu__item" :class="{ 'fr-sidemenu__item--active': open }">
     <HeadlessDisclosureButton
       class="fr-sidemenu__btn"
-      :aria-current="isOpened"
-      @click="$emit('open')"
+      :aria-current="open"
     >
       <template v-if="user">
         <Avatar
@@ -104,6 +99,7 @@
         </template>
       </ul>
     </HeadlessDisclosurePanel>
+  </li>
   </HeadlessDisclosure>
 </template>
 
@@ -120,15 +116,12 @@ defineProps<{
    * An organization, to show a menu with its logo and name
    */
   organization?: Organization
-  /**
-   * Show the menu opened or closes
-   */
-  isOpened: boolean
+
+  defaultOpen: boolean;
 }>()
 
 defineEmits<{
   click: []
-  open: []
 }>()
 </script>
 
