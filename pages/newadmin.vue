@@ -1,6 +1,6 @@
 <template>
   <div class="fr-container--fluid h-100">
-    <div class="fr-grid-row h-100 bg-gray-50">
+    <div class="fr-grid-row h-100 bg-gray-100">
       <div class="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-col-xl-2">
         <nav
           class="fr-sidemenu p-0 md:h-full"
