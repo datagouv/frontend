@@ -65,10 +65,10 @@
           <AdminBadge :type="getStatus(reuse).type">{{ getStatus(reuse).label }}</AdminBadge>
         </td>
         <td>{{ formatDate(reuse.created_at) }}</td>
-        <td class="monospace">{{ summarize(reuse.datasets.length) }}</td>
-        <td class="monospace">{{ summarize(reuse.metrics.discussions) }}</td>
-        <td class="monospace">{{ summarize(reuse.metrics.views) }}</td>
-        <td class="monospace">{{ summarize(reuse.metrics.followers) }}</td>
+        <td class="font-mono">{{ summarize(reuse.datasets.length) }}</td>
+        <td class="font-mono">{{ summarize(reuse.metrics.discussions) }}</td>
+        <td class="font-mono">{{ summarize(reuse.metrics.views) }}</td>
+        <td class="font-mono">{{ summarize(reuse.metrics.followers) }}</td>
       </tr>
     </tbody>
   </AdminTable>

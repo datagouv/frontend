@@ -27,7 +27,7 @@ withDefaults(defineProps<{
 }
 
 .fr-table table :deep(th) {
-  border: 1px solid var(--grey-850-200);
+  border: 1px solid #cecece;
   border-bottom: 0;
 }
 
@@ -39,7 +39,7 @@ withDefaults(defineProps<{
 
 .fr-table table :deep(td) {
   padding: 0.5rem 0.34375rem !important;
-  border: 1px solid var(--grey-850-200);
+  border: 1px solid #cecece;
   border-top: 0;
   height: calc(var(--lh) * var(--max-lines) + 1rem);
 }

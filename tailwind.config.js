@@ -1,8 +1,13 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 /** @type {import('tailwindcss').Config} */
 export default {
   important: true, // Problem with TailwindCSS inline styles in SSR. See :TailwindCSS!Problem
   content: [],
   theme: {
+    fontFamily: {
+      mono: ['"Noto Sans Mono"', ...defaultTheme.fontFamily.sans],
+    },
     container: {
       center: true,
       padding: {
