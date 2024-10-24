@@ -1,5 +1,5 @@
 <template>
-  <AdminTable class="fr-table--layout-fixed" :loading>
+  <AdminTable :loading>
     <thead>
       <tr>
         <AdminTableTh
@@ -22,7 +22,7 @@
         >
           {{ t("Closed at") }}
         </AdminTableTh>
-        <AdminTableTh scope="col" style="width: 25%;">
+        <AdminTableTh scope="col" class="w-1/4">
           {{ t("Link to the discussion") }}
         </AdminTableTh>
       </tr>
