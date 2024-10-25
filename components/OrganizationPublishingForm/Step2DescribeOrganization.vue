@@ -444,15 +444,15 @@ watchEffect(() => {
           complements: SearchAdditionalData
         }>
       }
-      useAPI<SearchSirenResponse>(config.public.searchSirenUrl, {
+      useFetch<SearchSirenResponse>(config.public.searchSirenUrl, {
         params: {
           q: siret,
-          mtm_campaign: 'udata-front',
+          mtm_campaign: 'datagouv/frontend',
         },
       })
         .then(res => res.data)
         .then((result) => {
-          if (result.value.total_results === 0) {
+          if (!result.value || result.value.total_results === 0) {
             checkOrga.value.exists = false
             checkOrga.value.type = 'other'
           }
