@@ -2,7 +2,7 @@
   <MilkdownProvider>
     <ProsemirrorAdapterProvider>
       <InternalEditor
-        v-bind="props"
+        v-bind="{ ...props, ...$attrs }"
         @change="(value) => $emit('change', value)"
         @editor-mounted="$emit('editorMounted')"
       />

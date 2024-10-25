@@ -30,7 +30,7 @@ import { computed } from 'vue'
 import type { AccordionState } from '~/types/form'
 
 const props = withDefaults(defineProps<{
-  id: string
+  id: string | undefined
   title: string
   opened?: boolean
   state?: AccordionState

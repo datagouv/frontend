@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  accordion: string
+  accordion: string | undefined
 }>()
 
 const emit = defineEmits<{
@@ -20,9 +20,11 @@ const emit = defineEmits<{
 const parentRef = useTemplateRef('parent')
 
 const openIfClosed = () => {
-  const button = document.querySelector(`[aria-controls=${props.accordion}]`)
-  if (button && button.ariaExpanded !== 'true') {
-    button.ariaExpanded = 'true'
+  if (props.accordion) {
+    const button = document.querySelector(`[aria-controls=${props.accordion}]`)
+    if (button && button.ariaExpanded !== 'true') {
+      button.ariaExpanded = 'true'
+    }
   }
 }
 
