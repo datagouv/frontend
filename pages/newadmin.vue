@@ -55,7 +55,7 @@ import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSi
 definePageMeta({
   layout: 'fluid',
   middleware: ['auth'],
-});
+})
 
 const { t } = useI18n()
 const route = useRoute()

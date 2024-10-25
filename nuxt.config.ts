@@ -19,6 +19,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase: 'http://dev.local:7000',
+      qualityDescriptionLength: 100,
+      searchSirenUrl: 'https://recherche-entreprises.api.gouv.fr/search',
+      title: 'datagouv/frontend',
     },
   },
 

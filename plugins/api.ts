@@ -1,13 +1,16 @@
 export default defineNuxtPlugin((nuxtApp) => {
-    const config = useRuntimeConfig()
-    const token = useToken();
-    const cookie = useRequestHeader('cookie');
-    const localePath = useLocalePath();
+  const config = useRuntimeConfig()
+  const token = useToken()
+  const cookie = useRequestHeader('cookie')
+  const localePath = useLocalePath()
 
-    const api = $fetch.create({
+  const makeApi = (sendJson = true) => {
+    return $fetch.create({
       baseURL: config.public.apiBase,
       onRequest({ options }) {
-        options.headers.set('Content-Type', 'application/json')
+        if (sendJson) {
+          options.headers.set('Content-Type', 'application/json')
+        }
         options.headers.set('Accept', 'application/json')
         options.credentials = 'include'
         if (token.value) {
@@ -19,15 +22,17 @@ export default defineNuxtPlugin((nuxtApp) => {
       },
       async onResponseError({ response }) {
         if (response.status === 401) {
-            await nuxtApp.runWithContext(() => navigateTo(localePath('/login')))
+          await nuxtApp.runWithContext(() => navigateTo(localePath('/login')))
         }
-      }
+      },
     })
-  
-    // Expose to useNuxtApp().$api
-    return {
-      provide: {
-        api
-      }
-    }
-  })
+  }
+
+  // Expose to useNuxtApp().$api
+  return {
+    provide: {
+      api: makeApi(),
+      fileApi: makeApi(false),
+    },
+  }
+})
