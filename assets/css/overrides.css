@@ -15,3 +15,7 @@
     --blue-france-main-525: var(--blue-cumulus-main-526);
     --blue-france-850-200: var(--blue-cumulus-850-200);
   }
+
+#__nuxt, #__nuxt > div {
+  @apply h-full;
+}

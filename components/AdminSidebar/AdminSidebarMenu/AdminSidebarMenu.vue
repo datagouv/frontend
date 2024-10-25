@@ -1,14 +1,9 @@
 <template>
-  <HeadlessDisclosure
-    as="li"
-    class="fr-sidemenu__item"
-    :class="{ 'fr-sidemenu__item--active': isOpened }"
-    :default-open="isOpened"
-  >
+  <HeadlessDisclosure v-slot="{ open }" :defaultOpen>
+  <li class="fr-sidemenu__item" :class="{ 'fr-sidemenu__item--active': open }">
     <HeadlessDisclosureButton
       class="fr-sidemenu__btn"
-      :aria-current="isOpened"
-      @click="$emit('open')"
+      :aria-current="open"
     >
       <template v-if="user">
         <Avatar
@@ -35,7 +30,7 @@
       </template>
     </HeadlessDisclosureButton>
     <HeadlessDisclosurePanel>
-      <ul class="fr-sidemenu__list !mx-2 !my-3">
+      <ul class="fr-sidemenu__list mx-2 my-3">
         <template v-if="user">
           <AdminSidebarLink
             icon="ri:account-circle-line"
@@ -45,36 +40,36 @@
           <AdminSidebarLink
             icon="ri:database-2-line"
             :label="$t('Datasets')"
-            :to="{ name: 'me-datasets' }"
+            to="/newadmin/me/datasets"
           />
           <AdminSidebarLink
             icon="ri:line-chart-line"
             :label="$t('Reuses')"
-            :to="{ name: 'me-reuses' }"
+            to="/newadmin/me/reuses"
           />
           <AdminSidebarLink
             icon="ri:git-pull-request-line"
             :label="$t('Community Resources')"
-            :to="{ name: 'me-community-resources' }"
+            to="/newadmin/me/community-resources"
           />
         </template>
         <template v-else-if="organization">
           <AdminSidebarLink
             icon="ri:database-2-line"
             :label="$t('Datasets')"
-            :to="{ name: 'organization-datasets', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/datasets`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
             icon="ri:line-chart-line"
             :label="$t('Reuses')"
-            :to="{ name: 'organization-reuses', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/reuses`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
             icon="ri:chat-3-line"
             :label="$t('Discussions')"
-            :to="{ name: 'organization-discussions', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/discussions`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
@@ -92,7 +87,7 @@
           <AdminSidebarLink
             icon="ri:git-pull-request-line"
             :label="$t('Community Resources')"
-            :to="{ name: 'organization-community-resources', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/community-resources`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
@@ -104,6 +99,7 @@
         </template>
       </ul>
     </HeadlessDisclosurePanel>
+  </li>
   </HeadlessDisclosure>
 </template>
 
@@ -120,15 +116,12 @@ defineProps<{
    * An organization, to show a menu with its logo and name
    */
   organization?: Organization
-  /**
-   * Show the menu opened or closes
-   */
-  isOpened: boolean
+
+  defaultOpen: boolean;
 }>()
 
 defineEmits<{
   click: []
-  open: []
 }>()
 </script>
 

@@ -15,9 +15,8 @@ export type Me = User & {
   website: string
 }
 
-export const useMe = () => {
-  return useAPI<Me>('/api/1/me')
-    .then(response => ({ ...response, me: response.data }))
+export const useMe = (): Ref<Me> => {
+  return useMaybeMe() as Ref<Me> // TODO redirect
 }
 
 export const useMaybeMe = () => {
@@ -29,12 +28,12 @@ export const useToken = () => {
 }
 
 export const loadMe = async (meState: Ref<Me | null | undefined>) => {
-    // Here we cannot use the `useAPI` composable because
-    // we don't want the classic error management that redirect
-    // to the login page when a 401 is raised. So we must manually
-    // re-configured the baseURL.
-    const config = useRuntimeConfig();
-    const cookie = useRequestHeader('cookie');
+  // Here we cannot use the `useAPI` composable because
+  // we don't want the classic error management that redirect
+  // to the login page when a 401 is raised. So we must manually
+  // re-configured the baseURL.
+  const config = useRuntimeConfig();
+  const cookie = useRequestHeader('cookie');
 
   const token = useToken()
 
@@ -57,7 +56,6 @@ export const loadMe = async (meState: Ref<Me | null | undefined>) => {
     })
   }
   catch (e) {
-    console.error(e)
     meState.value = null
   }
 }
