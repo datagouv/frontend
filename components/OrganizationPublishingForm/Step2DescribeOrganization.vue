@@ -230,7 +230,7 @@
             @blur="vWarning$.acronym.$touch"
           >
             <p>{{ t('Logo') }}</p>
-            <!-- <UploadGroup
+            <UploadGroup
               :label="t('Logo')"
               :title="t('Logo')"
               hint-text="Max size: 4Mo. Accepted formats: JPG, JPEG, PNG"
@@ -238,7 +238,7 @@
               :is-valid="!!file"
               :valid-text="t('Your file is valid')"
               @change="addFiles"
-            /> -->
+            />
             <div
               v-show="imagePreview?.src"
               class="text-align-center"
