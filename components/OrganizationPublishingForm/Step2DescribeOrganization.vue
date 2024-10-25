@@ -102,10 +102,10 @@
         >
           <div class="fr-grid-row">
             <div class="fr-col-auto fr-mr-3v">
-              <!-- <img
-                :src="organizationIcon"
+              <img
+                src="/illustrations/organization.svg"
                 alt=""
-              > -->
+              >
             </div>
             <div class="fr-col">
               <p class="fr-m-0 fr-text--bold">
@@ -302,7 +302,6 @@ import Alert from '~/components/Alert/Alert.vue'
 import InputGroup from '~/components/InputGroup/InputGroup.vue'
 import LinkedToAccordion from '~/components/LinkedToAccordion/LinkedToAccordion.vue'
 import UploadGroup from '~/components/UploadGroup/UploadGroup.vue'
-// import organizationIcon from '../../../../templates/svg/illustrations/organization.svg'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import type { PublishingFormAccordionState } from '~/types/form'
 import Sidemenu from '~/components/Sidemenu/Sidemenu.vue'

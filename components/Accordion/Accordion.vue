@@ -1,8 +1,11 @@
 <template>
-  <section class="fr-accordion">
-    <h3 class="fr-accordion__title">
-      <button
-        class="fr-accordion__btn text-grey-500"
+  <HeadlessDisclosure
+    as="div"
+    class="fr-accordion"
+  >
+    <h3 class="fr-accordion__title mb-0">
+      <HeadlessDisclosureButton
+        class="fr-accordion__btn text-neutral-900"
         :aria-expanded="opened"
         :aria-controls="accordionId"
       >
@@ -14,15 +17,15 @@
           aria-hidden="true"
         />
         {{ title }}
-      </button>
+      </HeadlessDisclosureButton>
     </h3>
-    <div
+    <HeadlessDisclosurePanel
       :id="accordionId"
-      class="fr-collapse"
+      class="px-4 pt-4 pb-6"
     >
       <slot />
-    </div>
-  </section>
+    </HeadlessDisclosurePanel>
+  </HeadlessDisclosure>
 </template>
 
 <script setup lang="ts">
@@ -59,16 +62,16 @@ const icon = computed(() => {
 const iconColor = computed(() => {
   switch (props.state) {
     case 'error':
-      return 'text-default-error'
+      return 'text-red-600'
     case 'info':
-      return 'text-title-grey'
+      return 'text-neutral-900'
     case 'success':
-      return 'text-default-success'
+      return 'text-green-600'
     case 'warning':
-      return 'text-default-warning'
+      return 'text-amber-700'
     case 'disabled':
     default:
-      return 'text-disabled-grey'
+      return 'text-neutral-500'
   }
 })
 </script>
