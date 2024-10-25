@@ -6,25 +6,24 @@ type UploadLogoResponse = {
 }
 
 export async function uploadLogo(oid: string, file: File) {
-  const resp = await useAPI<UploadLogoResponse>(`api/1/organizations/${oid}/logo`, {
+  const api = useNuxtApp().$fileApi
+  const formData = new FormData()
+  formData.append('file', file)
+  const resp = await api<UploadLogoResponse>(`api/1/organizations/${oid}/logo`, {
     method: 'POST',
-    body: {
-      file: file,
-    },
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
+    body: formData,
   })
-  return resp.data
+  return resp
 }
 
 export async function updateOrganization(organization: MaybeRefOrGetter<Organization>) {
+  const api = useNuxtApp().$api
   const organizationValue = toValue(organization)
-  const resp = await useAPI<Organization>(`api/1/organizations/${organizationValue.id}/`, {
+  const resp = await api<Organization>(`api/1/organizations/${organizationValue.id}/`, {
     method: 'PUT',
     body: {
       ...organizationValue,
     },
   })
-  return resp.data
+  return resp
 }

@@ -41,7 +41,7 @@
             :size="80"
             class="rounded-xxs border"
           />
-          <div class="fr-ml-3v fr-my-0 fr-h3">
+          <div class="fr-col fr-ml-3v fr-my-0 fr-h3">
             {{ organization.name }}
             <span
               v-if="organizationCertified"
@@ -193,7 +193,7 @@ const errors = ref([])
 const modalId = getRandomId('modal')
 const modalTitleId = getRandomId('modalTitle')
 
-const { data: organization, status } = await useAPI<Organization>(`api/1/organizations/${oid}/`, { lazy: true })
+const { data: organization, status, refresh: refreshOrganization } = await useAPI<Organization>(`api/1/organizations/${oid}/`, { lazy: true })
 
 const loading = computed(() => status.value === 'pending')
 
@@ -201,7 +201,6 @@ const { organizationCertified } = useOrganizationCertified(organization)
 
 async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
-    loading.value = true
     try {
       await useAPI(`organizations/${oid}/`)
       router.replace(localPath('/newadmin'))
@@ -209,35 +208,25 @@ async function deleteCurrentOrganization() {
     catch (e) {
       toast.error(t('An error occured when deleting the organization.'))
     }
-    finally {
-      loading.value = false
-    }
   }
 }
 
 async function updateCurrentOrganization(updatedOrganization: NewOrganization | Organization, logo_file: File | null) {
-  loading.value = true
   try {
-    organization.value = await updateOrganization(updatedOrganization as Organization)
+    await updateOrganization(updatedOrganization as Organization)
+    refreshOrganization()
     toast.success(t('Organization updated !'))
   }
   catch (e) {
     toast.error(t('An error occured when updating the organization.'))
   }
-  finally {
-    loading.value = false
-  }
   if (logo_file && organization.value) {
-    loading.value = true
     try {
       const resp = await uploadLogo(organization.value.id, logo_file)
       organization.value.logo_thumbnail = resp.image
     }
     catch (e) {
       toast.error(t('Failed to upload logo, you can upload it again in your management panel'))
-    }
-    finally {
-      loading.value = false
     }
   }
 }
