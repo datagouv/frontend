@@ -1,26 +1,28 @@
 <template>
   <div class="fr-table fr-mb-2w">
     <table class="lg:table">
-      <slot></slot>
+      <slot />
     </table>
-    <div v-if="loading" class="container fr-p-4w text-align-center">
-      <AdminLoader/>
+    <div
+      v-if="loading"
+      class="container fr-p-4w text-align-center"
+    >
+      <AdminLoader />
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
-import AdminLoader from '../../AdminLoader/AdminLoader.vue';
+import AdminLoader from '../../AdminLoader/AdminLoader.vue'
 
 withDefaults(defineProps<{
   loading?: boolean
 }>(), {
   loading: false,
-});
+})
 </script>
-<style lang="less" scoped>
 
-// @import "../../../../less/variables.less";
-
+<style scoped>
 .fr-table {
   --lh: 1.125rem;
   --max-lines: 2;

@@ -31,7 +31,7 @@
 import { ResourceAccordion, ResourceAccordionLoader, type Resource, Well } from "@datagouv/components";
 import { computed, ref, watchEffect } from 'vue';
 import { useI18n } from "vue-i18n";
-import { useToast } from "../../../composables/useToast";
+import { useToast } from "../../../composables/useToast.client";
 import { getResourceIdFromHash } from '../../../helpers';
 import { api } from "../../../plugins/api";
 import { useHash, resetHash } from "../../../composables/useHash";

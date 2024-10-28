@@ -94,7 +94,6 @@ import { useI18n } from "vue-i18n";
 import AdminTable from "../Table/AdminTable.vue";
 import AdminTableTh from "../Table/AdminTableTh.vue";
 import type { Comment, DiscussionSortedBy, DiscussionSubjectTypes, SortDirection, Thread } from '~/types/types';
-import TextClamp from "~/components/TextClamp.vue";
 import { getDiscussionUrl, getSubject, getSubjectTypeIcon, getSubjectTitle } from "~/utils/discussions"
 
 const props = defineProps<{

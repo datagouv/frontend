@@ -129,7 +129,6 @@ import AdminTable from "../Table/AdminTable.vue";
 import AdminTableTh from "../Table/AdminTableTh.vue";
 import Tooltip from '../../Tooltip/Tooltip.vue';
 import type { AdminBadgeState, DatasetSortedBy, SortDirection } from "~/types/types";
-import TextClamp from "~/components/TextClamp.vue";
 
 const emit = defineEmits<{
   (event: 'sort', column: DatasetSortedBy, direction: SortDirection): void
