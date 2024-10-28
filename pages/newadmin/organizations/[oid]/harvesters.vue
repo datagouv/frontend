@@ -130,7 +130,8 @@ import type { HarvesterJob, HarvesterSource } from "~/types/harvesters";
       throw "Cannot load this component outside organization URL."
     }
   
-    url.searchParams.set('org', currentOrganization.value.id)
+    url.searchParams.set('owner', currentOrganization.value.id)
+    url.searchParams.set('deleted', 'true')
     url.searchParams.set('sort', sortDirection.value)
     url.searchParams.set('q', qDebounced.value)
     url.searchParams.set('page_size', pageSize.value.toString())
