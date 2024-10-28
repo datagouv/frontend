@@ -62,3 +62,44 @@ export type Thread = {
   spam?: Spam;
   subject: DiscussionSubject;
 };
+
+
+// MEMBERS
+
+
+export type MembershipStatus = "pending" | "accepted" | "refused";
+
+export type PendingMembershipRequest = {
+  id: string;
+  user: User & {email: string;};
+  status: MembershipStatus;
+  created: string;
+  comment: string;
+};
+
+export type MembershipRequest = PendingMembershipRequest & {
+  handled_on: Date;
+  handled_by: User;
+};
+
+export type RefusedMembershipRequest = MembershipRequest & {
+  refusal_comment: string;
+};
+
+export type MemberRole = "admin" | "editor";
+
+// In org endpoint we get these two private information if we have edit rights on the org.
+export type MemberUser = User & {
+  email: string | null;
+  last_login_at: string | null;
+}
+
+export type Member = {
+  role: MemberRole;
+  user: MemberUser;
+  since: string;
+};
+
+export type EditingMember = Member & {
+  newRole?: MemberRole;
+};
