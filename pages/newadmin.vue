@@ -3,14 +3,14 @@
     <div class="fr-grid-row h-100 bg-gray-100">
       <div class="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-col-xl-2">
         <nav
-          class="fr-sidemenu p-0 md:h-full"
+          class="fr-sidemenu !p-0 md:h-full"
           :aria-label="t('Administration menu')"
         >
           <ClientOnly>
             <HeadlessDisclosure
               :default-open="true"
               as="div"
-              class="fr-sidemenu__inner p-0 bg-white shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
+              class="fr-sidemenu__inner !p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
             >
               <HeadlessDisclosureButton
                 class="fr-sidemenu__btn"
@@ -24,13 +24,13 @@
                   class="fr-sidemenu__list"
                 >
                   <AdminSidebarMenu
-                  :user="me"
-                  :defaultOpen="defaultOpenId === me.id"
+                    :user="me"
+                    :default-open="defaultOpenId === me.id"
                   />
                   <AdminSidebarMenu
                     v-for="organization in me.organizations"
-                    :defaultOpen="defaultOpenId === organization.id"
                     :key="organization.id"
+                    :default-open="defaultOpenId === organization.id"
                     :organization="organization"
                   />
                 </ul>
@@ -61,14 +61,15 @@ const { t } = useI18n()
 const route = useRoute()
 const me = useMe()
 
-// Works only because we are using MongoDB and there is no 
+// Works only because we are using MongoDB and there is no
 // collision between orgs' IDs and users' IDs.
-const defaultOpenId = ref<null | string>(null);
+const defaultOpenId = ref<null | string>(null)
 
 onMounted(() => {
   if (route.params.oid && !Array.isArray(route.params.oid)) {
     defaultOpenId.value = route.params.oid
-  } else if (route.path.includes('/me')) {
+  }
+  else if (route.path.includes('/me')) {
     defaultOpenId.value = me.value.id
   }
 })

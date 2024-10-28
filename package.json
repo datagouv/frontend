@@ -15,9 +15,7 @@
     "vue": "latest"
   },
   "dependencies": {
-    "@conciergerie.dev/vue-toaster": "^2.4.4",
     "@datagouv/components": "^1.5.0",
-    "@datagouv/vue-toaster": "^2.4.5",
     "@gouvfr/dsfr": "^1.11.1",
     "@milkdown/core": "^7.5.0",
     "@milkdown/ctx": "^7.5.0",
@@ -57,8 +55,6 @@
     "@iconify-json/ri": "^1.2.1",
     "@nuxt/eslint": "^0.5.7",
     "@types/node": "^18.17.5",
-    "less": "^4.2.0",
-    "nuxt-purgecss": "^2.0.0",
     "typescript": "^5.6.2",
     "vue-tsc": "^2.1.6"
   }

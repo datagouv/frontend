@@ -70,14 +70,12 @@
 </template>
 <script setup lang="ts">
 import { formatDate } from '@datagouv/components';
-import type { CommunityResource, Dataset } from '@datagouv/components';
+import type { CommunityResource } from '@datagouv/components';
 import { useI18n } from 'vue-i18n';
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue';
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue';
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue';
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue';
-import { ref, watchEffect } from 'vue';
-import TextClamp from '~/components/TextClamp.vue';
 import type { AdminBadgeState, CommunityResourceSortedBy, SortDirection } from '~/types/types';
 
 const props = defineProps<{

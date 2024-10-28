@@ -1,7 +1,6 @@
 <template>
   <li class="fr-sidemenu__item">
     <div
-      
       class="fr-enlarge-link relative text-[var(--text-action-high-grey)] flex flex-row items-center w-full mb-2 py-1 px-1.5 has-[:aria-current]:rounded-sm has-[:aria-current]:bg-neutral-100 has-[:aria-current]:font-extrabold"
     >
       <Icon
@@ -9,7 +8,10 @@
         class="fr-mr-1w text-sm"
         aria-hidden="true"
       />
-      <NuxtLinkLocale :to="to" :aria-current="route.path === localePath(to) ? 'page': false">
+      <NuxtLinkLocale
+        :to="to"
+        :aria-current="route.path === localePath(to) ? 'page': false"
+      >
         <TextClamp
           :text="label"
           :auto-resize="true"
@@ -22,7 +24,6 @@
 
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import TextClamp from '~/components/TextClamp.vue';
 
 const route = useRoute()
 const localePath = useLocalePath()

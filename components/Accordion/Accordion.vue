@@ -3,9 +3,9 @@
     as="div"
     class="fr-accordion"
   >
-    <h3 class="fr-accordion__title mb-0">
+    <h3 class="fr-accordion__title !mb-0">
       <HeadlessDisclosureButton
-        class="fr-accordion__btn text-neutral-900"
+        class="fr-accordion__btn !text-neutral-900"
         :aria-expanded="opened"
         :aria-controls="accordionId"
       >

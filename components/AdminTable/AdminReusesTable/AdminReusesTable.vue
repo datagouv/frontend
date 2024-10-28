@@ -84,7 +84,6 @@ import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue';
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue';
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue';
 import Tooltip from '../../../components/Tooltip/Tooltip.vue';
-import TextClamp from '~/components/TextClamp.vue';
 import type { AdminBadgeState, ReuseSortedBy, SortDirection } from '~/types/types';
 
 const props = defineProps<{

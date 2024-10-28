@@ -59,7 +59,7 @@ import { onMounted, ref, computed } from 'vue';
 import { ResourceAccordion, ResourceAccordionLoader, type Resource, Pagination, CommunityResource } from "@datagouv/components";
 import SearchBar from "../../utils/search-bar.vue";
 import config from "../../../config";
-import { useToast } from "../../../composables/useToast";
+import { useToast } from "../../../composables/useToast.client";
 import {fetchDatasetCommunityResources, fetchDatasetResources} from "../../../api/resources";
 import {
   bus,
