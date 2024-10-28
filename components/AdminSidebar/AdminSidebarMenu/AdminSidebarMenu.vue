@@ -81,7 +81,7 @@
           <AdminSidebarLink
             icon="ri:server-line"
             :label="$t('Harvesters')"
-            :to="{ name: 'organization-harvesters', params: { oid: organization.id } }"
+            :to="`/newadmin/organizations/${organization.id}/harvesters`"
             @click="$emit('click')"
           />
           <AdminSidebarLink
