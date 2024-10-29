@@ -171,27 +171,29 @@
               :error-text="t('This SIRET is not valid')"
             />
           </LinkedToAccordion>
-          <div
-            v-if="checkOrga.exists !== null"
-            class="fr-col fr-mx-1w fr-mb-1w bg-contrast-grey text-align-center fr-p-2w"
-          >
-            <div v-if="checkOrga.exists">
-              <p class="fr-m-0 fr-text--sm fr-text--bold">
-                {{ t('The SIRET n° {number} is matching', { number: organization.business_number_id }) }}
-              </p>
-              <p class="fr-m-0 fr-text--xs">
-                {{ checkOrga.name }}
-              </p>
-              <OwnerType
-                :type="checkOrga.type"
-                color="black"
-                size="xs"
-              />
+          <ClientOnly>
+            <div
+              v-if="checkOrga.exists !== null"
+              class="fr-col fr-mx-1w fr-mb-1w bg-contrast-grey text-align-center fr-p-2w"
+            >
+              <div v-if="checkOrga.exists">
+                <p class="fr-m-0 fr-text--sm fr-text--bold">
+                  {{ t('The SIRET n° {number} is matching', { number: organization.business_number_id }) }}
+                </p>
+                <p class="fr-m-0 fr-text--xs">
+                  {{ checkOrga.name }}
+                </p>
+                <OwnerType
+                  :type="checkOrga.type"
+                  color="black"
+                  size="xs"
+                />
+              </div>
+              <div v-else>
+                <p>{{ t('No organization found matching this SIRET on annuaire-entreprises.data.gouv.fr') }}</p>
+              </div>
             </div>
-            <div v-else>
-              <p>{{ t('No organization found matching this SIRET on annuaire-entreprises.data.gouv.fr') }}</p>
-            </div>
-          </div>
+          </ClientOnly>
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="addDescriptionAccordionId"
@@ -224,12 +226,18 @@
               :error-text="getErrorText('url')"
             />
           </LinkedToAccordion>
+        </fieldset>
+        <fieldset>
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="addLogoAccordionId"
             @blur="vWarning$.acronym.$touch"
           >
-            <p>{{ t('Logo') }}</p>
+            <legend>
+              <p class="fr-mb-1w">
+                {{ t("Logo") }}
+              </p>
+            </legend>
             <UploadGroup
               :label="t('Logo')"
               :title="t('Logo')"
