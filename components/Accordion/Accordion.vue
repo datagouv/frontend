@@ -15,6 +15,7 @@
           :class="iconColor"
           :name="icon"
           aria-hidden="true"
+          :size="24"
         />
         {{ title }}
       </HeadlessDisclosureButton>
@@ -62,11 +63,11 @@ const icon = computed(() => {
 const iconColor = computed(() => {
   switch (props.state) {
     case 'error':
-      return 'text-red-600'
+      return 'text-red-700'
     case 'info':
       return 'text-neutral-900'
     case 'success':
-      return 'text-green-600'
+      return 'text-green-700'
     case 'warning':
       return 'text-amber-700'
     case 'disabled':

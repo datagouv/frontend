@@ -34,7 +34,7 @@ const common = computed(
 )
 
 const className = computed(() => {
-  if (type === 'left') return 'w-1w h-100 left-n3-5v top-0 fr-py-1v'
+  if (type === 'left') return 'w-1w h-full left-n3-5v top-0 fr-py-1v'
 
   if (type === 'top') return 'right-px h-1w w-100 left-0 top-n3-5v'
 

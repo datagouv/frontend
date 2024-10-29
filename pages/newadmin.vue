@@ -1,6 +1,6 @@
 <template>
-  <div class="fr-container--fluid h-100">
-    <div class="fr-grid-row h-100 bg-gray-100">
+  <div class="fr-container--fluid">
+    <div class="fr-grid-row h-full bg-gray-100">
       <div class="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-col-xl-2">
         <nav
           class="fr-sidemenu !p-0 md:h-full"
@@ -39,7 +39,7 @@
           </ClientOnly>
         </nav>
       </div>
-      <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-100 fr-px-2w overflow-auto">
+      <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-2w overflow-auto">
         <NuxtPage
           :page-key="route => route.fullPath"
           class="fr-container--fluid"

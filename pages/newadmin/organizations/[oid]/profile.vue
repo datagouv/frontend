@@ -12,7 +12,7 @@
       <li v-if="currentOrganization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          :to="`/newadmin/organizations/${currentOrganization.id}`"
+          :to="`/newadmin/organizations/${currentOrganization.id}/profile`"
         >
           {{ currentOrganization.name }}
         </NuxtLinkLocale>
@@ -104,62 +104,38 @@
             <button
               class="fr-btn fr-btn--secondary fr-btn--secondary--error fr-btn--icon-left fr-icon-delete-line"
               :disabled="loading"
-              data-fr-opened="false"
               :aria-controls="modalId"
+              @click="openDeleteModal"
             >
               {{ t('Delete') }}
             </button>
-            <Teleport to="body">
-              <dialog
-                :id="modalId"
-                :aria-labelledby="modalTitleId"
-                role="dialog"
-                class="fr-modal"
-              >
-                <div class="fr-container fr-container--fluid fr-container-md">
-                  <div class="fr-grid-row fr-grid-row--center">
-                    <div class="fr-col-12 fr-col-md-8">
-                      <div class="fr-modal__body">
-                        <div class="fr-modal__header">
-                          <button
-                            class="fr-btn--close fr-btn"
-                            :title="t('Close the modal dialog')"
-                            :aria-controls="modalId"
-                          >
-                            {{ t("Close") }}
-                          </button>
-                        </div>
-                        <div class="fr-modal__content">
-                          <h1
-                            :id="modalTitleId"
-                            class="fr-modal__title fr-mb-2w"
-                          >
-                            {{ t("Are you sure you want to delete this organization ?") }}
-                          </h1>
-                          <p class="fr-text--bold">
-                            {{ t("This action can't be reverse.") }}
-                          </p>
-                          <p>{{ t("All content published with this organization will stay online, with the same URL but in an anonymous form, i.e. without being linked to a data producer.") }}</p>
-                          <p>{{ t("If you want to delete your published content too, start by deleting the contents before deleting your account.") }}</p>
-                        </div>
-                        <div class="fr-modal__footer">
-                          <div class="fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
-                            <button
-                              class="fr-btn fr-btn--secondary fr-btn--secondary--error"
-                              role="button"
-                              :disabled="loading"
-                              @click="deleteCurrentOrganization"
-                            >
-                              {{ t("Delete") }}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <Modal
+              :id="modalId"
+              :opened="openedDeleteModal"
+              :aria-labelledby="modalTitleId"
+              role="dialog"
+              :title="t('Are you sure you want to delete this organization ?')"
+              size="lg"
+              @close="closeDeleteModal"
+            >
+              <p class="fr-text--bold">
+                {{ t("This action can't be reverse.") }}
+              </p>
+              <p>{{ t("All content published with this organization will stay online, with the same URL but in an anonymous form, i.e. without being linked to a data producer.") }}</p>
+              <p>{{ t("If you want to delete your published content too, start by deleting the contents before deleting your account.") }}</p>
+              <template #footer>
+                <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+                  <button
+                    class="fr-btn fr-btn--secondary rounded-full !text-red-600 !border border-solid !border-red-600 !shadow-none"
+                    role="button"
+                    :disabled="loading"
+                    @click="deleteCurrentOrganization"
+                  >
+                    {{ t("Delete the organization") }}
+                  </button>
                 </div>
-              </dialog>
-            </Teleport>
+              </template>
+            </Modal>
           </div>
         </AdminDangerZone>
       </template>
@@ -168,7 +144,7 @@
 </template>
 
 <script setup lang="ts">
-import { getRandomId, Placeholder, useOrganizationCertified, type NewOrganization, type Organization } from '@datagouv/components'
+import { Placeholder, useOrganizationCertified, type NewOrganization, type Organization } from '@datagouv/components'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -190,14 +166,23 @@ const form = ref<InstanceType<typeof DescribeOrganizationFrom> | null>(null)
 const { currentOrganization } = useCurrentOrganization()
 
 const errors = ref([])
-const modalId = getRandomId('modal')
-const modalTitleId = getRandomId('modalTitle')
+const modalId = useId()
+const modalTitleId = useId()
+const openedDeleteModal = ref(false)
 
 const { data: organization, status, refresh: refreshOrganization } = await useAPI<Organization>(`api/1/organizations/${oid}/`, { lazy: true })
 
 const loading = computed(() => status.value === 'pending')
 
 const { organizationCertified } = useOrganizationCertified(organization)
+
+function openDeleteModal() {
+  openedDeleteModal.value = true
+}
+
+function closeDeleteModal() {
+  openedDeleteModal.value = false
+}
 
 async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
