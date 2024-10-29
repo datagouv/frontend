@@ -21,9 +21,9 @@ const parentRef = useTemplateRef('parent')
 
 const openIfClosed = () => {
   if (props.accordion) {
-    const button = document.querySelector(`[aria-controls=${props.accordion}]`)
+    const button = document.querySelector<HTMLButtonElement>(`[aria-controls=${props.accordion}]`)
     if (button && button.ariaExpanded !== 'true') {
-      button.ariaExpanded = 'true'
+      button.click()
     }
   }
 }

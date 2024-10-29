@@ -224,12 +224,18 @@
               :error-text="getErrorText('url')"
             />
           </LinkedToAccordion>
+        </fieldset>
+        <fieldset>
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="addLogoAccordionId"
             @blur="vWarning$.acronym.$touch"
           >
-            <p>{{ t('Logo') }}</p>
+            <legend>
+              <p class="fr-mb-1w">
+                {{ t("Logo") }}
+              </p>
+            </legend>
             <UploadGroup
               :label="t('Logo')"
               :title="t('Logo')"
