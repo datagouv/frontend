@@ -59,11 +59,22 @@ definePageMeta({
 
 const { t } = useI18n()
 const route = useRoute()
+const localePath = useLocalePath()
+const localeRoute = useLocaleRoute()
 const me = useMe()
 
 // Works only because we are using MongoDB and there is no
 // collision between orgs' IDs and users' IDs.
 const defaultOpenId = ref<null | string>(null)
+
+if (route.name === localeRoute('/newadmin/')?.name) {
+  if (me.value.organizations.length > 0) {
+    await navigateTo(localePath(`/newadmin/organizations/${me.value.organizations[0].id}/datasets`), { replace: true })
+  }
+  else {
+    await navigateTo(localePath('/newadmin/me/datasets'), { replace: true })
+  }
+}
 
 onMounted(() => {
   if (route.params.oid && !Array.isArray(route.params.oid)) {
