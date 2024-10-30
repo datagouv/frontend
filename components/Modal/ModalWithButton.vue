@@ -21,6 +21,12 @@
     @close="close"
   >
     <slot :close />
+    <template #footer>
+      <slot
+        name="footer"
+        :close
+      />
+    </template>
   </ModalClient>
 </template>
 

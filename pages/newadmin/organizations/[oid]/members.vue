@@ -52,6 +52,7 @@
 
           <template #default="{ close }">
             <form
+              :id="addFormId"
               @submit.prevent="updateRole(member, close)"
             >
               <div>
@@ -83,26 +84,28 @@
                 :label="t('Role of the member')"
                 :options="rolesOptions"
               />
-              <div class="fr-modal__footer">
-                <div class="fr-btns-group fr-btns-group--right fr-btns-group--sm fr-btns-group--inline-lg fr-btns-group--icon-left">
-                  <button
-                    class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
-                    type="button"
-                    :disabled="loading"
-                    @click="close"
-                  >
-                    {{ t("Cancel") }}
-                  </button>
-                  <button
-                    class="fr-btn"
-                    type="submit"
-                    :disabled="loading"
-                  >
-                    {{ t("Add to the organization") }}
-                  </button>
-                </div>
-              </div>
             </form>
+          </template>
+
+          <template #footer="{ close }">
+            <div class="fr-btns-group fr-btns-group--right fr-btns-group--sm fr-btns-group--inline-lg fr-btns-group--icon-left">
+              <button
+                class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+                type="button"
+                :disabled="loading"
+                @click="close"
+              >
+                {{ t("Cancel") }}
+              </button>
+              <button
+                class="fr-btn"
+                type="submit"
+                :form="addFormId"
+                :disabled="loading"
+              >
+                {{ t("Add to the organization") }}
+              </button>
+            </div>
           </template>
         </ModalWithButton>
       </div>
@@ -279,7 +282,7 @@ import { Avatar, formatDate, formatFromNow, type Member, type Organization, type
 import { computed, onMounted, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { AdminBadgeState, EditingMember, MemberRole, PaginatedArray, PendingMembershipRequest, UserSuggest } from '~/types/types'
-import TextClamp from '~/components/TextClamp.vue'
+import TextClamp from '~/components/TextClamp.client.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import Tooltip from '~/components/Tooltip/Tooltip.vue'
@@ -425,6 +428,7 @@ const suggestUser = async (query: string): Promise<Array<UserSuggest>> => {
   })
 }
 
+const addFormId = useId()
 const addForm = ref({
   role: null as MemberRole | null,
   user: null as UserSuggest | null,
