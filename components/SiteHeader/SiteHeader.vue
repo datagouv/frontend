@@ -84,7 +84,7 @@
               >
                 <li>
                   <a
-                    :href="`/en/users/${me.slug}/`"
+                    :href="me.page"
                     class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
                   >
                     <!-- <img src="/api/1/avatars/65cb36cd69808422020f9b04/24" width="24" height="24" loading="lazy" alt="" class="fr-mr-1w rounded-circle"> -->

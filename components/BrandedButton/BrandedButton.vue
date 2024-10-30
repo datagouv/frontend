@@ -1,18 +1,21 @@
 <template>
-  <button
-    class="fr-btn"
+  <component
+    :is="as"
+    class="fr-btn disabled:!text-neutral-500 disabled:!border-neutral-200"
     :class="[colors, size, type]"
   >
     <slot />
-  </button>
+  </component>
 </template>
 
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  as?: 'a' | 'button'
   color?: 'primary' | 'neutral' | 'red'
   size?: 'sm' | 'md' | 'lg'
   type: 'primary' | 'secondary'
 }>(), {
+  as: 'button',
   color: 'primary',
   size: 'md',
   type: 'primary',

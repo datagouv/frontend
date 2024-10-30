@@ -37,6 +37,8 @@
           <BrandedButton
             size="sm"
             type="secondary"
+            as="a"
+            :href="me.page"
           >
             <Icon
               name="ri:eye-line"
@@ -125,6 +127,8 @@
                 color="neutral"
                 size="sm"
                 type="secondary"
+                :disabled="apiLoading"
+                @click="regenerateApiKey"
               >
                 <Icon
                   name="ri:recycle-line"
@@ -138,6 +142,8 @@
                 color="red"
                 size="sm"
                 type="secondary"
+                :disabled="apiLoading"
+                @click="deleteApiKey"
               >
                 <Icon
                   name="ri:delete-bin-6-line"
@@ -151,13 +157,13 @@
       </div>
       <div class="fr-input-group">
         <label
-          class="fr-label"
+          class="fr-label mb-2"
           :for="emailId"
         >
           {{ $t('E-mail address') }}
         </label>
         <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
-          <div class="fr-col-12 fr-col-sm">
+          <div class="fr-col-12 fr-col-sm-7 fr-col-lg-8 fr-col-xl-9">
             <div class="fr-input-wrap relative">
               <input
                 :id="emailId"
@@ -173,6 +179,8 @@
               color="neutral"
               size="sm"
               type="secondary"
+              as="a"
+              :href="`${config.public.apiBase}/${config.public.changeEmailPage}`"
             >
               <Icon
                 name="ri:edit-line"
@@ -185,16 +193,16 @@
       </div>
       <div class="fr-input-group">
         <label
-          class="fr-label"
+          class="fr-label mb-2"
           :for="passwordId"
         >
           {{ $t('Password') }}
         </label>
         <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
-          <div class="fr-col-12 fr-col-sm">
+          <div class="fr-col-12 fr-col-sm-7 fr-col-lg-8 fr-col-xl-9">
             <div class="fr-input-wrap relative">
               <input
-                :id="emailId"
+                :id="passwordId"
                 value="**********"
                 class="fr-input"
                 disabled
@@ -207,6 +215,8 @@
               color="neutral"
               size="sm"
               type="secondary"
+              as="a"
+              :href="`${config.public.apiBase}/${config.public.changePasswordPage}`"
             >
               <Icon
                 name="ri:edit-line"
@@ -276,9 +286,10 @@
 
 <script setup lang="ts">
 import { Avatar, CopyButton } from '@datagouv/components'
-import BrandedButton from '../BrandedButton/BrandedButton.vue';
+import BrandedButton from '../BrandedButton/BrandedButton.vue'
 
 const me = useMe()
+const api = useNuxtApp().$api
 const config = useNuxtApp().$config
 const apiKeyId = useId()
 const emailId = useId()
@@ -286,6 +297,7 @@ const passwordId = useId()
 const modalId = useId()
 const modalTitleId = useId()
 
+const apiLoading = ref(false)
 const openedDeleteModal = ref(false)
 
 function openDeleteModal() {
@@ -294,6 +306,32 @@ function openDeleteModal() {
 
 function closeDeleteModal() {
   openedDeleteModal.value = false
+}
+
+async function regenerateApiKey() {
+  apiLoading.value = true
+  try {
+    const res = await api<{ apikey: string }>('/api/1/me/apikey', {
+      method: 'POST',
+    })
+    me.value.apikey = res.apikey
+  }
+  finally {
+    apiLoading.value = false
+  }
+}
+
+async function deleteApiKey() {
+  apiLoading.value = true
+  try {
+    await api('/api/1/me/apikey', {
+      method: 'DELETE',
+    })
+    me.value.apikey = null
+  }
+  finally {
+    apiLoading.value = false
+  }
 }
 
 function deleteUser() {

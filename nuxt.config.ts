@@ -13,6 +13,8 @@ export default defineNuxtConfig({
       qualityDescriptionLength: 100,
       searchSirenUrl: 'https://recherche-entreprises.api.gouv.fr/search',
       title: 'datagouv/frontend',
+      changeEmailPage: 'change-email',
+      changePasswordPage: 'change',
     },
   },
 
