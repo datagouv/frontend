@@ -52,18 +52,16 @@
     />
     <div
       v-else
-      class="container fr-my-2w"
+      class="flex flex-col items-center"
     >
-      <div class="text-align-center fr-py-1w">
-        <nuxt-img
-          class="ml-6 -mt-7"
-          src="/img/reuses.svg"
-        />
-        <p class="fr-text--bold fr-my-3v">
-          {{ t(`You haven't published a reuse yet`) }}
-        </p>
-        <AdminPublishButton type="reuse" />
-      </div>
+      <nuxt-img
+        src="/illustrations/reuse.svg"
+        class="h-20"
+      />
+      <p class="fr-text--bold fr-my-3v">
+        {{ t(`You haven't published a reuse yet`) }}
+      </p>
+      <AdminPublishButton type="reuse" />
     </div>
     <Pagination
       v-if="status === 'success' && pageData.total > pageSize"
