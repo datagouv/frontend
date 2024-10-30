@@ -20,11 +20,13 @@
       class="fr-input"
       :class="{ 'fr-input--error': hasError, 'fr-input--warning': !hasError && hasWarning, 'fr-input--valid': isValid }"
       :aria-describedby="ariaDescribedBy"
-      :disabled="disabled"
-      :type="type"
+      :autocomplete
+      :disabled
+      :type
       :value="(modelValue as string | undefined)"
-      :placeholder="placeholder"
-      :required="required"
+      :placeholder
+      :required
+      :spellcheck
       @change="change"
     />
     <div
@@ -69,11 +71,13 @@
       class="fr-input"
       :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid }"
       :aria-describedby="ariaDescribedBy"
-      :disabled="disabled"
-      :type="type"
-      :placeholder="placeholder"
+      :autocomplete
+      :disabled
+      :type
+      :placeholder
       :value="modelValue"
-      :required="required"
+      :required
+      :spellcheck
       @change="change"
     >
     <p
@@ -111,6 +115,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<{
   ariaDescribedby?: string
+  autocomplete?: string
   disabled?: boolean
   errorText?: string
   hasError?: boolean
@@ -121,10 +126,12 @@ const props = withDefaults(defineProps<{
   modelValue?: string | Date
   placeholder?: string
   required?: boolean
+  spellcheck?: boolean
   type?: AllowedInputType
   validText?: string
 }>(), {
   ariaDescribedby: '',
+  autocomplete: undefined,
   disabled: false,
   errorText: '',
   hasError: false,
@@ -134,6 +141,7 @@ const props = withDefaults(defineProps<{
   modelValue: undefined,
   placeholder: '',
   required: false,
+  spellcheck: undefined,
   type: 'text',
   validText: '',
 })

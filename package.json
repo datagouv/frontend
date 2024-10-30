@@ -42,6 +42,7 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "markdown-it": "^14.1.0",
+    "mitt": "^3.0.1",
     "nuxt": "^3.13.0",
     "nuxt-headlessui": "^1.2.0",
     "ofetch": "^1.4.1",

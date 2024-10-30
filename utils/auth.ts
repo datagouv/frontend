@@ -4,6 +4,7 @@ export type Me = User & {
   about: string
   active: boolean
   apikey: string | null
+  email: string
   metrics: {
     datasets: number
     followers: number
@@ -20,7 +21,7 @@ export const useMe = (): Ref<Me> => {
 }
 
 export const useMaybeMe = () => {
-    return useState<Me | null | undefined>('me', () => undefined)
+  return useState<Me | null | undefined>('me', () => undefined)
 }
 
 export const useToken = () => {

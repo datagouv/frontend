@@ -93,7 +93,7 @@
           class="fr-mt-6w"
         >
           <div class="fr-col">
-            <p class="fr-m-0 text-grey-500">
+            <p class="fr-m-0 text-neutral-800">
               {{ t('Delete the organization') }}
             </p>
             <p class="fr-m-0 fr-text--xs text-default-error">

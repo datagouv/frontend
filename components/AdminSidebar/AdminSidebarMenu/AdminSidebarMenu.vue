@@ -58,6 +58,11 @@
               :label="$t('Community Resources')"
               to="/newadmin/me/community-resources"
             />
+            <AdminSidebarLink
+              icon="ri:user-line"
+              :label="$t('Profile')"
+              to="/newadmin/me/profile"
+            />
           </template>
           <template v-else-if="organization">
             <AdminSidebarLink
