@@ -188,7 +188,7 @@ async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
     try {
       await useAPI(`organizations/${oid}/`)
-      router.replace(localPath('/newadmin'))
+      navigateTo(localPath('/newadmin'), { replace: true })
     }
     catch (e) {
       toast.error(t('An error occured when deleting the organization.'))

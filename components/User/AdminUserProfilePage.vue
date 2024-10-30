@@ -367,7 +367,7 @@ async function deleteUser() {
     await api('/api/1/me/', {
       method: 'DELETE',
     })
-    window.open(`${config.public.apiBase}/en/logout`)
+    navigateTo(`${config.public.apiBase}/en/logout`, { external: true })
   }
   finally {
     loading.value = false
