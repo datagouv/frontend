@@ -53,7 +53,7 @@
           <template #default="{ close }">
             <form
               :id="addFormId"
-              @submit.prevent="updateRole(member, close)"
+              @submit.prevent="submitNewMember(close)"
             >
               <div>
                 <SearchableSelect
@@ -101,7 +101,7 @@
                 class="fr-btn"
                 type="submit"
                 :form="addFormId"
-                :disabled="loading"
+                :disabled="loading || !canSubmitNewMember"
               >
                 {{ t("Add to the organization") }}
               </button>
@@ -408,17 +408,6 @@ const updateRole = async (member: Member, close) => {
   }
 }
 
-//   watchEffect(() => {
-//     if(isOrgAdmin.value) {
-//       getPendingMemberships(props.oid).then(requests => membershipRequests.value = requests);
-//     }
-//   });
-
-//   onMounted(() => {
-//     getRoles().then(formatRolesAsOptions).then(options => roles.value = options);
-//     updateMembers();
-//   });
-
 const suggestUser = async (query: string): Promise<Array<UserSuggest>> => {
   return await $api<Array<UserSuggest>>('/api/1/users/suggest/', {
     query: {
@@ -433,4 +422,31 @@ const addForm = ref({
   role: null as MemberRole | null,
   user: null as UserSuggest | null,
 })
+const canSubmitNewMember = computed(() => {
+  if (!addForm.value.role) return false
+  if (!addForm.value.user) return false
+
+  return true
+})
+const submitNewMember = async (close) => {
+  if (!canSubmitNewMember.value) return
+
+  try {
+    loading.value = true
+    await $api(`/api/1/organizations/${currentOrganization.value?.id}/member/${addForm.value.user?.id}`, {
+      method: 'POST',
+      body: JSON.stringify({ role: addForm.value.role }),
+    })
+    await refresh()
+    addForm.value.role = null
+    addForm.value.user = null
+    close()
+  }
+  catch {
+    // toast.error(t('An error occurred while update member role.'))
+  }
+  finally {
+    loading.value = false
+  }
+}
 </script>
