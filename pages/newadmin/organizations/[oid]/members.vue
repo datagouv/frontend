@@ -110,26 +110,25 @@
         </ModalWithButton>
       </div>
     </div>
-    <!-- <template v-if="membershipRequests.length">
-        <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-0">
-          {{ t("{n} requests", {n: membershipRequests.length}) }}
-        </h2>
+    <template v-if="membershipRequests && membershipRequests.length">
+      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-0">
+        {{ t("{n} requests", { n: membershipRequests.length }) }}
+      </h2>
+      <div class="space-y-12">
         <AdminMembershipRequest
-          class="fr-mb-4w"
           v-for="request in membershipRequests"
           :key="request.id"
-          :loading="loading"
-          :oid="null"
+          :oid="currentOrganization.id"
           :request="request"
           :show-actions="true"
-          @accept="accept"
-          @refuse="refuse"
+          @refresh="refreshAll"
         />
-      </template> -->
+      </div>
+    </template>
     <h2
       v-if="organization"
       class="subtitle subtitle--uppercase fr-mb-0"
-      :class="{ 'fr-mt-n3v': membershipRequests.length, 'fr-mt-5v': !membershipRequests.length }"
+      :class="{ 'fr-mt-n3v': membershipRequests && membershipRequests.length, 'fr-mt-5v': !membershipRequests|| !membershipRequests.length }"
     >
       {{ t("{n} members", { n: organization.members.length }) }}
     </h2>
@@ -278,29 +277,24 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, formatDate, formatFromNow, type Member, type Organization, type User } from '@datagouv/components'
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { Avatar, formatDate, formatFromNow, type Member, type Organization } from '@datagouv/components'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { AdminBadgeState, EditingMember, MemberRole, PaginatedArray, PendingMembershipRequest, UserSuggest } from '~/types/types'
+import type { AdminBadgeState, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
 import TextClamp from '~/components/TextClamp.client.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
-import Tooltip from '~/components/Tooltip/Tooltip.vue'
-import ModalClient from '~/components/Modal/Modal.client.vue'
 import ModalWithButton from '~/components/Modal/ModalWithButton.vue'
 import AdminDangerZone from '~/components/AdminDangerZone/AdminDangerZone.vue'
 import SelectGroup from '~/components/Form/SelectGroup/SelectGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
+import AdminMembershipRequest from '~/components/AdminMembershipRequest/AdminMembershipRequest.vue'
 
 const config = useRuntimeConfig()
 const { t } = useI18n()
 const { $api } = useNuxtApp()
 
-const membershipRequests = ref<Array<PendingMembershipRequest>>([])
-
 const me = useMe()
-
-const isOrgAdmin = computed(() => isAdmin(me.value) || members.value.some(member => member.user.id === me.value.id && member.role === 'admin'))
 
 const { currentOrganization } = useCurrentOrganization()
 
@@ -313,6 +307,19 @@ const url = computed(() => {
 })
 
 const { data: organization, status, refresh } = await useAPI<Organization>(url, { lazy: true })
+const { data: membershipRequests, refresh: refreshMembershipRequests } = await useAPI<Array<PendingMembershipRequest>>(`/api/1/organizations/${currentOrganization.value?.id}/membership/`, {
+  lazy: true,
+  query: { status: 'pending' },
+})
+
+const refreshAll = async () => {
+  await Promise.all([
+    refresh(),
+    refreshMembershipRequests(),
+  ])
+}
+
+const isOrgAdmin = computed(() => isAdmin(me.value) || (organization && organization.value.members.some(member => member.user.id === me.value.id && member.role === 'admin')))
 
 const newRole = ref<MemberRole | null>(null)
 const { data: roles } = await useAPI<Array<{ id: MemberRole, label: string }>>('/api/1/organizations/roles/', { lazy: true })
@@ -332,42 +339,6 @@ function getStatus(role: MemberRole): string {
 
 function getStatusType(role: MemberRole): AdminBadgeState {
   return role === 'admin' ? 'info' : 'default'
-}
-
-async function updateMemberships() {
-  // const memberships = await getPendingMemberships(props.oid);
-  // membershipRequests.value = memberships;
-}
-
-async function accept(id: string) {
-  loading.value = true
-  const promises = []
-  try {
-    //   await acceptRequest(props.oid, id);
-    promises.push(updateMemberships())
-  }
-  catch (e) {
-    //   toast.error(t("An error occurred while accepting this membership."));
-  }
-  finally {
-    Promise.all(promises).finally(() => loading.value = false)
-  }
-}
-
-async function refuse(id: string, comment: string) {
-  loading.value = true
-  const promises = []
-  try {
-    //   await refuseRequest(props.oid, id, comment);
-    promises.push(updateMemberships())
-    promises.push(updateMembers())
-  }
-  catch {
-    //   toast.error(t("An error occurred while refusing this membership."));
-  }
-  finally {
-    Promise.all(promises).finally(() => loading.value = false)
-  }
 }
 
 const removeMemberFromOrganization = async (member: Member, close: () => void) => {
