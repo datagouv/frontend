@@ -1,7 +1,7 @@
 <template>
   <a
     :href="link"
-    class="fr-btn fr-icon-add-line fr-btn--icon-left "
+    class="fr-btn fr-icon-add-line fr-btn--icon-left"
   >
     <span>{{ t("Publish on") }}</span>
     <SiteLogo
@@ -20,12 +20,12 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 const link = computed(() => {
   switch (props.type) {
     case 'dataset':
-      return ''
-      // return dataset_publishing_form_url;
+      return localePath('/newadmin/datasets/new')
     case 'harvester':
       return ''
       // return `${admin_root}harvester/new/`;
