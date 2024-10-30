@@ -22,12 +22,12 @@
           class="fr-breadcrumb__link"
           aria-current="page"
         >
-          {{ t('Discussions') }}
+          {{ t('Harvesters') }}
         </a>
       </li>
     </Breadcrumb>
     <h1 class="fr-h3 fr-mb-5v">
-      {{ t("Discussions") }}
+      {{ t("Harvesters") }}
     </h1>
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
@@ -35,7 +35,7 @@
           v-if="status === 'success'"
           class="subtitle subtitle--uppercase fr-m-0"
         >
-          {{ t('{n} discussions', pageData.total) }}
+          {{ t('{n} harvesters', pageData.total) }}
         </h2>
       </div>
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
@@ -112,17 +112,15 @@
     </AdminTable>
     <div
       v-else
-      class="container fr-my-2w"
+      class="flex flex-col items-center"
     >
-      <div class="text-align-center fr-py-1w">
-        <nuxt-img
-          class="ml-6 -mt-7"
-          src="/img/dataset.svg"
-        />
-        <p class="fr-text--bold fr-my-3v">
-          {{ t(`There is no discussion yet`) }}
-        </p>
-      </div>
+      <!-- <nuxt-img
+        src="/illustrations/reuse.svg"
+        class="h-20"
+      /> -->
+      <p class="fr-text--bold fr-my-3v">
+        {{ t(`There is no harvesters yet`) }}
+      </p>
     </div>
     <Pagination
       v-if="status === 'success' && pageData.total > pageSize"
@@ -139,7 +137,7 @@ import { formatDate, Pagination } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { AdminBadgeState, DiscussionSortedBy, PaginatedArray, SortDirection, Thread } from '~/types/types'
+import type { AdminBadgeState, DiscussionSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
@@ -155,7 +153,7 @@ const sortedBy = ref<DiscussionSortedBy>('created')
 const direction = ref<SortDirection>('desc')
 const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)
 const q = ref('')
-const qDebounced = refDebounced(q, 500) // TODO add 500 in config
+const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
 const { currentOrganization } = useCurrentOrganization()
 
