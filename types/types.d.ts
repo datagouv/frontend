@@ -1,5 +1,7 @@
 import type { Dataset, Dataservice, Reuse, User } from '@datagouv/components'
 
+export type AxisAlignment = 'start' | 'center' | 'end'
+
 export type SortDirection = 'asc' | 'desc'
 
 export type DSFRFormDefaultState = 'default'

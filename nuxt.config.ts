@@ -12,7 +12,16 @@ export default defineNuxtConfig({
       apiBase: 'http://dev.local:7000',
       qualityDescriptionLength: 100,
       searchSirenUrl: 'https://recherche-entreprises.api.gouv.fr/search',
-      title: 'datagouv/frontend',
+      title: 'data.gouv.fr',
+      demoServer: {
+        url: 'https://demo.data.gouv.fr',
+        name: 'demo.data.gouv.fr',
+      },
+      schemaPublishingUrl: 'https://publier.etalab.studio/fr',
+      apiDocExternalLink: 'https://guides.data.gouv.fr/publier-des-donnees/guide-data.gouv.fr/api/reference',
+      guidesHarvestingUrl: '',
+      supportUrl: 'https://support.data.gouv.fr/',
+      catalogUrl: 'https://catalogue.data.gouv.fr/',
     },
   },
 
