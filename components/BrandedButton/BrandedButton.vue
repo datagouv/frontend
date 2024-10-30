@@ -1,7 +1,7 @@
 <template>
   <component
     :is="as"
-    class="fr-btn disabled:!text-neutral-500 disabled:!border-neutral-200"
+    class="fr-btn rounded-full disabled:!text-neutral-500 disabled:!border-neutral-200"
     :class="[colors, size, type]"
   >
     <slot />
@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
   as?: 'a' | 'button'
   color?: 'primary' | 'neutral' | 'red'
   size?: 'sm' | 'md' | 'lg'
-  type: 'primary' | 'secondary'
+  type?: 'primary' | 'secondary'
 }>(), {
   as: 'button',
   color: 'primary',
@@ -55,6 +55,6 @@ const type = computed(() => {
   if (props.type === 'primary') {
     return ''
   }
-  return `fr-btn--${props.type} border !shadow-none`
+  return `fr-btn--${props.type} border border-solid !shadow-none`
 })
 </script>

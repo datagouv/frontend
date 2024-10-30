@@ -84,13 +84,17 @@
         type="url"
       />
       <div class="flex justify-end">
-        <button class="fr-btn fr-btn--sm">
+        <BrandedButton
+          size="sm"
+          :disabled="loading"
+          @click="updateMe"
+        >
           <Icon
             class="mr-1"
             name="ri:save-line"
           />
           {{ $t('Save') }}
-        </button>
+        </BrandedButton>
       </div>
       <div class="fr-input-group">
         <label
@@ -127,7 +131,7 @@
                 color="neutral"
                 size="sm"
                 type="secondary"
-                :disabled="apiLoading"
+                :disabled="loading"
                 @click="regenerateApiKey"
               >
                 <Icon
@@ -142,7 +146,7 @@
                 color="red"
                 size="sm"
                 type="secondary"
-                :disabled="apiLoading"
+                :disabled="loading"
                 @click="deleteApiKey"
               >
                 <Icon
@@ -268,13 +272,15 @@
             <p>{{ $t("If you want to delete your published content too, start by deleting the contents before deleting your account.") }}</p>
             <template #footer>
               <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
-                <button
-                  class="fr-btn fr-btn--secondary rounded-full !text-red-600 !border border-solid !border-red-600 !shadow-none"
+                <BrandedButton
+                  color="red"
+                  type="secondary"
                   role="button"
+                  :disabled="loading"
                   @click="deleteUser"
                 >
                   {{ $t("Delete your account") }}
-                </button>
+                </BrandedButton>
               </div>
             </template>
           </Modal>
@@ -291,13 +297,16 @@ import BrandedButton from '../BrandedButton/BrandedButton.vue'
 const me = useMe()
 const api = useNuxtApp().$api
 const config = useNuxtApp().$config
+const router = useRouter()
+const localePath = useLocalePath()
+
 const apiKeyId = useId()
 const emailId = useId()
 const passwordId = useId()
 const modalId = useId()
 const modalTitleId = useId()
 
-const apiLoading = ref(false)
+const loading = ref(false)
 const openedDeleteModal = ref(false)
 
 function openDeleteModal() {
@@ -308,33 +317,60 @@ function closeDeleteModal() {
   openedDeleteModal.value = false
 }
 
-async function regenerateApiKey() {
-  apiLoading.value = true
+async function updateMe() {
+  loading.value = true
   try {
-    const res = await api<{ apikey: string }>('/api/1/me/apikey', {
+    me.value = await api<Me>('/api/1/me/', {
+      method: 'PUT',
+      body: {
+        first_name: me.value.first_name,
+        last_name: me.value.last_name,
+        about: me.value.about,
+        website: me.value.website,
+      },
+    })
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+async function regenerateApiKey() {
+  loading.value = true
+  try {
+    const res = await api<{ apikey: string }>('/api/1/me/apikey/', {
       method: 'POST',
     })
     me.value.apikey = res.apikey
   }
   finally {
-    apiLoading.value = false
+    loading.value = false
   }
 }
 
 async function deleteApiKey() {
-  apiLoading.value = true
+  loading.value = true
   try {
-    await api('/api/1/me/apikey', {
+    await api('/api/1/me/apikey/', {
       method: 'DELETE',
     })
     me.value.apikey = null
   }
   finally {
-    apiLoading.value = false
+    loading.value = false
   }
 }
 
-function deleteUser() {
-
+async function deleteUser() {
+  loading.value = true
+  try {
+    await api('/api/1/me/', {
+      method: 'DELETE',
+    })
+    window.open(`${config.public.apiBase}/en/logout`)
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
