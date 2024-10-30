@@ -28,6 +28,13 @@ export const useToken = () => {
   return useCookie('token')
 }
 
+export function isAdmin(me: Me | null): boolean
+{
+  if (! me) return false;
+
+  return me.roles ? me.roles.includes('admin') : false
+}
+
 export const loadMe = async (meState: Ref<Me | null | undefined>) => {
   // Here we cannot use the `useAPI` composable because
   // we don't want the classic error management that redirect

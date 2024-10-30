@@ -1,0 +1,122 @@
+<template>
+  <div
+    class="fr-select-group"
+    :class="selectGroupClass"
+  >
+    <label
+      class="fr-label"
+      :for="id"
+    >
+      {{ label }}
+      <Required :required="required" />
+      <span
+        v-if="hintText"
+        class="fr-hint-text"
+      >{{ hintText }}</span>
+    </label>
+    <select
+      :id="id"
+      v-model="model"
+      class="fr-select"
+      :class="{ 'fr-select--error': hasError, 'fr-select--valid': isValid }"
+      :aria-describedby="ariaDescribedBy"
+      :required="required"
+      :disabled="disabled"
+    >
+      <option
+        :value="null"
+        disabled
+        hidden
+      >
+        {{ $t("Select an option") }}
+      </option>
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+        :disabled="option.disabled"
+        :hidden="option.hidden"
+      >
+        {{ option.label }}
+      </option>
+    </select>
+    <p
+      v-if="isValid"
+      :id="validTextId"
+      class="fr-valid-text"
+    >
+      {{ validText }}
+    </p>
+    <p
+      v-else-if="hasError"
+      :id="errorTextId"
+      class="fr-error-text"
+    >
+      {{ errorText }}
+    </p>
+  </div>
+</template>
+
+<script lang="ts">
+</script>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import Required from '~/components/Required/Required.vue'
+
+export type Option = {
+  label: string
+  value: string
+  disabled?: boolean
+  hidden?: boolean
+  selected?: boolean
+}
+
+export type SelectGroupProps = {
+  disabled?: boolean
+  errorText?: string
+  hasError?: boolean
+  hintText?: string
+  isValid?: boolean
+  label: string
+  options: Array<Option>
+  required?: boolean
+  validText?: string
+}
+
+const model = defineModel()
+
+const props = withDefaults(defineProps<SelectGroupProps>(), {
+  disabled: false,
+  errorText: '',
+  hasError: false,
+  hintText: '',
+  isValid: false,
+  modelValue: undefined,
+  required: false,
+  validText: '',
+})
+
+const id = useId()
+
+const errorTextId = computed(() => id + '-desc-error')
+const validTextId = computed(() => id + '-desc-valid')
+const ariaDescribedBy = computed(() => {
+  let describedBy = ''
+  if (props.isValid) {
+    describedBy += ' ' + validTextId.value
+  }
+  else if (props.hasError) {
+    describedBy += ' ' + errorTextId.value
+  }
+  return describedBy
+})
+
+const selectGroupClass = computed(() => {
+  return {
+    'fr-select-group--disabled': props.disabled,
+    'fr-select-group--error': props.hasError,
+    'fr-select-group--valid': props.isValid,
+  }
+})
+</script>
