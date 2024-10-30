@@ -12,6 +12,7 @@ export default defineNuxtConfig({
       apiBase: 'http://dev.local:7000',
       qualityDescriptionLength: 100,
       searchSirenUrl: 'https://recherche-entreprises.api.gouv.fr/search',
+
       title: 'data.gouv.fr',
       demoServer: {
         url: 'https://demo.data.gouv.fr',
@@ -22,6 +23,9 @@ export default defineNuxtConfig({
       guidesHarvestingUrl: '',
       supportUrl: 'https://support.data.gouv.fr/',
       catalogUrl: 'https://catalogue.data.gouv.fr/',
+
+      changeEmailPage: 'change-email',
+      changePasswordPage: 'change',
     },
   },
 

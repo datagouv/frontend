@@ -4,6 +4,7 @@ export type Me = User & {
   about: string
   active: boolean
   apikey: string | null
+  email: string
   metrics: {
     datasets: number
     followers: number
@@ -20,16 +21,15 @@ export const useMe = (): Ref<Me> => {
 }
 
 export const useMaybeMe = () => {
-    return useState<Me | null | undefined>('me', () => undefined)
+  return useState<Me | null | undefined>('me', () => undefined)
 }
 
 export const useToken = () => {
   return useCookie('token')
 }
 
-export function isAdmin(me: Me | null): boolean
-{
-  if (! me) return false;
+export function isAdmin(me: Me | null): boolean {
+  if (!me) return false
 
   return me.roles ? me.roles.includes('admin') : false
 }
@@ -39,8 +39,8 @@ export const loadMe = async (meState: Ref<Me | null | undefined>) => {
   // we don't want the classic error management that redirect
   // to the login page when a 401 is raised. So we must manually
   // re-configured the baseURL.
-  const config = useRuntimeConfig();
-  const cookie = useRequestHeader('cookie');
+  const config = useRuntimeConfig()
+  const cookie = useRequestHeader('cookie')
 
   const token = useToken()
 

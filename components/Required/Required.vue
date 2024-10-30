@@ -1,7 +1,7 @@
 <template>
   <span
     v-if="required"
-    class="required-field-star"
+    class="text-primary"
   >*</span>
 </template>
 
