@@ -7,29 +7,25 @@
       <p class="rangepicker__hint fr-m-0">
         {{ $t('Select lower bound:') }}
       </p>
-      <ClientOnly>
-        <Datepicker
-          ref="start"
-          v-model="start"
-          :upper-limit="end"
-          :locale="locale"
-          @update:model-value="showEndSelector"
-        />
-      </ClientOnly>
+      <DatePickerClient
+        ref="start"
+        v-model="start"
+        :upper-limit="end"
+        :locale="locale"
+        @update:model-value="showEndSelector"
+      />
     </div>
     <div v-show="selectorShown === selectorShownEnd">
       <p class="rangepicker__hint fr-m-0">
         {{ $t('Select upper bound:') }}
       </p>
-      <ClientOnly>
-        <Datepicker
-          ref="end"
-          v-model="end"
-          :lower-limit="start"
-          :locale="locale"
-          @update:model-value="hideSelector"
-        />
-      </ClientOnly>
+      <DatePickerClient
+        ref="end"
+        v-model="end"
+        :lower-limit="start"
+        :locale="locale"
+        @update:model-value="hideSelector"
+      />
     </div>
     <button
       v-if="selectorShown === null"
@@ -54,9 +50,9 @@
 </template>
 
 <script setup lang="ts">
-import Datepicker from 'vue3-datepicker'
 import { ref, watch } from 'vue'
 import { formatDate } from '@datagouv/components'
+import DatePickerClient from '../DatePicker.client.vue'
 import { getDatepickerLocale } from '~/utils/i18n'
 
 type RangePickerValue = { start: Date | null, end: Date | null }

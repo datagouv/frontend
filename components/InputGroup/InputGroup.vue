@@ -33,19 +33,17 @@
       v-else-if="type === 'date'"
       class="fr-mt-1w"
     >
-      <ClientOnly>
-        <Datepicker
-          :id="id"
-          class="fr-input"
-          :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid }"
-          :aria-describedby="ariaDescribedBy"
-          :disabled="disabled"
-          :model-value="(modelValue as Date | undefined)"
-          :locale="dateLocale"
-          input-format="P"
-          @change="change"
-        />
-      </ClientOnly>
+      <DatePickerClient
+        :id="id"
+        class="fr-input"
+        :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid }"
+        :aria-describedby="ariaDescribedBy"
+        :disabled="disabled"
+        :model-value="(modelValue as Date | undefined)"
+        :locale="dateLocale"
+        input-format="P"
+        @change="change"
+      />
     </div>
     <ClientOnly v-else-if="type === 'range'">
       <RangePicker
@@ -99,7 +97,7 @@
 
 <script setup lang="ts">
 import { computed, type InputTypeHTMLAttribute } from 'vue'
-import Datepicker from 'vue3-datepicker'
+import DatePickerClient from '../DatePicker.client.vue'
 import MarkdownEditor from '~/components/MarkdownEditor/MarkdownEditor.vue'
 import RangePicker from '~/components/RangePicker/RangePicker.vue'
 import Required from '~/components/Required/Required.vue'

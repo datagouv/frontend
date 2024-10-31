@@ -358,17 +358,6 @@
                 </div>
               </template>
             </SearchableSelect>
-          <!-- <MultiSelect
-              :placeholder="$t('License')"
-              :search-placeholder="$t('Search a license...')"
-              :list-url="licensesUrl"
-              :values="dataset.license"
-              :all-option="$t('Select a license')"
-              :add-all-option="false"
-              :groups="licensesGroups"
-              :show-description="true"
-              @change="(value: string) => dataset.license = value"
-            /> -->
           </LinkedToAccordion>
         </fieldset>
         <fieldset
@@ -388,27 +377,34 @@
             class="fr-fieldset__element"
             @blur="vWarning$.frequency.$touch"
           >
-          <!-- <MultiSelect
-              :placeholder="$t('Update frequency')"
-              :search-placeholder="$t('Search a frequency...')"
-              :list-url="frequenciesUrl"
-              :values="dataset.frequency"
-              :required="true"
-              :has-error="fieldHasError('frequency')"
-              :has-warning="fieldHasWarning('frequency')"
-              :error-text="getErrorText('frequency')"
-              :all-option="$t('Select an option')"
-              :add-all-option="false"
-              @change="(value: string) => dataset.frequency = value"
-            /> -->
+            <SearchableSelect
+              v-model="form.frequency"
+              :label="$t('Update frequency')"
+              :placeholder="$t('Search a frequency…')"
+              class="mb-6"
+              :get-option-id="(frequency) => frequency.label"
+              :display-value="(frequency) => frequency.label"
+              :options="frequencies"
+              :multiple="false"
+            >
+              <template #option="{ option: frequency }">
+                <div>
+                  {{ frequency.label }}
+                </div>
+              </template>
+            </SearchableSelect>
           </LinkedToAccordion>
           <LinkedToAccordion
             :accordion="addTemporalCoverageAccordionId"
             class="fr-fieldset__element"
             @blur="vWarning$.temporal_coverage.$touch"
           >
+            <input
+              type="date"
+              class="fr-input"
+            >
             <InputGroup
-              v-model="dataset.temporal_coverage"
+              v-model="form.temporal_coverage"
               :label="$t('Temporal coverage')"
               type="range"
             />
@@ -478,7 +474,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type License, type NewDataset, type Organization } from '@datagouv/components'
+import { Well, type Frequency, type License, type NewDataset, type Organization } from '@datagouv/components'
 import { computed, reactive, ref } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
@@ -510,6 +506,8 @@ const addSpatialInformationAccordionId = useId()
 const dataset = reactive({})
 
 type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }
+
+const { data: frequencies } = await useAPI<Array<Frequency>>('/api/1/datasets/frequencies', { lazy: true })
 
 const { data: allLicenses } = await useAPI<Array<License>>('/api/1/datasets/licenses', { lazy: true })
 const licenses = computed(() => {
@@ -572,6 +570,8 @@ const form = ref({
   owner: null as Me | Organization | null,
   tags: [] as Array<Tag>,
   license: null as EnrichedLicense | null,
+  frequency: null as Frequency | null,
+  temporal_coverage: { start: '1453-04-14', end: '2000-08-12' },
 })
 
 const { $api } = useNuxtApp()

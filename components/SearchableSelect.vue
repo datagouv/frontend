@@ -63,7 +63,10 @@
               v-for="(groupOptions, group) in filteredAndGroupedOptions"
               :key="group"
             >
-              <li class="relative select-none py-4 px-4 list-none bg-gray-100 uppercase text-gray-800 font-semibold text-xs">
+              <li
+                v-if="group"
+                class="relative select-none py-4 px-4 list-none bg-gray-100 uppercase text-gray-800 font-semibold text-xs"
+              >
                 {{ group }}
               </li>
               <ComboboxOption
