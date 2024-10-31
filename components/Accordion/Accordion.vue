@@ -2,12 +2,14 @@
   <HeadlessDisclosure
     as="div"
     class="fr-accordion"
+    data-type="accordion"
   >
     <h3 class="fr-accordion__title !mb-0">
       <HeadlessDisclosureButton
         class="fr-accordion__btn !text-neutral-900"
-        :aria-expanded="opened"
+        :aria-expanded="expanded"
         :aria-controls="accordionId"
+        @click="toggle"
       >
         <Icon
           v-if="hasState"
@@ -21,8 +23,10 @@
       </HeadlessDisclosureButton>
     </h3>
     <HeadlessDisclosurePanel
+      v-show="expanded"
       :id="accordionId"
       class="px-4 pt-4 pb-6"
+      static
     >
       <slot />
     </HeadlessDisclosurePanel>
@@ -32,16 +36,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { AccordionState } from '~/types/form'
+import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 
 const props = withDefaults(defineProps<{
   id: string | undefined
   title: string
-  opened?: boolean
   state?: AccordionState
 }>(), {
-  opened: false,
   state: 'default',
 })
+
+const register = inject(key) as AccordionRegister
+
+const { expanded, toggle, unregister } = register()
 
 const accordionId = props.id || useId()
 const hasState = computed(() => props.state !== 'default')
@@ -75,4 +82,5 @@ const iconColor = computed(() => {
       return 'text-neutral-500'
   }
 })
+onUnmounted(unregister)
 </script>

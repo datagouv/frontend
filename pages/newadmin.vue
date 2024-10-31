@@ -19,9 +19,10 @@
                 {{ t('Open menu') }}
               </HeadlessDisclosureButton>
               <HeadlessDisclosurePanel>
-                <ul
+                <AccordionGroup
                   v-if="me"
                   class="fr-sidemenu__list"
+                  as="ul"
                 >
                   <AdminSidebarMenu
                     :user="me"
@@ -33,7 +34,7 @@
                     :default-open="defaultOpenId === organization.id"
                     :organization="organization"
                   />
-                </ul>
+                </AccordionGroup>
               </HeadlessDisclosurePanel>
             </HeadlessDisclosure>
           </ClientOnly>
