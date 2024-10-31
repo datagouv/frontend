@@ -1,15 +1,14 @@
 <template>
-  <HeadlessDisclosure
-    v-slot="{ open }"
-    :default-open
-  >
+  <HeadlessDisclosure>
     <li
       class="fr-sidemenu__item"
-      :class="{ 'fr-sidemenu__item--active': open }"
+      :class="{ 'fr-sidemenu__item--active': expanded }"
     >
       <HeadlessDisclosureButton
         class="fr-sidemenu__btn"
-        :aria-current="open"
+        :aria-current="expanded"
+        :aria-expanded="expanded"
+        @click="toggle"
       >
         <template v-if="user">
           <Avatar
@@ -35,7 +34,10 @@
           </p>
         </template>
       </HeadlessDisclosureButton>
-      <HeadlessDisclosurePanel>
+      <HeadlessDisclosurePanel
+        v-show="expanded"
+        static
+      >
         <ul class="fr-sidemenu__list !mx-2 !my-3">
           <template v-if="user">
             <AdminSidebarLink
@@ -116,9 +118,10 @@
 
 <script setup lang="ts">
 import { Avatar, type Organization, type User } from '@datagouv/components'
+import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 import AdminSidebarLink from '~/components/AdminSidebar/AdminSidebarLink/AdminSidebarLink.vue'
 
-defineProps<{
+const props = defineProps<{
   /**
    * The logged in user, to show a menu with an avatar and "My Profil"
    */
@@ -134,6 +137,16 @@ defineProps<{
 defineEmits<{
   click: []
 }>()
+
+const register = inject(key) as AccordionRegister
+
+const { expanded, toggle, unregister } = register()
+
+if (props.defaultOpen) {
+  toggle()
+}
+
+onUnmounted(unregister)
 </script>
 
 <style scoped>
