@@ -7,25 +7,29 @@
       <p class="rangepicker__hint fr-m-0">
         {{ $t('Select lower bound:') }}
       </p>
-      <Datepicker
-        ref="start"
-        v-model="start"
-        :upper-limit="end"
-        :locale="locale"
-        @update:model-value="showEndSelector"
-      />
+      <ClientOnly>
+        <Datepicker
+          ref="start"
+          v-model="start"
+          :upper-limit="end"
+          :locale="locale"
+          @update:model-value="showEndSelector"
+        />
+      </ClientOnly>
     </div>
     <div v-show="selectorShown === selectorShownEnd">
       <p class="rangepicker__hint fr-m-0">
         {{ $t('Select upper bound:') }}
       </p>
-      <Datepicker
-        ref="end"
-        v-model="end"
-        :lower-limit="start"
-        :locale="locale"
-        @update:model-value="hideSelector"
-      />
+      <ClientOnly>
+        <Datepicker
+          ref="end"
+          v-model="end"
+          :lower-limit="start"
+          :locale="locale"
+          @update:model-value="hideSelector"
+        />
+      </ClientOnly>
     </div>
     <button
       v-if="selectorShown === null"

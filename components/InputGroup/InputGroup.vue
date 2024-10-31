@@ -147,19 +147,18 @@ const props = withDefaults(defineProps<{
 })
 
 const id = useId()
-defineExpose({ id })
 
 const nuxtApp = useNuxtApp()
 
-const errorTextId = computed(() => id + '-desc-error')
-const validTextId = computed(() => id + '-desc-valid')
+const errorTextId = useId()
+const validTextId = useId()
 const ariaDescribedBy = computed(() => {
   let describedBy = props.ariaDescribedby ? props.ariaDescribedby + ' ' : ''
   if (props.isValid) {
-    describedBy += validTextId.value
+    describedBy += validTextId
   }
   else if (props.hasError) {
-    describedBy += errorTextId.value
+    describedBy += errorTextId
   }
   return describedBy
 })

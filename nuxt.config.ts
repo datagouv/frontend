@@ -24,6 +24,28 @@ export default defineNuxtConfig({
       supportUrl: 'https://support.data.gouv.fr/',
       catalogUrl: 'https://catalogue.data.gouv.fr/',
 
+      licenses: {
+        'Autorités administratives': [
+          { value: 'lov2', recommended: true, code: 'etalab-2.0' },
+          { value: 'odc-odbl', description: 'License avec obligation de partage à l’identique', code: 'ODbL-1.0' },
+          { value: 'notspecified', description: 'Le Code des relations entre le public et l’administration ne s’applique pas' },
+        ],
+        'Tous producteurs': [
+          { value: 'lov2', recommended: true },
+          { value: 'cc-by', code: 'CC-BY' },
+          { value: 'cc-by-sa', code: 'CC-BY-SA' },
+          { value: 'cc-zero', code: 'CC0-1.0' },
+          { value: 'fr-lo', code: 'etalab-2.0' },
+          { value: 'odc-by', code: 'ODC-By-1.0' },
+          { value: 'odc-odbl', code: 'ODbL-1.0' },
+          { value: 'odc-pddl', code: 'PDDL-1.0' },
+          { value: 'other-at' },
+          { value: 'other-open' },
+          { value: 'other-pd' },
+          { value: 'notspecified' },
+        ],
+      },
+
       changeEmailPage: 'change-email',
       changePasswordPage: 'change',
     },

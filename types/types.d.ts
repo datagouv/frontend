@@ -115,3 +115,20 @@ export type MultiSelectOption = {
 }
 
 type UserSuggest = Omit<User, 'avatar' | 'avatar_thumbnail' | 'roles' | 'pages'> & { avatar_url: string | null }
+
+export type SpatialZone = {
+  code: string
+  id: string
+  level: string
+  name: string
+  uri: string
+}
+
+export type SpatialGranularity = {
+  id: string
+  name: string
+}
+
+export type Tag = {
+  text: string
+}

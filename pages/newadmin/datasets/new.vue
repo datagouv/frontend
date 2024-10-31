@@ -36,11 +36,16 @@
       v-if="currentStep === 1"
       @start="moveToStep(2)"
     />
+    <Step2DescribeDataset
+      v-if="currentStep === 2"
+      @start="moveToStep(2)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
+import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
 
 const { t } = useI18n()
