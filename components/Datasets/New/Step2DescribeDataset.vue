@@ -399,15 +399,14 @@
             class="fr-fieldset__element"
             @blur="vWarning$.temporal_coverage.$touch"
           >
-            <input
-              type="date"
-              class="fr-input"
-            >
-            <InputGroup
+            <CustomInputGroup :label="$t('Temporal coverage')">
+              <RangePicker v-model="form.temporal_coverage" />
+            </CustomInputGroup>
+            <!-- <InputGroup
               v-model="form.temporal_coverage"
               :label="$t('Temporal coverage')"
               type="range"
-            />
+            /> -->
           </LinkedToAccordion>
         </fieldset>
         <fieldset
@@ -461,6 +460,7 @@
           </LinkedToAccordion>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
+          {{ JSON.stringify(form) }}
           <button
             class="fr-btn"
             @click="submit"
@@ -469,6 +469,7 @@
           </button>
         </div>
       </Container>
+      <div class="h-64" />
     </div>
   </div>
 </template>
@@ -478,6 +479,7 @@ import { Well, type Frequency, type License, type NewDataset, type Organization 
 import { computed, reactive, ref } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
+import CustomInputGroup from '~/components/InputGroup/CustomInputGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
 import type { PublishingFormAccordionState, Tag } from '~/types/types'
 import { createMinLengthWarning, not, createRequired, requiredWithCustomMessage, createSameAs } from '~/utils/i18n'
@@ -571,7 +573,8 @@ const form = ref({
   tags: [] as Array<Tag>,
   license: null as EnrichedLicense | null,
   frequency: null as Frequency | null,
-  temporal_coverage: { start: '1453-04-14', end: '2000-08-12' },
+  // temporal_coverage: { start: '1453-04-14', end: '2000-08-12' },
+  temporal_coverage: { start: null, end: null },
 })
 
 const { $api } = useNuxtApp()
