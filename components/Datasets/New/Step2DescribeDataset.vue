@@ -398,14 +398,11 @@
             class="fr-fieldset__element"
             @blur="vWarning$.temporal_coverage.$touch"
           >
-            <CustomInputGroup :label="$t('Temporal coverage')">
-              <RangePicker v-model="form.temporal_coverage" />
-            </CustomInputGroup>
-            <!-- <InputGroup
+            <InputGroup
               v-model="form.temporal_coverage"
               :label="$t('Temporal coverage')"
               type="range"
-            /> -->
+            />
           </LinkedToAccordion>
         </fieldset>
         <fieldset
@@ -499,11 +496,10 @@
 </template>
 
 <script setup lang="ts">
-import { getZoneUrl, Well, type Frequency, type License, type NewDataset, type Organization } from '@datagouv/components'
+import { Well, type Frequency, type License, type NewDataset, type Organization } from '@datagouv/components'
 import { computed, reactive, ref } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
-import CustomInputGroup from '~/components/InputGroup/CustomInputGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
 import type { PublishingFormAccordionState, SpatialZone, Tag } from '~/types/types'
 import { createMinLengthWarning, not, createRequired, requiredWithCustomMessage, createSameAs } from '~/utils/i18n'
