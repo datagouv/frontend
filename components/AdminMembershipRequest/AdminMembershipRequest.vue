@@ -1,5 +1,5 @@
 <template>
-  <div class="relative container drop-shadow rounded-xxs py-6">
+  <div class="relative container drop-shadow rounded py-6">
     <div class="absolute -mt-9">
       <p class="fr-badge fr-badge--info fr-badge--no-icon">
         <span

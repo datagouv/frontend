@@ -1,17 +1,22 @@
 <template>
-  <EditorTooltip ref="toolTipRef">
+  <EditorTooltip
+    ref="toolTip"
+    class="!left-3 !right-3 gap-2"
+    @focusout="reset"
+  >
     <input
       ref="linkInput"
       v-model="updatedLink"
-      class="input-area"
+      class="flex-1"
       :placeholder="t('Paste link...')"
       @keydown.enter.stop.prevent="onConfirmEdit"
       @keydown="onCancel"
     >
     <button
-      class="fr-ml-1w fr-button fr-btn--sm fr-btn--tertiary-no-outline"
-      :class="{ 'fr-hidden': updatedLink.length === 0 }"
-      @click="onConfirmEdit"
+      role="button"
+      class="px-2 py-1 text-sm"
+      :class="{ hidden: updatedLink.length === 0 }"
+      @click.stop.prevent="onConfirmEdit"
     >
       {{ t("Confirm ⏎") }}
     </button>
@@ -32,7 +37,7 @@ import { linkEditTooltipCtx, linkTooltipState } from '~/components/MarkdownEdito
 
 const { t } = useI18n()
 
-const toolTipRef = ref<InstanceType<typeof EditorTooltip> | null>(null)
+const toolTipRef = useTemplateRef<InstanceType<typeof EditorTooltip>>('toolTip')
 const { link, updateLink } = useLinkPreview()
 const updatedLink = ref('')
 

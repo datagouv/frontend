@@ -205,7 +205,7 @@
               :aria-describedby="addDescriptionAccordionId"
               :label="t('Description')"
               :required="true"
-              type="textarea"
+              type="markdown"
               :has-error="fieldHasError('description')"
               :has-warning="fieldHasWarning('description')"
               :error-text="getErrorText('description')"

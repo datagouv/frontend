@@ -39,7 +39,7 @@
             :src="organization.logo"
             type="organization"
             :size="80"
-            class="rounded-xxs border"
+            class="rounded border"
           />
           <div class="fr-col fr-ml-3v fr-my-0 fr-h3">
             {{ organization.name }}

@@ -1,12 +1,12 @@
 <template>
-  <div class="fr-hidden">
+  <div class="hidden">
     <div
       ref="toolTipRef"
-      class="fr-grid-row"
+      class="flex flex-wrap absolute -mt-1"
     >
       <TooltipButton
         v-if="!isWholeTable && !isHeading && isRow"
-        icon="fr-icon-arrow-up-line"
+        icon="ri:arrow-up-line"
         class="fr-mr-1v"
         :title="t('Add row before')"
         @click="() => {
@@ -20,7 +20,7 @@
       />
       <TooltipButton
         v-if="!isWholeTable && isCol"
-        icon="fr-icon-arrow-left-line"
+        icon="ri:arrow-left-line"
         class="fr-mr-1v"
         :title="t('Add column before')"
         @click="() => {
@@ -34,7 +34,7 @@
       />
       <TooltipButton
         v-if="isWholeTable || (!isHeading && isAny)"
-        icon="fr-icon-delete-line"
+        icon="ri:delete-bin-line"
         class="fr-mr-1v"
         :title="t('Delete selected cells')"
         @click="() => {
@@ -46,10 +46,9 @@
           tooltipProvider?.hide();
         }"
       />
-
       <TooltipButton
         v-if="!isWholeTable && isRow"
-        icon="fr-icon-arrow-down-line"
+        icon="ri:arrow-down-line"
         class="fr-mr-1v"
         :title="t('Add row after')"
         @click="() => {
@@ -63,7 +62,7 @@
       />
       <template v-if="!isWholeTable && isCol">
         <TooltipButton
-          icon="fr-icon-arrow-right-line"
+          icon="ri:arrow-right-line"
           class="fr-mr-1v"
           :title="t('Add column after')"
           @click="() => {
@@ -75,8 +74,8 @@
             tooltipProvider?.hide();
           }"
         />
-        <!-- <TooltipButton
-          :svg="AlignLeftIcon"
+        <TooltipButton
+          icon="ri:align-left"
           class="fr-mr-1v"
           :title="t('Align left')"
           @click="() => {
@@ -88,7 +87,7 @@
         />
         <TooltipButton
           class="fr-mr-1v"
-          :svg="AlignCenterIcon"
+          icon="ri:align-center"
           :title="t('Align center')"
           @click="() => {
             if (loading) return;
@@ -99,7 +98,7 @@
         />
         <TooltipButton
           class="fr-mr-1v"
-          :svg="AlignRightIcon"
+          icon="ri:align-right"
           :title="t('Align right')"
           @click="() => {
             if (loading) return;
@@ -107,7 +106,7 @@
               ctx.get(commandsCtx).call(setAlignCommand.key, 'right');
             });
           }"
-        /> -->
+        />
       </template>
     </div>
   </div>
@@ -128,9 +127,6 @@ import { useInstance } from '@milkdown/vue'
 import {
   usePluginViewContext,
 } from '@prosemirror-adapter/vue'
-// import AlignCenterIcon from 'iconoir/icons/regular/align-center.svg?raw'
-// import AlignLeftIcon from 'iconoir/icons/regular/align-left.svg?raw'
-// import AlignRightIcon from 'iconoir/icons/regular/align-right.svg?raw'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { makeTooltipProvider } from '~/components/MarkdownEditor/Milkdown/Tooltip/useTooltipProvider'

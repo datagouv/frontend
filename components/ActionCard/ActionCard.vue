@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-xxs fr-p-3w fr-grid-row flex-direction-column"
+    class="rounded fr-p-3w fr-grid-row flex-direction-column"
     :class="{ 'h-100': stretchHeight, 'bg-contrast-blue-cumulus': isPrimary, 'border border-default-grey bg-white': !isPrimary }"
   >
     <div

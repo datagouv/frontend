@@ -3,6 +3,7 @@ import { usePluginViewFactory } from '@prosemirror-adapter/vue'
 import type { EditorView } from 'prosemirror-view'
 import { ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
+import { posToDOMRect } from '@milkdown/prose'
 import { findMarkPosition } from '~/components/MarkdownEditor/ProseMirror/findMarkPosition'
 import { linkEditTooltipCtx, linkTooltipState } from '~/components/MarkdownEditor/Milkdown/LinkEdit/linkEditTooltipCtx'
 import LinkPreviewTooltip from '~/components/MarkdownEditor/Milkdown/LinkPreview/LinkPreviewTooltip.vue'
@@ -34,11 +35,6 @@ export function configurePreviewTooltip(ctx: Ctx, updateLink: (newLink: string) 
       const markPosition = findMarkPosition(result.mark, view.state.doc, position.before(), position.after())
       const tool = ctx.get(linkPreviewTooltip.key)
       if (!tool || !tool.view) return
-      // tooltip?.getInstance()?.setProps({
-      //   getReferenceClientRect: () => {
-      //     return posToDOMRect(view, markPosition.start, markPosition.end)
-      //   },
-      // })
       ctx.update(linkTooltipState.key, () => ({
         from: markPosition.start,
         to: markPosition.end,
@@ -46,7 +42,9 @@ export function configurePreviewTooltip(ctx: Ctx, updateLink: (newLink: string) 
       }))
       updateLink(result.mark.attrs.href)
 
-      tooltip?.show()
+      tooltip?.show({
+        getBoundingClientRect: () => posToDOMRect(view, markPosition.start, markPosition.end),
+      })
       tooltip?.element.addEventListener('mouseenter', onMouseEnterTooltip)
       tooltip?.element.addEventListener('mouseleave', onMouseLeaveTooltip)
       return

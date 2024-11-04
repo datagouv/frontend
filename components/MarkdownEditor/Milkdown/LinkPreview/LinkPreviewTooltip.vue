@@ -1,28 +1,32 @@
 <template>
   <EditorTooltip
     ref="toolTipRef"
-    :class="{ 'fr-hidden': link.length === 0 }"
+    class="!left-3 !right-3 overflow-hidden gap-2"
+    :class="{ hidden: link.length === 0 }"
+    @focusout="() => tooltipProvider?.hide()"
   >
-    <span
+    <Icon
       aria-hidden="true"
-      class="fr-icon-link fr-mr-1w"
+      name="ri:link"
+      class="flex-none"
     />
-    <div class="text-overflow-ellipsis">
+    <div class="flex-1 truncate">
       <a
         class="fr-link"
         :href="link"
+        :title="link"
       >
         {{ link }}
       </a>
     </div>
     <button
-      class="fr-btn fr-btn--secondary fr-btn--sm fr-icon-pencil-line fr-mx-1w"
+      class="flex-none fr-btn fr-btn--secondary fr-btn--sm fr-icon-pencil-line"
       @click="editLink"
     >
       {{ t("Edit link") }}
     </button>
     <button
-      class="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-link-unlink"
+      class="flex-none fr-btn fr-btn--tertiary fr-btn--sm fr-icon-link-unlink"
       :title="t('Remove link')"
       @click="deleteLink"
     >

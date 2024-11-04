@@ -1,5 +1,6 @@
 import { editorViewCtx } from '@milkdown/core'
 import type { Ctx } from '@milkdown/ctx'
+import { posToDOMRect } from '@milkdown/prose'
 import { $command } from '@milkdown/utils'
 import { TextSelection } from 'prosemirror-state'
 import { linkEditTooltipCtx, linkTooltipState } from '~/components/MarkdownEditor/Milkdown/LinkEdit/linkEditTooltipCtx'
@@ -21,11 +22,9 @@ export function insertLink(ctx: Ctx) {
   view.dispatch(view.state.tr.setSelection(TextSelection.create(view.state.doc, selection.from, selection.to)))
 
   const tooltip = ctx.get(linkEditTooltipCtx.key)
-  // tooltip?.getInstance()?.setProps({
-  //   getReferenceClientRect: () => {
-  //     return posToDOMRect(view, selection.from, selection.to)
-  //   },
-  // })
-  tooltip?.show()
+  tooltip?.show({
+    getBoundingClientRect: () => posToDOMRect(view, selection.from, selection.to),
+  })
+  tooltip?.element.querySelector('input')?.focus()
   return true
 }
