@@ -17,7 +17,7 @@
         <Accordion
           :id="nameDatasetAccordionId"
           :title="$t('Naming your dataset')"
-          :state="state.title"
+          :state="accordionState('title')"
         >
           <p class="fr-m-0">
             {{ $t("The title of your dataset should be as precise and specific as possible.") }} <br>
@@ -28,7 +28,7 @@
         <Accordion
           :id="addAcronymAccordionId"
           :title="$t('Add an acronym to the dataset')"
-          :state="state.acronym"
+          :state="accordionState('acronym')"
         >
           <p class="fr-m-0">
             {{ $t("You have the option to add an acronym to your dataset. The letters that make up this acronym do not need to be separated by periods.") }}
@@ -37,7 +37,7 @@
         <Accordion
           :id="writeAGoodDescriptionAccordionId"
           :title="$t('Write a good description')"
-          :state="state.description"
+          :state="accordionState('description')"
         >
           <div class="markdown fr-m-0">
             <p class="fr-m-0">
@@ -58,94 +58,95 @@
               <li>{{ $t("Legal and ethical considerations.") }}</li>
             </ul>
             <Well
-              v-if="fieldHasWarning('description')"
+              v-if="getFirstWarning('description')"
               class="fr-mt-1w"
               color="orange-terre-battue"
             >
-              {{ getWarningText("description") }}
+              {{ getFirstWarning("description") }}
             </Well>
           </div>
         </Accordion>
         <Accordion
           :id="useTagsAccordionId"
           :title="$t('Use tags')"
-          :state="state.tags"
+          :state="accordionState('tags')"
         >
           <p class="fr-m-0">
             {{ $t("Tags characterize your dataset. They are public and improve the dataset's search engine optimization during a user search.") }}
           </p>
           <Well
-            v-if="fieldHasWarning('tags')"
+            v-if="getFirstWarning('tags')"
             class="fr-mt-1w"
             color="orange-terre-battue"
           >
-            {{ getWarningText("tags") }}
+            {{ getFirstWarning("tags") }}
           </Well>
         </Accordion>
         <Accordion
           :id="selectLicenseAccordionId"
           :title="$t('Select a license')"
-          :state="state.license"
+          :state="accordionState('license')"
         >
           <p class="fr-m-0">
             {{ $t("Licenses define the rules for reuse. By choosing a reuse license, you ensure that the published dataset will be reused according to the usage conditions you have defined.") }}
           </p>
           <Well
-            v-if="fieldHasWarning('license')"
+            v-if="getFirstWarning('license')"
             class="fr-mt-1w"
             color="orange-terre-battue"
           >
-            {{ getWarningText("license") }}
+            {{ getFirstWarning('license') }}
           </Well>
         </Accordion>
         <Accordion
           :id="chooseFrequencyAccordionId"
           :title="$t('Choose the update frequency')"
-          :state="state.frequency"
+          :state="accordionState('frequency')"
         >
           <p class="fr-m-0">
             {{ $t("The update frequency corresponds to how often you plan to update the published data. This update frequency is only indicative.") }}
           </p>
           <Well
-            v-if="fieldHasWarning('frequency')"
+            v-if="getFirstWarning('frequency')"
             class="fr-mt-1w"
             color="orange-terre-battue"
           >
-            {{ getWarningText("frequency") }}
+            {{ getFirstWarning("frequency") }}
           </Well>
         </Accordion>
         <Accordion
           :id="addTemporalCoverageAccordionId"
           :title="$t('Provide the temporal coverage')"
-          :state="state.temporal_coverage"
+          :state="accordionState('temporal_coverage')"
         >
           <p class="fr-m-0">
             {{ $t("The temporal coverage indicates the time range of the published data.") }} <br>
             {{ $t("For example : from 2012 to 2015.") }}
           </p>
           <Well
-            v-if="fieldHasWarning('temporal_coverage')"
+            v-if="getFirstWarning('temporal_coverage')"
             class="fr-mt-1w"
             color="orange-terre-battue"
           >
-            {{ getWarningText("temporal_coverage") }}
+            {{ getFirstWarning("temporal_coverage") }}
           </Well>
         </Accordion>
         <Accordion
           :id="addSpatialInformationAccordionId"
           :title="$t('Complete the spatial information')"
-          :state="state.spatial_information"
+          :state="accordionState('spatial_granularity')"
         >
+          <!-- TODO add spatial zones too -->
           <p class="fr-m-0">
             {{ $t("The spatial granularity indicates the finest geographical level of detail that your data can cover.") }} <br>
             {{ $t("For example: at the department or municipality scale.") }}
           </p>
           <Well
-            v-if="fieldHasWarning('spatial_information')"
+            v-if="getFirstWarning('spatial_granularity')"
             class="fr-mt-1w"
             color="orange-terre-battue"
           >
-            {{ getWarningText("spatial") }}
+            {{ getFirstWarning("spatial_granularity") }}
           </Well>
         </Accordion>
       </AccordionGroup>
@@ -234,22 +235,22 @@
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="nameDatasetAccordionId"
-            @blur="vWarning$.title.$touch"
+            @blur="touch('title')"
           >
             <InputGroup
               v-model="form.title"
               :aria-describedby="nameDatasetAccordionId"
               :label="$t('Dataset name')"
               :required="true"
-              :has-error="fieldHasError('title')"
-              :has-warning="fieldHasWarning('title')"
-              :error-text="getErrorText('title')"
+              :has-error="!!getFirstError('title')"
+              :has-warning="!!getFirstWarning('title')"
+              :error-text="getFirstError('title')"
             />
           </LinkedToAccordion>
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="addAcronymAccordionId"
-            @blur="vWarning$.acronym.$touch"
+            @blur="touch('acronym')"
           >
             <InputGroup
               v-model="form.acronym"
@@ -259,22 +260,22 @@
           <LinkedToAccordion
             class="fr-fieldset__element min-width-0"
             :accordion="writeAGoodDescriptionAccordionId"
-            @blur="vWarning$.description.$touch"
+            @blur="touch('description')"
           >
             <InputGroup
               v-model="form.description"
               :label="$t('Description')"
               :required="true"
               type="textarea"
-              :has-error="fieldHasError('description')"
-              :has-warning="fieldHasWarning('description')"
-              :error-text="getErrorText('description')"
+              :has-error="!!getFirstError('description')"
+              :has-warning="!!getFirstWarning('description')"
+              :error-text="getFirstError('description')"
             />
           </LinkedToAccordion>
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="useTagsAccordionId"
-            @blur="vWarning$.tags.$touch"
+            @blur="touch('tags')"
           >
             <div class="mb-6">
               <SearchableSelect
@@ -286,8 +287,8 @@
                 :multiple="true"
                 class="mb-2"
 
-                :error-text="getErrorText('tags')"
-                :warning-text="getWarningText('tags')"
+                :error-text="getFirstError('tags')"
+                :warning-text="getFirstWarning('tags')"
               >
                 <template #option="{ option: tag }">
                   <div class="flex items-center space-x-2">
@@ -311,7 +312,7 @@
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="selectLicenseAccordionId"
-            @blur="vWarning$.license.$touch"
+            @blur="touch('license')"
           >
             <SearchableSelect
               v-model="form.license"
@@ -322,8 +323,8 @@
               :multiple="false"
               :group-by="(option) => option.group"
 
-              :error-text="getErrorText('license')"
-              :warning-text="getWarningText('license')"
+              :error-text="getFirstError('license')"
+              :warning-text="getFirstWarning('license')"
             >
               <template #option="{ option, active }">
                 <div class="w-full">
@@ -380,7 +381,7 @@
           <LinkedToAccordion
             :accordion="chooseFrequencyAccordionId"
             class="fr-fieldset__element"
-            @blur="vWarning$.frequency.$touch"
+            @blur="touch('frequency')"
           >
             <SearchableSelect
               v-model="form.frequency"
@@ -392,8 +393,8 @@
               :options="frequencies"
               :multiple="false"
 
-              :error-text="getErrorText('frequency')"
-              :warning-text="getWarningText('frequency')"
+              :error-text="getFirstError('frequency')"
+              :warning-text="getFirstWarning('frequency')"
             >
               <template #option="{ option: frequency }">
                 {{ frequency.label }}
@@ -403,7 +404,7 @@
           <LinkedToAccordion
             :accordion="addTemporalCoverageAccordionId"
             class="fr-fieldset__element"
-            @blur="vWarning$.temporal_coverage.$touch"
+            @blur="touch('temporal_coverage')"
           >
             <InputGroup
               v-model="form.temporal_coverage"
@@ -427,21 +428,21 @@
           <LinkedToAccordion
             :accordion="addSpatialInformationAccordionId"
             class="fr-fieldset__element"
-            @blur="vWarning$.spatial.$touch"
+            @blur="touch('spatial_zones')"
           >
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-12">
                 <div class="mb-6">
                   <SearchableSelect
-                    v-model="form.spatial.zones"
+                    v-model="form.spatial_zones"
                     :label="$t('Spatial coverage')"
                     :placeholder="$t('Search a spatial coverage…')"
                     :suggest="suggestSpatial"
                     :multiple="true"
                     class="mb-2"
 
-                    :error-text="getErrorText('spatial')"
-                    :warning-text="getWarningText('spatial')"
+                    :error-text="getFirstError('spatial_zones')"
+                    :warning-text="getFirstWarning('spatial_zones')"
                   >
                     <template #option="{ option: zone, active }">
                       <div class="w-full">
@@ -468,7 +469,7 @@
                   </SearchableSelect>
                   <div class="flex space-x-2">
                     <button
-                      v-for="zone in form.spatial.zones"
+                      v-for="zone in form.spatial_zones"
                       :key="zone.id"
                       class="fr-tag fr-tag--sm fr-tag--dismiss"
                       type="button"
@@ -481,7 +482,7 @@
               </div>
               <div class="fr-col-12">
                 <SearchableSelect
-                  v-model="form.spatial.granularity"
+                  v-model="form.spatial_granularity"
                   :label="$t('Spatial granularity')"
                   :placeholder="$t('Search a granularity…')"
                   class="mb-6"
@@ -490,8 +491,8 @@
                   :options="granularities"
                   :multiple="false"
 
-                  :error-text="getErrorText('spatial')"
-                  :warning-text="getWarningText('spatial')"
+                  :error-text="getFirstError('spatial_granularity')"
+                  :warning-text="getFirstWarning('spatial_granularity')"
                 >
                   <template #option="{ option: granularity }">
                     {{ granularity.name }}
@@ -502,7 +503,9 @@
           </LinkedToAccordion>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
-          {{ JSON.stringify(form) }}
+          <div>{{ JSON.stringify(form) }}</div>
+          <div>{{ JSON.stringify(errors) }}</div>
+          <div>{{ JSON.stringify(warnings) }}</div>
           <button
             class="fr-btn"
             @click="submit"
@@ -518,12 +521,11 @@
 
 <script setup lang="ts">
 import { Well, type Frequency, type License, type NewDataset, type Organization } from '@datagouv/components'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { PublishingFormAccordionState, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
-import { createMinLengthWarning, not, createRequired, requiredWithCustomMessage, createSameAs } from '~/utils/i18n'
+import type { SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 
 // const props = defineProps<{}>()
 
@@ -533,7 +535,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
-const nuxtApp = useNuxtApp()
 
 const user = useMe()
 
@@ -586,30 +587,9 @@ const getGranularityName = (zone: SpatialZone): string | undefined => {
   return granularities.value.find(granularity => granularity.id === zone.level)?.name
 }
 
-const notUnknown = not(t('The value must be different than unknown.'), createSameAs(nuxtApp.$i18n))
-const tagsRequired = requiredWithCustomMessage(t('Adding tags helps improve the SEO of your data.'))
-const temporalCoverageRequired = requiredWithCustomMessage(t('You did not provide the temporal coverage.'))
-const spatialGranularityRequired = requiredWithCustomMessage(t('You have not specified the spatial granularity.'))
-
 type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
 const ownedOptions = computed<Array<Owned>>(() => {
   return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
-})
-
-const form = ref({
-  title: '',
-  acronym: '',
-  description: '',
-  owned: null as Owned | null,
-  tags: [] as Array<Tag>,
-  license: null as EnrichedLicense | null,
-  frequency: null as Frequency | null,
-  // temporal_coverage: { start: '1453-04-14', end: '2000-08-12' },
-  temporal_coverage: { start: null, end: null },
-  spatial: {
-    zones: [] as Array<SpatialZone>,
-    granularity: null as SpatialGranularity | null,
-  },
 })
 
 const { $api } = useNuxtApp()
@@ -626,54 +606,51 @@ const removeTag = (tag: Tag) => {
   form.value.tags = form.value.tags.filter(otherTag => otherTag.text !== tag.text)
 }
 const removeZone = (zone: SpatialZone) => {
-  form.value.spatial.zones = form.value.spatial.zones.filter(otherZone => otherZone.id !== zone.id)
+  form.value.spatial_zones = form.value.spatial_zones.filter(otherZone => otherZone.id !== zone.id)
 }
 
-const requiredRules = {
-  description: { required: createRequired(nuxtApp.$i18n) },
-  frequency: { required: createRequired(nuxtApp.$i18n) },
-  title: { required: createRequired(nuxtApp.$i18n) },
-  owned: { required: createRequired(nuxtApp.$i18n) },
-}
+const { form, errors, warnings, touch, getFirstError, getFirstWarning } = useForm({
+  title: '',
+  acronym: '',
+  description: '',
+  owned: null as Owned | null,
+  tags: [] as Array<Tag>,
+  license: null as EnrichedLicense | null,
+  temporal_coverage: { start: null, end: null },
+  frequency: null as Frequency | null,
+  spatial_zones: [] as Array<SpatialZone>,
+  spatial_granularity: null as SpatialGranularity | null,
+}, {
+  owned: [required()],
+  title: [required()],
+  description: [required()],
+  frequency: [required()],
+}, {
+  description: [minLength(200, t('It\'s advised to have a description of at least {min} characters.', { min: 200 }))],
+  tags: [required(t('Adding tags helps improve the SEO of your data.'))],
+  license: [required()],
+  frequency: [(f) => {
+    if (f && f.id === 'unknown') return t('The value must be different than unknown.')
 
-const warningRules = {
-  acronym: {},
-  description: { required: createRequired(nuxtApp.$i18n), minLengthValue: createMinLengthWarning(nuxtApp.$i18n) },
-  frequency: { required: createRequired(nuxtApp.$i18n), notUnknown },
-  license: { required: createRequired(nuxtApp.$i18n) },
-  spatial: {
-    granularity: { required: spatialGranularityRequired },
-  },
-  tags: { required: tagsRequired },
-  temporal_coverage: { required: temporalCoverageRequired },
-  title: { required: createRequired(nuxtApp.$i18n) },
-  owned: { required: createRequired(nuxtApp.$i18n) },
-}
+    return null
+  }],
+  spatial_granularity: [required(t('You have not specified the spatial granularity.'))],
+  temporal_coverage: [required(t('You did not provide the temporal coverage.'))],
 
-const { getErrorText, getFunctionalState, getWarningText, hasError, hasWarning, validateRequiredRules, v$, vWarning$ } = useFunctionalState(form, requiredRules, warningRules)
-
-const state = computed<Record<string, PublishingFormAccordionState>>(() => {
-  return {
-    acronym: vWarning$.value.acronym.$dirty ? 'info' : 'disabled',
-    title: getFunctionalState(vWarning$.value.title.$dirty, v$.value.title.$invalid, vWarning$.value.title.$error),
-    description: getFunctionalState(vWarning$.value.description.$dirty, v$.value.description.$invalid, vWarning$.value.description.$error),
-    tags: getFunctionalState(vWarning$.value.tags.$dirty, false, vWarning$.value.tags.$error),
-    license: getFunctionalState(vWarning$.value.license.$dirty, false, vWarning$.value.license.$error),
-    frequency: getFunctionalState(vWarning$.value.frequency.$dirty, v$.value.frequency.$invalid, vWarning$.value.frequency.$error),
-    temporal_coverage: getFunctionalState(vWarning$.value.temporal_coverage.$dirty, false, vWarning$.value.temporal_coverage.$error),
-    spatial_information: getFunctionalState(vWarning$.value.spatial.granularity.$dirty, false, vWarning$.value.spatial.granularity.$error),
-    owned: getFunctionalState(vWarning$.value.owned.$dirty, v$.value.owned.$invalid, vWarning$.value.owned.$error),
-  }
 })
 
-const fieldHasError = (field: string) => hasError(state, field)
+const accordionState = (key: keyof typeof form.value) => {
+  if (getFirstError(key)) return 'error'
+  if (getFirstWarning(key)) return 'warning'
 
-const fieldHasWarning = (field: string) => hasWarning(state, field)
+  return 'default'
+}
 
 function submit() {
   validateRequiredRules().then((valid) => {
     if (valid) {
-      emit('next', dataset)
+      console.log('here')
+      // emit('next', dataset)
     }
   })
 };

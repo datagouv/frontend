@@ -115,7 +115,7 @@ const props = withDefaults(defineProps<{
   ariaDescribedby?: string
   autocomplete?: string
   disabled?: boolean
-  errorText?: string
+  errorText?: string | null
   hasError?: boolean
   hasWarning?: boolean
   hintText?: string

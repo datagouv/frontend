@@ -121,8 +121,8 @@ type ModelType = Multiple extends false ? T : Array<T>
 
 const props = withDefaults(defineProps<{
   validText?: string
-  errorText?: string
-  warningText?: string
+  errorText?: string | null
+  warningText?: string | null
   hintText?: string
   explanation?: string
   label: string
