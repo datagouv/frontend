@@ -236,7 +236,7 @@
             @blur="vWarning$.title.$touch"
           >
             <InputGroup
-              v-model="dataset.title"
+              v-model="form.title"
               :aria-describedby="nameDatasetAccordionId"
               :label="$t('Dataset name')"
               :required="true"
@@ -251,7 +251,7 @@
             @blur="vWarning$.acronym.$touch"
           >
             <InputGroup
-              v-model="dataset.acronym"
+              v-model="form.acronym"
               :label="$t('Acronym')"
             />
           </LinkedToAccordion>
@@ -261,7 +261,7 @@
             @blur="vWarning$.description.$touch"
           >
             <InputGroup
-              v-model="dataset.description"
+              v-model="form.description"
               :label="$t('Description')"
               :required="true"
               type="textarea"
@@ -569,6 +569,9 @@ function checkOwned() {
 };
 
 const form = ref({
+  title: '',
+  acronym: '',
+  description: '',
   owner: null as Me | Organization | null,
   tags: [] as Array<Tag>,
   license: null as EnrichedLicense | null,
@@ -618,7 +621,7 @@ const warningRules = {
   owned: { custom: checkOwned },
 }
 
-const { getErrorText, getFunctionalState, getWarningText, hasError, hasWarning, validateRequiredRules, v$, vWarning$ } = useFunctionalState(dataset, requiredRules, warningRules)
+const { getErrorText, getFunctionalState, getWarningText, hasError, hasWarning, validateRequiredRules, v$, vWarning$ } = useFunctionalState(form, requiredRules, warningRules)
 
 const state = computed<Record<string, PublishingFormAccordionState>>(() => {
   return {

@@ -102,3 +102,10 @@ const hideSelector = () => {
   selectorShown.value = null
 }
 </script>
+
+<style>
+/* not working with scoped because maybe it's teleported outside the component? */
+.rangepicker .v3dp__datepicker .v3dp__input_wrapper {
+  display: none;
+}
+</style>
