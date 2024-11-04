@@ -1,17 +1,16 @@
 <template>
   <button
-    class="fr-btn fr-btn--secondary-grey-400 fr-btn--sm fr-btn--tertiary-no-outline"
-    :class="icon"
+    class="text-neutral-700 h-8 p-2 rounded-full leading-none hover:!bg-neutral-200"
     role="menuitem"
   >
-    <slot />
+    <Icon :name="icon" />
   </button>
 </template>
 
 <script setup lang="ts">
 defineProps<{
   /**
-   * The DSFR icon to show
+   * The icon to show
    */
   icon: string
 }>()

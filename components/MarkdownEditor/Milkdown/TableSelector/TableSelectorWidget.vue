@@ -2,11 +2,11 @@
   <button
     ref="containerRef"
     :draggable="type !== 'top-left'"
-    class="block fr-p-0 cursor-pointer hover:bg-primary"
+    class="table-selector block fr-p-0 cursor-pointer hover:!bg-primary absolute bg-neutral-300"
     :class="className + ' ' + common"
-    @click="click"
-    @dragstart="dragStart"
-    @dragover="dragOver"
+    @click.stop="click"
+    @dragstart.stop="dragStart"
+    @dragover.stop.prevent="dragOver"
     @dragleave="dragLeave"
     @drop="drop"
   />
@@ -30,7 +30,7 @@ const containerRef = ref<HTMLDivElement | null>(null)
 const drag = ref(false)
 
 const common = computed(
-  () => 'absolute bg-grey-200 ' + (drag.value ? 'border border-blue-400 border-2' : ''),
+  () => (drag.value ? 'border border-primary border-2' : ''),
 )
 
 const className = computed(() => {
@@ -41,32 +41,26 @@ const className = computed(() => {
   return 'h-3v w-3v left-n2w top-n2w rounded-circle'
 })
 
-function click(e: Event) {
-  e.stopPropagation()
+function click(_e: Event) {
   const div = containerRef.value
   if (!div) return
   if (loading.value) return
   const editor = getEditor() as Editor
-  editor.action((ctx) => {
+  editor.action(async (ctx) => {
     const tooltip = ctx.get(tableTooltipCtx.key)
-    tooltip?.getInstance()?.setProps({
-      getReferenceClientRect: () => {
-        return div.getBoundingClientRect()
-      },
+    tooltip?.show({
+      getBoundingClientRect: () => div.getBoundingClientRect(),
     })
-    tooltip?.show()
 
     const commands = ctx.get(commandsCtx)
 
-    if (type === 'left') commands.call(selectRowCommand.key, index)
-    else if (type === 'top') commands.call(selectColCommand.key, index)
+    if (type === 'left') commands.call(selectRowCommand.key, { index })
+    else if (type === 'top') commands.call(selectColCommand.key, { index })
     else commands.call(selectTableCommand.key)
   })
 }
 
 function dragStart(e: DragEvent) {
-  e.stopPropagation()
-
   const data = { index: spec?.index, type: spec?.type }
   if (e.dataTransfer) {
     e.dataTransfer.setData(
@@ -79,8 +73,6 @@ function dragStart(e: DragEvent) {
 
 function dragOver(e: DragEvent) {
   drag.value = true
-  e.stopPropagation()
-  e.preventDefault()
   if (e.dataTransfer) {
     e.dataTransfer.dropEffect = 'move'
   }

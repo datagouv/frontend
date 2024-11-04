@@ -20,6 +20,9 @@
     :size
     @close="close"
   >
+    <template #iconTitle>
+      <slot name="iconTitle" />
+    </template>
     <slot :close />
     <template #footer>
       <slot

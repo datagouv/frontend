@@ -1,27 +1,19 @@
 <template>
   <button
-    class="fr-btn fr-btn--secondary fr-btn--sm bg-white"
-    :class="iconClass"
+    class="rounded-full p-2 border-solid border border-neutral-400 text-xs w-8 h-8 leading-none text-neutral-800 !bg-neutral-50 hover:!bg-neutral-200"
     @click="emit('click')"
   >
-    <div
-      v-if="svg"
-      v-html="svg"
+    <Icon
+      :name="icon"
     />
     <slot />
   </button>
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   icon: string
-  svg?: never
-} | {
-  icon?: never
-  svg: string
 }>()
-
-const iconClass = props.icon ? props.icon : 'fr-icon-svg'
 
 const emit = defineEmits<{ click: [] }>()
 </script>

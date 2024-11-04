@@ -40,9 +40,6 @@ export function makeTooltipProvider(key: SliceType<TooltipProvider | null>, tool
       if (elt instanceof HTMLElement) {
         const provider = new TooltipProvider({
           content: elt,
-          tippyOptions: {
-            zIndex: 30,
-          },
           shouldShow: () => {
             return false
           },

@@ -16,6 +16,11 @@
     --blue-france-850-200: var(--blue-cumulus-850-200);
   }
 
+.ProseMirror .selectedCell:after {
+  @apply bg-primary;
+  @apply opacity-50;
+}
+
 #__nuxt, #__nuxt > div {
   @apply h-full;
 }

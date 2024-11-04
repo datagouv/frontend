@@ -75,7 +75,7 @@
         v-model="me.about"
         class="fr-col"
         :label="$t('Biography')"
-        type="textarea"
+        type="markdown"
       />
       <InputGroup
         v-model="me.website"

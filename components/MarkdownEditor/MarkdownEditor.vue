@@ -17,6 +17,10 @@ import InternalEditor from '~/components/MarkdownEditor/InternalEditor.vue'
 import type { MarkdownEditorProps } from '~/components/MarkdownEditor/types'
 import { useLinkPreviewProvider } from '~/components/MarkdownEditor/Milkdown/LinkPreview/useLinkPreview'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = defineProps<MarkdownEditorProps>()
 
 defineEmits<{

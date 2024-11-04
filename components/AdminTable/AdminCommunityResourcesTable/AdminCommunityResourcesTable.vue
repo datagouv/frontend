@@ -60,7 +60,7 @@
           <AdminBadge :type="getStatus(communityResource).type">{{ getStatus(communityResource).label }}</AdminBadge>
         </td>
         <td>
-          <code class="fr-p-1v font-mono bg-grey-100 fr-text--sm text-mention-grey rounded-xxs">{{ communityResource.format }}</code>
+          <code class="fr-p-1v font-mono bg-grey-100 fr-text--sm text-mention-grey rounded">{{ communityResource.format }}</code>
         </td>
         <td>{{ formatDate(communityResource.created_at) }}</td>
         <td>{{ formatDate(communityResource.last_modified) }}</td>

@@ -24,7 +24,7 @@
       <input
         :id="id"
         ref="input"
-        class="fr-upload fr-hidden"
+        class="fr-upload hidden"
         type="file"
         :aria-describedby="ariaDescribedBy"
         :accept="accept"
