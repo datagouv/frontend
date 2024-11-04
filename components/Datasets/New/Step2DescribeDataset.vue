@@ -445,6 +445,7 @@
                           </div>
                         </div>
                         <div
+                          v-if="getGranularityName(zone)"
                           class="flex items-center justify-between space-x-2"
                           :class="{
                             'text-gray-500': !active,
@@ -467,33 +468,22 @@
                     </button>
                   </div>
                 </div>
-              <!-- <MultiSelect
-                  :placeholder="$t('Spatial coverage')"
-                  :search-placeholder="$t('Search a spatial coverage...')"
-                  suggest-url="/spatial/zones/suggest/"
-                  entity-url="/spatial/zone/"
-                  :values="dataset.spatial?.zones"
-                  :has-warning="fieldHasWarning('spatial_information')"
-                  :all-option="$t('e.g. France')"
-                  :add-all-option="false"
-                  :multiple="true"
-                  helper-label="Insee : "
-                  :on-suggest="formatSpatialZones"
-                  :show-description="true"
-                  @change="(value: Array<string>) => dataset.spatial ? dataset.spatial.zones = value : dataset.spatial = { zones: value }"
-                /> -->
               </div>
               <div class="fr-col-12">
-              <!-- <MultiSelect
-                  :placeholder="$t('Spatial granularity')"
-                  :search-placeholder="$t('Search a granularity...')"
-                  :initial-options="granularities"
-                  :values="dataset.spatial?.granularity"
-                  :has-warning="fieldHasWarning('spatial_information')"
-                  :all-option="$t('Select an option')"
-                  :add-all-option="false"
-                  @change="setGranularity"
-                /> -->
+                <SearchableSelect
+                  v-model="form.spatial.granularity"
+                  :label="$t('Spatial granularity')"
+                  :placeholder="$t('Search a granularity…')"
+                  class="mb-6"
+                  :get-option-id="(granularity) => granularity.id"
+                  :display-value="(granularity) => granularity.name"
+                  :options="granularities"
+                  :multiple="false"
+                >
+                  <template #option="{ option: granularity }">
+                    {{ granularity.name }}
+                  </template>
+                </SearchableSelect>
               </div>
             </div>
           </LinkedToAccordion>
@@ -605,7 +595,7 @@ const form = ref({
   temporal_coverage: { start: null, end: null },
   spatial: {
     zones: [] as Array<SpatialZone>,
-
+    granularity: null as SpatialGranularity | null,
   },
 })
 
