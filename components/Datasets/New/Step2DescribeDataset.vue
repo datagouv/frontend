@@ -275,35 +275,34 @@
             :accordion="useTagsAccordionId"
             @blur="vWarning$.tags.$touch"
           >
-            <SearchableSelect
-              v-model="form.tags"
-              :label="$t('Tags')"
-              :placeholder="$t('Search a tag…')"
-              class="mb-6"
-              :get-option-id="(tag) => tag.text"
-              :display-value="(tags) => ''"
-              :suggest="suggestTags"
-              :multiple="true"
-            >
-              <template #option="{ option: tag }">
-                <div class="flex items-center space-x-2">
-                  <span>{{ tag.text }}</span>
-                </div>
-              </template>
-            </SearchableSelect>
-            <div
-
-              class="flex space-x-2"
-            >
-              <button
-                v-for="tag in form.tags"
-                :key="tag.text"
-                class="fr-tag fr-tag--sm fr-tag--dismiss"
-                type="button"
-                @click="removeTag(tag)"
+            <div class="mb-6">
+              <SearchableSelect
+                v-model="form.tags"
+                :label="$t('Tags')"
+                :placeholder="$t('Search a tag…')"
+                :get-option-id="(tag) => tag.text"
+                :display-value="(tags) => ''"
+                :suggest="suggestTags"
+                :multiple="true"
+                class="mb-2"
               >
-                {{ tag.text }}
-              </button>
+                <template #option="{ option: tag }">
+                  <div class="flex items-center space-x-2">
+                    <span>{{ tag.text }}</span>
+                  </div>
+                </template>
+              </SearchableSelect>
+              <div class="flex space-x-2">
+                <button
+                  v-for="tag in form.tags"
+                  :key="tag.text"
+                  class="fr-tag fr-tag--sm fr-tag--dismiss"
+                  type="button"
+                  @click="removeTag(tag)"
+                >
+                  {{ tag.text }}
+                </button>
+              </div>
             </div>
           </LinkedToAccordion>
           <LinkedToAccordion
@@ -428,6 +427,31 @@
           >
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-12">
+                <div class="mb-6">
+                  <SearchableSelect
+                    v-model="form.spatial.zones"
+                    :label="$t('Spatial coverage')"
+                    :placeholder="$t('Search a spatial coverage…')"
+                    :suggest="suggestSpatial"
+                    :multiple="true"
+                    class="mb-2"
+                  >
+                    <template #option="{ option: zone }">
+                      <span>{{ zone.name }}</span>
+                    </template>
+                  </SearchableSelect>
+                  <div class="flex space-x-2">
+                    <button
+                      v-for="zone in form.spatial.zones"
+                      :key="zone.id"
+                      class="fr-tag fr-tag--sm fr-tag--dismiss"
+                      type="button"
+                      @click="removeZone(zone)"
+                    >
+                      {{ zone.name }}
+                    </button>
+                  </div>
+                </div>
               <!-- <MultiSelect
                   :placeholder="$t('Spatial coverage')"
                   :search-placeholder="$t('Search a spatial coverage...')"
@@ -475,13 +499,13 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Frequency, type License, type NewDataset, type Organization } from '@datagouv/components'
+import { getZoneUrl, Well, type Frequency, type License, type NewDataset, type Organization } from '@datagouv/components'
 import { computed, reactive, ref } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import CustomInputGroup from '~/components/InputGroup/CustomInputGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { PublishingFormAccordionState, Tag } from '~/types/types'
+import type { PublishingFormAccordionState, SpatialZone, Tag } from '~/types/types'
 import { createMinLengthWarning, not, createRequired, requiredWithCustomMessage, createSameAs } from '~/utils/i18n'
 
 // const props = defineProps<{}>()
@@ -512,6 +536,9 @@ type EnrichedLicense = License & { group: string, recommended?: boolean, code?: 
 const { data: frequencies } = await useAPI<Array<Frequency>>('/api/1/datasets/frequencies', { lazy: true })
 
 const { data: allLicenses } = await useAPI<Array<License>>('/api/1/datasets/licenses', { lazy: true })
+
+// Merge some information between database (all licenses) and config (selectable license, some recommanded, codes…)
+// Maybe all these information could be better stored in database too…
 const licenses = computed(() => {
   if (!allLicenses.value) return []
 
@@ -527,6 +554,14 @@ const licenses = computed(() => {
   return licenses
 })
 
+const suggestSpatial = async (query: string): Promise<Array<SpatialZone>> => {
+  return await $api<Array<SpatialZone>>('/api/1/spatial/zones/suggest/', {
+    query: {
+      q: query,
+      size: 5,
+    },
+  })
+}
 // if (!dataset.spatial) {
 //   dataset.spatial = {
 //     zones: undefined,
@@ -578,6 +613,10 @@ const form = ref({
   frequency: null as Frequency | null,
   // temporal_coverage: { start: '1453-04-14', end: '2000-08-12' },
   temporal_coverage: { start: null, end: null },
+  spatial: {
+    zones: [] as Array<SpatialZone>,
+
+  },
 })
 
 const { $api } = useNuxtApp()
@@ -592,6 +631,9 @@ const suggestTags = async (query: string) => {
 }
 const removeTag = (tag: Tag) => {
   form.value.tags = form.value.tags.filter(otherTag => otherTag.text !== tag.text)
+}
+const removeZone = (zone: SpatialZone) => {
+  form.value.spatial.zones = form.value.spatial.zones.filter(otherZone => otherZone.id !== zone.id)
 }
 
 // function updateOwned(owned: OwnedWithId) {

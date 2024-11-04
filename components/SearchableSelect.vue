@@ -114,6 +114,8 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 
+type ModelType = Multiple extends false ? T : Array<T>
+
 const props = withDefaults(defineProps<{
   validText?: string
   errorText?: string
@@ -124,7 +126,7 @@ const props = withDefaults(defineProps<{
 
   getOptionId?: (option: T) => string | number
   groupBy?: (option: T) => string
-  displayValue: (option: Multiple extends false ? T : Array<T>) => string
+  displayValue?: (option: ModelType) => string
   filter?: (option: T, query: string) => boolean
   options?: Array<T>
   suggest?: (query: string) => Promise<Array<T>>
@@ -135,6 +137,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   required: false,
   isBlue: false,
+  displayValue: (_: ModelType): string => '',
   groupBy: (_: T): string => '',
   getOptionId: (option: T): string | number => {
     if (typeof option === 'string') return option
@@ -166,7 +169,7 @@ const props = withDefaults(defineProps<{
   },
 })
 
-const model = defineModel<(Multiple extends false ? T : Array<T>) | null>()
+const model = defineModel<ModelType | null>()
 
 const id = useId()
 const query = ref('')

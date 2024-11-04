@@ -63,6 +63,7 @@
                   class="mb-6"
                   :display-value="(user) => `${user.first_name} ${user.last_name}`"
                   :suggest="suggestUser"
+                  :multiple="false"
                 >
                   <template #option="{ option: user }">
                     <div class="flex items-center space-x-2">
