@@ -11,6 +11,8 @@ export default function useFunctionalState<T, U>(data: MaybeRef<{ [key in keyof 
    * Get the error messages if any for given field
    */
   const getErrorText = (field: string) => {
+    if (!v$.value[field]) return
+
     if (vWarning$.value[field].$dirty) {
       v$.value[field].$touch()
     }
@@ -23,6 +25,8 @@ export default function useFunctionalState<T, U>(data: MaybeRef<{ [key in keyof 
    * Get the warning messages if any for given field
    */
   const getWarningText = (field: string) => {
+    if (!vWarning$.value[field]) return
+
     return vWarning$.value[field].$errors
       .map((error: ErrorObject) => error.$message)
       .join('\n')

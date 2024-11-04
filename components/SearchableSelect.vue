@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    class="fr-input-group"
+    :class="{ 'fr-input-group--error': errorText, 'fr-input-group--warning': !errorText && warningText, 'fr-input-group--valid': validText }"
+  >
     <label
       :for="id"
       :title="explanation"
@@ -91,7 +94,7 @@
                   </div>
                   <slot
                     name="option"
-                    v-bind="{ ...comboboxSlot, option }"
+                    v-bind="{ option, active: comboboxSlot.active as boolean }"
                   />
                 </li>
               </ComboboxOption>
@@ -119,6 +122,7 @@ type ModelType = Multiple extends false ? T : Array<T>
 const props = withDefaults(defineProps<{
   validText?: string
   errorText?: string
+  warningText?: string
   hintText?: string
   explanation?: string
   label: string

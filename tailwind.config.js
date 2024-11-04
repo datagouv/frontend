@@ -24,6 +24,7 @@ export default {
       colors: {
         primary: '#3558a2',
         mentionGrey: '#666', // Copy from --text-mention-grey
+        defaultWarning: '#b32000',
       },
       typography: {
         DEFAULT: {

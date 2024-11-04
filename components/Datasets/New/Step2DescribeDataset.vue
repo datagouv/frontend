@@ -189,30 +189,31 @@
           </legend>
           <div class="fr-fieldset__element">
             <SearchableSelect
-              v-model="form.owner"
-              :options="[...user.organizations, user]"
+              v-model="form.owned"
+              :options="ownedOptions"
               :label="t('Check the identity with which you want to publish')"
               :placeholder="t('Search…')"
-              :display-value="(option) => 'name' in option ? option.name : `${option.first_name} ${option.last_name}`"
+              :get-option-id="(option) => option.organization ? option.organization.id : option.owner.id"
+              :display-value="(option) => option.organization ? option.organization.name : `${option.owner.first_name} ${option.owner.last_name}`"
               :multiple="false"
             >
               <template #option="{ option }">
                 <div class="flex items-center space-x-2">
                   <Placeholder
-                    v-if="option.logo_thumbnail"
+                    v-if="option.organization"
                     type="organization"
-                    :src="option.logo_thumbnail"
+                    :src="option.organization.logo_thumbnail"
                     :size="20"
                   />
                   <img
                     v-else
                     class="rounded-full border border-default-grey size-5"
-                    :src="`${config.public.apiBase}/api/1/avatars/${option.id}/24`"
+                    :src="`${config.public.apiBase}/api/1/avatars/${option.owner.id}/24`"
                     loading="lazy"
                     alt=""
                   >
-                  <span v-if="option.name">{{ option.name }}</span>
-                  <span v-else>{{ option.first_name }} {{ option.last_name }}</span>
+                  <span v-if="option.organization">{{ option.organization.name }}</span>
+                  <span v-else>{{ option.owner.first_name }} {{ option.owner.last_name }}</span>
                 </div>
               </template>
             </SearchableSelect>
@@ -281,10 +282,12 @@
                 :label="$t('Tags')"
                 :placeholder="$t('Search a tag…')"
                 :get-option-id="(tag) => tag.text"
-                :display-value="(tags) => ''"
                 :suggest="suggestTags"
                 :multiple="true"
                 class="mb-2"
+
+                :error-text="getErrorText('tags')"
+                :warning-text="getWarningText('tags')"
               >
                 <template #option="{ option: tag }">
                   <div class="flex items-center space-x-2">
@@ -318,6 +321,9 @@
               :display-value="(option) => option.title"
               :multiple="false"
               :group-by="(option) => option.group"
+
+              :error-text="getErrorText('license')"
+              :warning-text="getWarningText('license')"
             >
               <template #option="{ option, active }">
                 <div class="w-full">
@@ -385,11 +391,12 @@
               :display-value="(frequency) => frequency.label"
               :options="frequencies"
               :multiple="false"
+
+              :error-text="getErrorText('frequency')"
+              :warning-text="getWarningText('frequency')"
             >
               <template #option="{ option: frequency }">
-                <div>
-                  {{ frequency.label }}
-                </div>
+                {{ frequency.label }}
               </template>
             </SearchableSelect>
           </LinkedToAccordion>
@@ -432,6 +439,9 @@
                     :suggest="suggestSpatial"
                     :multiple="true"
                     class="mb-2"
+
+                    :error-text="getErrorText('spatial')"
+                    :warning-text="getWarningText('spatial')"
                   >
                     <template #option="{ option: zone, active }">
                       <div class="w-full">
@@ -479,6 +489,9 @@
                   :display-value="(granularity) => granularity.name"
                   :options="granularities"
                   :multiple="false"
+
+                  :error-text="getErrorText('spatial')"
+                  :warning-text="getWarningText('spatial')"
                 >
                   <template #option="{ option: granularity }">
                     {{ granularity.name }}
@@ -577,17 +590,17 @@ const notUnknown = not(t('The value must be different than unknown.'), createSam
 const tagsRequired = requiredWithCustomMessage(t('Adding tags helps improve the SEO of your data.'))
 const temporalCoverageRequired = requiredWithCustomMessage(t('You did not provide the temporal coverage.'))
 const spatialGranularityRequired = requiredWithCustomMessage(t('You have not specified the spatial granularity.'))
-const isSelectedProducer = ref<boolean>(false)
 
-function checkOwned() {
-  return isSelectedProducer.value
-};
+type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
+const ownedOptions = computed<Array<Owned>>(() => {
+  return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
+})
 
 const form = ref({
   title: '',
   acronym: '',
   description: '',
-  owner: null as Me | Organization | null,
+  owned: null as Owned | null,
   tags: [] as Array<Tag>,
   license: null as EnrichedLicense | null,
   frequency: null as Frequency | null,
@@ -616,17 +629,11 @@ const removeZone = (zone: SpatialZone) => {
   form.value.spatial.zones = form.value.spatial.zones.filter(otherZone => otherZone.id !== zone.id)
 }
 
-// function updateOwned(owned: OwnedWithId) {
-//   dataset.organization = owned.organization
-//   dataset.owner = owned.owner
-//   isSelectedProducer.value = true
-// }
-
 const requiredRules = {
   description: { required: createRequired(nuxtApp.$i18n) },
   frequency: { required: createRequired(nuxtApp.$i18n) },
   title: { required: createRequired(nuxtApp.$i18n) },
-  owned: { custom: checkOwned },
+  owned: { required: createRequired(nuxtApp.$i18n) },
 }
 
 const warningRules = {
@@ -640,7 +647,7 @@ const warningRules = {
   tags: { required: tagsRequired },
   temporal_coverage: { required: temporalCoverageRequired },
   title: { required: createRequired(nuxtApp.$i18n) },
-  owned: { custom: checkOwned },
+  owned: { required: createRequired(nuxtApp.$i18n) },
 }
 
 const { getErrorText, getFunctionalState, getWarningText, hasError, hasWarning, validateRequiredRules, v$, vWarning$ } = useFunctionalState(form, requiredRules, warningRules)
@@ -662,15 +669,6 @@ const state = computed<Record<string, PublishingFormAccordionState>>(() => {
 const fieldHasError = (field: string) => hasError(state, field)
 
 const fieldHasWarning = (field: string) => hasWarning(state, field)
-
-function setGranularity(value: string) {
-  if (dataset.spatial) {
-    dataset.spatial.granularity = value
-  }
-  else {
-    dataset.spatial = { granularity: value }
-  }
-};
 
 function submit() {
   validateRequiredRules().then((valid) => {
