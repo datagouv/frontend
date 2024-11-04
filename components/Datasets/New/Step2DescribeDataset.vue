@@ -197,6 +197,10 @@
               :get-option-id="(option) => option.organization ? option.organization.id : option.owner.id"
               :display-value="(option) => option.organization ? option.organization.name : `${option.owner.first_name} ${option.owner.last_name}`"
               :multiple="false"
+
+              :error-text="getFirstError('owned')"
+              :warning-text="getFirstWarning('owned')"
+              @focusout="touch('owned')"
             >
               <template #option="{ option }">
                 <div class="flex items-center space-x-2">
@@ -410,6 +414,10 @@
               v-model="form.temporal_coverage"
               :label="$t('Temporal coverage')"
               type="range"
+
+              :has-error="!!getFirstError('temporal_coverage')"
+              :has-warning="!!getFirstWarning('temporal_coverage')"
+              :error-text="getFirstError('temporal_coverage')"
             />
           </LinkedToAccordion>
         </fieldset>
@@ -503,9 +511,6 @@
           </LinkedToAccordion>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
-          <div>{{ JSON.stringify(form) }}</div>
-          <div>{{ JSON.stringify(errors) }}</div>
-          <div>{{ JSON.stringify(warnings) }}</div>
           <button
             class="fr-btn"
             @click="submit"
@@ -520,17 +525,17 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Frequency, type License, type NewDataset, type Organization } from '@datagouv/components'
-import { computed, reactive } from 'vue'
+import { Well, type Frequency, type License, type Organization } from '@datagouv/components'
+import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import type { DatasetForm, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 
 // const props = defineProps<{}>()
 
 const emit = defineEmits<{
-  (event: 'next', dataset: NewDataset): void
+  (event: 'next', dataset: DatasetForm): void
 }>()
 
 const { t } = useI18n()
@@ -546,8 +551,6 @@ const selectLicenseAccordionId = useId()
 const chooseFrequencyAccordionId = useId()
 const addTemporalCoverageAccordionId = useId()
 const addSpatialInformationAccordionId = useId()
-
-const dataset = reactive({})
 
 type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }
 
@@ -609,7 +612,7 @@ const removeZone = (zone: SpatialZone) => {
   form.value.spatial_zones = form.value.spatial_zones.filter(otherZone => otherZone.id !== zone.id)
 }
 
-const { form, errors, warnings, touch, getFirstError, getFirstWarning } = useForm({
+const { form, touch, getFirstError, getFirstWarning, validate } = useForm({
   title: '',
   acronym: '',
   description: '',
@@ -620,7 +623,7 @@ const { form, errors, warnings, touch, getFirstError, getFirstWarning } = useFor
   frequency: null as Frequency | null,
   spatial_zones: [] as Array<SpatialZone>,
   spatial_granularity: null as SpatialGranularity | null,
-}, {
+} as DatasetForm, {
   owned: [required()],
   title: [required()],
   description: [required()],
@@ -636,7 +639,6 @@ const { form, errors, warnings, touch, getFirstError, getFirstWarning } = useFor
   }],
   spatial_granularity: [required(t('You have not specified the spatial granularity.'))],
   temporal_coverage: [required(t('You did not provide the temporal coverage.'))],
-
 })
 
 const accordionState = (key: keyof typeof form.value) => {
@@ -647,11 +649,8 @@ const accordionState = (key: keyof typeof form.value) => {
 }
 
 function submit() {
-  validateRequiredRules().then((valid) => {
-    if (valid) {
-      console.log('here')
-      // emit('next', dataset)
-    }
-  })
+  if (validate()) {
+    emit('next', form.value)
+  }
 };
 </script>

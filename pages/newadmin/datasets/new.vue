@@ -32,13 +32,18 @@
       :current-step
     />
 
+    {{ JSON.stringify(datasetForm) }}
+
     <Step1PublishingType
       v-if="currentStep === 1"
       @start="moveToStep(2)"
     />
     <Step2DescribeDataset
       v-if="currentStep === 2"
-      @start="moveToStep(2)"
+      @next="datasetNext"
+    />
+    <Step3AddFiles
+      v-if="currentStep === 3"
     />
   </div>
 </template>
@@ -46,7 +51,9 @@
 <script setup lang="ts">
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
+import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
+import type { DatasetForm } from '~/types/types'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
@@ -59,6 +66,7 @@ const steps = computed(() => ([
   t('Complete your publishing'),
 ]))
 
+const datasetForm = useState('dataset-form', () => null as DatasetForm | null)
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
@@ -71,6 +79,11 @@ const isCurrentStepValid = computed(() => {
 
 const moveToStep = (step: number) => {
   navigateTo({ path: route.path, query: { ...route.query, step } })
+}
+
+const datasetNext = (dataset: DatasetForm) => {
+  datasetForm.value = dataset
+  moveToStep(3)
 }
 
 watchEffect(() => {

@@ -52,6 +52,7 @@
     "popmotion": "^11.0.5",
     "remove-markdown": "^0.5.5",
     "vue": "latest",
+    "vue-content-loader": "^2.0.1",
     "vue-router": "latest",
     "vue3-datepicker": "^0.4.0",
     "vue3-text-clamp": "^0.1.2"

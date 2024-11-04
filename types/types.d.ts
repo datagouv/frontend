@@ -132,3 +132,18 @@ export type SpatialGranularity = {
 export type Tag = {
   text: string
 }
+
+export type DatasetForm = {
+  title: string
+  acronym: string
+  description: string
+  owned: Owned | null
+  tags: Array<Tag>
+  license: License | null
+  temporal_coverage: { start: null, end: null }
+  frequency: Frequency | null
+  spatial_zones: Array<SpatialZone>
+  spatial_granularity: SpatialGranularity | null
+}
+
+export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState }
