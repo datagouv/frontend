@@ -28,7 +28,7 @@
           <ComboboxInput
             :id
             class="fr-input"
-            :display-value="(option: T) => option ? displayValue(option): null"
+            :display-value="(option: ModelType) => option ? displayValue(option): null"
             :placeholder
             @change="query = $event.target.value"
           />

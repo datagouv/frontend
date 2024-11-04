@@ -33,9 +33,12 @@
       type="button"
       @click.prevent="showStartSelector"
     >
-      <template v-if="!model.start">
+      <span
+        v-if="!model.start"
+        class="text-mention-grey italic"
+      >
         {{ $t('from dd/mm/yyyy to dd/mm/yyyy') }}
-      </template>
+      </span>
       <template v-else>
         {{ formatDate(model.start, formatTemplate) }}<template v-if="model.end">
           –{{ formatDate(model.end, formatTemplate) }}

@@ -23,6 +23,7 @@ export default {
     extend: {
       colors: {
         primary: '#3558a2',
+        mentionGrey: '#666', // Copy from --text-mention-grey
       },
       typography: {
         DEFAULT: {
