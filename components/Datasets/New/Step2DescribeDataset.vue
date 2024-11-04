@@ -433,8 +433,26 @@
                     :multiple="true"
                     class="mb-2"
                   >
-                    <template #option="{ option: zone }">
-                      <span>{{ zone.name }}</span>
+                    <template #option="{ option: zone, active }">
+                      <div class="w-full">
+                        <div class="flex items-center justify-between space-x-2">
+                          <div>{{ zone.name }}</div>
+                          <div
+                            class="font-mono  px-2 py-1 border border-transparent text-xs"
+                            :class="{ 'bg-gray-100': ! active, 'border-white': active }"
+                          >
+                            Insee : {{ zone.code }}
+                          </div>
+                        </div>
+                        <div
+                          class="flex items-center justify-between space-x-2"
+                          :class="{
+                            'text-gray-500': !active,
+                          }"
+                        >
+                          {{ getGranularityName(zone) }}
+                        </div>
+                      </div>
                     </template>
                   </SearchableSelect>
                   <div class="flex space-x-2">
@@ -501,7 +519,7 @@ import { computed, reactive, ref } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { PublishingFormAccordionState, SpatialZone, Tag } from '~/types/types'
+import type { PublishingFormAccordionState, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 import { createMinLengthWarning, not, createRequired, requiredWithCustomMessage, createSameAs } from '~/utils/i18n'
 
 // const props = defineProps<{}>()
@@ -558,36 +576,12 @@ const suggestSpatial = async (query: string): Promise<Array<SpatialZone>> => {
     },
   })
 }
-// if (!dataset.spatial) {
-//   dataset.spatial = {
-//     zones: undefined,
-//     granularity: undefined,
-//   }
-// };
 
-// const frequenciesUrl = getFrequenciesUrl()
-// const licensesUrl = getLicensesUrl()
-// const licensesGroups = license_groups_options?.map(([name, values]) => ({
-//   name,
-//   values,
-// }))
-// const formatSpatialZones = (data: Array<SpatialZone>) => {
-//   const suggestions = data.map((item) => {
-//     const matchingGranularity = props.granularities.find(granularity => granularity.id === item.level)
-//     if (matchingGranularity) {
-//       return {
-//         ...item,
-//         description: matchingGranularity.name,
-//       }
-//     }
-//     else {
-//       return {
-//         ...item,
-//       }
-//     }
-//   })
-//   return suggestions
-// }
+const { data: granularities } = await useAPI<Array<SpatialGranularity>>('/api/1/spatial/granularities/', { lazy: true })
+const getGranularityName = (zone: SpatialZone): string | undefined => {
+  if (!granularities.value) return ''
+  return granularities.value.find(granularity => granularity.id === zone.level)?.name
+}
 
 const notUnknown = not(t('The value must be different than unknown.'), createSameAs(nuxtApp.$i18n))
 const tagsRequired = requiredWithCustomMessage(t('Adding tags helps improve the SEO of your data.'))
