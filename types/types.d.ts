@@ -146,4 +146,16 @@ export type DatasetForm = {
   spatial_granularity: SpatialGranularity | null
 }
 
+export type RemoteResourceFileType = 'remote'
+
+export type FileResourceFileType = 'file'
+
+export type ResourceFileType = RemoteResourceFileType | FileResourceFileType
+
+export type DatasetRemoteFile = { description?: string, filetype: RemoteResourceFileType, format: string, mime: string, schema?: string, title: string, type: ResourceType, url: string }
+
+export type DatasetLocalFile = { file: File, sha256?: string, description?: string, format: string, filesize: number, filetype: FileResourceFileType, mime: string, schema?: string, title: string, type: ResourceType }
+
+export type FileLoadingState = 'none' | 'loading' | 'failed' | 'loaded'
+
 export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState }

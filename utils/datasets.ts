@@ -3,11 +3,12 @@ import type { Component } from 'vue'
 import Archive from '~/components/Icons/Archive.vue'
 import Code from '~/components/Icons/Code.vue'
 import Documentation from '~/components/Icons/Documentation.vue'
+import Image from '~/components/Icons/Image.vue'
 import Link from '~/components/Icons/Link.vue'
 import Table from '~/components/Icons/Table.vue'
 
-export function getResourceFormatIcon(resource: Resource): Component | null {
-  switch (resource.format?.trim()?.toLowerCase()) {
+export function getResourceFormatIcon(format: string): Component | null {
+  switch (format?.trim()?.toLowerCase()) {
     case 'txt':
     case 'pdf':
     case 'rtf':
@@ -61,6 +62,10 @@ export function getResourceFormatIcon(resource: Resource): Component | null {
     case 'xlsx':
     case 'parquet':
       return Table
+    case 'png':
+    case 'jpg':
+    case 'jpeg':
+      return Image
     default:
       return null
   }

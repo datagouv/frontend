@@ -1,6 +1,6 @@
 <template>
   <ModalWithButton
-    :title="t('TODO')"
+    :title="$t('Add a file')"
     size="lg"
   >
     <template #button="{ attrs, listeners }">
@@ -14,50 +14,52 @@
     </template>
 
     <template #default="{ close }">
-      <h2 class="subtitle subtitle--uppercase fr-mb-1w">
-        {{ $t('Add a file') }}
-      </h2>
-      <UploadGroup
-        :label="$t('Upload files')"
-        type="drop"
-        :accept="extensions.join(',')"
-        :multiple="true"
-        :required="true"
-        :hint-text="$t('Max size: 420 Mb. Multiple files allowed.')"
-        @change="setFiles"
-      />
-      <FileCard
-        v-for="(resource, index) in files"
-        :key="index"
-        class="fr-mb-3v"
-        :file="resource"
-        :show-edit-and-warning="false"
-        @delete="removeFile(index)"
-      />
-      <p class="fr-hr-or text-transform-lowercase fr-text--regular text-mention-grey fr-mt-3v">
-        <span class="fr-hr-or-text">{{ $t('or') }}</span>
-      </p>
-      <h2 class="subtitle subtitle--uppercase fr-mb-1w">
-        {{ $t('Add a link') }}
-      </h2>
-      <InputGroup
-        :label="$t('Exact link to the file')"
-        :hint-text="$t('Type a valid url, starting with https://')"
-        placeholder="https://"
-        type="url"
-      />
+      <form
+        :id="formId"
+        @submit.prevent="submit(close)"
+      >
+        <UploadGroup
+          :label="$t('Upload files')"
+          type="drop"
+          :accept="extensions.join(',')"
+          :multiple="true"
+          :required="true"
+          :hint-text="$t('Max size: 420 Mb. Multiple files allowed.')"
+          @change="setFiles"
+        />
+        <FileCard
+          v-for="(resource, index) in files"
+          :key="index"
+          v-model="files[index]"
+          class="fr-mb-3v"
+          :show-edit-and-warning="false"
+          @delete="removeFile(index)"
+        />
+        <p class="fr-hr-or text-transform-lowercase fr-text--regular text-mention-grey fr-mt-3v">
+          <span class="fr-hr-or-text">{{ $t('or') }}</span>
+        </p>
+        <h2 class="subtitle subtitle--uppercase fr-mb-1w">
+          {{ $t('Add a link') }}
+        </h2>
+        <InputGroup
+          v-model="url"
+          :label="$t('Exact link to the file')"
+          :hint-text="$t('Type a valid url, starting with https://')"
+          placeholder="https://"
+          type="url"
+        />
+      </form>
       <!-- :has-error="fieldHasError('modalFiles')"
         :error-text="getErrorText('modalFiles')"
         @change="setFileLink" -->
     </template>
 
     <template #footer="{ close }">
-      <!-- <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--right">
+      <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--right">
         <div class="fr-col-auto">
           <button
             class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
             type="button"
-            :disabled="loading"
             @click="close"
           >
             {{ t("Cancel") }}
@@ -67,13 +69,12 @@
           <button
             class="fr-btn"
             type="submit"
-            :disabled="loading || !refuseComment"
-            :form="refuseFormId"
+            :form="formId"
           >
-            {{ t("Refuse request") }}
+            {{ t("Send") }}
           </button>
         </div>
-      </div> -->
+      </div>
     </template>
   </ModalWithButton>
 </template>
@@ -81,12 +82,20 @@
 <script setup lang="ts">
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import UploadGroup from '../UploadGroup/UploadGroup.vue'
+import type { NewDatasetFile } from '~/types/types'
 
 const { t } = useI18n()
+const formId = useId()
+
+const emit = defineEmits<{
+  (e: 'newFiles', newFiles: Array<NewDatasetFile>): void
+}>()
+
+const url = ref('')
 
 const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
 
-const files = ref([])
+const files = ref<Array<NewDatasetFile>>([])
 const guessFormat = (file: File) => {
   const formatFromMime = file.type.includes('/') ? file.type.split('/').pop() || '' : file.type
   let guessedFormat = extensions.value.includes(formatFromMime) ? formatFromMime : ''
@@ -112,4 +121,22 @@ const setFiles = (newFiles: Array<File>) => {
   }
 }
 const removeFile = (position: number) => files.value.splice(position, 1)
+const submit = (close: () => void) => {
+  if (url.value) {
+    files.value.push({
+      description: '',
+      filetype: 'remote',
+      title: '',
+      format: '',
+      mime: '',
+      type: 'main',
+      url: url.value,
+      state: 'none',
+    })
+  }
+
+  emit('newFiles', files.value)
+  files.value = []
+  close()
+}
 </script>

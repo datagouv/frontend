@@ -19,6 +19,10 @@ export default defineNuxtConfig({
         name: 'demo.data.gouv.fr',
       },
       schemaPublishingUrl: 'https://publier.etalab.studio/fr',
+      schemasSite: {
+        url: 'https://schema.data.gouv.fr/',
+        name: 'schema.data.gouv.fr',
+      },
       apiDocExternalLink: 'https://guides.data.gouv.fr/publier-des-donnees/guide-data.gouv.fr/api/reference',
       guidesHarvestingUrl: '',
       supportUrl: 'https://support.data.gouv.fr/',

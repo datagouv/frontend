@@ -115,7 +115,7 @@
               <h3 class="fr-text--md fr-text--bold fr-m-0 fr-mb-2w">
                 {{ $t("Add your first files") }}
               </h3>
-              <UploadResourceModal />
+              <UploadResourceModal @new-files="addFiles" />
               <!-- <UploadModalButton
                 group-class="fr-grid-row flex-direction-column fr-grid-row--middle"
                 :label="$t('Add files')"
@@ -128,13 +128,13 @@
               /> -->
             </div>
             <template v-else>
-              <!-- <FileCard
+              <FileCard
                 v-for="(resource, index) in form.files"
+                :key="index"
+                v-model="form.files[index]"
                 class="fr-mb-3v"
-                :file="resource"
                 @delete="removeFile(index)"
-                @edit="$emit('editFile', files, index)"
-              /> -->
+              />
               <div class="fr-grid-row fr-grid-row--center">
                 <!-- <ButtonLoader
                   v-if="loading"
@@ -192,12 +192,10 @@
   </div>
 </template>
 
-<script lang="ts">
-</script>
-
 <script setup lang="ts">
 import { Well } from '@datagouv/components'
 import UploadResourceModal from '../UploadResourceModal.vue'
+import type { NewDatasetFile } from '~/types/types'
 
 const { t } = useI18n()
 
@@ -205,12 +203,16 @@ const publishFileAccordionId = useId()
 const addDescriptionAccordionId = useId()
 
 const { form, getFirstError, getFirstWarning, touch } = useForm({
-  files: [],
+  files: [] as Array<NewDatasetFile>,
 })
 
 const loading = ref(false)
 const errors = ref([])
-const addFiles = () => {}
+const addFiles = (files: Array<NewDatasetFile>) => {
+  for (const file of files) form.value.files.push(file)
+}
+const removeFile = (position: number) => form.value.files.splice(position, 1)
+
 const submit = () => {}
 
 const hasDocumentation = computed(() => {
@@ -229,7 +231,6 @@ const accordionState = (key: keyof typeof form.value) => {
 // import { Well } from '@datagouv/components/ts'
 // import { computed, ref, toValue, watchEffect } from 'vue'
 // import { useI18n } from 'vue-i18n'
-// import type { NewDatasetFile } from '../../types'
 // import type { Step } from '../../components/Form/Stepper/Stepper.vue'
 // import Accordion from '../../components/Accordion/Accordion.vue'
 // import Alert from '../../components/Alert/Alert.vue'
