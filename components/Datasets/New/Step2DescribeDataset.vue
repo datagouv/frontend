@@ -152,7 +152,7 @@
       </AccordionGroup>
     </Sidemenu>
     <div class="fr-col-12 fr-col-md-7">
-      <Container>
+      <div>
         <Well
           color="blue-cumulus"
           weight="regular"
@@ -516,7 +516,7 @@
             {{ $t("Next") }}
           </button>
         </div>
-      </Container>
+      </div>
       <div class="h-64" />
     </div>
   </div>
@@ -528,7 +528,7 @@ import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { DatasetForm, EnrichedLicense, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import type { DatasetForm, EnrichedLicense, Owned, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 
 const datasetForm = defineModel<DatasetForm>({ required: true })
 
@@ -586,7 +586,6 @@ const getGranularityName = (zone: SpatialZone): string | undefined => {
   return granularities.value.find(granularity => granularity.id === zone.level)?.name
 }
 
-type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
 const ownedOptions = computed<Array<Owned>>(() => {
   return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
 })

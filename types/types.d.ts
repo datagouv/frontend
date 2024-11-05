@@ -1,4 +1,5 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License } from '@datagouv/components'
+import type { Me } from '~/utils/auth'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -133,6 +134,8 @@ export type Tag = {
   text: string
 }
 
+type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
+
 export type DatasetForm = {
   title: string
   acronym: string
@@ -140,10 +143,27 @@ export type DatasetForm = {
   owned: Owned | null
   tags: Array<Tag>
   license: License | null
-  temporal_coverage: { start: null, end: null }
+  temporal_coverage: { start: null | string, end: null | string }
   frequency: Frequency | null
   spatial_zones: Array<SpatialZone>
   spatial_granularity: SpatialGranularity | null
+}
+
+export type NewDatasetForApi = {
+  title: string
+  private?: boolean
+  acronym?: string
+  description: string
+  organization?: string
+  owner?: string
+  tags: Array<string>
+  license?: string
+  temporal_coverage?: { start: string, end: string }
+  frequency?: string
+  spatial?: {
+    granularity?: string
+    zones?: Array<string>
+  }
 }
 
 type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }

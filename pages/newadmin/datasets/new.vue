@@ -32,14 +32,6 @@
       :current-step
     />
 
-    <div>{{ JSON.stringify(datasetForm) }}</div>
-    <div v-if="datasetFiles.length">
-      {{ JSON.stringify(datasetFiles[0].file.name) }}
-    </div>
-    <div v-if="datasetFiles.length">
-      {{ test(datasetFiles[0].file) }}
-    </div>
-
     <Step1PublishingType
       v-if="currentStep === 1"
       @start="moveToStep(2)"
@@ -62,14 +54,14 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, Frequency, Owned, Resource } from '@datagouv/components'
+import type { Dataset, Frequency, NewDataset, Owned, Resource } from '@datagouv/components'
 import { v4 as uuidv4 } from 'uuid'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
 import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
 import Step4CompletePublication from '~/components/Datasets/New/Step4CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
-import type { DatasetForm, EnrichedLicense, NewDatasetFile, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import type { DatasetForm, EnrichedLicense, NewDatasetFile, NewDatasetForApi, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
@@ -115,33 +107,42 @@ const datasetNext = (dataset: DatasetForm) => {
   moveToStep(3)
 }
 
-const test = URL.createObjectURL
-
 const filesNext = (files: Array<NewDatasetFile>) => {
   datasetFiles.value = files
   moveToStep(4)
 }
 
+const prepareDatasetForApi = (form: DatasetForm, asPrivate: boolean): NewDatasetForApi => {
+  // This `NewDataset` type seems really off…
+  // - Why license or frequency are non-nullable strings?
+  // - The API accepts the temporal coverage as an object…
+  // - archived as a boolean? The API is failing on a boolean here, expecting a date or null
+  return {
+    organization: form.owned?.organization?.id,
+    owner: form.owned?.owner?.id,
+    title: form.title,
+    private: asPrivate,
+    description: form.description,
+    acronym: form.acronym,
+    tags: form.tags.map(t => t.text),
+    license: form.license?.id || '',
+    frequency: form.frequency?.id || '',
+    temporal_coverage: (form.temporal_coverage.start && form.temporal_coverage.end) ? form.temporal_coverage as { start: string, end: string } : undefined,
+    spatial: (form.spatial_granularity || form.spatial_zones)
+      ? {
+          zones: form.spatial_zones.length ? form.spatial_zones.map(z => z.id) : undefined,
+          granularity: form.spatial_granularity ? form.spatial_granularity.id : undefined,
+        }
+      : undefined,
+
+  }
+}
+
 const save = async (asPrivate: boolean) => {
   try {
-    const dataset: Dataset = {
-      ...datasetForm.value,
-      private: asPrivate,
-      spatial: (datasetForm.value.spatial_granularity || datasetForm.value.spatial_zones)
-        ? {
-            zones: datasetForm.value.spatial_zones.length ? datasetForm.value.spatial_zones.map(z => z.name) : undefined,
-            granularity: datasetForm.value.spatial_granularity ? datasetForm.value.spatial_granularity.name : undefined,
-          }
-        : null,
-      organization: datasetForm.value.owned?.organization,
-      temporal_coverage: datasetForm.value.temporal_coverage.start && datasetForm.value.temporal_coverage.end ? datasetForm.value.temporal_coverage : '',
-      owner: datasetForm.value.owned?.owner,
-      frequency: datasetForm.value.frequency?.id || '',
-    }
-
     const newDataset = await $api<Dataset>('/api/1/datasets/', {
       method: 'POST',
-      body: JSON.stringify(dataset),
+      body: JSON.stringify(prepareDatasetForApi(datasetForm.value, asPrivate)),
     })
 
     for (const i in datasetFiles.value) {
