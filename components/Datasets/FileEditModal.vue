@@ -214,11 +214,7 @@
 
                     :error-text="getFirstError('format')"
                     :warning-text="getFirstWarning('format')"
-                  >
-                    <template #option="{ option: format }">
-                      {{ format }}
-                    </template>
-                  </SearchableSelect>
+                  />
                 </LinkedToAccordion>
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
@@ -250,33 +246,26 @@
 
                     :error-text="getFirstError('schema')"
                     :warning-text="getFirstWarning('schema')"
-                  >
-                    <template #option="{ option: schema }">
-                      {{ schema.name }}
-                    </template>
-                  </SearchableSelect>
-                  <!-- <SchemaSelect
-                    :all-option="$t('Select a schema')"
-                    :values="file.schema"
-                    :show-explanation="false"
-                    @change="(value) => file.schema = value"
-                  /> -->
+                  />
                 </LinkedToAccordion>
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
                   :accordion="whatIsAMimeTypeAccordionId"
                   @blur="touch('mime')"
                 >
-                  <!-- <MultiSelect
-                    :placeholder="$t('Mime type')"
-                    :search-placeholder="$t('Search a mime type...')"
-                    suggest-url="datasets/suggest/mime/"
-                    :values="file.mime"
-                    :all-option="$t('Select a mime type')"
-                    :add-all-option="false"
-                    :add-new-option="isRemote"
-                    @change="(value) => file.mime = value"
-                  /> -->
+                  <SearchableSelect
+                    v-model="form.mime"
+                    :label="$t('Mime type')"
+                    :placeholder="$t('Search a mime type…')"
+                    :display-value="(option) => option.text"
+                    :get-option-id="(option) => option.text"
+                    :suggest="suggestMime"
+                    :multiple="false"
+                    class="mb-6"
+
+                    :error-text="getFirstError('mime')"
+                    :warning-text="getFirstWarning('mime')"
+                  />
                 </LinkedToAccordion>
               </fieldset>
               <div class="fr-grid-row fr-grid-row--right">
@@ -329,6 +318,7 @@ const { form, getFirstError, getFirstWarning, touch } = useForm(file.value, {}, 
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const { $api } = useNuxtApp()
 const formId = useId()
 
 type KeysOfUnion<T> = T extends T ? keyof T : never
@@ -358,6 +348,14 @@ const cancel = (close: () => void) => {
   close()
 }
 
+const suggestMime = async (query: string) => {
+  return await $api<Array<{ text: string }>>('/api/1/datasets/suggest/mime/', {
+    query: {
+      q: query,
+      size: 5,
+    },
+  })
+}
 const accordionState = (key: KeysOfUnion<typeof form.value>) => {
   if (getFirstError(key)) return 'error'
   if (getFirstWarning(key)) return 'warning'

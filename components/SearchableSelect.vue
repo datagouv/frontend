@@ -95,7 +95,9 @@
                   <slot
                     name="option"
                     v-bind="{ option, active: comboboxSlot.active as boolean }"
-                  />
+                  >
+                    {{ displayValue(option) }}
+                  </slot>
                 </li>
               </ComboboxOption>
             </div>
