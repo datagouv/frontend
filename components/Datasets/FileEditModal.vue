@@ -305,6 +305,11 @@ import ModalWithButton from '../Modal/ModalWithButton.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import type { NewDatasetFile } from '~/types/types'
 
+const { t } = useI18n()
+const config = useRuntimeConfig()
+const { $api } = useNuxtApp()
+const formId = useId()
+
 const file = defineModel<NewDatasetFile>({ required: true })
 
 const isRemote = computed(() => file.value.filetype === 'remote')
@@ -312,17 +317,15 @@ const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a f
 const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
-const { form, getFirstError, getFirstWarning, touch, warnings, errors, validate } = useForm(file.value, {
+const descriptionWarning = t('It\'s advised to have a description of at least {min} characters.', { min: 200 })
+const { form, getFirstError, getFirstWarning, touch, validate } = useForm(file.value, {
   url: [requiredIf(isRemote)],
   title: [required()],
   type: [required()],
   format: [required()],
-}, {})
-
-const { t } = useI18n()
-const config = useRuntimeConfig()
-const { $api } = useNuxtApp()
-const formId = useId()
+}, {
+  description: [required(descriptionWarning), minLength(200, descriptionWarning)],
+})
 
 type KeysOfUnion<T> = T extends T ? keyof T : never
 

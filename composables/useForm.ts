@@ -71,9 +71,9 @@ export function requiredIf<T>(condition: Ref<boolean>, message: string | null = 
   }
 }
 
-export function minLength<T extends string>(min: number, message: string | null = null): ValidationFunction<T> {
+export function minLength<T extends string | undefined>(min: number, message: string | null = null): ValidationFunction<T> {
   return (value: T, t) => {
-    if (value.length >= min) return null
+    if (value && value.length >= min) return null
 
     return message || t('The field should be of at least {min} characters', { min })
   }
