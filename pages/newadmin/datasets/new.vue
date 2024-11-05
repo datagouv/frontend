@@ -40,10 +40,12 @@
     />
     <Step2DescribeDataset
       v-if="currentStep === 2"
+      v-model="datasetForm"
       @next="datasetNext"
     />
     <Step3AddFiles
       v-if="currentStep === 3"
+      @next="filesNext"
     />
   </div>
 </template>
@@ -53,7 +55,7 @@ import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.v
 import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
 import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
-import type { DatasetForm } from '~/types/types'
+import type { DatasetForm, NewDatasetFile } from '~/types/types'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
@@ -67,6 +69,7 @@ const steps = computed(() => ([
 ]))
 
 const datasetForm = useState('dataset-form', () => null as DatasetForm | null)
+const datasetFiles = useState('dataset-files', () => [] as Array<NewDatasetFile>)
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
@@ -82,8 +85,13 @@ const moveToStep = (step: number) => {
 }
 
 const datasetNext = (dataset: DatasetForm) => {
-  datasetForm.value = dataset
+  // datasetForm.value = dataset
   moveToStep(3)
+}
+
+const filesNext = (files: Array<NewDatasetFile>) => {
+  datasetFiles.value = files
+  moveToStep(4)
 }
 
 watchEffect(() => {

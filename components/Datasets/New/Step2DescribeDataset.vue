@@ -530,7 +530,7 @@ import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
 import type { DatasetForm, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 
-// const props = defineProps<{}>()
+const datasetForm = defineModel<DatasetForm>({ required: true })
 
 const emit = defineEmits<{
   (event: 'next', dataset: DatasetForm): void
@@ -610,18 +610,7 @@ const removeZone = (zone: SpatialZone) => {
   form.value.spatial_zones = form.value.spatial_zones.filter(otherZone => otherZone.id !== zone.id)
 }
 
-const { form, touch, getFirstError, getFirstWarning, validate } = useForm({
-  title: '',
-  acronym: '',
-  description: '',
-  owned: null as Owned | null,
-  tags: [] as Array<Tag>,
-  license: null as EnrichedLicense | null,
-  temporal_coverage: { start: null, end: null },
-  frequency: null as Frequency | null,
-  spatial_zones: [] as Array<SpatialZone>,
-  spatial_granularity: null as SpatialGranularity | null,
-} as DatasetForm, {
+const { form, touch, getFirstError, getFirstWarning, validate } = useForm(datasetForm, {
   owned: [required()],
   title: [required()],
   description: [required()],

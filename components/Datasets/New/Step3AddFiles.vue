@@ -114,7 +114,10 @@
               <h3 class="fr-text--md fr-text--bold fr-m-0 fr-mb-2w">
                 {{ $t("Add your first files") }}
               </h3>
-              <UploadResourceModal @new-files="addFiles" />
+              <UploadResourceModal
+                :error-text="getFirstError('files')"
+                @new-files="addFiles"
+              />
               <!-- <UploadModalButton
                 group-class="fr-grid-row flex-direction-column fr-grid-row--middle"
                 :label="$t('Add files')"
@@ -135,7 +138,9 @@
                 @delete="removeFile(index)"
               />
               <div class="fr-grid-row fr-grid-row--center">
-                <UploadResourceModal @new-files="addFiles" />
+                <UploadResourceModal
+                  @new-files="addFiles"
+                />
 
                 <!-- <ButtonLoader
                   v-if="loading"
@@ -199,6 +204,10 @@ import UploadResourceModal from '../UploadResourceModal.vue'
 import type { NewDatasetFile } from '~/types/types'
 import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
 
+const emit = defineEmits<{
+  (e: 'next', files: Array<NewDatasetFile>): void
+}>()
+
 const { t } = useI18n()
 
 const publishFileAccordionId = useId()
@@ -210,7 +219,7 @@ const { form, getFirstError, getFirstWarning, touch, validate, errorsAsList: err
 }, {
   files: [required(t('At least one file is required.'))],
 }, {
-  files: [files => files.some(file => !isClosedFormat(file.format)) ? t('You did not add a file with an open format.') : null],
+  files: [files => files.find(file => !isClosedFormat(file.format)) ? null : t('You did not add a file with an open format.')],
   hasDocumentation: [hasDocumentation => !hasDocumentation ? t('You have not added a documentation file or described your files.') : null],
 })
 
@@ -233,7 +242,7 @@ const submit = () => {
   if (validate()) {
     try {
       loading.value = true
-      alert('go!')
+      emit('next', form.value.files)
     }
     catch {
       // here

@@ -28,6 +28,8 @@ export default defineNuxtConfig({
       supportUrl: 'https://support.data.gouv.fr/',
       catalogUrl: 'https://catalogue.data.gouv.fr/',
 
+      feedbackUrl: 'https://tally.so/r/wdNk1y',
+
       licenses: {
         'Autorités administratives': [
           { value: 'lov2', recommended: true, code: 'etalab-2.0' },

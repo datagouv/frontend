@@ -4,13 +4,21 @@
     size="lg"
   >
     <template #button="{ attrs, listeners }">
-      <button
-        class="fr-btn fr-btn--icon-left fr-icon-upload-line"
-        v-bind="attrs"
-        v-on="listeners"
-      >
-        {{ $t('Add files') }}
-      </button>
+      <div class="flex flex-col items-center">
+        <button
+          class="fr-btn fr-btn--icon-left fr-icon-upload-line"
+          v-bind="attrs"
+          v-on="listeners"
+        >
+          {{ $t('Add files') }}
+        </button>
+        <p
+          v-if="errorText"
+          class="fr-error-text mt-4 mb-0"
+        >
+          {{ errorText }}
+        </p>
+      </div>
     </template>
 
     <template #default="{ close }">
@@ -85,6 +93,10 @@ import type { NewDatasetFile } from '~/types/types'
 
 const { t } = useI18n()
 const formId = useId()
+
+defineProps<{
+  errorText?: string | null
+}>()
 
 const emit = defineEmits<{
   (e: 'newFiles', newFiles: Array<NewDatasetFile>): void
