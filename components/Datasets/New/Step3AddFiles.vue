@@ -106,7 +106,6 @@
           <LinkedToAccordion
             class="fr-fieldset__element min-width-0"
             :accordion="publishFileAccordionId"
-            @blur="touch('files')"
           >
             <div
               v-if="form.files.length === 0"
