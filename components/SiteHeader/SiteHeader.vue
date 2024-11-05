@@ -196,7 +196,7 @@
       </div>
     </div>
     <div
-      class="fr-header__menu hidden lg:block"
+      class="fr-header__menu fr-hidden fr-unhidden-lg"
     >
       <div
         class="fr-container"
@@ -205,38 +205,48 @@
         <nav
           class="fr-nav"
           role="navigation"
-          aria-label="Menu principal"
+          :aria-label="$t('Main menu')"
         >
           <ul class="fr-nav__list">
-            <li class="fr-nav__item">
-              <a
+            <li
+              v-for="link in menu"
+              :key="link.link"
+              class="fr-nav__item"
+            >
+              <NuxtLinkLocale
+                v-if="link.link"
                 class="fr-nav__link"
-                href="#"
+                :to="link.link"
                 target="_self"
+                :external="link.external"
               >
-                accès direct
-              </a>
-            </li>
-            <li class="fr-nav__item">
-              <a
-                class="fr-nav__link"
-                href="#"
-                target="_self"
-              >accès direct</a>
-            </li>
-            <li class="fr-nav__item">
-              <a
-                class="fr-nav__link"
-                href="#"
-                target="_self"
-              >accès direct</a>
-            </li>
-            <li class="fr-nav__item">
-              <a
-                class="fr-nav__link"
-                href="#"
-                target="_self"
-              >accès direct</a>
+                {{ link.label }}
+              </NuxtLinkLocale>
+              <HeadlessDisclosure v-else-if="link.items">
+                <HeadlessDisclosureButton
+                  class="fr-nav__btn"
+                >
+                  {{ link.label }}
+                </HeadlessDisclosureButton>
+                <HeadlessDisclosurePanel
+                  class="fr-menu"
+                >
+                  <ul class="fr-menu__list">
+                    <li
+                      v-for="item in link.items"
+                      :key="item.label"
+                    >
+                      <NuxtLinkLocale
+                        class="fr-nav__link"
+                        :to="item.link"
+                        :external="true"
+                      >
+                        {{ item.label }}
+                      </NuxtLinkLocale>
+                    </li>
+                  </ul>
+                </HeadlessDisclosurePanel>
+              </HeadlessDisclosure>
             </li>
           </ul>
         </nav>
@@ -255,7 +265,7 @@
         <nav
           class="fr-nav"
           role="navigation"
-          aria-label="Menu principal"
+          :aria-label="$t('Main menu')"
         >
           <ul class="fr-nav__list">
             <li class="fr-nav__item">
@@ -303,6 +313,7 @@ defineProps<{
   fluid?: boolean
 }>()
 
+const { t } = useI18n()
 const config = useRuntimeConfig()
 
 const menuModalId = useId()
@@ -313,6 +324,21 @@ const searchInputId = useId()
 
 const searchOpened = ref(false)
 const menuOpened = ref(false)
+
+const menu = [
+  { label: t('Data'), link: '/datasets/', external: true },
+  { label: t('Reuses'), link: '/reuses/', external: true },
+  { label: t('API'), link: '/dataservices/', external: true },
+  { label: t('Organizations'), link: '/organizations/', external: true },
+  { label: t('Getting started on {site}', { site: config.public.title }), items: [
+    { label: t('What is data.gouv.fr ?'), link: '/pages/about/a-propos_data-gouv/', external: true },
+    { label: t('How to publish data ?'), link: '/pages/onboarding/producteurs/', external: true },
+    { label: t('How to use data ?'), link: '/pages/onboarding/reutilisateurs/', external: true },
+    { label: t('{site} guides', { site: config.public.title }), link: config.public.guidesUrl, external: true },
+  ], external: true },
+  { label: t('News'), link: '/posts/', external: true },
+  { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
+]
 
 function openSearchModal() {
   searchOpened.value = true
