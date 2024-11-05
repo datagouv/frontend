@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    class="fr-input-group"
+    :class="{ 'fr-input-group--error': errorText, 'fr-input-group--warning': !errorText && warningText, 'fr-input-group--valid': validText }"
+  >
     <label
       :for="id"
       :title="explanation"
@@ -17,7 +20,10 @@
         class="fr-hint-text"
       >{{ hintText }}</span>
     </label>
-    <Combobox v-model="model">
+    <Combobox
+      v-model="model"
+      :multiple
+    >
       <div class="relative mt-1">
         <div
           class="relative w-full cursor-default overflow-hidden bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
@@ -25,12 +31,12 @@
           <ComboboxInput
             :id
             class="fr-input"
-            :display-value="(option: T) => option ? displayValue(option): null"
+            :display-value="(option: ModelType) => option ? displayValue(option): null"
             :placeholder
             @change="query = $event.target.value"
           />
           <ComboboxButton
-            class="absolute inset-y-0 right-0 flex items-center pr-4 hover:bg-transparent"
+            class="absolute inset-y-0 right-0 flex items-center pr-4 hover:!bg-transparent"
           >
             <Icon
               name="ri:arrow-down-s-line"
@@ -47,35 +53,54 @@
         >
           <ComboboxOptions
             ref="popover"
-            class="z-10 mt-1 absolute max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm pl-0"
+            class="z-10 mt-1 absolute max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm pl-0"
           >
             <div
-              v-if="filteredOptions.length === 0 && query !== ''"
+              v-if="!filteredAndGroupedOptions && query !== ''"
               class="relative cursor-default select-none px-4 py-2 text-gray-700"
             >
               Nothing found.
             </div>
 
-            <ComboboxOption
-              v-for="option in filteredOptions"
-              :key="getOptionId(option)"
-              v-slot="comboboxSlot"
-              as="template"
-              :value="option"
+            <div
+              v-for="(groupOptions, group) in filteredAndGroupedOptions"
+              :key="group"
             >
               <li
-                class="relative cursor-default select-none py-2 px-4 list-none"
-                :class="{
-                  'bg-primary text-white': comboboxSlot.active,
-                  'text-gray-900': !comboboxSlot.active,
-                }"
+                v-if="group"
+                class="relative select-none py-4 px-4 list-none bg-gray-100 uppercase text-gray-800 font-semibold text-xs"
               >
-                <slot
-                  name="option"
-                  v-bind="{ ...comboboxSlot, option }"
-                />
+                {{ group }}
               </li>
-            </ComboboxOption>
+              <ComboboxOption
+                v-for="option in groupOptions"
+                :key="getOptionId(unref(option))"
+                v-slot="comboboxSlot"
+                as="template"
+                :value="option"
+              >
+                <li
+                  class="relative cursor-default select-none py-2 px-4 list-none flex items-center space-x-2"
+                  :class="{
+                    'bg-primary text-white': comboboxSlot.active,
+                    'text-gray-900': !comboboxSlot.active,
+                  }"
+                >
+                  <div
+                    v-if="multiple"
+                    class="flex items-center justify-center aspect-square"
+                  >
+                    <span v-if="comboboxSlot.selected">✓</span>
+                  </div>
+                  <slot
+                    name="option"
+                    v-bind="{ option, active: comboboxSlot.active as boolean }"
+                  >
+                    {{ displayValue(option) }}
+                  </slot>
+                </li>
+              </ComboboxOption>
+            </div>
           </ComboboxOptions>
         </TransitionRoot>
       </div>
@@ -83,7 +108,7 @@
   </div>
 </template>
 
-<script setup lang="ts" generic="T extends string | number | object">
+<script setup lang="ts" generic="T extends string | number | object, Multiple extends true | false">
 import { ref, computed } from 'vue'
 import {
   Combobox,
@@ -94,27 +119,63 @@ import {
   TransitionRoot,
 } from '@headlessui/vue'
 
+type ModelType = Multiple extends false ? T : Array<T>
+
 const props = withDefaults(defineProps<{
   validText?: string
-  errorText?: string
+  errorText?: string | null
+  warningText?: string | null
   hintText?: string
   explanation?: string
   label: string
   placeholder?: string
 
-  getOptionId: (option: T) => string | number
-  displayValue: (option: T) => string
+  getOptionId?: (option: T) => string | number
+  groupBy?: (option: T) => string
+  displayValue?: (option: ModelType) => string
+  filter?: (option: T, query: string) => boolean
   options?: Array<T>
   suggest?: (query: string) => Promise<Array<T>>
 
   required?: boolean
+  multiple: Multiple
   isBlue?: boolean
 }>(), {
   required: false,
   isBlue: false,
+  displayValue: (_: ModelType): string => '',
+  groupBy: (_: T): string => '',
+  getOptionId: (option: T): string | number => {
+    if (typeof option === 'string') return option
+    if (typeof option === 'number') return option
+    if (typeof option === 'object' && 'id' in option) return option.id as string
+
+    throw new Error('Please set getOptionId()')
+  },
+  filter: (option: T, query: string): boolean => {
+    const searchables = []
+
+    if (typeof option === 'string') searchables.push(option)
+    if (typeof option === 'number') searchables.push(option.toString())
+    if (typeof option === 'object') {
+      for (const value of Object.values(option)) {
+        if (typeof value !== 'string') continue
+
+        searchables.push(value)
+      }
+    }
+
+    for (const searchable of searchables) {
+      if (searchable.toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
+        return true
+      }
+    }
+
+    return false
+  },
 })
 
-const model = defineModel<T | null>()
+const model = defineModel<ModelType | null>()
 
 const id = useId()
 const query = ref('')
@@ -127,13 +188,26 @@ watchEffect(async () => {
   suggestedOptions.value = await props.suggest(query.value)
 })
 
-const filteredOptions = computed(() => {
+const filteredOptions = computed<Array<T>>(() => {
   if (props.suggest) {
-    return suggestedOptions.value
+    return suggestedOptions.value as Array<T>
   }
-  else {
-    // TODO
-    return []
+
+  if (!props.options) throw new Error('Please set options or suggest')
+
+  if (!query.value) return props.options
+  return props.options.filter(option => props.filter(option, query.value))
+})
+const filteredAndGroupedOptions = computed<Record<string, Array<T>>>(() => {
+  if (!filteredOptions.value) return {}
+
+  const groups = {} as Record<string, Array<T>>
+  for (const option of filteredOptions.value) {
+    const group = props.groupBy(option)
+    groups[group] = groups[group] || []
+    groups[group].push(option)
   }
+
+  return groups
 })
 </script>
