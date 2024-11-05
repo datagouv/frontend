@@ -1,11 +1,11 @@
 export type ValidationFunction<T> = (value: T, t: (key: string, values?: Record<string, unknown>) => string) => string | null
 
-type KeysOfUnion<T> = T extends T ? keyof T : never
+export type KeysOfUnion<T> = T extends T ? keyof T : never
 
-type ValidationsRules<Type> = {
+export type ValidationsRules<Type> = {
   [Property in KeysOfUnion<Type>]?: Array<ValidationFunction<Type[Property]>>;
 }
-type ValidationsMessages<Type> = {
+export type ValidationsMessages<Type> = {
   [Property in KeysOfUnion<Type>]?: Array<string>;
 }
 
@@ -15,6 +15,11 @@ export function useForm<T>(initialValues: T, errorsRules: ValidationsRules<T> = 
   const form = ref({ ...initialValues })
   const errors = ref({} as ValidationsMessages<T>)
   const warnings = ref({} as ValidationsMessages<T>)
+
+  const removeErrorsAndWarnings = () => {
+    errors.value = {}
+    warnings.value = {}
+  }
 
   const touch = (key: KeysOfUnion<T>) => {
     errors.value[key] = []
@@ -51,7 +56,7 @@ export function useForm<T>(initialValues: T, errorsRules: ValidationsRules<T> = 
     return true
   }
 
-  return { form, errors, warnings, touch, getFirstError, getFirstWarning, validate }
+  return { form, errors, warnings, touch, getFirstError, getFirstWarning, validate, removeErrorsAndWarnings }
 }
 
 export function required<T>(message: string | null = null): ValidationFunction<T> {

@@ -63,28 +63,41 @@
         </div>
       </div>
     </div>
-    <!-- <p
-      v-for="stateError in stateErrors"
-      v-if="stateErrors.length"
-      class="fr-mt-1w fr-mb-0 fr-text--xs text-default-error"
-    >
-      <span
-        class="fr-icon-error-line fr-icon--sm"
-        aria-hidden="true"
-      />
-      {{ stateError }}
-    </p>
-    <p
-      v-for="stateWarning in stateWarnings"
-      v-else-if="stateWarnings.length && showEditAndWarning"
-      class="fr-mt-1w fr-mb-0 fr-text--xs text-default-warning"
-    >
-      <span
-        class="fr-icon-warning-line fr-icon--sm"
-        aria-hidden="true"
-      />
-      {{ stateWarning }}
-    </p> -->
+    <template v-if="errors">
+      <template
+        v-for="(fieldErrors, key) in errors"
+        :key="key"
+      >
+        <p
+          v-if="fieldErrors && fieldErrors.length"
+          class="fr-mt-1w fr-mb-0 fr-text--xs text-default-error"
+        >
+          <span
+            class="fr-icon-error-line fr-icon--sm"
+            aria-hidden="true"
+          />
+          {{ fieldErrors[0] }}
+        </p>
+      </template>
+    </template>
+    <template v-if="warnings">
+      <template
+        v-for="(fieldWarnings, key) in warnings"
+        :key="key"
+      >
+        <p
+          v-if="fieldWarnings && fieldWarnings.length"
+          class="fr-mt-1w fr-mb-0 fr-text--xs text-default-warning"
+        >
+          <span
+            class="fr-icon-warning-line fr-icon--sm"
+            aria-hidden="true"
+          >
+            {{ fieldWarnings[0] }}
+          </span>
+        </p>
+      </template>
+    </template>
   </div>
 </template>
 
@@ -97,12 +110,15 @@ import File from '../Icons/File.vue'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
 import type { NewDatasetFile } from '~/types/types'
+import type { ValidationsMessages } from '~/composables/useForm'
 
 const file = defineModel<NewDatasetFile>({ required: true })
 
 withDefaults(defineProps<{
   showEditAndWarning?: boolean
   hideActions?: boolean
+  warnings?: ValidationsMessages<NewDatasetFile>
+  errors?: ValidationsMessages<NewDatasetFile>
 }>(), {
   showEditAndWarning: true,
   hideActions: false,
@@ -114,9 +130,4 @@ defineEmits<{
 
 const loading = computed(() => file.value.state === 'loading')
 const loaded = computed(() => file.value.state === 'loaded')
-// const { stateErrors, stateWarnings, validateRequiredRules } = useFileValidation(file)
-
-// onMounted(() => validateRequiredRules())
-
-// watch(props.file, () => file.value = { ...props.file })
 </script>

@@ -2,6 +2,7 @@
   <ModalWithButton
     :title="t('File metadata')"
     size="fullscreen"
+    @open="removeErrorsAndWarnings"
   >
     <template #button="{ attrs, listeners }">
       <button
@@ -152,19 +153,21 @@
                 </legend>
                 <div class="fr-fieldset__element">
                   <FileCard
-                    v-model="file"
+                    v-model="form"
                     class="fr-mb-3v"
                     :hide-actions="true"
+                    :errors
+                    :warnings
                   />
                 </div>
                 <LinkedToAccordion
-                  v-if="'url' in file"
+                  v-if="'url' in form"
                   class="fr-fieldset__element min-width-0"
                   :accordion="chooseTheCorrectLinkAccordionId"
                   @blur="touch('url')"
                 >
                   <InputGroup
-                    v-model="file.url"
+                    v-model="form.url"
                     :label="$t('Link url')"
                     :required="true"
                     :has-error="!!getFirstError('url')"
@@ -177,7 +180,7 @@
                   @blur="touch('title')"
                 >
                   <InputGroup
-                    v-model="file.title"
+                    v-model="form.title"
                     :label="fileTitle"
                     :required="true"
                     :has-error="!!getFirstError('title')"
@@ -190,7 +193,7 @@
                   @blur="touch('type')"
                 >
                   <SelectGroup
-                    v-model="file.type"
+                    v-model="form.type"
                     :label="$t('Type')"
                     :required="true"
                     :has-error="!!getFirstError('type')"
@@ -222,7 +225,7 @@
                   @blur="touch('description')"
                 >
                   <InputGroup
-                    v-model="file.description"
+                    v-model="form.description"
                     :label="$t('Description')"
                     :has-warning="!!getFirstWarning('description')"
                     :error-text="getFirstWarning('description')"
@@ -304,6 +307,7 @@ import { getResourceLabel, RESOURCE_TYPE, Well, type SchemaResponseData } from '
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import type { NewDatasetFile } from '~/types/types'
+import type { KeysOfUnion } from '~/composables/useForm'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
@@ -318,16 +322,14 @@ const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File titl
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
 const descriptionWarning = t('It\'s advised to have a description of at least {min} characters.', { min: 200 })
-const { form, getFirstError, getFirstWarning, touch, validate } = useForm(file.value, {
+const { form, getFirstError, getFirstWarning, touch, validate, errors, warnings, removeErrorsAndWarnings } = useForm(file.value, {
   url: [requiredIf(isRemote)],
   title: [required()],
   type: [required()],
   format: [required()],
 }, {
-  description: [required(descriptionWarning), minLength(200, descriptionWarning)],
+  description: [minLength(200, descriptionWarning)],
 })
-
-type KeysOfUnion<T> = T extends T ? keyof T : never
 
 const chooseTheCorrectLinkAccordionId = useId()
 const nameAFileAccordionId = useId()
