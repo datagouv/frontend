@@ -189,35 +189,36 @@
                   :accordion="chooseTheRightTypeOfFileAccordionId"
                   @blur="touch('type')"
                 >
-                  <!-- <SelectGroup
+                  <SelectGroup
                     v-model="file.type"
                     :label="$t('Type')"
                     :required="true"
                     :has-error="!!getFirstError('type')"
-                    :error-text="getFirstError('type')"
+                    :error-text="getFirstError('type') || undefined"
                     :options="fileTypes"
-                  /> -->
+                  />
                 </LinkedToAccordion>
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
                   :accordion="chooseTheCorrectFormatAccordionId"
                   @blur="touch('format')"
                 >
-                  <!-- <MultiSelect
-                    :placeholder="$t('Format')"
-                    :search-placeholder="$t('Search a format...')"
-                    :list-url="allowedExtensionsUrl"
-                    :suggest-url="isRemote ? 'datasets/suggest/formats/' : null"
-                    :values="file.format"
-                    :required="true"
-                    :has-error="!!getFirstError('format')"
-                    :has-warning="!!getFirstWarning('format')"
+                  <SearchableSelect
+                    v-model="form.format"
+                    :label="$t('Format')"
+                    :placeholder="$t('Search a format…')"
+                    :display-value="(option) => option"
+                    :options="extensions"
+                    :multiple="false"
+                    class="mb-6"
+
                     :error-text="getFirstError('format')"
-                    :all-option="$t('Select a format')"
-                    :add-all-option="false"
-                    :add-new-option="isRemote"
-                    @change="(value) => file.format = value"
-                  /> -->
+                    :warning-text="getFirstWarning('format')"
+                  >
+                    <template #option="{ option: format }">
+                      {{ format }}
+                    </template>
+                  </SearchableSelect>
                 </LinkedToAccordion>
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
@@ -237,6 +238,23 @@
                   :accordion="selectASchemaAccordionId"
                   @blur="touch('schema')"
                 >
+                  <SearchableSelect
+                    v-model="form.schema"
+                    :label="$t('Schema')"
+                    :placeholder="$t('Search a schema…')"
+                    :display-value="(option) => option.name"
+                    :get-option-id="(option) => option.name"
+                    :options="schemas"
+                    :multiple="false"
+                    class="mb-6"
+
+                    :error-text="getFirstError('schema')"
+                    :warning-text="getFirstWarning('schema')"
+                  >
+                    <template #option="{ option: schema }">
+                      {{ schema.name }}
+                    </template>
+                  </SearchableSelect>
                   <!-- <SchemaSelect
                     :all-option="$t('Select a schema')"
                     :values="file.schema"
@@ -301,8 +319,9 @@
 </template>
 
 <script setup lang="ts">
-import { getResourceLabel, RESOURCE_TYPE, Well } from '@datagouv/components'
+import { getResourceLabel, RESOURCE_TYPE, Well, type SchemaResponseData } from '@datagouv/components'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
+import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import type { NewDatasetFile } from '~/types/types'
 
 const file = defineModel<NewDatasetFile>({ required: true })
@@ -321,6 +340,9 @@ const chooseTheCorrectFormatAccordionId = useId()
 const writeAGoodDescriptionAccordionId = useId()
 const selectASchemaAccordionId = useId()
 const whatIsAMimeTypeAccordionId = useId()
+
+const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
+const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
 
 const isRemote = computed(() => file.value.filetype === 'remote')
 const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a file'))

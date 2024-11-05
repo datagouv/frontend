@@ -295,9 +295,7 @@
                 :warning-text="getFirstWarning('tags')"
               >
                 <template #option="{ option: tag }">
-                  <div class="flex items-center space-x-2">
-                    <span>{{ tag.text }}</span>
-                  </div>
+                  {{ tag.text }}
                 </template>
               </SearchableSelect>
               <div class="flex space-x-2">
