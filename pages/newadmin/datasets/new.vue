@@ -68,6 +68,7 @@ const { t } = useI18n()
 const config = useRuntimeConfig()
 const route = useRoute()
 const { $api, $fileApi } = useNuxtApp()
+const localePath = useLocalePath()
 
 const steps = computed(() => ([
   t('Publish data on {site}', { site: config.public.title }),
@@ -88,7 +89,8 @@ const datasetForm = useState('dataset-form', () => ({
   spatial_zones: [] as Array<SpatialZone>,
   spatial_granularity: null as SpatialGranularity | null,
 } as DatasetForm))
-const datasetFiles = useState('dataset-files', () => [] as Array<NewDatasetFile>)
+const datasetFiles = useState<Array<NewDatasetFile>>('dataset-files', () => [])
+const newDataset = useState<Dataset | null>('new-dataset', () => null)
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
@@ -141,7 +143,7 @@ const prepareDatasetForApi = (form: DatasetForm, asPrivate: boolean): NewDataset
 
 const save = async (asPrivate: boolean) => {
   try {
-    const newDataset = await $api<Dataset>('/api/1/datasets/', {
+    newDataset.value = newDataset.value || await $api<Dataset>('/api/1/datasets/', {
       method: 'POST',
       body: JSON.stringify(prepareDatasetForApi(datasetForm.value, asPrivate)),
     })
@@ -150,11 +152,14 @@ const save = async (asPrivate: boolean) => {
       if (datasetFiles.value[i].state === 'loaded') return
 
       datasetFiles.value[i].state = 'loading'
-      return uploadFile(newDataset, datasetFiles.value[i], 3)
+      return uploadFile(newDataset.value as Dataset, datasetFiles.value[i], 3)
     }))
 
     if (results.some(f => f.status === 'rejected')) {
       moveToStep(3)
+    }
+    else {
+      navigateTo(newDataset.value.organization ? localePath(`/newadmin/organizations/${newDataset.value.organization.id}/datasets`) : localePath('/newadmin/me/datasets'))
     }
   }
   catch {
