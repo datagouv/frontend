@@ -320,7 +320,7 @@ const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a f
 const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
-const { form, getFirstError, getFirstWarning, touch, validate, errors, warnings, removeErrorsAndWarnings } = useNewDatasetFileForm(cloneDeep(file.value))
+const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useNewDatasetFileForm(cloneDeep(file.value))
 
 const chooseTheCorrectLinkAccordionId = useId()
 const nameAFileAccordionId = useId()

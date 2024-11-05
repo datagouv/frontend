@@ -84,3 +84,11 @@ export function useNewDatasetFileForm(file: MaybeRef<NewDatasetFile>) {
     description: [minLength(200, t('It\'s advised to have a description of at least {min} characters.', { min: 200 }))],
   })
 }
+
+export const CLOSED_FORMATS = readonly(['pdf', 'doc', 'docx', 'word', 'xls', 'excel', 'xlsx'] as const)
+
+const includeInSubtype = <T, U extends T>(array: ReadonlyArray<U>, value: T): value is U => {
+  return array.includes(value as U)
+}
+
+export const isClosedFormat = (format: string) => includeInSubtype(CLOSED_FORMATS, format)

@@ -45,6 +45,13 @@ export function useForm<T>(initialValues: MaybeRef<T>, errorsRules: ValidationsR
   const getFirstError = (key: KeysOfUnion<T>): string | null => getFirst(errors.value, key)
   const getFirstWarning = (key: KeysOfUnion<T>): string | null => getFirst(warnings.value, key)
 
+  const warningsAsList = computed<Array<string>>(() => {
+    return Object.keys(errors.value).flatMap(key => errors.value[key] || [])
+  })
+  const errorsAsList = computed<Array<string>>(() => {
+    return Object.keys(errors.value).flatMap(key => errors.value[key] || [])
+  })
+
   const validate = () => {
     for (const key of Object.keys(form.value)) {
       touch(key as KeysOfUnion<T>)
@@ -56,7 +63,7 @@ export function useForm<T>(initialValues: MaybeRef<T>, errorsRules: ValidationsR
     return true
   }
 
-  return { form, errors, warnings, touch, getFirstError, getFirstWarning, validate, removeErrorsAndWarnings }
+  return { form, errors, warnings, touch, getFirstError, getFirstWarning, validate, removeErrorsAndWarnings, warningsAsList, errorsAsList }
 }
 
 export function required<T>(message: string | null = null): ValidationFunction<T> {

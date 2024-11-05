@@ -42,7 +42,7 @@
         <Accordion
           :id="addDescriptionAccordionId"
           :title="$t('Add documentation')"
-          :state="hasDocumentation ? 'warning': 'default'"
+          :state="accordionState('hasDocumentation')"
         >
           <div class="markdown fr-m-0">
             <p class="fr-m-0 fr-mb-1w">
@@ -58,11 +58,11 @@
             </ul>
           </div>
           <Well
-            v-if="! hasDocumentation"
+            v-if="getFirstWarning('hasDocumentation')"
             class="fr-mt-1w"
             color="orange-terre-battue"
           >
-            {{ t("You have not added a documentation file or described your files.") }}
+            {{ getFirstWarning('hasDocumentation') }}
           </Well>
         </Accordion>
       </AccordionGroup>
@@ -136,6 +136,8 @@
                 @delete="removeFile(index)"
               />
               <div class="fr-grid-row fr-grid-row--center">
+                <UploadResourceModal @new-files="addFiles" />
+
                 <!-- <ButtonLoader
                   v-if="loading"
                   :width="114"
@@ -175,9 +177,9 @@
           </p>
         </Alert>
         <div class="fr-grid-row fr-grid-row--right">
-          <!-- <ButtonLoader
+          <AdminLoader
             v-if="loading"
-            :width="66"
+            class="size-8"
           />
           <button
             v-else
@@ -185,7 +187,7 @@
             @click="submit"
           >
             {{ $t("Next") }}
-          </button> -->
+          </button>
         </div>
       </div>
     </div>
@@ -196,30 +198,52 @@
 import { Well } from '@datagouv/components'
 import UploadResourceModal from '../UploadResourceModal.vue'
 import type { NewDatasetFile } from '~/types/types'
+import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
 
 const { t } = useI18n()
 
 const publishFileAccordionId = useId()
 const addDescriptionAccordionId = useId()
 
-const { form, getFirstError, getFirstWarning, touch } = useForm({
+const { form, getFirstError, getFirstWarning, touch, validate, errorsAsList: errors } = useForm({
   files: [] as Array<NewDatasetFile>,
+  hasDocumentation: false,
+}, {
+  files: [required(t('At least one file is required.'))],
+}, {
+  files: [files => files.some(file => !isClosedFormat(file.format)) ? t('You did not add a file with an open format.') : null],
+  hasDocumentation: [hasDocumentation => !hasDocumentation ? t('You have not added a documentation file or described your files.') : null],
+})
+
+watchEffect(() => {
+  form.value.hasDocumentation = (!form.value.files.length) && form.value.files.some(file => file.type === 'documentation')
+  touch('hasDocumentation')
 })
 
 const loading = ref(false)
-const errors = ref([])
 const addFiles = (files: Array<NewDatasetFile>) => {
   for (const file of files) form.value.files.push(file)
+  touch('files')
 }
-const removeFile = (position: number) => form.value.files.splice(position, 1)
+const removeFile = (position: number) => {
+  form.value.files.splice(position, 1)
+  touch('files')
+}
 
-const submit = () => {}
-
-const hasDocumentation = computed(() => {
-  if (!form.value.files.length) return true // If no file, do not bother the user with missing documentation
-  if (form.value.files.some(file => file.type === 'documentation')) return true // TODO fix here
-  return false
-})
+const submit = () => {
+  if (validate()) {
+    try {
+      loading.value = true
+      alert('go!')
+    }
+    catch {
+      // here
+    }
+    finally {
+      loading.value = false
+    }
+  }
+}
 
 const accordionState = (key: keyof typeof form.value) => {
   if (getFirstError(key)) return 'error'
