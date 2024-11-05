@@ -268,14 +268,6 @@
                   />
                 </LinkedToAccordion>
               </fieldset>
-              <div class="fr-grid-row fr-grid-row--right">
-                <button
-                  class="fr-btn"
-                  @click="submit(close)"
-                >
-                  {{ $t("Save") }}
-                </button>
-              </div>
             </Container>
           </div>
         </div>
@@ -314,7 +306,18 @@ import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import type { NewDatasetFile } from '~/types/types'
 
 const file = defineModel<NewDatasetFile>({ required: true })
-const { form, getFirstError, getFirstWarning, touch } = useForm(file.value, {}, {})
+
+const isRemote = computed(() => file.value.filetype === 'remote')
+const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a file'))
+const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
+const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
+
+const { form, getFirstError, getFirstWarning, touch, warnings, errors, validate } = useForm(file.value, {
+  url: [requiredIf(isRemote)],
+  title: [required()],
+  type: [required()],
+  format: [required()],
+}, {})
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
@@ -334,14 +337,11 @@ const whatIsAMimeTypeAccordionId = useId()
 const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
 const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
 
-const isRemote = computed(() => file.value.filetype === 'remote')
-const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a file'))
-const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
-const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
-
 const submit = (close: () => void) => {
-  file.value = form.value
-  close()
+  if (validate()) {
+    file.value = form.value
+    close()
+  }
 }
 const cancel = (close: () => void) => {
   form.value = file.value

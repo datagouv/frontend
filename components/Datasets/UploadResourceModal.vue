@@ -23,7 +23,6 @@
           type="drop"
           :accept="extensions.join(',')"
           :multiple="true"
-          :required="true"
           :hint-text="$t('Max size: 420 Mb. Multiple files allowed.')"
           @change="setFiles"
         />

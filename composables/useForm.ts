@@ -62,6 +62,15 @@ export function required<T>(message: string | null = null): ValidationFunction<T
   }
 }
 
+export function requiredIf<T>(condition: Ref<boolean>, message: string | null = null): ValidationFunction<T> {
+  return (value: T, t) => {
+    if (!condition.value) return null
+    if (!value || (Array.isArray(value) && !value.length)) return message || t('The field is required')
+
+    return null
+  }
+}
+
 export function minLength<T extends string>(min: number, message: string | null = null): ValidationFunction<T> {
   return (value: T, t) => {
     if (value.length >= min) return null
