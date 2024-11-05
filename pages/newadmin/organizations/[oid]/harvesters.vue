@@ -68,7 +68,7 @@
           </AdminTableTh>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="pageData">
         <tr
           v-for="harvester in pageData.data"
           :key="harvester.id"
