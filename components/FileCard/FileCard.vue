@@ -80,6 +80,16 @@
         </p>
       </template>
     </template>
+    <p
+      v-if="file.errorMessage"
+      class="fr-mt-1w fr-mb-0 fr-text--xs text-default-error"
+    >
+      <span
+        class="fr-icon-error-line fr-icon--sm"
+        aria-hidden="true"
+      />
+      {{ file.errorMessage }}
+    </p>
     <template v-if="warnings">
       <template
         v-for="(fieldWarnings, key) in warnings"
@@ -104,8 +114,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { filesize as formatFilesize, formatRelativeIfRecentDate } from '@datagouv/components'
-// import useFileValidation from '../../../composables/form/useFileValidation'
-// import { isLoaded, isLoading } from '../../../api/resources'
 import File from '../Icons/File.vue'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
@@ -113,7 +121,7 @@ import type { NewDatasetFile } from '~/types/types'
 
 const file = defineModel<NewDatasetFile>({ required: true })
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   showEditAndWarning?: boolean
   hideActions?: boolean
 }>(), {
@@ -128,6 +136,6 @@ defineEmits<{
 const loading = computed(() => file.value.state === 'loading')
 const loaded = computed(() => file.value.state === 'loaded')
 
-const { form, errors, warnings, validate } = useNewDatasetFileForm(file)
+const { errors, warnings, validate } = useNewDatasetFileForm(file)
 watchEffect(() => validate())
 </script>

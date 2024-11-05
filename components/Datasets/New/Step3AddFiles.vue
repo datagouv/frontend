@@ -118,20 +118,10 @@
                 :error-text="getFirstError('files')"
                 @new-files="addFiles"
               />
-              <!-- <UploadModalButton
-                group-class="fr-grid-row flex-direction-column fr-grid-row--middle"
-                :label="$t('Add files')"
-                :title="$t('Add files (opens a modal dialog)')"
-                :multiple="true"
-                :required="true"
-                :has-error="!!getFirstError('files')"
-                :error-text="getFirstError('files')"
-                @change="addFiles"
-              /> -->
             </div>
             <template v-else>
               <FileCard
-                v-for="(resource, index) in form.files"
+                v-for="(_, index) in form.files"
                 :key="index"
                 v-model="form.files[index]"
                 class="fr-mb-3v"
@@ -141,21 +131,6 @@
                 <UploadResourceModal
                   @new-files="addFiles"
                 />
-
-                <!-- <ButtonLoader
-                  v-if="loading"
-                  :width="114"
-                />
-                <UploadModalButton
-                  v-else
-                  :label="$t('Add files')"
-                  :title="$t('Add files (opens a modal dialog)')"
-                  :multiple="true"
-                  :required="true"
-                  :has-error="!!getFirstError('files')"
-                  :error-text="getFirstError('files')"
-                  @change="addFiles"
-                /> -->
               </div>
             </template>
           </LinkedToAccordion>

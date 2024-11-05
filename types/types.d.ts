@@ -180,4 +180,4 @@ export type DatasetLocalFile = { file: File, sha256?: string, description?: stri
 
 export type FileLoadingState = 'none' | 'loading' | 'failed' | 'loaded'
 
-export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState }
+export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState, errorMessage?: string }

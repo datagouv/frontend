@@ -55,6 +55,7 @@
 
 <script setup lang="ts">
 import type { Dataset, Frequency, NewDataset, Owned, Resource } from '@datagouv/components'
+import type { FetchError } from 'ofetch'
 import { v4 as uuidv4 } from 'uuid'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
@@ -145,19 +146,15 @@ const save = async (asPrivate: boolean) => {
       body: JSON.stringify(prepareDatasetForApi(datasetForm.value, asPrivate)),
     })
 
-    for (const i in datasetFiles.value) {
-      const file = datasetFiles.value[i]
-      // if (file.state === 'loaded') {
-      //   continue
-      // }
+    const results = await Promise.allSettled(datasetFiles.value.map((_, i: number) => {
+      if (datasetFiles.value[i].state === 'loaded') return
+
       datasetFiles.value[i].state = 'loading'
-      try {
-        const newFile = await uploadFile(newDataset, file, 3)
-        datasetFiles.value[i].state = 'loaded'
-      }
-      catch {
-        datasetFiles.value[i].state = 'failed'
-      }
+      return uploadFile(newDataset, datasetFiles.value[i], 3)
+    }))
+
+    if (results.some(f => f.status === 'rejected')) {
+      moveToStep(3)
     }
   }
   catch {
@@ -169,8 +166,6 @@ const save = async (asPrivate: boolean) => {
 }
 
 const uploadFile = async (newDataset: Dataset, file: NewDatasetFile, retry: number) => {
-  if (retry === 0) throw new Error(t('Failed to upload file {title}', { title: file.title }))
-
   try {
     // If this is a remote file, it's easy just send all the information to the server.
     if (file.filetype === 'remote') {
@@ -196,9 +191,18 @@ const uploadFile = async (newDataset: Dataset, file: NewDatasetFile, retry: numb
       body: JSON.stringify(file),
     })
 
+    file.state = 'loaded'
     return updatedNewResource
   }
-  catch {
+  catch (e) {
+    if (retry === 0) {
+      const fetchError = e as unknown as FetchError
+      if ('data' in fetchError && 'message' in fetchError.data) {
+        file.errorMessage = fetchError.data.message
+      }
+      file.state = 'failed'
+      throw new Error(t('Failed to upload file {title}', { title: file.title }))
+    }
     await uploadFile(newDataset, file, retry - 1)
   }
 }
