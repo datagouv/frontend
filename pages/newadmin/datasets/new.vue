@@ -32,7 +32,13 @@
       :current-step
     />
 
-    {{ JSON.stringify(datasetForm) }}
+    <div>{{ JSON.stringify(datasetForm) }}</div>
+    <div v-if="datasetFiles.length">
+      {{ JSON.stringify(datasetFiles[0].file.name) }}
+    </div>
+    <div v-if="datasetFiles.length">
+      {{ test(datasetFiles[0].file) }}
+    </div>
 
     <Step1PublishingType
       v-if="currentStep === 1"
@@ -45,21 +51,30 @@
     />
     <Step3AddFiles
       v-if="currentStep === 3"
+      v-model="datasetFiles"
       @next="filesNext"
+    />
+    <Step4CompletePublication
+      v-if="currentStep === 4"
+      @next="save"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import type { Dataset, Frequency, Owned, Resource } from '@datagouv/components'
+import { v4 as uuidv4 } from 'uuid'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
 import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
+import Step4CompletePublication from '~/components/Datasets/New/Step4CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
-import type { DatasetForm, NewDatasetFile } from '~/types/types'
+import type { DatasetForm, EnrichedLicense, NewDatasetFile, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
 const route = useRoute()
+const { $api, $fileApi } = useNuxtApp()
 
 const steps = computed(() => ([
   t('Publish data on {site}', { site: config.public.title }),
@@ -68,7 +83,18 @@ const steps = computed(() => ([
   t('Complete your publishing'),
 ]))
 
-const datasetForm = useState('dataset-form', () => null as DatasetForm | null)
+const datasetForm = useState('dataset-form', () => ({
+  title: '',
+  acronym: '',
+  description: '',
+  owned: null as Owned | null,
+  tags: [] as Array<Tag>,
+  license: null as EnrichedLicense | null,
+  temporal_coverage: { start: null, end: null },
+  frequency: null as Frequency | null,
+  spatial_zones: [] as Array<SpatialZone>,
+  spatial_granularity: null as SpatialGranularity | null,
+} as DatasetForm))
 const datasetFiles = useState('dataset-files', () => [] as Array<NewDatasetFile>)
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
@@ -89,9 +115,91 @@ const datasetNext = (dataset: DatasetForm) => {
   moveToStep(3)
 }
 
+const test = URL.createObjectURL
+
 const filesNext = (files: Array<NewDatasetFile>) => {
   datasetFiles.value = files
   moveToStep(4)
+}
+
+const save = async (asPrivate: boolean) => {
+  try {
+    const dataset: Dataset = {
+      ...datasetForm.value,
+      private: asPrivate,
+      spatial: (datasetForm.value.spatial_granularity || datasetForm.value.spatial_zones)
+        ? {
+            zones: datasetForm.value.spatial_zones.length ? datasetForm.value.spatial_zones.map(z => z.name) : undefined,
+            granularity: datasetForm.value.spatial_granularity ? datasetForm.value.spatial_granularity.name : undefined,
+          }
+        : null,
+      organization: datasetForm.value.owned?.organization,
+      temporal_coverage: datasetForm.value.temporal_coverage.start && datasetForm.value.temporal_coverage.end ? datasetForm.value.temporal_coverage : '',
+      owner: datasetForm.value.owned?.owner,
+      frequency: datasetForm.value.frequency?.id || '',
+    }
+
+    const newDataset = await $api<Dataset>('/api/1/datasets/', {
+      method: 'POST',
+      body: JSON.stringify(dataset),
+    })
+
+    for (const i in datasetFiles.value) {
+      const file = datasetFiles.value[i]
+      // if (file.state === 'loaded') {
+      //   continue
+      // }
+      datasetFiles.value[i].state = 'loading'
+      try {
+        const newFile = await uploadFile(newDataset, file, 3)
+        datasetFiles.value[i].state = 'loaded'
+      }
+      catch {
+        datasetFiles.value[i].state = 'failed'
+      }
+    }
+  }
+  catch {
+    //
+  }
+  finally {
+    //
+  }
+}
+
+const uploadFile = async (newDataset: Dataset, file: NewDatasetFile, retry: number) => {
+  if (retry === 0) throw new Error(t('Failed to upload file {title}', { title: file.title }))
+
+  try {
+    // If this is a remote file, it's easy just send all the information to the server.
+    if (file.filetype === 'remote') {
+      return await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/`, {
+        method: 'POST',
+        body: JSON.stringify(file),
+      })
+    }
+
+    // If it's a local file, first we need to send the file data as multipart/form-data
+    const formData = new FormData()
+    formData.set('uuid', uuidv4())
+    formData.set('filename', file.file.name)
+    formData.set('file', file.file)
+    const newResource = await $fileApi<Resource>(`/api/1/datasets/${newDataset.id}/upload/`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    // Then we need to update the new resource with all the metadata
+    const updatedNewResource = await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/${newResource.id}/`, {
+      method: 'PUT',
+      body: JSON.stringify(file),
+    })
+
+    return updatedNewResource
+  }
+  catch {
+    await uploadFile(newDataset, file, retry - 1)
+  }
 }
 
 watchEffect(() => {

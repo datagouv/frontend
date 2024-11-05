@@ -208,13 +208,15 @@ const emit = defineEmits<{
   (e: 'next', files: Array<NewDatasetFile>): void
 }>()
 
+const files = defineModel<Array<NewDatasetFile>>({ required: true })
+
 const { t } = useI18n()
 
 const publishFileAccordionId = useId()
 const addDescriptionAccordionId = useId()
 
 const { form, getFirstError, getFirstWarning, touch, validate, errorsAsList: errors } = useForm({
-  files: [] as Array<NewDatasetFile>,
+  files,
   hasDocumentation: false,
 }, {
   files: [required(t('At least one file is required.'))],

@@ -52,6 +52,7 @@
     "ofetch": "^1.4.1",
     "popmotion": "^11.0.5",
     "remove-markdown": "^0.5.5",
+    "uuid": "^11.0.2",
     "vue": "latest",
     "vue-content-loader": "^2.0.1",
     "vue-router": "latest",

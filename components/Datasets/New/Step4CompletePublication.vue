@@ -9,7 +9,7 @@
         <div class="fr-grid-row">
           <div class="fr-col-auto fr-mr-3v">
             <img
-              :src="successIcon"
+              src="/illustrations/success.svg"
               alt=""
             >
           </div>
@@ -23,10 +23,10 @@
           </div>
         </div>
       </Well>
-      <CardLg
+      <!-- <CardLg
         :dataset="dataset"
         :show-metrics="false"
-      />
+      /> -->
       <div class="fr-grid-row justify-between">
         <a
           :href="config.public.feedbackUrl"
@@ -35,15 +35,15 @@
           {{ $t('Give us your feedback on the publishing form') }}
         </a>
         <div class="fr-grid-row fr-grid-row--right">
-          <a
-            :href="'#'"
+          <button
             class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500 fr-mr-3v"
+            @click="submit(true)"
           >
             {{ $t("Save as draft") }}
-          </a>
+          </button>
           <button
             class="fr-btn"
-            @click="submit"
+            @click="submit(false)"
           >
             {{ $t("Publish the dataset") }}
           </button>
@@ -54,26 +54,16 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components/ts'
-import { reactive } from 'vue'
-import successIcon from '../../../../templates/svg/illustrations/success.svg'
+import { Well } from '@datagouv/components'
 import Container from '~/components/content/Container/Container.vue'
 
 const emit = defineEmits<{
-  redirectToPublicUrl: []
+  (e: 'next', asPrivate: boolean): void
 }>()
 
 const config = useRuntimeConfig()
 
-// const props = defineProps<{
-//   feedbackUrl: string
-//   originalDataset: Dataset
-//   redirectDraftUrl: string
-// }>()
-
-const dataset = reactive({ ...props.originalDataset, private: false })
-
-function submit() {
-  emit('redirectToPublicUrl')
+function submit(asPrivate: boolean) {
+  emit('next', asPrivate)
 };
 </script>

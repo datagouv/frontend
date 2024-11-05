@@ -528,7 +528,7 @@ import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { DatasetForm, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import type { DatasetForm, EnrichedLicense, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 
 const datasetForm = defineModel<DatasetForm>({ required: true })
 
@@ -549,8 +549,6 @@ const selectLicenseAccordionId = useId()
 const chooseFrequencyAccordionId = useId()
 const addTemporalCoverageAccordionId = useId()
 const addSpatialInformationAccordionId = useId()
-
-type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }
 
 const { data: frequencies } = await useAPI<Array<Frequency>>('/api/1/datasets/frequencies', { lazy: true })
 

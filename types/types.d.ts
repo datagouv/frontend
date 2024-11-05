@@ -1,4 +1,4 @@
-import type { Dataset, Dataservice, Reuse, User } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -145,6 +145,8 @@ export type DatasetForm = {
   spatial_zones: Array<SpatialZone>
   spatial_granularity: SpatialGranularity | null
 }
+
+type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }
 
 export type RemoteResourceFileType = 'remote'
 
