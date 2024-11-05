@@ -158,7 +158,7 @@
                   />
                 </div>
                 <LinkedToAccordion
-                  v-if="isRemote"
+                  v-if="'url' in file"
                   class="fr-fieldset__element min-width-0"
                   :accordion="chooseTheCorrectLinkAccordionId"
                   @blur="touch('url')"
