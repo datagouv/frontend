@@ -156,8 +156,6 @@
                     v-model="form"
                     class="fr-mb-3v"
                     :hide-actions="true"
-                    :errors
-                    :warnings
                   />
                 </div>
                 <LinkedToAccordion
@@ -304,6 +302,7 @@
 
 <script setup lang="ts">
 import { getResourceLabel, RESOURCE_TYPE, Well, type SchemaResponseData } from '@datagouv/components'
+import { cloneDeep } from 'lodash'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import type { NewDatasetFile } from '~/types/types'
@@ -321,15 +320,7 @@ const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a f
 const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
-const descriptionWarning = t('It\'s advised to have a description of at least {min} characters.', { min: 200 })
-const { form, getFirstError, getFirstWarning, touch, validate, errors, warnings, removeErrorsAndWarnings } = useForm(file.value, {
-  url: [requiredIf(isRemote)],
-  title: [required()],
-  type: [required()],
-  format: [required()],
-}, {
-  description: [minLength(200, descriptionWarning)],
-})
+const { form, getFirstError, getFirstWarning, touch, validate, errors, warnings, removeErrorsAndWarnings } = useNewDatasetFileForm(cloneDeep(file.value))
 
 const chooseTheCorrectLinkAccordionId = useId()
 const nameAFileAccordionId = useId()

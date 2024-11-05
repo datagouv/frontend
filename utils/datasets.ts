@@ -1,4 +1,3 @@
-import type { Resource } from '@datagouv/components'
 import type { Component } from 'vue'
 import Archive from '~/components/Icons/Archive.vue'
 import Code from '~/components/Icons/Code.vue'
@@ -6,6 +5,7 @@ import Documentation from '~/components/Icons/Documentation.vue'
 import Image from '~/components/Icons/Image.vue'
 import Link from '~/components/Icons/Link.vue'
 import Table from '~/components/Icons/Table.vue'
+import type { NewDatasetFile } from '~/types/types'
 
 export function getResourceFormatIcon(format: string): Component | null {
   switch (format?.trim()?.toLowerCase()) {
@@ -69,4 +69,18 @@ export function getResourceFormatIcon(format: string): Component | null {
     default:
       return null
   }
+}
+
+export function useNewDatasetFileForm(file: MaybeRef<NewDatasetFile>) {
+  const isRemote = computed(() => unref(file).filetype === 'remote')
+  const { t } = useI18n()
+
+  return useForm(file, {
+    url: [requiredIf(isRemote)],
+    title: [required()],
+    type: [required()],
+    format: [required()],
+  }, {
+    description: [minLength(200, t('It\'s advised to have a description of at least {min} characters.', { min: 200 }))],
+  })
 }

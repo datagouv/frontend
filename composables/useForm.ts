@@ -9,10 +9,10 @@ export type ValidationsMessages<Type> = {
   [Property in KeysOfUnion<Type>]?: Array<string>;
 }
 
-export function useForm<T>(initialValues: T, errorsRules: ValidationsRules<T> = {}, warningsRules: ValidationsRules<T> = {}) {
+export function useForm<T>(initialValues: MaybeRef<T>, errorsRules: ValidationsRules<T> = {}, warningsRules: ValidationsRules<T> = {}) {
   const { t } = useI18n()
 
-  const form = ref({ ...initialValues })
+  const form = toRef(initialValues)
   const errors = ref({} as ValidationsMessages<T>)
   const warnings = ref({} as ValidationsMessages<T>)
 

@@ -110,15 +110,12 @@ import File from '../Icons/File.vue'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
 import type { NewDatasetFile } from '~/types/types'
-import type { ValidationsMessages } from '~/composables/useForm'
 
 const file = defineModel<NewDatasetFile>({ required: true })
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   showEditAndWarning?: boolean
   hideActions?: boolean
-  warnings?: ValidationsMessages<NewDatasetFile>
-  errors?: ValidationsMessages<NewDatasetFile>
 }>(), {
   showEditAndWarning: true,
   hideActions: false,
@@ -130,4 +127,7 @@ defineEmits<{
 
 const loading = computed(() => file.value.state === 'loading')
 const loaded = computed(() => file.value.state === 'loaded')
+
+const { form, errors, warnings, validate } = useNewDatasetFileForm(file)
+watchEffect(() => validate())
 </script>
