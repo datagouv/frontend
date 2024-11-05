@@ -312,6 +312,8 @@ const { t } = useI18n()
 const config = useRuntimeConfig()
 const formId = useId()
 
+type KeysOfUnion<T> = T extends T ? keyof T : never
+
 const chooseTheCorrectLinkAccordionId = useId()
 const nameAFileAccordionId = useId()
 const chooseTheRightTypeOfFileAccordionId = useId()
@@ -334,7 +336,7 @@ const cancel = (close: () => void) => {
   close()
 }
 
-const accordionState = (key: keyof typeof form.value) => {
+const accordionState = (key: KeysOfUnion<typeof form.value>) => {
   if (getFirstError(key)) return 'error'
   if (getFirstWarning(key)) return 'warning'
 
