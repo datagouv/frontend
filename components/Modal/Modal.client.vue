@@ -3,10 +3,11 @@
     :id="modalId"
     :aria-labelledby="showTitle ? modalTitleId : null"
     :aria-label="!showTitle ? title : null"
-    class="border-none text-inherit bg-black/[0.6] z-[1750] p-0 m-0 flex flex-col items-stretch justify-center fixed top-0 right-0 bottom-0 left-0 w-full h-full motion-reduce:transition-none outline-none"
+    class="border-none text-inherit z-[1750] p-0 m-0 flex flex-col items-stretch fixed top-0 right-0 bottom-0 left-0 w-full h-full motion-reduce:transition-none outline-none"
     :class="{
       'visible opacity-100 w-full h-full transition-[opacity,visibility] duration-300 motion-reduce:transition-none': opened,
       'bg-white': isFullscreen,
+      'bg-black/[0.6] justify-center': !isFullscreen,
       'opacity-0 invisible': !opened,
     }"
     :open="opened"
