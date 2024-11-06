@@ -8,7 +8,7 @@
       ref="linkInput"
       v-model="updatedLink"
       class="flex-1"
-      :placeholder="t('Paste link...')"
+      :placeholder="t('Paste link…')"
       @keydown.enter.stop.prevent="onConfirmEdit"
       @keydown="onCancel"
     >

@@ -259,8 +259,8 @@
                     name="ri:add-line"
                     class="text-base"
                   />
-                  {{ $t('Publish on ') }}
-                  <SiteLogo class="h-4" />
+                  {{ $t('Publish on') }}
+                  <SiteLogo class="ml-1 h-4" />
                 </HeadlessDisclosureButton>
                 <HeadlessDisclosurePanel
                   class="fr-menu"
@@ -357,8 +357,8 @@
                     name="ri:add-line"
                     class="text-base"
                   />
-                  {{ $t('Publish on ') }}
-                  <SiteLogo class="h-4 mt-1" />
+                  {{ $t('Publish on') }}
+                  <SiteLogo class="h-4 ml-1 mt-1" />
                 </HeadlessDisclosureButton>
                 <HeadlessDisclosurePanel
                   class="fr-menu"
@@ -419,9 +419,9 @@ const menu = [
   { label: t('API'), link: '/dataservices/', external: true },
   { label: t('Organizations'), link: '/organizations/', external: true },
   { label: t('Getting started on {site}', { site: config.public.title }), items: [
-    { label: t('What is data.gouv.fr ?'), link: '/pages/about/a-propos_data-gouv/', external: true },
-    { label: t('How to publish data ?'), link: '/pages/onboarding/producteurs/', external: true },
-    { label: t('How to use data ?'), link: '/pages/onboarding/reutilisateurs/', external: true },
+    { label: t('What is {site}?', { site: config.public.title }), link: '/pages/about/a-propos_data-gouv/', external: true },
+    { label: t('How to publish data?'), link: '/pages/onboarding/producteurs/', external: true },
+    { label: t('How to use data?'), link: '/pages/onboarding/reutilisateurs/', external: true },
     { label: t('{site} guides', { site: config.public.title }), link: config.public.guidesUrl, external: true },
   ], external: true },
   { label: t('News'), link: '/posts/', external: true },

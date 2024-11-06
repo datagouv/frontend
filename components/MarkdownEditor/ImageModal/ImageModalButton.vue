@@ -24,7 +24,7 @@
     <InputGroup
       v-model="form.src"
       :label="t('Image link')"
-      :placeholder="t('Paste your link...')"
+      :placeholder="t('Paste your link…')"
       :required="true"
       type="url"
       :has-error="fieldHasError('src')"
