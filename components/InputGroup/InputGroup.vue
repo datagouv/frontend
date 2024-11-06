@@ -121,7 +121,7 @@ const props = withDefaults(defineProps<{
   hintText?: string
   isValid?: boolean
   label: string
-  modelValue?: string | Date
+  modelValue?: string | Date | { start: string | null, end: string | null }
   placeholder?: string
   required?: boolean
   spellcheck?: boolean

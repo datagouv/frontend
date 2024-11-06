@@ -271,7 +271,7 @@
               v-model="form.description"
               :label="$t('Description')"
               :required="true"
-              type="textarea"
+              type="markdown"
               :has-error="!!getFirstError('description')"
               :has-warning="!!getFirstWarning('description')"
               :error-text="getFirstError('description')"
