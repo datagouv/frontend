@@ -354,6 +354,7 @@ defineProps<{
 const { t } = useI18n()
 const config = useRuntimeConfig()
 const me = useMaybeMe()
+const localePath = useLocalePath()
 
 const menuModalId = useId()
 const menuButtonId = useId()
@@ -381,6 +382,7 @@ const menu = [
 
 // TODO: Add publishing forms when available
 const publishMenu = [
+  { label: t('A dataset'), icon: 'ri:database-2-line', link: localePath('/newadmin/datasets/new/') },
   { label: t('A harverster'), icon: 'ri:server-line', link: '/admin/harvester/new/', external: true },
   { label: t('A post'), icon: 'ri:article-line', link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
 ]
