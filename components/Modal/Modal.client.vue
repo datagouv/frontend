@@ -48,9 +48,10 @@
               <HeadlessDialogTitle
                 v-if="showTitle"
                 :id="modalTitleId"
-                class="mb-4 font-bold text-gray-950 text-xl md:text-2xl"
+                class="mb-4 font-bold text-gray-950 text-xl md:text-2xl flex items-center space-x-2"
               >
-                <slot name="iconTitle" />{{ title }}
+                <slot name="iconTitle" />
+                <span>{{ title }}</span>
               </HeadlessDialogTitle>
               <slot />
             </div>

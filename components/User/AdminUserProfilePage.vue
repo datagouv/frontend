@@ -39,11 +39,8 @@
             type="secondary"
             as="a"
             :href="me.page"
+            :icon="RiEyeLine"
           >
-            <Icon
-              name="ri:eye-line"
-              class="mr-1"
-            />
             {{ $t('See public profile') }}
           </BrandedButton>
         </div>
@@ -87,12 +84,9 @@
         <BrandedButton
           size="sm"
           :disabled="loading"
+          :icon="RiSaveLine"
           @click="updateMe"
         >
-          <Icon
-            class="mr-1"
-            name="ri:save-line"
-          />
           {{ $t('Save') }}
         </BrandedButton>
       </div>
@@ -132,12 +126,9 @@
                 size="sm"
                 type="secondary"
                 :disabled="loading"
+                :icon="RiRecycleLine"
                 @click="regenerateApiKey"
               >
-                <Icon
-                  name="ri:recycle-line"
-                  class="mr-1"
-                />
                 {{ $t('Regenerate') }}
               </BrandedButton>
             </div>
@@ -147,12 +138,9 @@
                 size="sm"
                 type="secondary"
                 :disabled="loading"
+                :icon="RiDeleteBin6Line"
                 @click="deleteApiKey"
               >
-                <Icon
-                  name="ri:delete-bin-6-line"
-                  class="mr-1"
-                />
                 {{ $t('Delete') }}
               </BrandedButton>
             </div>
@@ -185,11 +173,8 @@
               type="secondary"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changeEmailPage}`"
+              :icon="RiEditLine"
             >
-              <Icon
-                name="ri:edit-line"
-                class="mr-1"
-              />
               {{ $t('Change e-mail address') }}
             </BrandedButton>
           </div>
@@ -221,11 +206,8 @@
               type="secondary"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changePasswordPage}`"
+              :icon="RiEditLine"
             >
-              <Icon
-                name="ri:edit-line"
-                class="mr-1"
-              />
               {{ $t('Change password') }}
             </BrandedButton>
           </div>
@@ -248,12 +230,9 @@
             size="sm"
             type="secondary"
             :aria-controls="modalId"
+            :icon="RiDeleteBin6Line"
             @click="openDeleteModal"
           >
-            <Icon
-              name="ri:delete-bin-6-line"
-              class="mr-1"
-            />
             {{ $t('Delete') }}
           </BrandedButton>
           <Modal
@@ -292,6 +271,7 @@
 
 <script setup lang="ts">
 import { Avatar, CopyButton } from '@datagouv/components'
+import { RiDeleteBin6Line, RiEditLine, RiEyeLine, RiRecycleLine, RiSaveLine } from '@remixicon/vue'
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
 
 const me = useMe()

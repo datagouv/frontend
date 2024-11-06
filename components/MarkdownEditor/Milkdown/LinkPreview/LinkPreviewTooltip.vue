@@ -5,11 +5,7 @@
     :class="{ hidden: link.length === 0 }"
     @focusout="() => tooltipProvider?.hide()"
   >
-    <Icon
-      aria-hidden="true"
-      name="ri:link"
-      class="flex-none"
-    />
+    <RiLink class="flex-none size-4" />
     <div class="flex-1 truncate">
       <a
         class="fr-link"
@@ -41,6 +37,7 @@ import { useI18n } from 'vue-i18n'
 import { usePluginViewContext } from '@prosemirror-adapter/vue'
 import { useInstance } from '@milkdown/vue'
 import { TextSelection } from '@milkdown/prose/state'
+import { RiLink } from '@remixicon/vue'
 import { linkTooltipState } from '~/components/MarkdownEditor/Milkdown/LinkEdit/linkEditTooltipCtx'
 import { removeLink } from '~/components/MarkdownEditor/ProseMirror/handleLink'
 import { makeTooltipProvider } from '~/components/MarkdownEditor/Milkdown/Tooltip/useTooltipProvider'

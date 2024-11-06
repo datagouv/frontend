@@ -6,7 +6,7 @@
     <template #button="{ attrs, listeners }">
       <TooltipButton
         data-fr-opened="false"
-        icon="ri:image-add-fill"
+        :icon="RiImageAddFill"
         :title="t('Image')"
         data-testid="image-modal-button"
         v-bind="attrs"
@@ -14,10 +14,7 @@
       />
     </template>
     <template #iconTitle>
-      <Icon
-        name="ri:image-line"
-        class="text-xl"
-      />
+      <RiImageLine class="size-7" />
     </template>
     <p>{{ t("Paste a link of your image to add it to your description. It is recommended to also provide a textual alternative for an informative image and a title.") }}</p>
     <RequiredExplanation />
@@ -61,6 +58,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { RiImageAddFill, RiImageLine } from '@remixicon/vue'
 import TooltipButton from '../EditorButton.vue'
 
 export type ImageModalForm = {

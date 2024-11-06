@@ -6,12 +6,12 @@
     >
       <div role="group">
         <EditorButton
-          icon="ri:arrow-go-back-line"
+          :icon="RiArrowGoBackLine"
           :title="t('Undo')"
           @click="() => call(undoCommand.key)"
         />
         <EditorButton
-          icon="ri:arrow-go-forward-line"
+          :icon="RiArrowGoForwardLine"
           :title="t('Redo')"
           @click="() => call(redoCommand.key)"
         />
@@ -22,22 +22,22 @@
       />
       <div role="group">
         <EditorButton
-          icon="ri:bold"
+          :icon="RiBold"
           :title="t('Bold')"
           @click="() => call(toggleStrongCommand.key)"
         />
         <EditorButton
-          icon="ri:italic"
+          :icon="RiItalic"
           :title="t('Italic')"
           @click="() => call(toggleEmphasisCommand.key)"
         />
         <EditorButton
-          icon="ri:h-1"
+          :icon="RiH1"
           :title="t('Title')"
           @click="() => call(wrapInHeadingCommand.key, 3)"
         />
         <EditorButton
-          icon="ri:h-2"
+          :icon="RiH2"
           :title="t('Subtitle')"
           @click="() => call(wrapInHeadingCommand.key, 4)"
         />
@@ -48,12 +48,12 @@
       />
       <div role="group">
         <EditorButton
-          icon="ri:table-2"
+          :icon="RiTable2"
           :title="t('Table')"
           @click="() => call(insertTableCommand.key)"
         />
         <EditorButton
-          icon="ri:link"
+          :icon="RiLink"
           :title="t('Link')"
           @click="() => call(insertLinkCommand.key)"
         />
@@ -67,22 +67,22 @@
       />
       <div role="group">
         <EditorButton
-          icon="ri:list-unordered"
+          :icon="RiListUnordered"
           :title="t('List unordered')"
           @click="() => call(wrapInBulletListCommand.key)"
         />
         <EditorButton
-          icon="ri:list-ordered"
+          :icon="RiListOrdered"
           :title="t('List ordered')"
           @click="() => call(wrapInOrderedListCommand.key)"
         />
         <EditorButton
-          icon="ri:code-s-slash-line"
+          :icon="RiCodeSSlashLine"
           :title="t('Code block')"
           @click="() => call(createCodeBlockCommand.key)"
         />
         <EditorButton
-          icon="ri:double-quotes-l"
+          :icon="RiDoubleQuotesL"
           :title="t('Quote')"
           @click="() => call(wrapInBlockquoteCommand.key)"
         />
@@ -128,6 +128,7 @@ import {
   columnResizingPlugin,
 } from '@milkdown/preset-gfm'
 import { callCommand } from '@milkdown/utils'
+import { RiArrowGoBackLine, RiArrowGoForwardLine, RiBold, RiCodeSSlashLine, RiDoubleQuotesL, RiH1, RiH2, RiItalic, RiLink, RiListOrdered, RiListUnordered, RiTable2 } from '@remixicon/vue'
 import { Milkdown, useEditor } from '@milkdown/vue'
 import { usePluginViewFactory, useWidgetViewFactory } from '@prosemirror-adapter/vue'
 import { useDebounceFn } from '@vueuse/core'

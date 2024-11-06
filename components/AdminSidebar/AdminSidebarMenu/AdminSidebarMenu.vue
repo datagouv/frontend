@@ -41,81 +41,81 @@
         <ul class="fr-sidemenu__list !mx-2 !my-3">
           <template v-if="user">
             <AdminSidebarLink
-              icon="ri:account-circle-line"
+              :icon="RiAccountCircleLine"
               :label="$t('Me')"
               to="/newadmin/me"
             />
             <AdminSidebarLink
-              icon="ri:database-2-line"
+              :icon="RiDatabase2Line"
               :label="$t('Datasets')"
               to="/newadmin/me/datasets"
             />
             <AdminSidebarLink
-              icon="ri:robot-2-line"
+              :icon="RiRobot2Line"
               :label="$t('Dataservices')"
               to="/newadmin/me/dataservices"
             />
             <AdminSidebarLink
-              icon="ri:line-chart-line"
+              :icon="RiLineChartLine"
               :label="$t('Reuses')"
               to="/newadmin/me/reuses"
             />
             <AdminSidebarLink
-              icon="ri:git-pull-request-line"
+              :icon="RiGitPullRequestLine"
               :label="$t('Community Resources')"
               to="/newadmin/me/community-resources"
             />
             <AdminSidebarLink
-              icon="ri:user-line"
+              :icon="RiUserLine"
               :label="$t('Profile')"
               to="/newadmin/me/profile"
             />
           </template>
           <template v-else-if="organization">
             <AdminSidebarLink
-              icon="ri:database-2-line"
+              :icon="RiDatabase2Line"
               :label="$t('Datasets')"
               :to="`/newadmin/organizations/${organization.id}/datasets`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
-              icon="ri:robot-2-line"
+              :icon="RiRobot2Line"
               :label="$t('Dataservices')"
               :to="`/newadmin/organizations/${organization.id}/dataservices`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
-              icon="ri:line-chart-line"
+              :icon="RiLineChartLine"
               :label="$t('Reuses')"
               :to="`/newadmin/organizations/${organization.id}/reuses`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
-              icon="ri:chat-3-line"
+              :icon="RiChat3Line"
               :label="$t('Discussions')"
               :to="`/newadmin/organizations/${organization.id}/discussions`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
-              icon="ri:parent-line"
+              :icon="RiParentLine"
               :label="$t('Members')"
               :to="`/newadmin/organizations/${organization.id}/members`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
-              icon="ri:server-line"
+              :icon="RiServerLine"
               :label="$t('Harvesters')"
               :to="`/newadmin/organizations/${organization.id}/harvesters`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
-              icon="ri:git-pull-request-line"
+              :icon="RiGitPullRequestLine"
               :label="$t('Community Resources')"
               :to="`/newadmin/organizations/${organization.id}/community-resources`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
-              icon="ri:user-line"
+              :icon="RiUserLine"
               :label="$t('Profile')"
               :to="`/newadmin/organizations/${organization.id}/profile`"
               @click="$emit('click')"
@@ -129,6 +129,7 @@
 
 <script setup lang="ts">
 import { Avatar, type Organization, type User } from '@datagouv/components'
+import { RiAccountCircleLine, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiLineChartLine, RiParentLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 import AdminSidebarLink from '~/components/AdminSidebar/AdminSidebarLink/AdminSidebarLink.vue'
 

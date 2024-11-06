@@ -167,11 +167,8 @@
             <p class="fr-text--bold fr-m-0">
               {{ member.user.first_name }} {{ member.user.last_name }}
             </p>
-            <p class="fr-m-0 fr-text--xs text-mention-grey f-italic inline-flex items-center space-x-1">
-              <Icon
-                class="size-3"
-                name="ri:mail-line"
-              />
+            <p class="fr-m-0 fr-text--xs text-mention-grey f-italic inline-flex items-center">
+              <RiMailLine class="size-3" />
               <TextClamp
                 class="fr-px-1v"
                 :text="member.user.email"
@@ -280,6 +277,7 @@
 import { Avatar, formatDate, formatFromNow, type Member, type Organization } from '@datagouv/components'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RiMailLine } from '@remixicon/vue'
 import type { AdminBadgeState, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
 import TextClamp from '~/components/TextClamp.client.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
