@@ -44,28 +44,28 @@
     <section
       v-if="metricsOpen"
       :aria-labelledby="metricsTitleId"
-      class="flex fr-pb-3w fr-pl-3w fr-pr-3w"
+      class="flex flex-col md:flex-row fr-pb-3w fr-pl-3w fr-pr-3w"
     >
       <StatBox
         :title="t('Views')"
         :data="metricsViews"
         type="line"
         :summary="metricsViewsTotal"
-        class="w-1/3"
+        class="md:w-1/3 mb-8 md:mb-0"
       />
       <StatBox
         :title="t('Downloads')"
         :data="metricsDownloads"
         type="line"
         :summary="metricsDownloadsTotal"
-        class="w-1/3"
+        class="md:w-1/3 mb-8 md:mb-0"
       />
       <StatBox
         :title="t('Reuses Visits')"
         :data="metricsReuses"
         type="line"
         :summary="metricsReusesTotal"
-        class="w-1/3"
+        class="md:w-1/3 mb-8 md:mb-0"
       />
     </section>
   </div>

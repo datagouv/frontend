@@ -92,6 +92,7 @@ import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
+import DatasetsMetrics from './DatasetsMetrics.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
 import type { DatasetSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
