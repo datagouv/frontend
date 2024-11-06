@@ -3,7 +3,7 @@
     <Well
       color="blue-cumulus"
       weight="regular"
-      class="fr-mb-n3v"
+      class="mb-6"
     >
       <div class="fr-grid-row">
         <div class="fr-col-auto fr-mr-3v">
