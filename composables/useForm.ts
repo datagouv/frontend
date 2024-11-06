@@ -1,4 +1,4 @@
-export type ValidationFunction<T> = (value: T, t: (key: string, values?: Record<string, unknown>) => string) => string | null
+export type ValidationFunction<T> = (value: T, key: string, t: (key: string, values?: Record<string, unknown>) => string) => string | null
 
 export type KeysOfUnion<T> = T extends T ? keyof T : never
 
@@ -25,13 +25,13 @@ export function useForm<T>(initialValues: MaybeRef<T>, errorsRules: ValidationsR
     errors.value[key] = []
 
     for (const rule of errorsRules[key] || []) {
-      const result = rule(form.value[key], t)
+      const result = rule(form.value[key], key.toString(), t)
       if (result) errors.value[key].push(result)
     }
 
     warnings.value[key] = []
     for (const rule of warningsRules[key] || []) {
-      const result = rule(form.value[key], t)
+      const result = rule(form.value[key], key.toString(), t)
       if (result) warnings.value[key].push(result)
     }
   }
@@ -67,26 +67,26 @@ export function useForm<T>(initialValues: MaybeRef<T>, errorsRules: ValidationsR
 }
 
 export function required<T>(message: string | null = null): ValidationFunction<T> {
-  return (value: T, t) => {
-    if (!value || (Array.isArray(value) && !value.length)) return message || t('The field is required')
+  return (value: T, key: string, t) => {
+    if (!value || (Array.isArray(value) && !value.length)) return message || t('The field {property} is required.', { property: t(key) })
 
     return null
   }
 }
 
 export function requiredIf<T>(condition: Ref<boolean>, message: string | null = null): ValidationFunction<T> {
-  return (value: T, t) => {
+  return (value: T, key: string, t) => {
     if (!condition.value) return null
-    if (!value || (Array.isArray(value) && !value.length)) return message || t('The field is required')
+    if (!value || (Array.isArray(value) && !value.length)) return message || t('The field {property} is required.', { property: t(key) })
 
     return null
   }
 }
 
 export function minLength<T extends string | undefined>(min: number, message: string | null = null): ValidationFunction<T> {
-  return (value: T, t) => {
+  return (value: T, key: string, t) => {
     if (value && value.length >= min) return null
 
-    return message || t('The field should be of at least {min} characters', { min })
+    return message || t('The field {property} should be of at least {min} characters', { property: t(key), min })
   }
 }
