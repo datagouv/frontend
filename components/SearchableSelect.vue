@@ -202,7 +202,12 @@ const suggestedOptions = ref<Array<T> | null>(null)
 watchEffect(async () => {
   if (!props.suggest) return
 
-  suggestedOptions.value = await props.suggest(query.value)
+  const savedQuery = query.value
+  const options = await props.suggest(query.value)
+
+  if (savedQuery === query.value) {
+    suggestedOptions.value = options
+  }
 })
 
 const filteredOptions = computed<Array<T>>(() => {
