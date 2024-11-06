@@ -4,7 +4,7 @@
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          to="/newadmin"
+          to="/beta/admin"
         >
           {{ t('Administration') }}
         </NuxtLinkLocale>
@@ -12,7 +12,7 @@
       <li v-if="currentOrganization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          :to="`/newadmin/organizations/${currentOrganization.id}/profile`"
+          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
         >
           {{ currentOrganization.name }}
         </NuxtLinkLocale>
@@ -188,7 +188,7 @@ async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
     try {
       await useAPI(`organizations/${oid}/`)
-      navigateTo(localPath('/newadmin'), { replace: true })
+      navigateTo(localPath('/beta/admin'), { replace: true })
     }
     catch (e) {
       toast.error(t('An error occured when deleting the organization.'))

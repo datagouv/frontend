@@ -65,7 +65,7 @@
                 </li>
                 <li>
                   <a
-                    href="/en/newadmin/"
+                    href="/en/beta/admin/"
                     class="fr-btn fr-icon-svg fr-icon--sm"
                   >
                     <span class="fr-mr-1w fr-grid-row">
@@ -413,7 +413,7 @@ const menu = [
 
 // TODO: Add publishing forms when available
 const publishMenu = [
-  { label: t('A dataset'), icon: RiDatabase2Line, link: localePath('/newadmin/datasets/new/') },
+  { label: t('A dataset'), icon: RiDatabase2Line, link: localePath('/beta/admin/datasets/new/') },
   { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
   { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
 ]
