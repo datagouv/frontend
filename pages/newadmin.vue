@@ -40,10 +40,9 @@
           </ClientOnly>
         </nav>
       </div>
-      <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-2w overflow-auto">
+      <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-5w overflow-auto">
         <NuxtPage
           :page-key="route => route.fullPath"
-          class="fr-container--fluid"
         />
       </div>
     </div>
