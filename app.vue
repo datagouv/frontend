@@ -1,7 +1,7 @@
 <template>
   <NuxtLoadingIndicator color="var(--blue-cumulus-main-526)" />
   <NuxtRouteAnnouncer />
-  <NuxtLayout class="datagouv-components">
+  <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
 </template>
