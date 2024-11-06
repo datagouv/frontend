@@ -23,6 +23,7 @@
     <Combobox
       v-model="model"
       :multiple
+      :by="compareTwoOptions"
     >
       <div class="relative mt-1">
         <div
@@ -136,6 +137,7 @@ const props = withDefaults(defineProps<{
   filter?: (option: T, query: string) => boolean
   options?: Array<T>
   suggest?: (query: string) => Promise<Array<T>>
+  allowNewOption?: (query: string) => T
 
   required?: boolean
   multiple: Multiple
@@ -198,11 +200,23 @@ const filteredOptions = computed<Array<T>>(() => {
   if (!query.value) return props.options
   return props.options.filter(option => props.filter(option, query.value))
 })
+const filteredOptionsWithNewOption = computed(() => {
+  if (!props.allowNewOption || !query.value) return filteredOptions.value
+
+  const newOption = props.allowNewOption(query.value)
+  if (filteredOptions.value.find(option => compareTwoOptions(option, newOption))) return filteredOptions.value
+
+  return [
+    newOption,
+    ...filteredOptions.value,
+  ]
+})
+
 const filteredAndGroupedOptions = computed<Record<string, Array<T>>>(() => {
-  if (!filteredOptions.value) return {}
+  if (!filteredOptionsWithNewOption.value) return {}
 
   const groups = {} as Record<string, Array<T>>
-  for (const option of filteredOptions.value) {
+  for (const option of filteredOptionsWithNewOption.value) {
     const group = props.groupBy(option)
     groups[group] = groups[group] || []
     groups[group].push(option)
@@ -210,4 +224,6 @@ const filteredAndGroupedOptions = computed<Record<string, Array<T>>>(() => {
 
   return groups
 })
+
+const compareTwoOptions = (a: T, b: T) => props.getOptionId(a) === props.getOptionId(b)
 </script>

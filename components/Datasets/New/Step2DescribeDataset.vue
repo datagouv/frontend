@@ -288,6 +288,7 @@
                 :label="$t('Tags')"
                 :placeholder="$t('Search a tag…')"
                 :get-option-id="(tag) => tag.text"
+                :allow-new-option="(query) => ({ text: query })"
                 :suggest="suggestTags"
                 :multiple="true"
                 class="mb-2"
