@@ -1,5 +1,5 @@
 <template>
-  <div class="fr-container--fluid">
+  <div class="fr-container--fluid min-h-full">
     <div class="fr-grid-row h-full bg-gray-100">
       <div class="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-col-xl-2">
         <nav
