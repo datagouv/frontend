@@ -1,0 +1,7 @@
+.fr-select-group--warning label, .fr-input-group--warning label, .fr-upload-group--warning label {
+    color: #B32000;
+}
+
+.fr-fieldset--warning .fr-input, .fr-input-group--warning .fr-input, .fr-fieldset--warning .fr-select, .fr-select-group--warning .fr-select {
+    box-shadow: inset 0 -2px 0 0 #b34000;
+}

@@ -33,19 +33,17 @@
       v-else-if="type === 'date'"
       class="fr-mt-1w"
     >
-      <ClientOnly>
-        <Datepicker
-          :id="id"
-          class="fr-input"
-          :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid }"
-          :aria-describedby="ariaDescribedBy"
-          :disabled="disabled"
-          :model-value="(modelValue as Date | undefined)"
-          :locale="dateLocale"
-          input-format="P"
-          @change="change"
-        />
-      </ClientOnly>
+      <DatePickerClient
+        :id="id"
+        class="fr-input"
+        :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid }"
+        :aria-describedby="ariaDescribedBy"
+        :disabled="disabled"
+        :model-value="(modelValue as Date | undefined)"
+        :locale="dateLocale"
+        input-format="P"
+        @change="change"
+      />
     </div>
     <ClientOnly v-else-if="type === 'range'">
       <RangePicker
@@ -99,7 +97,7 @@
 
 <script setup lang="ts">
 import { computed, type InputTypeHTMLAttribute } from 'vue'
-import Datepicker from 'vue3-datepicker'
+import DatePickerClient from '../DatePicker.client.vue'
 import MarkdownEditor from '~/components/MarkdownEditor/MarkdownEditor.vue'
 import RangePicker from '~/components/RangePicker/RangePicker.vue'
 import Required from '~/components/Required/Required.vue'
@@ -117,7 +115,7 @@ const props = withDefaults(defineProps<{
   ariaDescribedby?: string
   autocomplete?: string
   disabled?: boolean
-  errorText?: string
+  errorText?: string | null
   hasError?: boolean
   hasWarning?: boolean
   hintText?: string
@@ -147,19 +145,18 @@ const props = withDefaults(defineProps<{
 })
 
 const id = useId()
-defineExpose({ id })
 
 const nuxtApp = useNuxtApp()
 
-const errorTextId = computed(() => id + '-desc-error')
-const validTextId = computed(() => id + '-desc-valid')
+const errorTextId = useId()
+const validTextId = useId()
 const ariaDescribedBy = computed(() => {
   let describedBy = props.ariaDescribedby ? props.ariaDescribedby + ' ' : ''
   if (props.isValid) {
-    describedBy += validTextId.value
+    describedBy += validTextId
   }
   else if (props.hasError) {
-    describedBy += errorTextId.value
+    describedBy += errorTextId
   }
   return describedBy
 })

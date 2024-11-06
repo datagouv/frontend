@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -23,6 +23,8 @@ export default {
     extend: {
       colors: {
         primary: '#3558a2',
+        mentionGrey: '#666', // Copy from --text-mention-grey
+        defaultWarning: '#b32000',
       },
     },
   },

@@ -61,9 +61,9 @@
                   :label="$t('User')"
                   :placeholder="$t('Search a user')"
                   class="mb-6"
-                  :get-option-id="(user) => user.id"
                   :display-value="(user) => `${user.first_name} ${user.last_name}`"
                   :suggest="suggestUser"
+                  :multiple="false"
                 >
                   <template #option="{ option: user }">
                     <div class="flex items-center space-x-2">

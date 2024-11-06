@@ -1,4 +1,5 @@
-import type { Dataset, Dataservice, Reuse, User } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License } from '@datagouv/components'
+import type { Me } from '~/utils/auth'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -115,3 +116,68 @@ export type MultiSelectOption = {
 }
 
 type UserSuggest = Omit<User, 'avatar' | 'avatar_thumbnail' | 'roles' | 'pages'> & { avatar_url: string | null }
+
+export type SpatialZone = {
+  code: string
+  id: string
+  level: string
+  name: string
+  uri: string
+}
+
+export type SpatialGranularity = {
+  id: string
+  name: string
+}
+
+export type Tag = {
+  text: string
+}
+
+type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
+
+export type DatasetForm = {
+  title: string
+  acronym: string
+  description: string
+  owned: Owned | null
+  tags: Array<Tag>
+  license: License | null
+  temporal_coverage: { start: null | string, end: null | string }
+  frequency: Frequency | null
+  spatial_zones: Array<SpatialZone>
+  spatial_granularity: SpatialGranularity | null
+}
+
+export type NewDatasetForApi = {
+  title: string
+  private?: boolean
+  acronym?: string
+  description: string
+  organization?: string
+  owner?: string
+  tags: Array<string>
+  license?: string
+  temporal_coverage?: { start: string, end: string }
+  frequency?: string
+  spatial?: {
+    granularity?: string
+    zones?: Array<string>
+  }
+}
+
+type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }
+
+export type RemoteResourceFileType = 'remote'
+
+export type FileResourceFileType = 'file'
+
+export type ResourceFileType = RemoteResourceFileType | FileResourceFileType
+
+export type DatasetRemoteFile = { description?: string, filetype: RemoteResourceFileType, format: string, mime: string, schema?: string, title: string, type: ResourceType, url: string }
+
+export type DatasetLocalFile = { file: File, sha256?: string, description?: string, format: string, filesize: number, filetype: FileResourceFileType, mime: string, schema?: string, title: string, type: ResourceType }
+
+export type FileLoadingState = 'none' | 'loading' | 'failed' | 'loaded'
+
+export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState, errorMessage?: string }

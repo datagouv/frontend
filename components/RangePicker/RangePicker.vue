@@ -1,16 +1,16 @@
 <template>
   <div
     class="rangepicker fr-select"
-    :class="{ 'rangepicker--selected': start }"
+    :class="{ 'rangepicker--selected': model.start }"
   >
     <div v-show="selectorShown === selectorShownStart">
       <p class="rangepicker__hint fr-m-0">
         {{ $t('Select lower bound:') }}
       </p>
-      <Datepicker
+      <DatePickerClient
         ref="start"
-        v-model="start"
-        :upper-limit="end"
+        v-model="model.start"
+        :upper-limit="model.end"
         :locale="locale"
         @update:model-value="showEndSelector"
       />
@@ -19,10 +19,10 @@
       <p class="rangepicker__hint fr-m-0">
         {{ $t('Select upper bound:') }}
       </p>
-      <Datepicker
+      <DatePickerClient
         ref="end"
-        v-model="end"
-        :lower-limit="start"
+        v-model="model.end"
+        :lower-limit="model.start"
         :locale="locale"
         @update:model-value="hideSelector"
       />
@@ -30,17 +30,21 @@
     <button
       v-if="selectorShown === null"
       class="rangepicker__button w-100 text-align-left"
+      type="button"
       @click.prevent="showStartSelector"
     >
-      <template v-if="!start">
+      <span
+        v-if="!model.start"
+        class="text-mention-grey italic"
+      >
         {{ $t('from dd/mm/yyyy to dd/mm/yyyy') }}
-      </template>
+      </span>
       <template v-else>
-        {{ formatDate(start, formatTemplate) }}<template v-if="end">
-          –{{ formatDate(end, formatTemplate) }}
+        {{ formatDate(model.start, formatTemplate) }}<template v-if="model.end">
+          –{{ formatDate(model.end, formatTemplate) }}
         </template>
         <button
-          v-if="start"
+          v-if="model.start"
           class="fr-fi-close-line clear"
           @click.stop="clear"
         />
@@ -50,36 +54,21 @@
 </template>
 
 <script setup lang="ts">
-import Datepicker from 'vue3-datepicker'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { formatDate } from '@datagouv/components'
+import DatePickerClient from '../DatePicker.client.vue'
 import { getDatepickerLocale } from '~/utils/i18n'
 
 type RangePickerValue = { start: Date | null, end: Date | null }
-type RangePickerReturn = { [Property in keyof RangePickerValue]: string | null }
 
-const props = withDefaults(defineProps<{
-  modelValue: RangePickerValue
-}>(), {
-  modelValue: () => { return { start: null, end: null } },
-})
-
-const emit = defineEmits<{
-  'change': [value: RangePickerReturn]
-  'update:modelValue': [value: RangePickerReturn]
-}>()
+const model = defineModel<RangePickerValue>({ default: { start: null, end: null } })
 
 const nuxtApp = useNuxtApp()
 
 const locale = getDatepickerLocale(nuxtApp.$i18n.locale)
 
-const start = ref<string | Date | undefined>(props.modelValue.start ?? undefined)
-
-const end = ref<string | Date | undefined>(props.modelValue.end ?? undefined)
-
-const startRef = useTemplateRef<InstanceType<typeof Datepicker> | null>('start')
-
-const endRef = useTemplateRef<InstanceType<typeof Datepicker> | null>('end')
+const start = ref()
+const end = ref()
 
 const selectorShown = ref<string | null>(null)
 
@@ -92,29 +81,11 @@ const selectorShownEnd = 'END'
  */
 const formatTemplate = 'L'
 
-watch([start, end], () => {
-  let value: { [Property in keyof RangePickerValue]: string | null } = {
-    start: null,
-    end: null,
-  }
-
-  if (start.value && end.value) {
-    value = {
-      start: formatDate(start.value, 'yyyy-MM-dd'),
-      end: formatDate(end.value, 'yyyy-MM-dd'),
-    }
-  }
-
-  emit('update:modelValue', value)
-  emit('change', value)
-})
-
 const clear = () => {
-  start.value = undefined
-  end.value = undefined
+  model.value = { start: null, end: null }
 }
 
-const showSelector = (selectorRef: Ref<InstanceType<typeof Datepicker> | null>) => {
+const showSelector = (selectorRef: Ref<InstanceType<any> | null>) => {
   if (selectorRef.value) {
     selectorRef.value.renderView(selectorRef.value.initialView)
   }
@@ -122,15 +93,22 @@ const showSelector = (selectorRef: Ref<InstanceType<typeof Datepicker> | null>) 
 
 const showStartSelector = () => {
   selectorShown.value = selectorShownStart
-  showSelector(startRef)
+  showSelector(start)
 }
 
 const showEndSelector = () => {
   selectorShown.value = selectorShownEnd
-  showSelector(endRef)
+  showSelector(end)
 }
 
 const hideSelector = () => {
   selectorShown.value = null
 }
 </script>
+
+<style>
+/* not working with scoped because maybe it's teleported outside the component? */
+.rangepicker .v3dp__datepicker .v3dp__input_wrapper {
+  display: none;
+}
+</style>

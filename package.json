@@ -44,6 +44,7 @@
     "axios": "^1.7.7",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
+    "lodash": "^4.17.21",
     "markdown-it": "^14.1.0",
     "mitt": "^3.0.1",
     "nuxt": "^3.13.0",
@@ -51,7 +52,9 @@
     "ofetch": "^1.4.1",
     "popmotion": "^11.0.5",
     "remove-markdown": "^0.5.5",
+    "uuid": "^11.0.2",
     "vue": "latest",
+    "vue-content-loader": "^2.0.1",
     "vue-router": "latest",
     "vue3-datepicker": "^0.4.0",
     "vue3-text-clamp": "^0.1.2"
