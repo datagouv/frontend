@@ -58,6 +58,14 @@ export default defineNuxtConfig({
     },
   },
 
+  app: {
+    head: {
+      bodyAttrs: {
+        class: 'datagouv-components',
+      },
+    },
+  },
+
   typescript: {
     typeCheck: false,
   },
