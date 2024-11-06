@@ -109,12 +109,11 @@ function sort(column: DataserviceSortedBy, newDirection: SortDirection) {
 }
 
 const url = computed(() => {
-  let url
+  const url = new URL(`/api/1/dataservices/`, config.public.apiBase)
   if (currentOrganization.value) {
-    url = new URL(`/api/1/organizations/${currentOrganization.value.id}/dataservices/`, config.public.apiBase)
+    url.searchParams.set('organization', currentOrganization.value.id)
   }
   else {
-    url = new URL(`/api/1/dataservices/`, config.public.apiBase)
     url.searchParams.set('owner', me.value.id)
   }
 
