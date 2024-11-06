@@ -32,7 +32,7 @@
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
-          v-if="status === 'success'"
+          v-if="status === 'success' && pageData.total"
           class="subtitle subtitle--uppercase fr-m-0"
         >
           {{ t('{n} community resources', pageData.total) }}

@@ -16,7 +16,7 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 
 const props = defineProps<{
-  type: 'dataset' | 'harvester' | 'reuse'
+  type: 'dataset' | 'harvester' | 'reuse' | 'dataservice'
 }>()
 
 const { t } = useI18n()
@@ -30,6 +30,8 @@ const link = computed(() => {
       return ''
       // return `${admin_root}harvester/new/`;
     case 'reuse':
+      return ''
+    case 'dataservice':
       return ''
       // return reuse_publishing_form_url;
     default:

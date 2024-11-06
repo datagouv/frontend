@@ -51,6 +51,11 @@
               to="/newadmin/me/datasets"
             />
             <AdminSidebarLink
+              icon="ri:robot-2-line"
+              :label="$t('Dataservices')"
+              to="/newadmin/me/dataservices"
+            />
+            <AdminSidebarLink
               icon="ri:line-chart-line"
               :label="$t('Reuses')"
               to="/newadmin/me/reuses"
@@ -71,6 +76,12 @@
               icon="ri:database-2-line"
               :label="$t('Datasets')"
               :to="`/newadmin/organizations/${organization.id}/datasets`"
+              @click="$emit('click')"
+            />
+            <AdminSidebarLink
+              icon="ri:robot-2-line"
+              :label="$t('Dataservices')"
+              :to="`/newadmin/organizations/${organization.id}/dataservices`"
               @click="$emit('click')"
             />
             <AdminSidebarLink
