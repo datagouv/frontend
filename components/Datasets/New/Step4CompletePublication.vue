@@ -49,12 +49,7 @@
 
 <script setup lang="ts">
 import { Well } from '@datagouv/components'
-import CardLg from '~/components/dataset/card-lg.vue'
-import type { NewDatasetForApi } from '~/types/types'
 
-defineProps<{
-  dataset: NewDatasetForApi
-}>()
 const emit = defineEmits<{
   (e: 'next', asPrivate: boolean): void
 }>()
