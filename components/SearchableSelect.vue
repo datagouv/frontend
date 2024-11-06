@@ -40,11 +40,7 @@
           <ComboboxButton
             class="absolute inset-y-0 right-0 flex items-center pr-4 hover:!bg-transparent"
           >
-            <Icon
-              name="ri:arrow-down-s-line"
-              class="size-4 text-gray-800"
-              aria-hidden="true"
-            />
+            <RiArrowDownSLine class="size-4 text-gray-800" />
           </ComboboxButton>
         </div>
         <TransitionRoot
@@ -119,6 +115,7 @@
 
 <script setup lang="ts" generic="T extends string | number | object, Multiple extends true | false">
 import { ref, computed } from 'vue'
+import { RiArrowDownSLine } from '@remixicon/vue'
 import {
   Combobox,
   ComboboxInput,

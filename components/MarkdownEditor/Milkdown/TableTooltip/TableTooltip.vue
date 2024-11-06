@@ -6,7 +6,7 @@
     >
       <TooltipButton
         v-if="!isWholeTable && !isHeading && isRow"
-        icon="ri:arrow-up-line"
+        :icon="RiArrowUpLine"
         class="fr-mr-1v"
         :title="t('Add row before')"
         @click="() => {
@@ -20,7 +20,7 @@
       />
       <TooltipButton
         v-if="!isWholeTable && isCol"
-        icon="ri:arrow-left-line"
+        :icon="RiArrowLeftLine"
         class="fr-mr-1v"
         :title="t('Add column before')"
         @click="() => {
@@ -34,7 +34,7 @@
       />
       <TooltipButton
         v-if="isWholeTable || (!isHeading && isAny)"
-        icon="ri:delete-bin-line"
+        :icon="RiDeleteBinLine"
         class="fr-mr-1v"
         :title="t('Delete selected cells')"
         @click="() => {
@@ -48,7 +48,7 @@
       />
       <TooltipButton
         v-if="!isWholeTable && isRow"
-        icon="ri:arrow-down-line"
+        :icon="RiArrowDownLine"
         class="fr-mr-1v"
         :title="t('Add row after')"
         @click="() => {
@@ -62,7 +62,7 @@
       />
       <template v-if="!isWholeTable && isCol">
         <TooltipButton
-          icon="ri:arrow-right-line"
+          :icon="RiArrowRightLine"
           class="fr-mr-1v"
           :title="t('Add column after')"
           @click="() => {
@@ -75,7 +75,7 @@
           }"
         />
         <TooltipButton
-          icon="ri:align-left"
+          :icon="RiAlignLeft"
           class="fr-mr-1v"
           :title="t('Align left')"
           @click="() => {
@@ -87,7 +87,7 @@
         />
         <TooltipButton
           class="fr-mr-1v"
-          icon="ri:align-center"
+          :icon="RiAlignCenter"
           :title="t('Align center')"
           @click="() => {
             if (loading) return;
@@ -98,7 +98,7 @@
         />
         <TooltipButton
           class="fr-mr-1v"
-          icon="ri:align-right"
+          :icon="RiAlignRight"
           :title="t('Align right')"
           @click="() => {
             if (loading) return;
@@ -129,6 +129,7 @@ import {
 } from '@prosemirror-adapter/vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RiAlignCenter, RiAlignLeft, RiAlignRight, RiArrowDownLine, RiArrowLeftLine, RiArrowRightLine, RiArrowUpLine, RiDeleteBinLine } from '@remixicon/vue'
 import { makeTooltipProvider } from '~/components/MarkdownEditor/Milkdown/Tooltip/useTooltipProvider'
 import { tableTooltipCtx } from '~/components/MarkdownEditor/Milkdown/TableTooltip/tableTooltipCtx'
 import TooltipButton from '~/components/MarkdownEditor/Milkdown/TableTooltip/TooltipButton.vue'

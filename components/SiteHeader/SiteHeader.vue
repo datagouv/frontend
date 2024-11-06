@@ -19,29 +19,23 @@
               <div class="lg:!hidden flex flex-row items-start justify-end p-1 -mr-1 mt-1 order-3 flex-1 self-stretch z-[1000] gap-3">
                 <button
                   :id="searchButtonId"
-                  class="flex-none inline-block w-10 h-10 text-primary"
+                  class="flex-none w-10 h-10 text-primary inline-flex items-center justify-center"
                   :aria-controls="searchModalId"
                   :title="$t('Search')"
                   type="button"
                   @click="openSearchModal"
                 >
-                  <Icon
-                    class="text-2xl align-middle"
-                    name="ri:search-line"
-                  />
+                  <RiSearchLine class="size-6" />
                 </button>
                 <button
                   :id="menuButtonId"
-                  class="flex-none inline-block w-10 h-10 text-primary border-solid border border-gray-300"
+                  class="flex-none w-10 h-10 text-primary border-solid border border-gray-300 inline-flex items-center justify-center"
                   :aria-controls="menuModalId"
                   :title="$t('Menu')"
                   type="button"
                   @click="openMenuModal"
                 >
-                  <Icon
-                    name="ri:menu-line"
-                    class="text-2xl align-middle"
-                  />
+                  <RiMenuLine class="size-6" />
                 </button>
               </div>
             </div>
@@ -114,10 +108,7 @@
                     class="fr-btn items-center"
                     to="/login"
                   >
-                    <Icon
-                      class="mr-2"
-                      name="ri:lock-line"
-                    />
+                    <RiLockLine class="inline mr-2 size-4" />
                     {{ $t("Log in") }}
                   </NuxtLinkLocale>
                 </li>
@@ -126,10 +117,7 @@
                     class="fr-btn"
                     to="/register"
                   >
-                    <Icon
-                      class="mr-2"
-                      name="ri:account-circle-line"
-                    />
+                    <RiAccountCircleLine class="inline mr-2 size-4" />
                     {{ $t("Register") }}
                   </NuxtLinkLocale>
                 </li>
@@ -253,14 +241,11 @@
             >
               <HeadlessDisclosure>
                 <HeadlessDisclosureButton
-                  class="fr-nav__btn gap-1 !w-64"
+                  class="fr-nav__btn space-x-1.5 !w-64"
                 >
-                  <Icon
-                    name="ri:add-line"
-                    class="text-base"
-                  />
-                  {{ $t('Publish on') }}
-                  <SiteLogo class="ml-1 h-4" />
+                  <RiAddLine class="size-4" />
+                  <span>{{ $t('Publish on') }}</span>
+                  <SiteLogo class="mt-0.5 h-4" />
                 </HeadlessDisclosureButton>
                 <HeadlessDisclosurePanel
                   class="fr-menu"
@@ -271,15 +256,15 @@
                       :key="item.link"
                     >
                       <NuxtLinkLocale
-                        class="fr-nav__link"
+                        class="fr-nav__link flex items-center space-x-1"
                         :to="item.link"
                         :external="item.external"
                       >
-                        <Icon
-                          :name="item.icon"
-                          class="text-xs align-[-1px]"
+                        <component
+                          :is="item.icon"
+                          class="inline size-4"
                         />
-                        {{ item.label }}
+                        <span>{{ item.label }}</span>
                       </NuxtLinkLocale>
                     </li>
                   </ul>
@@ -351,14 +336,11 @@
             >
               <HeadlessDisclosure>
                 <HeadlessDisclosureButton
-                  class="fr-nav__btn gap-1 justify-start after:!ml-auto"
+                  class="fr-nav__btn space-x-1.5 justify-start after:!ml-auto"
                 >
-                  <Icon
-                    name="ri:add-line"
-                    class="text-base"
-                  />
-                  {{ $t('Publish on') }}
-                  <SiteLogo class="h-4 ml-1 mt-1" />
+                  <RiAddLine class="size-4" />
+                  <span>{{ $t('Publish on') }}</span>
+                  <SiteLogo class="mt-0.5 h-4" />
                 </HeadlessDisclosureButton>
                 <HeadlessDisclosurePanel
                   class="fr-menu"
@@ -369,15 +351,15 @@
                       :key="item.link"
                     >
                       <NuxtLinkLocale
-                        class="fr-nav__link"
+                        class="fr-nav__link flex items-center space-x-1"
                         :to="item.link"
                         :external="item.external"
                       >
-                        <Icon
-                          :name="item.icon"
-                          class="text-xs align-[-1px]"
+                        <component
+                          :is="item.icon"
+                          class="inline size-4"
                         />
-                        {{ item.label }}
+                        <span>{{ item.label }}</span>
                       </NuxtLinkLocale>
                     </li>
                   </ul>
@@ -392,6 +374,7 @@
 </template>
 
 <script setup lang="ts">
+import { RiAccountCircleLine, RiAddLine, RiArticleLine, RiDatabase2Line, RiLockLine, RiMenuLine, RiSearchLine, RiServerLine } from '@remixicon/vue'
 import SiteLogo from '../SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'
 
@@ -430,9 +413,9 @@ const menu = [
 
 // TODO: Add publishing forms when available
 const publishMenu = [
-  { label: t('A dataset'), icon: 'ri:database-2-line', link: localePath('/newadmin/datasets/new/') },
-  { label: t('A harverster'), icon: 'ri:server-line', link: '/admin/harvester/new/', external: true },
-  { label: t('A post'), icon: 'ri:article-line', link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
+  { label: t('A dataset'), icon: RiDatabase2Line, link: localePath('/newadmin/datasets/new/') },
+  { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
+  { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
 ]
 
 const filteredPublishMenu = computed(() => publishMenu.filter(item => !('show' in item) || item.show))

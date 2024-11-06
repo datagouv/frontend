@@ -1,6 +1,7 @@
+<script setup lang="ts">
+import { RiLoader5Line } from '@remixicon/vue'
+</script>
+
 <template>
-  <Icon
-    name="ri:loader-5-line"
-    class="text-primary text-7xl animate-spin"
-  />
+  <RiLoader5Line class="text-primary text-7xl animate-spin" />
 </template>

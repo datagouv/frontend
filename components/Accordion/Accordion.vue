@@ -11,13 +11,12 @@
         :aria-controls="accordionId"
         @click="toggle"
       >
-        <Icon
+        <component
+          :is="icon"
           v-if="hasState"
           class="fr-mr-2w"
           :class="iconColor"
-          :name="icon"
-          aria-hidden="true"
-          :size="24"
+          size="24px"
         />
         {{ title }}
       </HeadlessDisclosureButton>
@@ -35,6 +34,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { RiCheckLine, RiCloseLine, RiErrorWarningLine, RiInformationLine, RiSubtractLine } from '@remixicon/vue'
 import type { AccordionState } from '~/types/form'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 
@@ -55,16 +55,16 @@ const hasState = computed(() => props.state !== 'default')
 const icon = computed(() => {
   switch (props.state) {
     case 'error':
-      return 'ri:close-line'
+      return RiCloseLine
     case 'info':
-      return 'ri:information-line'
+      return RiInformationLine
     case 'success':
-      return 'ri:check-line'
+      return RiCheckLine
     case 'warning':
-      return 'ri:error-warning-line'
+      return RiErrorWarningLine
     case 'disabled':
     default:
-      return 'ri:subtract-line'
+      return RiSubtractLine
   }
 })
 const iconColor = computed(() => {
