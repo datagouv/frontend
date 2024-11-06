@@ -22,12 +22,12 @@
           class="fr-breadcrumb__link"
           aria-current="page"
         >
-          {{ t('Reuses') }}
+          {{ t('Dataservices') }}
         </a>
       </li>
     </Breadcrumb>
     <h1 class="fr-h3 fr-mb-5v">
-      {{ t("Reuses") }}
+      {{ t("Dataservices") }}
     </h1>
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
@@ -35,16 +35,23 @@
           v-if="status === 'success' && pageData.total"
           class="subtitle subtitle--uppercase fr-m-0"
         >
-          {{ t('{n} reuses', pageData.total) }}
+          {{ t('{n} dataservices', pageData.total) }}
         </h2>
       </div>
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <!-- Buttons -->
+        <div v-if="status === 'success' && currentOrganization && pageData.total">
+          <a
+            :href="`/organizations/${currentOrganization.id}/dataservices.csv`"
+            class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left"
+          >
+            {{ t('Download catalog') }}
+          </a>
+        </div>
       </div>
     </div>
-    <AdminReusesTable
+    <AdminDataservicesTable
       v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :reuses="status === 'success' ? pageData.data : []"
+      :dataservices="pageData ? pageData.data : []"
       :loading="status === 'pending'"
       :sort-direction="direction"
       :sorted-by
@@ -55,13 +62,13 @@
       class="flex flex-col items-center"
     >
       <nuxt-img
-        src="/illustrations/reuse.svg"
+        src="/illustrations/dataservice.svg"
         class="h-20"
       />
       <p class="fr-text--bold fr-my-3v">
-        {{ t(`You haven't published a reuse yet`) }}
+        {{ t(`You haven't published a dataservice yet`) }}
       </p>
-      <AdminPublishButton type="reuse" />
+      <AdminPublishButton type="dataservice" />
     </div>
     <Pagination
       v-if="status === 'success' && pageData.total > pageSize"
@@ -74,20 +81,20 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination, type Reuse } from '@datagouv/components'
+import { Pagination, type Dataservice } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
-import AdminReusesTable from '../AdminTable/AdminReusesTable/AdminReusesTable.vue'
-import type { PaginatedArray, ReuseSortedBy, SortDirection } from '~/types/types'
+import AdminDataservicesTable from '~/components/AdminTable/AdminDataservicesTable/AdminDataservicesTable.vue'
+import type { DataserviceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
 
 const page = ref(1)
 const pageSize = ref(10)
-const sortedBy = ref<ReuseSortedBy>('created')
+const sortedBy = ref<DataserviceSortedBy>('title')
 const direction = ref<SortDirection>('desc')
 const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)
 const q = ref('')
@@ -96,7 +103,7 @@ const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 const { currentOrganization } = useCurrentOrganization()
 const me = useMe()
 
-function sort(column: ReuseSortedBy, newDirection: SortDirection) {
+function sort(column: DataserviceSortedBy, newDirection: SortDirection) {
   sortedBy.value = column
   direction.value = newDirection
 }
@@ -104,10 +111,10 @@ function sort(column: ReuseSortedBy, newDirection: SortDirection) {
 const url = computed(() => {
   let url
   if (currentOrganization.value) {
-    url = new URL(`/api/1/organizations/${currentOrganization.value.id}/reuses/`, config.public.apiBase)
+    url = new URL(`/api/1/organizations/${currentOrganization.value.id}/dataservices/`, config.public.apiBase)
   }
   else {
-    url = new URL(`/api/1/reuses/`, config.public.apiBase)
+    url = new URL(`/api/1/dataservices/`, config.public.apiBase)
     url.searchParams.set('owner', me.value.id)
   }
 
@@ -119,5 +126,5 @@ const url = computed(() => {
   return url.toString()
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<Reuse>>(url, { lazy: true })
+const { data: pageData, status } = await useAPI<PaginatedArray<Dataservice>>(url, { lazy: true })
 </script>
