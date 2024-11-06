@@ -306,35 +306,83 @@
           :aria-label="$t('Main menu')"
         >
           <ul class="fr-nav__list">
-            <li class="fr-nav__item">
-              <a
+            <li
+              v-for="link in menu"
+              :key="link.link"
+              class="fr-nav__item"
+            >
+              <NuxtLinkLocale
+                v-if="link.link"
                 class="fr-nav__link"
-                href="#"
+                :to="link.link"
                 target="_self"
+                :external="link.external"
               >
-                accès direct
-              </a>
+                {{ link.label }}
+              </NuxtLinkLocale>
+              <HeadlessDisclosure v-else-if="link.items">
+                <HeadlessDisclosureButton
+                  class="fr-nav__btn"
+                >
+                  {{ link.label }}
+                </HeadlessDisclosureButton>
+                <HeadlessDisclosurePanel
+                  class="fr-menu"
+                >
+                  <ul class="fr-menu__list">
+                    <li
+                      v-for="item in link.items"
+                      :key="item.label"
+                    >
+                      <NuxtLinkLocale
+                        class="fr-nav__link"
+                        :to="item.link"
+                        :external="true"
+                      >
+                        {{ item.label }}
+                      </NuxtLinkLocale>
+                    </li>
+                  </ul>
+                </HeadlessDisclosurePanel>
+              </HeadlessDisclosure>
             </li>
-            <li class="fr-nav__item">
-              <a
-                class="fr-nav__link"
-                href="#"
-                target="_self"
-              >accès direct</a>
-            </li>
-            <li class="fr-nav__item">
-              <a
-                class="fr-nav__link"
-                href="#"
-                target="_self"
-              >accès direct</a>
-            </li>
-            <li class="fr-nav__item">
-              <a
-                class="fr-nav__link"
-                href="#"
-                target="_self"
-              >accès direct</a>
+            <li
+              class="fr-nav__item"
+            >
+              <HeadlessDisclosure>
+                <HeadlessDisclosureButton
+                  class="fr-nav__btn gap-1 justify-start after:!ml-auto"
+                >
+                  <Icon
+                    name="ri:add-line"
+                    class="text-base"
+                  />
+                  {{ $t('Publish on ') }}
+                  <SiteLogo class="h-4 mt-1" />
+                </HeadlessDisclosureButton>
+                <HeadlessDisclosurePanel
+                  class="fr-menu"
+                >
+                  <ul class="fr-menu__list">
+                    <li
+                      v-for="item in filteredPublishMenu"
+                      :key="item.link"
+                    >
+                      <NuxtLinkLocale
+                        class="fr-nav__link"
+                        :to="item.link"
+                        :external="item.external"
+                      >
+                        <Icon
+                          :name="item.icon"
+                          class="text-xs align-[-1px]"
+                        />
+                        {{ item.label }}
+                      </NuxtLinkLocale>
+                    </li>
+                  </ul>
+                </HeadlessDisclosurePanel>
+              </HeadlessDisclosure>
             </li>
           </ul>
         </nav>
