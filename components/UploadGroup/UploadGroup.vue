@@ -34,6 +34,7 @@
         @change="change"
       >
       <button
+        type="button"
         :disabled="disabled"
         class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
         :title="$t('Browse')"
