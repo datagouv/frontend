@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="fr-p-3w bg-white">
     <Well
       color="blue-cumulus"
       weight="regular"

@@ -152,7 +152,7 @@
       </AccordionGroup>
     </Sidemenu>
     <div class="fr-col-12 fr-col-md-7">
-      <div>
+      <div class="fr-p-3w bg-white">
         <Well
           color="blue-cumulus"
           weight="regular"
