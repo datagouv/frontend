@@ -1,6 +1,6 @@
 <template>
   <div class="fr-table fr-mb-2w">
-    <table class="lg:table">
+    <table class="lg:!table">
       <slot />
     </table>
     <div
