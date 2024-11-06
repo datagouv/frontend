@@ -248,6 +248,44 @@
                 </HeadlessDisclosurePanel>
               </HeadlessDisclosure>
             </li>
+            <li
+              class="fr-nav__item ml-auto"
+            >
+              <HeadlessDisclosure>
+                <HeadlessDisclosureButton
+                  class="fr-nav__btn gap-1 !w-64"
+                >
+                  <Icon
+                    name="ri:add-line"
+                    class="text-base"
+                  />
+                  {{ $t('Publish on ') }}
+                  <SiteLogo class="h-4" />
+                </HeadlessDisclosureButton>
+                <HeadlessDisclosurePanel
+                  class="fr-menu"
+                >
+                  <ul class="fr-menu__list !w-64">
+                    <li
+                      v-for="item in filteredPublishMenu"
+                      :key="item.link"
+                    >
+                      <NuxtLinkLocale
+                        class="fr-nav__link"
+                        :to="item.link"
+                        :external="item.external"
+                      >
+                        <Icon
+                          :name="item.icon"
+                          class="text-xs align-[-1px]"
+                        />
+                        {{ item.label }}
+                      </NuxtLinkLocale>
+                    </li>
+                  </ul>
+                </HeadlessDisclosurePanel>
+              </HeadlessDisclosure>
+            </li>
           </ul>
         </nav>
       </div>
@@ -315,6 +353,7 @@ defineProps<{
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const me = useMaybeMe()
 
 const menuModalId = useId()
 const menuButtonId = useId()
@@ -340,6 +379,14 @@ const menu = [
   { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
 ]
 
+// TODO: Add publishing forms when available
+const publishMenu = [
+  { label: t('A harverster'), icon: 'ri:server-line', link: '/admin/harvester/new/', external: true },
+  { label: t('A post'), icon: 'ri:article-line', link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
+]
+
+const filteredPublishMenu = computed(() => publishMenu.filter(item => !('show' in item) || item.show))
+
 function openSearchModal() {
   searchOpened.value = true
 }
@@ -355,6 +402,4 @@ function openMenuModal() {
 function closeMenuModal() {
   menuOpened.value = false
 }
-
-const me = useMaybeMe()
 </script>
