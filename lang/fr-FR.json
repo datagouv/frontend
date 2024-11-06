@@ -573,5 +573,22 @@
     "You haven't published a community resource yet": "Vous n'avez pas encore publié de ressource communautaire",
     "Link to the discussion": "Lien vers la discussion",
     "Menu": "Menu",
-    "Logout": "Se déconnecter"
+    "Logout": "Se déconnecter",
+    "Getting started on {site}": "Démarrer sur {site}",
+    "What is {site}?": "Qu'est-ce que {site} ?",
+    "How to publish data?": "Comment publier des données ?",
+    "How to use data?": "Comment utiliser des données ?",
+    "{site} guides": "Les guides {site}",
+    "News": "Nouveautés",
+    "Data": "Données",
+    "A dataset": "Un jeu de données",
+    "A harverster": "Un moissonneur",
+    "A post": "Un article",
+    "Main menu": "Menu principal",
+    "Publishing form": "Formulaire de publication",
+    "Home": "Accueil",
+    "description": "description",
+    "Close the modal window": "Fermer la fenêtre modale",
+
+    "": ""
   }
