@@ -81,7 +81,7 @@ export function useNewDatasetFileForm(file: MaybeRef<NewDatasetFile>) {
     type: [required()],
     format: [required()],
   }, {
-    description: [minLength(200, t('It\'s advised to have a description of at least {min} characters.', { min: 200 }))],
+    description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
   })
 }
 
