@@ -1,13 +1,20 @@
 <template>
-  <p v-bind="$attrs" :aria-describedby="id">
-    <slot></slot>
+  <p
+    v-bind="$attrs"
+    :aria-describedby="id"
+  >
+    <slot />
   </p>
-  <span class="fr-tooltip fr-placement" :id="id" role="tooltip" aria-hidden="true">
-    <slot name="tooltip"></slot>
+  <span
+    :id="id"
+    class="fr-tooltip fr-placement"
+    role="tooltip"
+    aria-hidden="true"
+  >
+    <slot name="tooltip" />
   </span>
 </template>
 
 <script setup lang="ts">
-
-const id = useId();
+const id = useId()
 </script>
