@@ -240,5 +240,10 @@ const filteredAndGroupedOptions = computed<Record<string, Array<T>>>(() => {
   return groups
 })
 
-const compareTwoOptions = (a: T, b: T) => props.getOptionId(a) === props.getOptionId(b)
+const compareTwoOptions = (a: T | null, b: T | null) => {
+  if (a === b) return true
+  if (!a || !b) return false
+
+  return props.getOptionId(a) === props.getOptionId(b)
+}
 </script>
