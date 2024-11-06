@@ -24,6 +24,7 @@
       v-model="model"
       :multiple
       :by="compareTwoOptions"
+      :aria-describedby="ariaDescribedBy"
     >
       <div class="relative mt-1">
         <div
@@ -106,6 +107,13 @@
         </TransitionRoot>
       </div>
     </Combobox>
+    <p
+      v-if="errorText"
+      :id="errorTextId"
+      class="fr-error-text"
+    >
+      {{ errorText }}
+    </p>
   </div>
 </template>
 
@@ -180,6 +188,13 @@ const props = withDefaults(defineProps<{
 const model = defineModel<ModelType | null>()
 
 const id = useId()
+const errorTextId = useId()
+
+const ariaDescribedBy = computed(() => {
+  if (props.errorText) return errorTextId
+  return ''
+})
+
 const query = ref('')
 
 const suggestedOptions = ref<Array<T> | null>(null)

@@ -196,7 +196,7 @@ const { form, getFirstError, getFirstWarning, touch, validate, errorsAsList: err
 }, {
   files: [required(t('At least one file is required.'))],
 }, {
-  files: [files => files.find(file => !isClosedFormat(file.format)) ? null : t('You did not add a file with an open format.')],
+  files: [files => files.value.find(file => !isClosedFormat(file.format)) ? null : t('You did not add a file with an open format.')],
   hasDocumentation: [hasDocumentation => !hasDocumentation ? t('You have not added a documentation file or described your files.') : null],
 })
 

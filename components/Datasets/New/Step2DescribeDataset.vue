@@ -619,7 +619,7 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(datase
   tags: [required(t('Adding tags helps improve the SEO of your data.'))],
   license: [required()],
   frequency: [(f) => {
-    if (f && f.id === 'unknown') return t('The value must be different than unknown.')
+    if (f && f.id === 'unknown') return t('The frequency must be different than unknown.')
 
     return null
   }],
