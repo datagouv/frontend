@@ -25,7 +25,7 @@ const localePath = useLocalePath()
 const link = computed(() => {
   switch (props.type) {
     case 'dataset':
-      return localePath('/newadmin/datasets/new')
+      return localePath('/beta/admin/datasets/new')
     case 'harvester':
       return ''
       // return `${admin_root}harvester/new/`;

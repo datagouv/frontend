@@ -4,7 +4,7 @@
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          to="/newadmin"
+          to="/beta/admin"
         >
           {{ t('Administration') }}
         </NuxtLinkLocale>
@@ -12,7 +12,7 @@
       <li v-if="currentOrganization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          to="/newadmin"
+          to="/beta/admin"
         >
           {{ currentOrganization.name }}
         </NuxtLinkLocale>

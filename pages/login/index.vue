@@ -46,6 +46,6 @@ async function send() {
   // token.value = response.response.user.authentication_token
 
   await loadMe(me)
-  await navigateTo(localePath('/newadmin'))
+  await navigateTo(localePath('/beta/admin'))
 }
 </script>

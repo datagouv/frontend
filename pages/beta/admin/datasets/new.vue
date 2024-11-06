@@ -159,7 +159,7 @@ const save = async (asPrivate: boolean) => {
       moveToStep(3)
     }
     else {
-      navigateTo(newDataset.value.organization ? localePath(`/newadmin/organizations/${newDataset.value.organization.id}/datasets`) : localePath('/newadmin/me/datasets'))
+      navigateTo(newDataset.value.organization ? localePath(`/beta/admin/organizations/${newDataset.value.organization.id}/datasets`) : localePath('/beta/admin/me/datasets'))
     }
   }
   catch {
