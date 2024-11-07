@@ -379,7 +379,7 @@
 </template>
 
 <script setup lang="ts">
-import { RiAccountCircleLine, RiAddLine, RiArticleLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiServerLine } from '@remixicon/vue'
+import { RiAccountCircleLine, RiAddLine, RiArticleLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiServerLine, RiRobot2Line } from '@remixicon/vue'
 import { NuxtLinkLocale } from '#components'
 import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'
@@ -419,6 +419,7 @@ const menu = [
 // TODO: Add publishing forms when available
 const publishMenu = [
   { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
+  { label: t('A dataservice'), icon: RiRobot2Line, link: '/beta/admin/dataservices/new/' },
   { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
   { label: t('An organization'), icon: RiGovernmentLine, link: '/beta/admin/organizations/new/' },
   { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },

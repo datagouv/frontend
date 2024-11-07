@@ -189,40 +189,13 @@
             </h2>
           </legend>
           <div class="fr-fieldset__element">
-            <SearchableSelect
+            <ProducerSelect
               v-model="form.owned"
-              :options="ownedOptions"
-              :label="t('Check the identity with which you want to publish')"
-              :placeholder="t('Search…')"
-              :get-option-id="(option) => option.organization ? option.organization.id : option.owner.id"
-              :display-value="(option) => option.organization ? option.organization.name : `${option.owner.first_name} ${option.owner.last_name}`"
-              :filter="(option, query) => (option.organization ? option.organization.name : `${option.owner.first_name} ${option.owner.last_name}`).toLocaleLowerCase().includes(query.toLocaleLowerCase())"
-              :multiple="false"
 
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"
               @focusout="touch('owned')"
-            >
-              <template #option="{ option }">
-                <div class="flex items-center space-x-2">
-                  <Placeholder
-                    v-if="option.organization"
-                    type="organization"
-                    :src="option.organization.logo_thumbnail"
-                    :size="20"
-                  />
-                  <img
-                    v-else
-                    class="rounded-full border border-default-grey size-5"
-                    :src="`${config.public.apiBase}/api/1/avatars/${option.owner.id}/24`"
-                    loading="lazy"
-                    alt=""
-                  >
-                  <span v-if="option.organization">{{ option.organization.name }}</span>
-                  <span v-else>{{ option.owner.first_name }} {{ option.owner.last_name }}</span>
-                </div>
-              </template>
-            </SearchableSelect>
+            />
           </div>
         </fieldset>
         <fieldset
@@ -529,6 +502,7 @@ import { Well, type Frequency, type License, type Organization } from '@datagouv
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
+import ProducerSelect from '~/components/ProducerSelect.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
 import type { DatasetForm, EnrichedLicense, Owned, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 

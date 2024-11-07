@@ -139,16 +139,33 @@ export type Tag = {
 type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
 
 export type DatasetForm = {
+  owned: Owned | null
   title: string
   acronym: string
   description: string
-  owned: Owned | null
   tags: Array<Tag>
   license: License | null
   temporal_coverage: { start: null | string, end: null | string }
   frequency: Frequency | null
   spatial_zones: Array<SpatialZone>
   spatial_granularity: SpatialGranularity | null
+}
+
+export type DataserviceForm = {
+  owned: Owned | null
+  acronym: string
+  authorization_request_url: string
+  availability: string
+  base_api_url: string
+  datasets: Array<Dataset>
+  description: string
+  endpoint_description_url: string
+  has_token: boolean
+  is_restricted: boolean
+  license: EnrichedLicense | null
+  rate_limiting: string
+  title: string
+  contact_point: null
 }
 
 export type NewDatasetForApi = {
