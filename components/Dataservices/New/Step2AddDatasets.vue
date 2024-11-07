@@ -131,7 +131,7 @@ const emit = defineEmits<{
 const sortableRootRef = useTemplateRef('sortableRoot')
 const datasetsById = ref<Record<string, Dataset>>({})
 
-const selectedDatasetsSuggest = ref<Array<DatasetSuggest | Dataset>>([])
+const selectedDatasetsSuggest = defineModel<Array<Dataset | DatasetSuggest>>({ required: true })
 const datasetUrl = ref('')
 const datasetUrlError = ref<string | null>(null)
 useSortable(sortableRootRef, selectedDatasetsSuggest)

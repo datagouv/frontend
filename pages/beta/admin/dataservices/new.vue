@@ -39,6 +39,7 @@
     />
     <Step2AddDatasets
       v-if="currentStep === 2"
+      v-model="datasets"
       @next="datasetsNext"
     />
     <Step3CompletePublication
@@ -54,7 +55,7 @@ import Step1DescribeDataservice from '~/components/Dataservices/New/Step1Describ
 import Step2AddDatasets from '~/components/Dataservices/New/Step2AddDatasets.vue'
 import Step3CompletePublication from '~/components/Dataservices/New/Step3CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
-import type { DataserviceForm } from '~/types/types'
+import type { DataserviceForm, DatasetSuggest } from '~/types/types'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -83,7 +84,7 @@ const datasetForm = useState('dataset-form', () => ({
   contact_point: null,
 } as DataserviceForm))
 
-const datasets = useState<Array<Dataset>>('dataservice-datasets', () => [])
+const datasets = useState<Array<Dataset | DatasetSuggest>>('dataservice-datasets', () => [])
 
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
