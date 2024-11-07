@@ -239,18 +239,18 @@
             <li
               class="fr-nav__item ml-auto"
             >
-              <HeadlessDisclosure>
-                <HeadlessDisclosureButton
+              <HeadlessPopover>
+                <HeadlessPopoverButton
                   class="fr-nav__btn space-x-1.5 !w-64"
                 >
                   <RiAddLine class="size-4" />
                   <span>{{ $t('Publish on') }}</span>
                   <SiteLogo class="mt-0.5 h-4" />
-                </HeadlessDisclosureButton>
-                <HeadlessDisclosurePanel
-                  class="fr-menu"
-                >
-                  <ul class="fr-menu__list !w-64">
+                </HeadlessPopoverButton>
+                <HeadlessPopoverPanel class="fr-menu">
+                  <ul
+                    class="fr-menu__list !w-64"
+                  >
                     <li
                       v-for="item in filteredPublishMenu"
                       :key="item.link"
@@ -268,8 +268,8 @@
                       </NuxtLinkLocale>
                     </li>
                   </ul>
-                </HeadlessDisclosurePanel>
-              </HeadlessDisclosure>
+                </HeadlessPopoverPanel>
+              </HeadlessPopover>
             </li>
           </ul>
         </nav>
@@ -319,13 +319,14 @@
                       v-for="item in link.items"
                       :key="item.label"
                     >
-                      <NuxtLinkLocale
+                      <HeadlessDisclosureButton
+                        :as="NuxtLinkLocale"
                         class="fr-nav__link"
                         :to="item.link"
                         :external="true"
                       >
                         {{ item.label }}
-                      </NuxtLinkLocale>
+                      </HeadlessDisclosureButton>
                     </li>
                   </ul>
                 </HeadlessDisclosurePanel>
@@ -375,7 +376,7 @@
 
 <script setup lang="ts">
 import { RiAccountCircleLine, RiAddLine, RiArticleLine, RiDatabase2Line, RiLockLine, RiMenuLine, RiSearchLine, RiServerLine } from '@remixicon/vue'
-import SiteLogo from '../SiteLogo.vue'
+import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'
 
 defineProps<{
@@ -385,7 +386,6 @@ defineProps<{
 const { t } = useI18n()
 const config = useRuntimeConfig()
 const me = useMaybeMe()
-const localePath = useLocalePath()
 
 const menuModalId = useId()
 const menuButtonId = useId()
@@ -413,7 +413,7 @@ const menu = [
 
 // TODO: Add publishing forms when available
 const publishMenu = [
-  { label: t('A dataset'), icon: RiDatabase2Line, link: localePath('/beta/admin/datasets/new/') },
+  { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
   { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
   { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
 ]
