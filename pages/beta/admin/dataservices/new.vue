@@ -50,15 +50,17 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset } from '@datagouv/components'
+import type { Dataservice, Dataset } from '@datagouv/components'
 import Step1DescribeDataservice from '~/components/Dataservices/New/Step1DescribeDataservice.vue'
 import Step2AddDatasets from '~/components/Dataservices/New/Step2AddDatasets.vue'
 import Step3CompletePublication from '~/components/Dataservices/New/Step3CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
-import type { DataserviceForm, DatasetSuggest } from '~/types/types'
+import type { ContactPoint, DataserviceForm, DatasetSuggest, NewDataserviceForApi } from '~/types/types'
 
 const { t } = useI18n()
 const route = useRoute()
+const { $api } = useNuxtApp()
+const localePath = useLocalePath()
 
 const steps = computed(() => ([
   t('Describe your dataservice'),
@@ -107,8 +109,62 @@ const datasetsNext = (selectedDatasets: Array<Dataset>) => {
   datasets.value = selectedDatasets
   moveToStep(3)
 }
+
+const prepareDataserviceForApi = (form: DataserviceForm, contactPoint: ContactPoint | null, asPrivate: boolean): NewDataserviceForApi => {
+  return {
+    organization: form.owned?.organization?.id,
+    owner: form.owned?.owner?.id,
+    title: form.title,
+    private: asPrivate,
+    description: form.description,
+    acronym: form.acronym,
+    datasets: datasets.value.map(({ id }) => id),
+    contact_point: contactPoint ? contactPoint.id : null,
+    is_restricted: form.is_restricted,
+    has_token: form.has_token,
+    base_api_url: form.base_api_url,
+    authorization_request_url: form.authorization_request_url,
+    endpoint_description_url: form.endpoint_description_url,
+    rate_limiting: form.rate_limiting,
+    availability: form.availability,
+  }
+}
+
 const save = async (asPrivate: boolean) => {
-  console.log('here')
+  try {
+    let contactPoint = null
+    if (datasetForm.value.contact_point && datasetForm.value.owned?.organization) {
+      if (!('id' in datasetForm.value.contact_point)) {
+        contactPoint = await $api<ContactPoint>('/api/1/datasets/', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: datasetForm.value.contact_point.name,
+            email: datasetForm.value.contact_point.email,
+            contact_form: datasetForm.value.contact_point.contact_form,
+            organization: datasetForm.value.owned.organization.id,
+          }),
+        })
+      }
+      else {
+        contactPoint = datasetForm.value.contact_point
+      }
+    }
+
+    const dataservice = await $api<Dataservice>('/api/1/datasets/', {
+      method: 'POST',
+      body: JSON.stringify(prepareDataserviceForApi(datasetForm.value, contactPoint, asPrivate)),
+    })
+
+    console.log(dataservice)
+
+    // navigateTo(localePath(`/dataservices/${dataservice.id}`))
+  }
+  catch {
+    //
+  }
+  finally {
+    //
+  }
 }
 
 watchEffect(() => {

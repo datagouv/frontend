@@ -151,23 +151,6 @@ export type DatasetForm = {
   spatial_granularity: SpatialGranularity | null
 }
 
-export type DataserviceForm = {
-  owned: Owned | null
-  acronym: string
-  authorization_request_url: string
-  availability: string
-  base_api_url: string
-  datasets: Array<Dataset>
-  description: string
-  endpoint_description_url: string
-  has_token: boolean
-  is_restricted: boolean
-  license: EnrichedLicense | null
-  rate_limiting: string
-  title: string
-  contact_point: null
-}
-
 export type NewDatasetForApi = {
   title: string
   private?: boolean
@@ -183,6 +166,39 @@ export type NewDatasetForApi = {
     granularity?: string
     zones?: Array<string>
   }
+}
+
+export type DataserviceForm = {
+  owned: Owned | null
+  title: string
+  acronym: string
+  description: string
+  contact_point: NewContactPoint | ContactPoint | null
+  is_restricted: boolean
+  has_token: boolean
+  base_api_url: string
+  authorization_request_url: string
+  endpoint_description_url: string
+  rate_limiting: string
+  availability: string
+}
+
+export type NewDataserviceForApi = {
+  organization?: string
+  owner?: string
+  title: string
+  private?: boolean
+  acronym?: string
+  description: string
+  datasets: Array<string>
+  contact_point: string | null
+  is_restricted: boolean
+  has_token: boolean
+  base_api_url: string
+  authorization_request_url: string
+  endpoint_description_url: string
+  rate_limiting: string
+  availability: string
 }
 
 type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }
