@@ -1,5 +1,4 @@
 import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License } from '@datagouv/components'
-import type { Me } from '~/utils/auth'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -118,6 +117,7 @@ export type MultiSelectOption = {
 }
 
 type UserSuggest = Omit<User, 'avatar' | 'avatar_thumbnail' | 'roles' | 'pages'> & { avatar_url: string | null }
+type DatasetSuggest = Pick<Dataset, 'acronym' | 'id' | 'slug' | 'title' | 'page'> & { image_url: string | null }
 
 export type SpatialZone = {
   code: string
@@ -136,7 +136,7 @@ export type Tag = {
   text: string
 }
 
-type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
+type Owned = { organization: Organization, owner: null } | { owner: User, organization: null }
 
 export type DatasetForm = {
   owned: Owned | null
@@ -209,3 +209,13 @@ export type NewOrganization = {
   url: string | null
   logo: string
 }
+
+export type ContactPoint = {
+  id: string
+  name: string
+  contact_form?: string
+  email?: string
+}
+
+export type NewContactPoint = Omit<ContactPoint, 'id'>
+export type ContactPointInForm = ContactPoint | NewContactPoint

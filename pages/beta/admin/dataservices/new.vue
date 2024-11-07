@@ -35,34 +35,24 @@
     <Step1DescribeDataservice
       v-if="currentStep === 1"
       v-model="datasetForm"
-      @next="datasetNext"
+      @next="dataserviceNext"
     />
-    <Step3AddFiles
+    <Step2AddDatasets
       v-if="currentStep === 2"
-      v-model="datasetFiles"
-      @next="filesNext"
-    />
-    <Step4CompletePublication
-      v-if="currentStep === 3"
-      @next="save"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Dataservice, Dataset, Frequency, NewDataset, Owned, Resource } from '@datagouv/components'
+import type { Dataservice, Dataset, Resource } from '@datagouv/components'
 import type { FetchError } from 'ofetch'
 import { v4 as uuidv4 } from 'uuid'
 import Step1DescribeDataservice from '~/components/Dataservices/New/Step1DescribeDataservice.vue'
-import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
-import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
-import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
-import Step4CompletePublication from '~/components/Datasets/New/Step4CompletePublication.vue'
+import Step2AddDatasets from '~/components/Dataservices/New/Step2AddDatasets.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
-import type { DataserviceForm, DatasetForm, EnrichedLicense, NewDatasetFile, NewDatasetForApi, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import type { DataserviceForm, DatasetForm, NewDatasetFile, NewDatasetForApi } from '~/types/types'
 
 const { t } = useI18n()
-const config = useRuntimeConfig()
 const route = useRoute()
 const { $api, $fileApi } = useNuxtApp()
 const localePath = useLocalePath()
@@ -105,14 +95,8 @@ const moveToStep = (step: number) => {
   navigateTo({ path: route.path, query: { ...route.query, step } })
 }
 
-const datasetNext = (dataset: DatasetForm) => {
-  // datasetForm.value = dataset
-  moveToStep(3)
-}
-
-const filesNext = (files: Array<NewDatasetFile>) => {
-  datasetFiles.value = files
-  moveToStep(4)
+const dataserviceNext = (dataservice: DataserviceForm) => {
+  moveToStep(2)
 }
 
 const prepareDatasetForApi = (form: DatasetForm, asPrivate: boolean): NewDatasetForApi => {

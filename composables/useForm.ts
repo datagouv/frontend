@@ -1,3 +1,5 @@
+import { url as vuelidateUrl, email as vuelidateEmail } from '@vuelidate/validators'
+
 export type ValidationFunction<T> = (value: T, key: string, t: (key: string, values?: Record<string, unknown>) => string) => string | null
 
 export type KeysOfUnion<T> = T extends T ? keyof T : never
@@ -88,5 +90,27 @@ export function minLength<T extends string | undefined>(min: number, message: st
     if (value && value.length >= min) return null
 
     return message || t('The field {property} should be of at least {min} characters', { property: t(key), min })
+  }
+}
+
+export function url<T extends string | undefined>(message: string | null = null): ValidationFunction<T> {
+  return (value: T, key: string, t) => {
+    if (!value) return null
+    try {
+      new URL(value)
+      return null
+    }
+    catch {
+      return message || t('The field {property} should be a valid URL', { property: t(key) })
+    }
+  }
+}
+
+export function email<T extends string | undefined>(message: string | null = null): ValidationFunction<T> {
+  return (value: T, key: string, t) => {
+    if (!value) return null
+    if (/^\S+@\S+\.\S+$/.exec(value)) return null
+
+    return message || t('The field {property} should be a valid email', { property: t(key) })
   }
 }

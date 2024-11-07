@@ -49,7 +49,7 @@
           </Well>
         </Accordion>
         <Accordion
-          v-if="true || dataservice.organization"
+          v-if="form.owned?.organization"
           :id="contactPointAccordionId"
           :title="$t('Define a point of contact')"
           :state="accordionState('contact_point')"
@@ -193,7 +193,7 @@
             class="fr-fieldset__legend"
           >
             <h2 class="subtitle subtitle--uppercase fr-mb-3v">
-              {{ $t("Title") }}
+              {{ $t("Description") }}
             </h2>
           </legend>
           <LinkedToAccordion
@@ -241,61 +241,151 @@
               :error-text="getFirstError('description')"
             />
           </LinkedToAccordion>
+        </fieldset>
+        <fieldset
+          v-if="form.owned?.organization"
+          class="fr-fieldset"
+          aria-labelledby="description-legend"
+        >
+          <legend
+            id="description-legend"
+            class="fr-fieldset__legend"
+          >
+            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+              {{ t("Access Point") }}
+            </h2>
+          </legend>
           <LinkedToAccordion
             class="fr-fieldset__element"
-            :accordion="selectLicenseAccordionId"
-            @blur="touch('license')"
+            :accordion="contactPointAccordionId"
+            @blur="touch('contact_point')"
           >
-            <SearchableSelect
-              v-model="form.license"
-              :options="licenses"
-              :label="t('License')"
-              :placeholder="t('Select a license')"
-              :display-value="(option) => option.title"
-              :multiple="false"
-              :group-by="(option) => option.group"
-
-              :error-text="getFirstError('license')"
-              :warning-text="getFirstWarning('license')"
-            >
-              <template #option="{ option, active }">
-                <div class="w-full">
-                  <div class="flex items-center justify-between space-x-2">
-                    <div>{{ option.title }}</div>
-                    <div
-                      v-if="option.code"
-                      class="font-mono  px-2 py-1 border border-transparent text-xs"
-                      :class="{ 'bg-gray-100': ! active, 'border-white': active }"
-                    >
-                      {{ option.code }}
-                    </div>
-                  </div>
-                  <div
-                    v-if="option.recommended || option.description"
-                    class="flex items-center justify-between space-x-2"
-                    :class="{
-                      'text-gray-500': !active,
-                    }"
-                  >
-                    <div
-                      v-if="option.recommended"
-                      class="flex items-center space-x-1"
-                    >
-                      <Icon
-                        name="ri-star-fill"
-                        class="self-center size-3 "
-                        :class="{ 'text-primary': !active }"
-                        aria-hidden="true"
-                      />
-                      <span>{{ t('Recommended') }}</span>
-                    </div>
-                    <div v-if="option.description">
-                      {{ option.description }}
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </SearchableSelect>
+            <ContactPointSelect
+              v-model="form.contact_point"
+              :organization="form.owned?.organization"
+            />
+          </LinkedToAccordion>
+        </fieldset>
+        <fieldset
+          class="fr-fieldset min-width-0"
+          aria-labelledby="description-legend"
+        >
+          <legend
+            id="description-legend"
+            class="fr-fieldset__legend"
+          >
+            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+              {{ $t("Access") }}
+            </h2>
+          </legend>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="selectIsRestrictedAccordionId"
+            @blur="touch('is_restricted')"
+          >
+            <RadioButtons
+              v-model="form.is_restricted"
+              :label="t('Access type')"
+              :options="[
+                { value: false, label: t('Open') },
+                { value: true, label: t('Restricted') },
+              ]"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="selectHasTokenAccordionId"
+            @blur="touch('has_token')"
+          >
+            <RadioButtons
+              v-model="form.has_token"
+              :label="t('Access token')"
+              :options="[
+                { value: true, label: t('Yes') },
+                { value: false, label: t('No') },
+              ]"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="addBaseUrlAccordionId"
+            @blur="touch('base_api_url')"
+          >
+            <InputGroup
+              v-model="form.base_api_url"
+              :aria-describedby="addBaseUrlAccordionId"
+              :label="t('Dataservice Base URL')"
+              type="url"
+              :placeholder="t('https://...')"
+              :required="false"
+              :has-error="!!getFirstError('base_api_url')"
+              :has-warning="!!getFirstWarning('base_api_url')"
+              :error-text="getFirstError('base_api_url')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="addAuthorizationUrlAccordionId"
+            @blur="touch('authorization_request_url')"
+          >
+            <InputGroup
+              v-model="form.authorization_request_url"
+              :aria-describedby="addAuthorizationUrlAccordionId"
+              :label="t('Dataservice authorization request URL')"
+              type="url"
+              :placeholder="t('https://...')"
+              :required="false"
+              :has-error="!!getFirstError('authorization_request_url')"
+              :has-warning="!!getFirstWarning('authorization_request_url')"
+              :error-text="getFirstError('authorization_request_url')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="addEndpointUrlAccordionId"
+            @blur="touch('endpoint_description_url')"
+          >
+            <InputGroup
+              v-model="form.endpoint_description_url"
+              :aria-describedby="addEndpointUrlAccordionId"
+              :label="t('Dataservice endpoint URL')"
+              type="url"
+              :placeholder="t('https://...')"
+              :required="false"
+              :has-error="!!getFirstError('endpoint_description_url')"
+              :has-warning="!!getFirstWarning('endpoint_description_url')"
+              :error-text="getFirstError('endpoint_description_url')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="rateLimitingDataserviceAccordionId"
+            @blur="touch('rate_limiting')"
+          >
+            <InputGroup
+              v-model="form.rate_limiting"
+              :aria-describedby="rateLimitingDataserviceAccordionId"
+              :label="t('Rate limiting')"
+              :required="false"
+              :has-error="!!getFirstError('rate_limiting')"
+              :has-warning="!!getFirstWarning('rate_limiting')"
+              :error-text="getFirstError('rate_limiting')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="availabilityDataserviceAccordionId"
+            @blur="touch('availability')"
+          >
+            <InputGroup
+              v-model="form.availability"
+              :aria-describedby="acronymDataserviceAccordionId"
+              :label="t('Availability')"
+              :required="false"
+              :has-error="!!getFirstError('availability')"
+              :has-warning="!!getFirstWarning('availability')"
+              :error-text="getFirstError('availability')"
+            />
           </LinkedToAccordion>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
@@ -307,19 +397,20 @@
           </button>
         </div>
       </div>
+      <div>{{ JSON.stringify(errors) }}</div>
       <div class="h-64" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Well, type License } from '@datagouv/components'
+import { Well } from '@datagouv/components'
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
+import ContactPointSelect from '~/components/ContactPointSelect.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
-import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { DataserviceForm, EnrichedLicense, Owned } from '~/types/types'
+import type { DataserviceForm, Owned } from '~/types/types'
 
 const dataserviceForm = defineModel<DataserviceForm>({ required: true })
 
@@ -328,14 +419,12 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const config = useRuntimeConfig()
 
 const user = useMe()
 
 const nameDataserviceAccordionId = useId()
 const acronymDataserviceAccordionId = useId()
 const addDescriptionAccordionId = useId()
-const selectLicenseAccordionId = useId()
 const selectIsRestrictedAccordionId = useId()
 const selectHasTokenAccordionId = useId()
 const addBaseUrlAccordionId = useId()
@@ -345,33 +434,17 @@ const rateLimitingDataserviceAccordionId = useId()
 const availabilityDataserviceAccordionId = useId()
 const contactPointAccordionId = useId()
 
-const { data: allLicenses } = await useAPI<Array<License>>('/api/1/datasets/licenses', { lazy: true })
-
-// Merge some information between database (all licenses) and config (selectable license, some recommanded, codes…)
-// Maybe all these information could be better stored in database too…
-const licenses = computed(() => {
-  if (!allLicenses.value) return []
-
-  const licenses = [] as Array<EnrichedLicense>
-  const licensesChoices = config.public.licenses as unknown as Record<string, Array<{ value: string, recommended?: boolean, code?: string, description?: string }>>
-  for (const [group, licensesInGroup] of Object.entries(licensesChoices)) {
-    for (const license of licensesInGroup) {
-      const found = allLicenses.value.find(({ id }) => license.value === id)
-      if (!found) continue
-      licenses.push({ ...found, ...license, group })
-    }
-  }
-  return licenses
-})
-
 const ownedOptions = computed<Array<Owned>>(() => {
   return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
 })
 
-const { form, touch, getFirstError, getFirstWarning, validate } = useForm(dataserviceForm, {
+const { form, touch, getFirstError, getFirstWarning, validate, errors } = useForm(dataserviceForm, {
   owned: [required()],
   title: [required()],
   description: [required()],
+  base_api_url: [url()],
+  authorization_request_url: [url()],
+  endpoint_description_url: [url()],
 }, {
   description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
   license: [required()],
