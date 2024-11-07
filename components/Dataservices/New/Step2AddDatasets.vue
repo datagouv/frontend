@@ -107,7 +107,7 @@
       <button
         type="button"
         class="fr-btn"
-        :disabled="selectedDatasetsSuggest.length !== selectedDatasets.length"
+        :disabled="!selectedDatasets.length || selectedDatasetsSuggest.length !== selectedDatasets.length"
         @click="submit"
       >
         {{ t("Next") }}
