@@ -56,7 +56,7 @@ export const loadMe = async (meState: Ref<Me | null | undefined>) => {
   }
 
   try {
-    meState.value = await $fetch<Me | null>('/api/1/me', {
+    meState.value = await $fetch<Me | null>('/api/1/me/', {
       baseURL: config.public.apiBase,
       credentials: 'include',
       headers,
