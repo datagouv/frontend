@@ -1,0 +1,92 @@
+<template>
+  <HeadlessCombobox
+    as="div"
+    class="flex-1 relative"
+    @update:model-value="moveToOrganization"
+  >
+    <div class="fr-search-bar flex-wrap">
+      <HeadlessComboboxLabel
+        class="fr-label"
+      >
+        {{ t('Search for data') }}
+      </HeadlessComboboxLabel>
+      <RiSearch2Line
+        class="absolute text-base top-3 left-2"
+        size="16"
+        aria-hidden="true"
+      />
+      <HeadlessComboboxInput
+        class="fr-input fr-col-12 !pl-8"
+        :placeholder="t('Search an organization on data.gouv.fr')"
+        autocomplete="off"
+        data-cy="search-input"
+        name="q"
+        @change="q = $event.target.value"
+      />
+    </div>
+    <HeadlessComboboxOptions
+      class="absolute w-full mt-2 max-h-60 overflow-auto bg-white py-1 drop-shadow rounded-b p-0"
+    >
+      <HeadlessComboboxOption
+        v-for="option in options"
+        :key="option.id"
+        v-slot="{ active }"
+        class="marker:hidden p-0"
+        :value="option"
+      >
+        <OrganizationSearchOption
+          :active
+          :logo="option.image_url"
+          :name="option.name"
+          :link="option.page"
+        />
+      </HeadlessComboboxOption>
+    </HeadlessComboboxOptions>
+  </HeadlessCombobox>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import type { Organization } from '@datagouv/components/ts'
+import { watchDebounced } from '@vueuse/core'
+import { RiSearch2Line } from '@remixicon/vue';
+
+const { t } = useI18n()
+const { toast } = useToast()
+const q = ref('')
+const { $api } = useNuxtApp()
+
+const options = ref<Array<Organization>>([])
+
+async function fetchOptions() {
+  try {
+    const data = await $api<Array<Organization>>('/api/1/organizations/suggest/', { params: { q: q.value, size: 50 } })
+    options.value = data.map((option: Organization) => ({
+      ...option,
+      id: option.id,
+      page: `${option.page}#/information/membres`,
+      link: option.page,
+    }))
+  }
+  catch (_error) {
+    toast.error(t('An error occurred while fetching the options.'))
+  }
+}
+
+async function moveToOrganization(org: Organization) {
+  await navigateTo(org.page, { external: true })
+}
+
+watchDebounced(q, async (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    await fetchOptions()
+  }
+}, { debounce: 300 })
+</script>
+
+<style scoped>
+  .fr-icon-search-line::before {
+    height: 1.25rem;
+  }
+</style>

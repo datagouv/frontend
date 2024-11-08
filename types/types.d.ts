@@ -183,3 +183,12 @@ export type DatasetLocalFile = { file: File, sha256?: string, description?: stri
 export type FileLoadingState = 'none' | 'loading' | 'failed' | 'loaded'
 
 export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState, errorMessage?: string }
+
+export type NewOrganization = {
+  acronym: string | null
+  name: string
+  business_number_id: string | null
+  description: string
+  url: string | null
+  logo: string
+}

@@ -1,38 +1,38 @@
 <template>
   <div
-    class="rounded fr-p-3w fr-grid-row flex-direction-column"
-    :class="{ 'h-100': stretchHeight, 'bg-contrast-blue-cumulus': isPrimary, 'border border-default-grey bg-white': !isPrimary }"
+    class="rounded fr-p-3w flex flex-col"
+    :class="{ 'h-full': stretchHeight, 'bg-contrast-blue-cumulus': isPrimary, '!border border-default-grey bg-white': !isPrimary }"
   >
     <div
-      class="fr-col fr-grid-row fr-grid-row--gutters"
+      class="flex-1 flex flex-wrap gap-4"
       :class="{ 'text-blue-400': isPrimary }"
     >
-      <div class="fr-col-auto">
+      <div class="flex-none">
         <img
-          class="w-100"
+          class="w-full"
           :src="icon"
           alt=""
         >
       </div>
-      <div class="fr-col-12 fr-col-sm fr-grid-row flex-direction-column justify-between">
-        <div class="fr-mb-1w">
+      <div class="fr-col-12 fr-col-sm flex flex-col justify-between">
+        <div class="mb-2">
           <component
             :is="heading"
-            class="fr-m-0 fr-mb-1w"
-            :class="{ 'fr-text--bold fr-text--md': isPrimary, 'fr--h5': !isPrimary }"
+            class="m-0 mb-2"
+            :class="{ 'font-bold text-base': isPrimary, 'fr--h5': !isPrimary }"
           >
             {{ title }}
           </component>
           <p
             v-if="content"
-            class="fr-my-1w"
+            class="my-2"
           >
             {{ content }}
           </p>
           <slot v-else />
         </div>
         <div
-          class="fr-grid-row"
+          class="flex"
           :class="alignment"
         >
           <slot name="actions" />

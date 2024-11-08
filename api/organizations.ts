@@ -9,7 +9,7 @@ export async function uploadLogo(oid: string, file: File) {
   const api = useNuxtApp().$fileApi
   const formData = new FormData()
   formData.append('file', file)
-  const resp = await api<UploadLogoResponse>(`api/1/organizations/${oid}/logo`, {
+  const resp = await api<UploadLogoResponse>(`api/1/organizations/${oid}/logo/`, {
     method: 'POST',
     body: formData,
   })

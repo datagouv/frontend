@@ -147,18 +147,17 @@
 import { Placeholder, useOrganizationCertified, type NewOrganization, type Organization } from '@datagouv/components'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import AdminDangerZone from '~/components/AdminDangerZone/AdminDangerZone.vue'
 import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import PaddedContainer from '~/components/PaddedContainer/PaddedContainer.vue'
-import DescribeOrganizationFrom from '~/components/OrganizationPublishingForm/Step2DescribeOrganization.vue'
+import DescribeOrganizationFrom from '~/components/Organization/New/Step2DescribeOrganization.vue'
 import { updateOrganization, uploadLogo } from '~/api/organizations'
 
 const { t } = useI18n()
 const { toast } = useToast()
-const router = useRouter()
 const route = useRoute()
+const { $api } = useNuxtApp()
 const oid = route.params.oid as string
 const localPath = useLocalePath()
 const form = ref<InstanceType<typeof DescribeOrganizationFrom> | null>(null)
@@ -187,8 +186,10 @@ function closeDeleteModal() {
 async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
     try {
-      await useAPI(`organizations/${oid}/`)
-      navigateTo(localPath('/beta/admin'), { replace: true })
+      await $api(`api/1/organizations/${oid}/`, { method: 'DELETE' })
+      reloadNuxtApp({
+        path: localPath('/beta/admin/me/profile'),
+      })
     }
     catch (e) {
       toast.error(t('An error occured when deleting the organization.'))

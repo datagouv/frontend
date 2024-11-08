@@ -300,7 +300,7 @@
 </template>
 
 <script setup lang="ts">
-import { OwnerType, Well, type NewOrganization, type Organization, type OrganizationTypes } from '@datagouv/components'
+import { ASSOCIATION, COMPANY, LOCAL_AUTHORITY, OwnerType, PUBLIC_SERVICE, Well, type NewOrganization, type Organization, type OrganizationTypes } from '@datagouv/components'
 import { url } from '@vuelidate/validators'
 import { computed, reactive, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -429,15 +429,15 @@ function addFiles(newFile: Array<File>) {
 
 function getOrganizationType(complements: SearchAdditionalData): OrganizationTypes {
   if (complements.collectivite_territoriale) {
-    return 'Local authority'
+    return LOCAL_AUTHORITY
   }
   if (complements.est_service_public) {
-    return 'public-service'
+    return PUBLIC_SERVICE
   }
   if (complements.est_association) {
-    return 'Association'
+    return ASSOCIATION
   }
-  return 'Company'
+  return COMPANY
 }
 
 watchEffect(() => {
