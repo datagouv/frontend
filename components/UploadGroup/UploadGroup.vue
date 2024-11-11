@@ -77,7 +77,7 @@ import Required from '~/components/Required/Required.vue'
 const props = withDefaults(defineProps<{
   accept?: string
   disabled?: boolean
-  errorText?: string
+  errorText?: string | null
   hasError?: boolean
   hintText?: string
   groupClass?: string

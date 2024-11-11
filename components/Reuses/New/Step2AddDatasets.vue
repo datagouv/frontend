@@ -19,7 +19,9 @@
         </div>
       </div>
     </Well>
+
     <DatasetsSelect v-model="datasets" />
+
     <div class="fr-grid-row fr-grid-row--right">
       <button
         type="button"
@@ -41,7 +43,7 @@ defineEmits<{
   (e: 'next'): void
 }>()
 
-const { t } = useI18n()
-
 const datasets = defineModel<Array<Dataset | DatasetSuggest>>({ required: true })
+
+const { t } = useI18n()
 </script>

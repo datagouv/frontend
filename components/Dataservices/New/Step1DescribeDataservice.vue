@@ -398,7 +398,6 @@
           </button>
         </div>
       </div>
-      <div>{{ JSON.stringify(errors) }}</div>
       <div class="h-64" />
     </div>
   </div>
@@ -439,7 +438,7 @@ const ownedOptions = computed<Array<Owned>>(() => {
   return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
 })
 
-const { form, touch, getFirstError, getFirstWarning, validate, errors } = useForm(dataserviceForm, {
+const { form, touch, getFirstError, getFirstWarning, validate } = useForm(dataserviceForm, {
   owned: [required()],
   title: [required()],
   description: [required()],

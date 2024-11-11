@@ -1,0 +1,57 @@
+<template>
+  <div>
+    <SearchableSelect
+      v-model="tags"
+      :label="t('Tags')"
+      :placeholder="t('Search a tag…')"
+      :get-option-id="(tag) => tag.text"
+      :allow-new-option="(query) => ({ text: query })"
+      :suggest="suggestTags"
+      :multiple="true"
+      class="mb-2"
+
+      :error-text
+      :warning-text
+    >
+      <template #option="{ option: tag }">
+        {{ tag.text }}
+      </template>
+    </SearchableSelect>
+    <div class="flex space-x-2">
+      <button
+        v-for="tag in tags"
+        :key="tag.text"
+        class="fr-tag fr-tag--sm fr-tag--dismiss"
+        type="button"
+        @click="removeTag(tag)"
+      >
+        {{ tag.text }}
+      </button>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Tag } from '~/types/types'
+
+defineProps<{
+  errorText?: string | null
+  warningText?: string | null
+}>()
+const tags = defineModel<Array<Tag>>({ required: true })
+
+const { t } = useI18n()
+const { $api } = useNuxtApp()
+
+const suggestTags = async (query: string) => {
+  return await $api<Array<Tag>>('/api/1/tags/suggest/', {
+    query: {
+      q: query,
+      size: 5,
+    },
+  })
+}
+const removeTag = (tag: Tag) => {
+  tags.value = tags.value.filter(otherTag => otherTag.text !== tag.text)
+}
+</script>
