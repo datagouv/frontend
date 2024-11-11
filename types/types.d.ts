@@ -194,11 +194,11 @@ export type NewDataserviceForApi = {
   contact_point: string | null
   is_restricted: boolean
   has_token: boolean
-  base_api_url: string
-  authorization_request_url: string
-  endpoint_description_url: string
+  base_api_url: string | null
+  authorization_request_url: string | null
+  endpoint_description_url: string | null
   rate_limiting: string
-  availability: string
+  availability: number | null
 }
 
 type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }

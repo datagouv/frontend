@@ -381,6 +381,7 @@
               v-model="form.availability"
               :aria-describedby="acronymDataserviceAccordionId"
               :label="t('Availability')"
+              type="number"
               :required="false"
               :has-error="!!getFirstError('availability')"
               :has-warning="!!getFirstWarning('availability')"
