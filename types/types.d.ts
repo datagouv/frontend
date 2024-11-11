@@ -1,4 +1,4 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -172,11 +172,23 @@ export type ReuseForm = {
   owned: Owned | null
   title: string
   url: string
-  type: ReuseType
-  topic: strign
+  type: ReuseType | null
+  topic: ReuseTopic | null
   description: string
   tags: Array<Tag>
   image: File | null
+}
+export type NewReuseForApi = {
+  organization?: string
+  owner?: string
+  title: string
+  private?: boolean
+  description: string
+  datasets: Array<string>
+  url: string
+  type: string | null
+  topic: string | null
+  tags: Array<string>
 }
 
 export type ReuseTopic = {

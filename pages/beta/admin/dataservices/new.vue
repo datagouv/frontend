@@ -117,8 +117,7 @@ const moveToStep = (step: number) => {
 const dataserviceNext = () => {
   moveToStep(2)
 }
-const datasetsNext = (selectedDatasets: Array<Dataset>) => {
-  datasets.value = selectedDatasets
+const datasetsNext = () => {
   moveToStep(3)
 }
 

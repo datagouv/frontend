@@ -14,7 +14,7 @@
         </div>
         <div class="fr-col">
           <p class="fr-m-0 fr-text--bold">
-            {{ $t('Your dataservice is almost created!') }}
+            {{ $t('Your reuse is almost created!') }}
           </p>
           <p class="fr-m-0 fr-text--xs">
             {{ $t('You can now publish it or save it as a draft.') }}
@@ -40,7 +40,7 @@
           class="fr-btn"
           @click="submit(false)"
         >
-          {{ $t("Publish the dataservice") }}
+          {{ $t("Publish the reuse") }}
         </button>
       </div>
     </div>
