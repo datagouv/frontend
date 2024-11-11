@@ -218,8 +218,8 @@ export type NewDataserviceForApi = {
   private?: boolean
   acronym?: string
   description: string
-  datasets: Array<string>
-  contact_point: string | null
+  datasets?: Array<string>
+  contact_point?: string | null
   is_restricted: boolean
   has_token: boolean
   base_api_url: string | null

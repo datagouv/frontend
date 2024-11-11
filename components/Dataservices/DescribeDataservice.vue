@@ -137,7 +137,10 @@
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
-    <div class="fr-col-12 fr-col-md-7">
+    <form
+      class="fr-col-12 fr-col-md-7"
+      @submit.prevent="submit"
+    >
       <div class="fr-p-3w bg-white">
         <Well
           color="blue-cumulus"
@@ -163,6 +166,7 @@
         </Well>
 
         <fieldset
+          v-if="! hideProducer"
           class="fr-fieldset"
           aria-labelledby="description-legend"
         >
@@ -390,16 +394,11 @@
           </LinkedToAccordion>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
-          <button
-            class="fr-btn"
-            @click="submit"
-          >
-            {{ $t("Next") }}
-          </button>
+          <slot />
         </div>
       </div>
       <div class="h-64" />
-    </div>
+    </form>
   </div>
 </template>
 
@@ -412,10 +411,15 @@ import ContactPointSelect from '~/components/ContactPointSelect.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import type { DataserviceForm, Owned } from '~/types/types'
 
+withDefaults(defineProps<{
+  hideProducer?: boolean
+}>(), {
+  hideProducer: false,
+})
 const dataserviceForm = defineModel<DataserviceForm>({ required: true })
 
 const emit = defineEmits<{
-  (event: 'next', dataservice: DataserviceForm): void
+  (event: 'submit'): void
 }>()
 
 const { t } = useI18n()
@@ -447,7 +451,6 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(datase
   endpoint_description_url: [url()],
 }, {
   description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
-  license: [required()],
 })
 
 const accordionState = (key: keyof typeof form.value) => {
@@ -459,7 +462,7 @@ const accordionState = (key: keyof typeof form.value) => {
 
 function submit() {
   if (validate()) {
-    emit('next', form.value)
+    emit('submit')
   }
 };
 </script>

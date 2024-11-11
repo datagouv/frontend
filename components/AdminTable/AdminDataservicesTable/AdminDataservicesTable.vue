@@ -33,16 +33,16 @@
       >
         <td>
           <AdminContentWithTooltip>
-            <a
+            <NuxtLinkLocale
               class="fr-link fr-reset-link"
-              :href="getDataserviceLinkToAdmin(dataservice)"
+              :to="getDataserviceAdminUrl(dataservice)"
             >
               <TextClampClient
                 :text="dataservice.title"
                 :auto-resize="true"
                 :max-lines="2"
               />
-            </a>
+            </NuxtLinkLocale>
           </AdminContentWithTooltip>
         </td>
         <td>
@@ -93,10 +93,6 @@ function sorted(column: DataserviceSortedBy) {
     return props.sortDirection
   }
   return null
-}
-
-function getDataserviceLinkToAdmin(dataservice: Dataservice) {
-  return `${config.public.apiBase}/en/admin/dataservices/${dataservice.id}/`
 }
 
 function getStatus(dataservice: Dataservice): { label: string, type: AdminBadgeState } {
