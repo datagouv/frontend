@@ -34,7 +34,7 @@
 
     <Step1DescribeDataservice
       v-if="currentStep === 1"
-      v-model="datasetForm"
+      v-model="dataserviceForm"
       @next="dataserviceNext"
     />
     <Step2AddDatasets
@@ -73,8 +73,8 @@ const steps = computed(() => [
   t('Complete your publishing'),
 ])
 
-const datasetForm = useState(
-  'dataset-form',
+const dataserviceForm = useState(
+  'dataservice-form',
   () =>
     ({
       owned: null,
@@ -105,7 +105,7 @@ const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
   if (currentStep.value > steps.value.length) return false
 
-  // TODO check that dataset exists
+  // TODO check that dataservice exists
 
   return true
 })
@@ -149,28 +149,28 @@ const prepareDataserviceForApi = (
 const save = async (asPrivate: boolean) => {
   let contactPoint = null
   if (
-    datasetForm.value.contact_point
-    && datasetForm.value.owned?.organization
+    dataserviceForm.value.contact_point
+    && dataserviceForm.value.owned?.organization
   ) {
-    if (!('id' in datasetForm.value.contact_point)) {
+    if (!('id' in dataserviceForm.value.contact_point)) {
       contactPoint = await $api<ContactPoint>('/api/1/datasets/', {
         method: 'POST',
         body: JSON.stringify({
-          name: datasetForm.value.contact_point.name,
-          email: datasetForm.value.contact_point.email,
-          contact_form: datasetForm.value.contact_point.contact_form,
-          organization: datasetForm.value.owned.organization.id,
+          name: dataserviceForm.value.contact_point.name,
+          email: dataserviceForm.value.contact_point.email,
+          contact_form: dataserviceForm.value.contact_point.contact_form,
+          organization: dataserviceForm.value.owned.organization.id,
         }),
       })
     }
     else {
-      contactPoint = datasetForm.value.contact_point
+      contactPoint = dataserviceForm.value.contact_point
     }
   }
 
   const dataservice = await $api<Dataservice>('/api/1/dataservices/', {
     method: 'POST',
-    body: JSON.stringify(prepareDataserviceForApi(datasetForm.value, contactPoint, asPrivate)),
+    body: JSON.stringify(prepareDataserviceForApi(dataserviceForm.value, contactPoint, asPrivate)),
   })
 
   navigateTo(localePath(`/dataservices/${dataservice.id}`))
