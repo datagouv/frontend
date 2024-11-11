@@ -32,11 +32,18 @@
       :current-step
     />
 
-    <Step1DescribeDataservice
+    <DescribeDataservice
       v-if="currentStep === 1"
       v-model="dataserviceForm"
-      @next="dataserviceNext"
-    />
+      @submit="dataserviceNext"
+    >
+      <button
+        type="submit"
+        class="fr-btn"
+      >
+        {{ $t("Next") }}
+      </button>
+    </DescribeDataservice>
     <Step2AddDatasets
       v-if="currentStep === 2"
       v-model="datasets"
@@ -51,7 +58,7 @@
 
 <script setup lang="ts">
 import type { Dataservice, Dataset } from '@datagouv/components'
-import Step1DescribeDataservice from '~/components/Dataservices/New/Step1DescribeDataservice.vue'
+import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
 import Step2AddDatasets from '~/components/Dataservices/New/Step2AddDatasets.vue'
 import Step3CompletePublication from '~/components/Dataservices/New/Step3CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
@@ -121,30 +128,6 @@ const datasetsNext = () => {
   moveToStep(3)
 }
 
-const prepareDataserviceForApi = (
-  form: DataserviceForm,
-  contactPoint: ContactPoint | null,
-  asPrivate: boolean,
-): NewDataserviceForApi => {
-  return {
-    organization: form.owned?.organization?.id,
-    owner: form.owned?.owner?.id,
-    title: form.title,
-    private: asPrivate,
-    description: form.description,
-    acronym: form.acronym,
-    datasets: datasets.value.map(({ id }) => id),
-    contact_point: contactPoint ? contactPoint.id : null,
-    is_restricted: form.is_restricted,
-    has_token: form.has_token,
-    base_api_url: form.base_api_url || null,
-    authorization_request_url: form.authorization_request_url || null,
-    endpoint_description_url: form.endpoint_description_url || null,
-    rate_limiting: form.rate_limiting,
-    availability: form.availability ? parseFloat(form.availability) : null,
-  }
-}
-
 const save = async (asPrivate: boolean) => {
   let contactPoint = null
   if (
@@ -169,7 +152,11 @@ const save = async (asPrivate: boolean) => {
 
   const dataservice = await $api<Dataservice>('/api/1/dataservices/', {
     method: 'POST',
-    body: JSON.stringify(prepareDataserviceForApi(dataserviceForm.value, contactPoint, asPrivate)),
+    body: JSON.stringify(toApi(dataserviceForm.value, {
+      datasets: datasets.value,
+      contactPoint,
+      private: asPrivate,
+    })),
   })
 
   navigateTo(localePath(`/dataservices/${dataservice.id}`))
