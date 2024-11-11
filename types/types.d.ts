@@ -1,5 +1,4 @@
 import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License } from '@datagouv/components'
-import type { Me } from '~/utils/auth'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -118,6 +117,7 @@ export type MultiSelectOption = {
 }
 
 type UserSuggest = Omit<User, 'avatar' | 'avatar_thumbnail' | 'roles' | 'pages'> & { avatar_url: string | null }
+type DatasetSuggest = Pick<Dataset, 'acronym' | 'id' | 'slug' | 'title' | 'page'> & { image_url: string | null }
 
 export type SpatialZone = {
   code: string
@@ -136,13 +136,13 @@ export type Tag = {
   text: string
 }
 
-type Owned = { organization: Organization, owner: null } | { owner: Me, organization: null }
+type Owned = { organization: Organization, owner: null } | { owner: User, organization: null }
 
 export type DatasetForm = {
+  owned: Owned | null
   title: string
   acronym: string
   description: string
-  owned: Owned | null
   tags: Array<Tag>
   license: License | null
   temporal_coverage: { start: null | string, end: null | string }
@@ -166,6 +166,39 @@ export type NewDatasetForApi = {
     granularity?: string
     zones?: Array<string>
   }
+}
+
+export type DataserviceForm = {
+  owned: Owned | null
+  title: string
+  acronym: string
+  description: string
+  contact_point: NewContactPoint | ContactPoint | null
+  is_restricted: boolean
+  has_token: boolean
+  base_api_url: string
+  authorization_request_url: string
+  endpoint_description_url: string
+  rate_limiting: string
+  availability: string
+}
+
+export type NewDataserviceForApi = {
+  organization?: string
+  owner?: string
+  title: string
+  private?: boolean
+  acronym?: string
+  description: string
+  datasets: Array<string>
+  contact_point: string | null
+  is_restricted: boolean
+  has_token: boolean
+  base_api_url: string | null
+  authorization_request_url: string | null
+  endpoint_description_url: string | null
+  rate_limiting: string
+  availability: number | null
 }
 
 type EnrichedLicense = License & { group: string, recommended?: boolean, code?: string, description?: string }
@@ -192,3 +225,13 @@ export type NewOrganization = {
   url: string | null
   logo: string
 }
+
+export type ContactPoint = {
+  id: string
+  name: string
+  contact_form?: string
+  email?: string
+}
+
+export type NewContactPoint = Omit<ContactPoint, 'id'>
+export type ContactPointInForm = ContactPoint | NewContactPoint

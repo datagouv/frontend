@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, Frequency, NewDataset, Owned, Resource } from '@datagouv/components'
+import type { Dataset, Frequency, Owned, Resource } from '@datagouv/components'
 import type { FetchError } from 'ofetch'
 import { v4 as uuidv4 } from 'uuid'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
@@ -105,8 +105,7 @@ const moveToStep = (step: number) => {
   navigateTo({ path: route.path, query: { ...route.query, step } })
 }
 
-const datasetNext = (dataset: DatasetForm) => {
-  // datasetForm.value = dataset
+const datasetNext = () => {
   moveToStep(3)
 }
 
