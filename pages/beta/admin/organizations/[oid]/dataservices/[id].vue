@@ -57,6 +57,7 @@
 
 <script setup lang="ts">
 import type { Dataservice } from '@datagouv/components'
+import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
 
