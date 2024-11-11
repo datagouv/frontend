@@ -255,36 +255,12 @@
             :accordion="useTagsAccordionId"
             @blur="touch('tags')"
           >
-            <div class="mb-6">
-              <SearchableSelect
-                v-model="form.tags"
-                :label="$t('Tags')"
-                :placeholder="$t('Search a tag…')"
-                :get-option-id="(tag) => tag.text"
-                :allow-new-option="(query) => ({ text: query })"
-                :suggest="suggestTags"
-                :multiple="true"
-                class="mb-2"
-
-                :error-text="getFirstError('tags')"
-                :warning-text="getFirstWarning('tags')"
-              >
-                <template #option="{ option: tag }">
-                  {{ tag.text }}
-                </template>
-              </SearchableSelect>
-              <div class="flex space-x-2">
-                <button
-                  v-for="tag in form.tags"
-                  :key="tag.text"
-                  class="fr-tag fr-tag--sm fr-tag--dismiss"
-                  type="button"
-                  @click="removeTag(tag)"
-                >
-                  {{ tag.text }}
-                </button>
-              </div>
-            </div>
+            <TagsSelect
+              v-model="form.tags"
+              class="mb-6"
+              :error-text="getFirstError('tags')"
+              :warning-text="getFirstWarning('tags')"
+            />
           </LinkedToAccordion>
           <LinkedToAccordion
             class="fr-fieldset__element"
@@ -372,11 +348,7 @@
 
               :error-text="getFirstError('frequency')"
               :warning-text="getFirstWarning('frequency')"
-            >
-              <template #option="{ option: frequency }">
-                {{ frequency.label }}
-              </template>
-            </SearchableSelect>
+            />
           </LinkedToAccordion>
           <LinkedToAccordion
             :accordion="addTemporalCoverageAccordionId"
@@ -562,23 +534,8 @@ const getGranularityName = (zone: SpatialZone): string | undefined => {
   return granularities.value.find(granularity => granularity.id === zone.level)?.name
 }
 
-const ownedOptions = computed<Array<Owned>>(() => {
-  return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
-})
-
 const { $api } = useNuxtApp()
 
-const suggestTags = async (query: string) => {
-  return await $api<Array<Tag>>('/api/1/tags/suggest/', {
-    query: {
-      q: query,
-      size: 5,
-    },
-  })
-}
-const removeTag = (tag: Tag) => {
-  form.value.tags = form.value.tags.filter(otherTag => otherTag.text !== tag.text)
-}
 const removeZone = (zone: SpatialZone) => {
   form.value.spatial_zones = form.value.spatial_zones.filter(otherZone => otherZone.id !== zone.id)
 }

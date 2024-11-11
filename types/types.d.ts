@@ -168,6 +168,22 @@ export type NewDatasetForApi = {
   }
 }
 
+export type ReuseForm = {
+  owned: Owned | null
+  title: string
+  url: string
+  type: ReuseType
+  topic: strign
+  description: string
+  tags: Array<Tag>
+  image: File | null
+}
+
+export type ReuseTopic = {
+  id: string
+  label: string
+}
+
 export type DataserviceForm = {
   owned: Owned | null
   title: string
