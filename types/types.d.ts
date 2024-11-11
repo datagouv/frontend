@@ -118,7 +118,7 @@ export type MultiSelectOption = {
 
 type UserSuggest = Omit<User, 'avatar' | 'avatar_thumbnail' | 'roles' | 'pages'> & { avatar_url: string | null }
 type DatasetSuggest = Pick<Dataset, 'acronym' | 'id' | 'slug' | 'title' | 'page'> & { image_url: string | null }
-
+type DatasetReference = Dataservice['datasets'][0]
 export type SpatialZone = {
   code: string
   id: string

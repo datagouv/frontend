@@ -35,6 +35,7 @@
     <DescribeDataservice
       v-if="currentStep === 1"
       v-model="dataserviceForm"
+      type="create"
       @submit="dataserviceNext"
     >
       <button
@@ -66,8 +67,8 @@ import type {
   ContactPoint,
   DataserviceForm,
   DatasetSuggest,
-  NewDataserviceForApi,
 } from '~/types/types'
+import { toApi } from '~/utils/dataservices'
 
 const { t } = useI18n()
 const route = useRoute()

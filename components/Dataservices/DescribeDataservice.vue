@@ -143,6 +143,7 @@
     >
       <div class="fr-p-3w bg-white">
         <Well
+          v-if="type === 'create'"
           color="blue-cumulus"
           weight="regular"
           class="fr-mb-2w"
@@ -166,7 +167,7 @@
         </Well>
 
         <fieldset
-          v-if="! hideProducer"
+          v-if="type === 'create'"
           class="fr-fieldset"
           aria-labelledby="description-legend"
         >
@@ -411,11 +412,9 @@ import ContactPointSelect from '~/components/ContactPointSelect.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import type { DataserviceForm, Owned } from '~/types/types'
 
-withDefaults(defineProps<{
-  hideProducer?: boolean
-}>(), {
-  hideProducer: false,
-})
+defineProps<{
+  type: 'create' | 'update'
+}>()
 const dataserviceForm = defineModel<DataserviceForm>({ required: true })
 
 const emit = defineEmits<{
