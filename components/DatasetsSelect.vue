@@ -91,7 +91,7 @@ import { RiAddLine, RiDeleteBinLine, RiDraggable } from '@remixicon/vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import CardLg from '~/components/dataset/card-lg.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { DatasetSuggest } from '~/types/types'
+import type { DatasetReference, DatasetSuggest } from '~/types/types'
 
 const sortableRootRef = useTemplateRef('sortableRoot')
 const datasetsById = ref<Record<string, Dataset>>({})
