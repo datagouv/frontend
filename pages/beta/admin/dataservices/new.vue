@@ -130,32 +130,26 @@ const datasetsNext = () => {
 }
 
 const save = async (asPrivate: boolean) => {
-  let contactPoint = null
   if (
     dataserviceForm.value.contact_point
     && dataserviceForm.value.owned?.organization
+    && !('id' in dataserviceForm.value.contact_point)
   ) {
-    if (!('id' in dataserviceForm.value.contact_point)) {
-      contactPoint = await $api<ContactPoint>('/api/1/datasets/', {
-        method: 'POST',
-        body: JSON.stringify({
-          name: dataserviceForm.value.contact_point.name,
-          email: dataserviceForm.value.contact_point.email,
-          contact_form: dataserviceForm.value.contact_point.contact_form,
-          organization: dataserviceForm.value.owned.organization.id,
-        }),
-      })
-    }
-    else {
-      contactPoint = dataserviceForm.value.contact_point
-    }
+    dataserviceForm.value.contact_point = await $api<ContactPoint>('/api/1/contacts/', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: dataserviceForm.value.contact_point.name,
+        email: dataserviceForm.value.contact_point.email,
+        contact_form: dataserviceForm.value.contact_point.contact_form,
+        organization: dataserviceForm.value.owned.organization.id,
+      }),
+    })
   }
 
   const dataservice = await $api<Dataservice>('/api/1/dataservices/', {
     method: 'POST',
     body: JSON.stringify(toApi(dataserviceForm.value, {
       datasets: datasets.value,
-      contactPoint,
       private: asPrivate,
     })),
   })

@@ -27,7 +27,7 @@ export function toForm(dataservice: Dataservice): DataserviceForm {
   }
 }
 
-export function toApi(form: DataserviceForm, overrides: { datasets?: Array<Dataset | DatasetSuggest>, contactPoint?: ContactPoint | null, private?: boolean } = {}): NewDataserviceForApi {
+export function toApi(form: DataserviceForm, overrides: { datasets?: Array<Dataset | DatasetSuggest>, private?: boolean } = {}): NewDataserviceForApi {
   return {
     organization: form.owned?.organization?.id,
     owner: form.owned?.owner?.id,
@@ -36,7 +36,7 @@ export function toApi(form: DataserviceForm, overrides: { datasets?: Array<Datas
     acronym: form.acronym,
     private: overrides.private,
     datasets: overrides.datasets ? overrides.datasets.map(({ id }) => id) : undefined,
-    contact_point: overrides.contactPoint ? overrides.contactPoint.id : undefined,
+    contact_point: form.contact_point && 'id' in form.contact_point ? form.contact_point.id : undefined,
     is_restricted: form.is_restricted,
     has_token: form.has_token,
     base_api_url: form.base_api_url || null,
