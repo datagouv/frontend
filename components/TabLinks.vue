@@ -21,7 +21,6 @@ const route = useRoute()
 const localePath = useLocalePath()
 
 const isCurrent = (href: string) => {
-  console.log(href, route.fullPath)
   return localePath(href) === route.fullPath
 }
 </script>
