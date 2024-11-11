@@ -32,6 +32,7 @@ const datasetsPage = ref<PaginatedArray<Dataset> | null>(null)
 watchEffect(async () => {
   if (!dataservice.value) return
   datasetsPage.value = await $api<PaginatedArray<Dataset>>(`/api/1/datasets/?dataservice=${dataservice.value.id}`)
+  // TODO use page data to see if there is others datasets linked and add a warning message?
   datasets.value = datasetsPage.value.data
 })
 

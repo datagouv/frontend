@@ -91,7 +91,7 @@ import { RiAddLine, RiDeleteBinLine, RiDraggable } from '@remixicon/vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import CardLg from '~/components/dataset/card-lg.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { DatasetReference, DatasetSuggest } from '~/types/types'
+import type { DatasetSuggest } from '~/types/types'
 
 const sortableRootRef = useTemplateRef('sortableRoot')
 const datasetsById = ref<Record<string, Dataset>>({})
@@ -116,8 +116,13 @@ const suggestDataset = async (query: string): Promise<Array<DatasetSuggest>> => 
 watchEffect(async () => {
   for (const dataset of selectedDatasetsSuggest.value) {
     if (dataset.id in datasetsById.value) continue
-
-    datasetsById.value[dataset.id] = await $api<Dataset>(`/api/1/datasets/${dataset.id}/`)
+    if ('resources' in dataset) {
+      // It's already a full dataset
+      datasetsById.value[dataset.id] = dataset
+    }
+    else {
+      datasetsById.value[dataset.id] = await $api<Dataset>(`/api/1/datasets/${dataset.id}/`)
+    }
   }
 })
 
