@@ -39,8 +39,8 @@
           :title="$t('Write a good description')"
           :state="accordionState('description')"
         >
-          <div class="markdown fr-m-0">
-            <p class="fr-m-0">
+          <div class="prose marker:text-neutral-800 m-0">
+            <p class="m-0">
               {{ $t(`The description of your dataset allows to obtain information about the content and structure of the published resources. You can provide:`) }}
             </p>
             <ul class="fr-mt-3v">
