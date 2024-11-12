@@ -31,7 +31,7 @@
     </h1>
 
     <DatasetsMetrics
-      v-if="currentOrganization && pageData.total > 0"
+      v-if="currentOrganization && pageData && pageData.total > 0"
       :organization="currentOrganization"
     />
 
