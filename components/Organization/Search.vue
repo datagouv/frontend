@@ -50,7 +50,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Organization } from '@datagouv/components/ts'
 import { watchDebounced } from '@vueuse/core'
-import { RiSearch2Line } from '@remixicon/vue';
+import { RiSearch2Line } from '@remixicon/vue'
 
 const { t } = useI18n()
 const { toast } = useToast()
