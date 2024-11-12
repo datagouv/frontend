@@ -1,8 +1,8 @@
 <template>
   <HeadlessCombobox
+    v-slot="{ activeOption }"
     as="div"
     class="flex-1 relative"
-    @update:model-value="moveToOrganization"
   >
     <div class="fr-search-bar flex-wrap">
       <HeadlessComboboxLabel
@@ -21,6 +21,7 @@
         autocomplete="off"
         data-cy="search-input"
         name="q"
+        @keydown.enter="moveToOrganization(activeOption.page)"
         @change="q = $event.target.value"
       />
     </div>
@@ -39,6 +40,7 @@
           :logo="option.image_url"
           :name="option.name"
           :link="option.page"
+          @mousedown.left="moveToOrganization(option.page)"
         />
       </HeadlessComboboxOption>
     </HeadlessComboboxOptions>
@@ -74,8 +76,8 @@ async function fetchOptions() {
   }
 }
 
-async function moveToOrganization(org: Organization) {
-  await navigateTo(org.page, { external: true })
+async function moveToOrganization(page: string) {
+  await navigateTo(page, { external: true })
 }
 
 watchDebounced(q, async (newValue, oldValue) => {
