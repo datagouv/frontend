@@ -116,9 +116,13 @@
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
-    <div class="fr-col-12 fr-col-md-7">
+    <form
+      class="fr-col-12 fr-col-md-7"
+      @submit.prevent="submit"
+    >
       <div class="fr-p-3w bg-white">
         <Well
+          v-if="type === 'create'"
           color="blue-cumulus"
           weight="regular"
           class="fr-mb-2w"
@@ -142,6 +146,7 @@
         </Well>
 
         <fieldset
+          v-if="type === 'create'"
           class="fr-fieldset"
           aria-labelledby="description-legend"
         >
@@ -302,16 +307,11 @@
           </LinkedToAccordion>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
-          <button
-            class="fr-btn"
-            @click="submit"
-          >
-            {{ $t("Next") }}
-          </button>
+          <slot />
         </div>
       </div>
       <div class="h-64" />
-    </div>
+    </form>
   </div>
 </template>
 
@@ -324,9 +324,12 @@ import ProducerSelect from '~/components/ProducerSelect.vue'
 import type { ReuseForm, Owned, ReuseTopic } from '~/types/types'
 
 const reuseForm = defineModel<ReuseForm>({ required: true })
+defineProps<{
+  type: 'create' | 'update'
+}>()
 
 const emit = defineEmits<{
-  (event: 'next', dataservice: ReuseForm): void
+  (event: 'submit'): void
 }>()
 
 const { t } = useI18n()
@@ -377,7 +380,7 @@ const imagePreview = computed(() => {
 
 function submit() {
   if (validate()) {
-    emit('next', form.value)
+    emit('submit')
   }
 };
 </script>
