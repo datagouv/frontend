@@ -7,7 +7,7 @@
     <component
       :is="tag"
       v-show="isActive"
-      class="grid items-center duration-150 mx-2 my-0 rounded-lg pointer-events-auto text-white min-h-12 cursor-pointer px-2 py-8 break-words"
+      class="grid items-center duration-150 mx-2 my-0 rounded-lg pointer-events-auto text-white min-h-12 cursor-pointer py-2 px-8 break-words"
       :class="[`c-toast--${type}`, `c-toast--${position}`]"
       role="alert"
       @mouseover="toggleTimer(true)"
@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped>
+<style>
 .c-toast--success {
   background-color: var(--background-flat-success);
 }
@@ -233,6 +233,7 @@ onBeforeUnmount(() => {
 .c-toast-container {
   position: fixed;
   display: flex;
+  gap: 0.5rem;
   top: 0;
   bottom: 0;
   left: 0;
@@ -311,7 +312,7 @@ https://daneden.github.io/animate.css
   transition: opacity 300ms ease-in;
 }
 .fade-leave-active {
-  transition: opacity 150ms ease-out
+  transition: opacity 150ms ease-out;
 }
 
 .fade-enter,
