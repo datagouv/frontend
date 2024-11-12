@@ -63,7 +63,7 @@
     </article>
     <div class="fr-grid-row fr-grid-row--right gap-3">
       <NuxtLinkLocale
-        :to="organization.page"
+        :to="`beta/admin/organizations/${organization.id}/profile`"
         :external="true"
         class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
       >

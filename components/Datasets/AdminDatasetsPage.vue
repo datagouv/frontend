@@ -12,7 +12,7 @@
       <li v-if="currentOrganization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          to="/beta/admin"
+          :to="`beta/admin/organizations/${currentOrganization.id}/profile`"
         >
           {{ currentOrganization.name }}
         </NuxtLinkLocale>
