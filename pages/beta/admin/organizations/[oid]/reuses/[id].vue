@@ -1,0 +1,69 @@
+<template>
+  <div>
+    <Breadcrumb>
+      <li>
+        <NuxtLinkLocale
+          class="fr-breadcrumb__link"
+          to="/beta/admin"
+        >
+          {{ t('Administration') }}
+        </NuxtLinkLocale>
+      </li>
+      <li v-if="currentOrganization">
+        <NuxtLinkLocale
+          class="fr-breadcrumb__link"
+          to="/beta/admin"
+        >
+          {{ currentOrganization.name }}
+        </NuxtLinkLocale>
+      </li>
+      <li v-if="currentOrganization">
+        <NuxtLinkLocale
+          class="fr-breadcrumb__link"
+          :to="`/beta/admin/organizations/${currentOrganization.id}/reuses`"
+        >
+          {{ t('Reuses') }}
+        </NuxtLinkLocale>
+      </li>
+      <li v-if="reuse">
+        <a
+          class="fr-breadcrumb__link"
+          aria-current="page"
+        >
+          {{ reuse.title }}
+        </a>
+      </li>
+    </Breadcrumb>
+
+    <div v-if="reuse">
+      <h1 class="fr-h3 fr-mb-5v">
+        {{ reuse.title }}
+      </h1>
+
+      <TabLinks
+        :links="[
+          { href: getReuseAdminUrl(reuse), label: t('Metadata') },
+          { href: `${getReuseAdminUrl(reuse)}/datasets`, label: t('Datasets') },
+        ]"
+      />
+
+      <NuxtPage
+        :page-key="route => route.fullPath"
+        :reuse
+      />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Reuse } from '@datagouv/components'
+import TabLinks from '~/components/TabLinks.vue'
+
+const { t } = useI18n()
+
+const { currentOrganization } = useCurrentOrganization()
+
+const route = useRoute()
+const url = computed(() => `/api/1/reuses/${route.params.id}`)
+const { data: reuse } = await useAPI<Reuse>(url, { lazy: true })
+</script>

@@ -184,7 +184,7 @@ export type NewReuseForApi = {
   title: string
   private?: boolean
   description: string
-  datasets: Array<string>
+  datasets: Array<string> | undefined
   url: string
   type: string | null
   topic: string | null

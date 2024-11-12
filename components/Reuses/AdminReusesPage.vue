@@ -102,12 +102,11 @@ function sort(column: ReuseSortedBy, newDirection: SortDirection) {
 }
 
 const url = computed(() => {
-  let url
+  const url = new URL(`/api/1/reuses/`, config.public.apiBase)
   if (currentOrganization.value) {
-    url = new URL(`/api/1/organizations/${currentOrganization.value.id}/reuses/`, config.public.apiBase)
+    url.searchParams.set('organization', currentOrganization.value.id)
   }
   else {
-    url = new URL(`/api/1/reuses/`, config.public.apiBase)
     url.searchParams.set('owner', me.value.id)
   }
 

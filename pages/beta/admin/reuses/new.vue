@@ -32,11 +32,20 @@
       :current-step
     />
 
-    <Step1DescribeReuse
+    <DescribeReuse
       v-if="currentStep === 1"
       v-model="reuseForm"
-      @next="reuseNext"
-    />
+      type="create"
+      @submit="reuseNext"
+    >
+      <button
+        type="submit"
+        class="fr-btn"
+      >
+        {{ $t("Next") }}
+      </button>
+    </DescribeReuse>
+
     <Step2AddDatasets
       v-if="currentStep === 2"
       v-model="datasets"
@@ -51,15 +60,15 @@
 
 <script setup lang="ts">
 import type { Dataset, Reuse } from '@datagouv/components'
-import Step1DescribeReuse from '~/components/Reuses/New/Step1DescribeReuse.vue'
+import DescribeReuse from '~/components/Reuses/DescribeReuse.vue'
 import Step2AddDatasets from '~/components/Reuses/New/Step2AddDatasets.vue'
 import Step3CompletePublication from '~/components/Reuses/New/Step3CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
 import type {
   DatasetSuggest,
-  NewReuseForApi,
   ReuseForm,
 } from '~/types/types'
+import { toApi } from '~/utils/reuses'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -113,28 +122,10 @@ const datasetsNext = () => {
   moveToStep(3)
 }
 
-const prepareReuseForApi = (
-  form: ReuseForm,
-  asPrivate: boolean,
-): NewReuseForApi => {
-  return {
-    organization: form.owned?.organization?.id,
-    owner: form.owned?.owner?.id,
-    title: form.title,
-    url: form.url,
-    private: asPrivate,
-    description: form.description,
-    datasets: datasets.value.map(({ id }) => id),
-    type: form.type?.id || '',
-    topic: form.topic?.id || '',
-    tags: form.tags.map(t => t.text),
-  }
-}
-
 const save = async (asPrivate: boolean) => {
   const reuse = await $api<Reuse>('/api/1/reuses/', {
     method: 'POST',
-    body: JSON.stringify(prepareReuseForApi(reuseForm.value, asPrivate)),
+    body: JSON.stringify(toApi(reuseForm.value, { private: asPrivate, datasets: datasets.value })),
   })
 
   if (reuseForm.value.image) {
