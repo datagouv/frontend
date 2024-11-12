@@ -3,7 +3,7 @@ import type { ContactPoint, DataserviceForm, DatasetSuggest, NewDataserviceForAp
 
 export function getDataserviceAdminUrl(dataservice: Dataservice): string {
   if (dataservice.owner) {
-    return ''
+    return `/beta/admin/me/dataservices/${dataservice.id}`
   }
   else {
     return `/beta/admin/organizations/${dataservice.organization.id}/dataservices/${dataservice.id}`

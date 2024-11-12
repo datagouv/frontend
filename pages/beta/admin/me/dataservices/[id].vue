@@ -9,18 +9,10 @@
           {{ t('Administration') }}
         </NuxtLinkLocale>
       </li>
-      <li v-if="currentOrganization">
+      <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/dataservices`"
+          to="/beta/admin/me/dataservices"
         >
           {{ t('Dataservices') }}
         </NuxtLinkLocale>
@@ -62,7 +54,6 @@ import TabLinks from '~/components/TabLinks.vue'
 const { t } = useI18n()
 
 const route = useRoute()
-const { currentOrganization } = useCurrentOrganization()
 const url = computed(() => `/api/1/dataservices/${route.params.id}`)
 const { data: dataservice } = await useAPI<Dataservice>(url, { lazy: true })
 </script>

@@ -30,10 +30,9 @@ const link = computed(() => {
       return ''
       // return `${admin_root}harvester/new/`;
     case 'reuse':
-      return ''
+      return localePath('/beta/admin/reuses/new')
     case 'dataservice':
-      return ''
-      // return reuse_publishing_form_url;
+      return localePath('/beta/admin/dataservices/new')
     default:
       throwOnNever(props.type, '')
       return ''
