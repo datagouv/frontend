@@ -4,7 +4,6 @@
       <thead>
         <tr>
           <AdminTableTh
-            :sorted="sorted('title')"
             scope="col"
             @sort="(direction: SortDirection) => updateSort('title', direction)"
           >
@@ -20,16 +19,14 @@
             {{ t("Format") }}
           </AdminTableTh>
           <AdminTableTh
-            :sorted="sorted('created')"
             scope="col"
-            @sort="(direction: SortDirection) => updateSort('created', direction)"
+            @sort="(direction: SortDirection) => updateSort('created_at', direction)"
           >
             {{ t('Created at') }}
           </AdminTableTh>
           <AdminTableTh
-            :sorted="sorted('last_update')"
             scope="col"
-            @sort="(direction: SortDirection) => updateSort('last_update', direction)"
+            @sort="(direction: SortDirection) => updateSort('last_modified', direction)"
           >
             {{ t('Updated at') }}
           </AdminTableTh>
@@ -74,50 +71,50 @@
         </tr>
       </tbody>
     </AdminTable>
+    <Pagination
+      v-if="resourcesPage && resourcesPage.total > pageSize"
+      :page="page"
+      :page-size="pageSize"
+      :total-results="resourcesPage.total"
+      @change="(changedPage: number) => page = changedPage"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { formatDate, type DatasetV2, type Resource } from '@datagouv/components'
+import { formatDate, Pagination, type DatasetV2, type Resource } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
-import type { AdminBadgeState, DatasetSortedBy, PaginatedArray, SortDirection } from '~/types/types'
-
-const emit = defineEmits<{
-  (event: 'sort', column: DatasetSortedBy, direction: SortDirection): void
-}>()
+import type { AdminBadgeState, ResourceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
 const route = useRoute()
 
 const { $api } = useNuxtApp()
 
-const url = computed(() => `/api/2/datasets/${route.params.id}`)
-const { data: dataset } = await useAPI<DatasetV2>(url, { lazy: true })
+const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
+const { data: dataset } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
 const resourcesPage = ref<PaginatedArray<Resource> | null>(null)
-watchEffect(async () => {
+const page = ref(1)
+const pageSize = ref(10)
+
+const resourcesUrl = computed(() => {
   if (!dataset.value) return
-  resourcesPage.value = await $api<PaginatedArray<Resource>>(dataset.value.resources.href)
+
+  const url = new URL(dataset.value.resources.href)
+  url.searchParams.set('page_size', pageSize.value.toString())
+  url.searchParams.set('page', page.value.toString())
+  return url.toString()
+})
+
+watchEffect(async () => {
+  if (!resourcesUrl.value) return
+  resourcesPage.value = await $api<PaginatedArray<Resource>>(resourcesUrl.value)
 })
 
 const loading = ref(false)
 
-const sortedBy = ref<DatasetSortedBy>('created')
-const direction = ref<SortDirection>('desc')
-const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)
-
 const { t } = useI18n()
-
-function updateSort(column: DatasetSortedBy, direction: SortDirection) {
-  emit('sort', column, direction)
-}
-
-function sorted(column: DatasetSortedBy) {
-  if (sortedBy.value === column) {
-    return sortDirection.value
-  }
-  return null
-}
 
 function getStatus(resource: Resource): { label: string, type: AdminBadgeState } {
   if (resource.extras['check:available'] === true) {
