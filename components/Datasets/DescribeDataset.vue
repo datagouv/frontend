@@ -154,6 +154,7 @@
     <div class="fr-col-12 fr-col-md-7">
       <div class="fr-p-3w bg-white">
         <Well
+          v-if="type === 'create'"
           color="blue-cumulus"
           weight="regular"
           class="fr-mb-2w"
@@ -177,6 +178,7 @@
         </Well>
 
         <fieldset
+          v-if="type === 'create'"
           class="fr-fieldset"
           aria-labelledby="description-legend"
         >
@@ -460,7 +462,7 @@
             class="fr-btn"
             @click="submit"
           >
-            {{ $t("Next") }}
+            {{ submitLabel }}
           </button>
         </div>
       </div>
@@ -470,24 +472,26 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Frequency, type License, type Organization } from '@datagouv/components'
+import { Well, type Frequency, type License } from '@datagouv/components'
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
-import type { DatasetForm, EnrichedLicense, Owned, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import type { DatasetForm, EnrichedLicense, SpatialGranularity, SpatialZone } from '~/types/types'
 
 const datasetForm = defineModel<DatasetForm>({ required: true })
 
+defineProps<{
+  submitLabel: string
+  type: 'create' | 'update'
+}>()
 const emit = defineEmits<{
-  (event: 'next', dataset: DatasetForm): void
+  (event: 'submit'): void
 }>()
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
-
-const user = useMe()
 
 const nameDatasetAccordionId = useId()
 const addAcronymAccordionId = useId()
@@ -567,7 +571,7 @@ const accordionState = (key: keyof typeof form.value) => {
 
 function submit() {
   if (validate()) {
-    emit('next', form.value)
+    emit('submit')
   }
 };
 </script>
