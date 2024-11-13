@@ -43,7 +43,7 @@
       <TabLinks
         :links="[
           { href: getDatasetAdminUrl(dataset), label: t('Metadata') },
-          ]"
+        ]"
       />
 
       <NuxtPage

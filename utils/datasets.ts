@@ -110,10 +110,10 @@ export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: 
     description: dataset.description,
     acronym: dataset.acronym,
     tags: dataset.tags?.map(text => ({ text })) || [],
-    license: licenses.find((l) => l.id === dataset.license) || null,
-    frequency: frequencies.find((f) => f.id === dataset.frequency) || null,
-    temporal_coverage: dataset.temporal_coverage ? { start: null, end: null } : { start: null, end: null },
-    spatial_zones: dataset.spatial?.zones?.map((id) => zones.find((z) => z.id === id)).filter(z => z !== undefined) || [],
+    license: licenses.find(l => l.id === dataset.license) || null,
+    frequency: frequencies.find(f => f.id === dataset.frequency) || null,
+    temporal_coverage: dataset.temporal_coverage ? { start: dataset.temporal_coverage.start, end: dataset.temporal_coverage.end } : { start: null, end: null }, // TODO fix this type, the API returns an object not a string
+    spatial_zones: dataset.spatial?.zones?.map(id => zones.find(z => z.id === id)).filter(z => z !== undefined) || [],
     spatial_granularity: granularities.find(g => g.id === dataset.spatial?.granularity) || null,
   }
 }
@@ -138,4 +138,3 @@ export function toApi(form: DatasetForm, overrides: { private?: boolean } = {}):
       : undefined,
   }
 }
-

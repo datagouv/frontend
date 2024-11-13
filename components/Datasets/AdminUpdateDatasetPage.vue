@@ -1,28 +1,29 @@
 <template>
-    <div>
-      <DescribeDataset
-        v-if="datasetForm"
-        v-model="datasetForm"
-        type="update"
-        :submit-label="t('Save')"
-        @submit="save"
-      />
-    </div>
-  </template>
-  
-  <script setup lang="ts">
-  import type { Dataservice } from '@datagouv/components'
-  import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
-  import type { ContactPoint, DatasetForm } from '~/types/types'
-  import { toForm, toApi } from '~/utils/datasets'
-  
-  const { t } = useI18n()
-  const { $api } = useNuxtApp()
-  
-  const route = useRoute()
-  const loading = ref(false)
+  <div>
+    <DescribeDataset
+      v-if="datasetForm"
+      v-model="datasetForm"
+      type="update"
+      :submit-label="t('Save')"
+      @submit="save"
+    />
+  </div>
+</template>
 
-  const { data: frequencies } = await useAPI<Array<Frequency>>('/api/1/datasets/frequencies', { lazy: true })
+<script setup lang="ts">
+import type { Dataset, Frequency, License } from '@datagouv/components'
+import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
+import type { DatasetForm, EnrichedLicense, SpatialGranularity } from '~/types/types'
+import { toForm, toApi } from '~/utils/datasets'
+
+const { t } = useI18n()
+const { $api } = useNuxtApp()
+const config = useRuntimeConfig()
+
+const route = useRoute()
+const loading = ref(false)
+
+const { data: frequencies } = await useAPI<Array<Frequency>>('/api/1/datasets/frequencies', { lazy: true })
 
 const { data: allLicenses } = await useAPI<Array<License>>('/api/1/datasets/licenses', { lazy: true })
 
@@ -44,28 +45,26 @@ const licenses = computed(() => {
 })
 const { data: granularities } = await useAPI<Array<SpatialGranularity>>('/api/1/spatial/granularities/', { lazy: true })
 
-  
-  const url = computed(() => `/api/1/datasets/${route.params.id}`)
-  const { data: dataset } = await useAPI<Dataset>(url, { lazy: true })
-  const datasetForm = ref<DatasetForm | null>(null)
-  watchEffect(() => {
-    datasetForm.value = toForm(dataset.value, allLicenses, frequencies, granularities)
-  })
-  
-  const save = async () => {
-    if (!datasetForm.value) throw new Error('No dataset form')
-  
-    try {
-      loading.value = true
-  
-      await $api(`/api/1/datasets/${dataset.value.id}/`, {
-        method: 'PUT',
-        body: JSON.stringify(toApi(datasetForm.value)),
-      })
-    }
-    finally {
-      loading.value = false
-    }
+const url = computed(() => `/api/1/datasets/${route.params.id}`)
+const { data: dataset } = await useAPI<Dataset>(url, { lazy: true })
+const datasetForm = ref<DatasetForm | null>(null)
+watchEffect(() => {
+  datasetForm.value = toForm(dataset.value, licenses.value, frequencies.value, [], granularities.value)
+})
+
+const save = async () => {
+  if (!datasetForm.value) throw new Error('No dataset form')
+
+  try {
+    loading.value = true
+
+    await $api(`/api/1/datasets/${dataset.value.id}/`, {
+      method: 'PUT',
+      body: JSON.stringify(toApi(datasetForm.value)),
+    })
   }
-  </script>
-  
+  finally {
+    loading.value = false
+  }
+}
+</script>
