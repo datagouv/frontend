@@ -7,6 +7,11 @@ export default defineNuxtConfig({
     inlineStyles: false,
   },
 
+  devServer: {
+    port: 3000,
+    host: 'dev.local',
+  },
+
   runtimeConfig: {
     public: {
       apiBase: 'http://dev.local:7000',

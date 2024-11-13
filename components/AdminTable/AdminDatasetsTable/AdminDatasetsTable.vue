@@ -108,16 +108,16 @@
       >
         <td>
           <AdminContentWithTooltip>
-            <a
+            <NuxtLinkLocale
               class="fr-link fr-reset-link"
-              :href="getDatasetLinkToAdmin(dataset)"
+              :to="getDatasetAdminUrl(dataset)"
             >
               <TextClamp
                 :text="dataset.title"
                 :auto-resize="true"
                 :max-lines="2"
               />
-            </a>
+            </NuxtLinkLocale>
           </AdminContentWithTooltip>
         </td>
         <td>

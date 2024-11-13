@@ -157,6 +157,7 @@
           color="blue-cumulus"
           weight="regular"
           class="fr-mb-2w"
+          v-if="type === 'create'"
         >
           <div class="fr-grid-row">
             <div class="fr-col-auto fr-mr-3v">
@@ -179,6 +180,7 @@
         <fieldset
           class="fr-fieldset"
           aria-labelledby="description-legend"
+          v-if="type === 'create'"
         >
           <legend
             id="description-legend"
@@ -460,7 +462,7 @@
             class="fr-btn"
             @click="submit"
           >
-            {{ $t("Next") }}
+            {{ submitLabel }}
           </button>
         </div>
       </div>
@@ -480,8 +482,12 @@ import type { DatasetForm, EnrichedLicense, Owned, SpatialGranularity, SpatialZo
 
 const datasetForm = defineModel<DatasetForm>({ required: true })
 
+defineProps<{
+  submitLabel: string
+  type: 'create' | 'update'
+}>()
 const emit = defineEmits<{
-  (event: 'next', dataset: DatasetForm): void
+  (event: 'submit'): void
 }>()
 
 const { t } = useI18n()
@@ -567,7 +573,7 @@ const accordionState = (key: keyof typeof form.value) => {
 
 function submit() {
   if (validate()) {
-    emit('next', form.value)
+    emit('submit')
   }
 };
 </script>

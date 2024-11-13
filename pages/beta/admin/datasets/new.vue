@@ -36,10 +36,12 @@
       v-if="currentStep === 1"
       @start="moveToStep(2)"
     />
-    <Step2DescribeDataset
+    <DescribeDataset
       v-if="currentStep === 2"
       v-model="datasetForm"
-      @next="datasetNext"
+      :submit-label="t('Next')"
+      type="create"
+      @submit="datasetNext"
     />
     <Step3AddFiles
       v-if="currentStep === 3"
@@ -58,11 +60,12 @@ import type { Dataset, Frequency, Owned, Resource } from '@datagouv/components'
 import type { FetchError } from 'ofetch'
 import { v4 as uuidv4 } from 'uuid'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
-import Step2DescribeDataset from '~/components/Datasets/New/Step2DescribeDataset.vue'
+import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
 import Step4CompletePublication from '~/components/Datasets/New/Step4CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
 import type { DatasetForm, EnrichedLicense, NewDatasetFile, NewDatasetForApi, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import { toApi } from '~/utils/datasets'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
@@ -114,37 +117,11 @@ const filesNext = (files: Array<NewDatasetFile>) => {
   moveToStep(4)
 }
 
-const prepareDatasetForApi = (form: DatasetForm, asPrivate: boolean): NewDatasetForApi => {
-  // This `NewDataset` type seems really off…
-  // - Why license or frequency are non-nullable strings?
-  // - The API accepts the temporal coverage as an object…
-  // - archived as a boolean? The API is failing on a boolean here, expecting a date or null
-  return {
-    organization: form.owned?.organization?.id,
-    owner: form.owned?.owner?.id,
-    title: form.title,
-    private: asPrivate,
-    description: form.description,
-    acronym: form.acronym,
-    tags: form.tags.map(t => t.text),
-    license: form.license?.id || '',
-    frequency: form.frequency?.id || '',
-    temporal_coverage: (form.temporal_coverage.start && form.temporal_coverage.end) ? form.temporal_coverage as { start: string, end: string } : undefined,
-    spatial: (form.spatial_granularity || form.spatial_zones)
-      ? {
-          zones: form.spatial_zones.length ? form.spatial_zones.map(z => z.id) : undefined,
-          granularity: form.spatial_granularity ? form.spatial_granularity.id : undefined,
-        }
-      : undefined,
-
-  }
-}
-
 const save = async (asPrivate: boolean) => {
   try {
     newDataset.value = newDataset.value || await $api<Dataset>('/api/1/datasets/', {
       method: 'POST',
-      body: JSON.stringify(prepareDatasetForApi(datasetForm.value, asPrivate)),
+      body: JSON.stringify(toApi(datasetForm.value, asPrivate)),
     })
 
     const results = await Promise.allSettled(datasetFiles.value.map((_, i: number) => {
