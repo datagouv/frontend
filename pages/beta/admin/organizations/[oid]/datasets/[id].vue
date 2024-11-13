@@ -43,12 +43,11 @@
       <TabLinks
         :links="[
           { href: getDatasetAdminUrl(dataset), label: t('Metadata') },
+          { href: `${getDatasetAdminUrl(dataset)}/files`, label: t('Files') },
         ]"
       />
 
-      <NuxtPage
-        :page-key="route => route.fullPath"
-      />
+      <NuxtPage :page-key="route => route.fullPath" />
     </div>
   </div>
 </template>

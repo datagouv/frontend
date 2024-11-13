@@ -209,10 +209,6 @@ function getFilesCount(dataset: Dataset | DatasetV2) {
   return dataset.resources.total
 }
 
-function getDatasetLinkToAdmin(dataset: Dataset | DatasetV2) {
-  return `${config.public.apiBase}/en/admin/dataset/${dataset.id}/`
-}
-
 function getStatus(dataset: Dataset | DatasetV2): { label: string, type: AdminBadgeState } {
   if (dataset.deleted) {
     return {

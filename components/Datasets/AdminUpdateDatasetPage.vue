@@ -49,7 +49,9 @@ const url = computed(() => `/api/1/datasets/${route.params.id}`)
 const { data: dataset } = await useAPI<Dataset>(url, { lazy: true })
 const datasetForm = ref<DatasetForm | null>(null)
 watchEffect(() => {
-  datasetForm.value = toForm(dataset.value, licenses.value, frequencies.value, [], granularities.value)
+  if (dataset.value && licenses.value && frequencies.value && granularities.value) {
+    datasetForm.value = toForm(dataset.value, licenses.value, frequencies.value, [], granularities.value)
+  }
 })
 
 const save = async () => {
