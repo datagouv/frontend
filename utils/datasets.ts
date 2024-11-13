@@ -1,4 +1,4 @@
-import type { Dataset, Frequency, License } from '@datagouv/components'
+import type { Dataset, DatasetV2, Frequency, License } from '@datagouv/components'
 import type { Component } from 'vue'
 import Archive from '~/components/Icons/Archive.vue'
 import Code from '~/components/Icons/Code.vue'
@@ -94,12 +94,15 @@ const includeInSubtype = <T, U extends T>(array: ReadonlyArray<U>, value: T): va
 
 export const isClosedFormat = (format: string) => includeInSubtype(CLOSED_FORMATS, format)
 
-export function getDatasetAdminUrl(dataset: Dataset): string {
+export function getDatasetAdminUrl(dataset: Dataset | DatasetV2): string {
   if (dataset.owner) {
     return `/beta/admin/me/datasets/${dataset.id}`
   }
-  else {
+  else if (dataset.organization) {
     return `/beta/admin/organizations/${dataset.organization.id}/datasets/${dataset.id}`
+  }
+  else {
+    throw new Error(`Dataset #${dataset.id} without owner and organization`)
   }
 }
 
