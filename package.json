@@ -15,7 +15,7 @@
     "vue": "latest"
   },
   "dependencies": {
-    "@datagouv/components": "^2.0.0",
+    "@datagouv/components": "^2.0.1",
     "@datagouv/select-a11y": "^3.6.1",
     "@datagouv/vue-toaster": "^2.4.5",
     "@floating-ui/vue": "^1.1.5",
