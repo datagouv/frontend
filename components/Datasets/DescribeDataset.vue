@@ -193,7 +193,7 @@
           <div class="fr-fieldset__element">
             <ProducerSelect
               v-model="form.owned"
-
+              :required="true"
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"
               @focusout="touch('owned')"
@@ -347,7 +347,7 @@
               :display-value="(frequency) => frequency.label"
               :options="frequencies"
               :multiple="false"
-
+              :required="true"
               :error-text="getFirstError('frequency')"
               :warning-text="getFirstWarning('frequency')"
             />
