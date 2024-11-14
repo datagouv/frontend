@@ -36,16 +36,16 @@
         >
           <td>
             <AdminContentWithTooltip>
-              <NuxtLinkLocale
+              <a
                 class="fr-link fr-reset-link"
-                to=""
+                :href="`/${locale}/admin/dataset/${dataset.id}/resource/${resource.id}`"
               >
                 <TextClamp
                   :text="resource.title"
                   :auto-resize="true"
                   :max-lines="2"
                 />
-              </NuxtLinkLocale>
+              </a>
             </AdminContentWithTooltip>
           </td>
           <td>
@@ -88,6 +88,7 @@ import type { AdminBadgeState, PaginatedArray } from '~/types/types'
 const route = useRoute()
 
 const { $api } = useNuxtApp()
+const { locale } = useI18n()
 
 const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
 const { data: dataset } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
