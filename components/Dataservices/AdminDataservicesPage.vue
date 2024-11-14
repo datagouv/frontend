@@ -38,16 +38,6 @@
           {{ t('{n} dataservices', pageData.total) }}
         </h2>
       </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <div v-if="status === 'success' && currentOrganization && pageData.total">
-          <a
-            :href="`/organizations/${currentOrganization.id}/dataservices.csv`"
-            class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left"
-          >
-            {{ t('Download catalog') }}
-          </a>
-        </div>
-      </div>
     </div>
     <AdminDataservicesTable
       v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
