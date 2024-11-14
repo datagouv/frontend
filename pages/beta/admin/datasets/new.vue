@@ -72,7 +72,6 @@ const { t } = useI18n()
 const config = useRuntimeConfig()
 const route = useRoute()
 const { $api, $fileApi } = useNuxtApp()
-const localePath = useLocalePath()
 
 const DATASET_FORM_STATE = 'dataset-form'
 const DATASET_FILES_STATE = 'dataset-files'
@@ -201,7 +200,8 @@ async function updateDataset(asPrivate: boolean) {
       body: JSON.stringify(newDataset.value),
     })
   }
-  return navigateTo(newDataset.value.organization ? localePath(`/beta/admin/organizations/${newDataset.value.organization.id}/datasets`) : localePath('/beta/admin/me/datasets'))
+
+  await navigateTo(newDataset.value.page, { external: true })
 }
 
 watchEffect(() => {

@@ -73,7 +73,6 @@ import { toApi } from '~/utils/dataservices'
 const { t } = useI18n()
 const route = useRoute()
 const { $api } = useNuxtApp()
-const localePath = useLocalePath()
 
 const steps = computed(() => [
   t('Describe your dataservice'),
@@ -154,7 +153,7 @@ const save = async (asPrivate: boolean) => {
     })),
   })
 
-  navigateTo(localePath(`/dataservices/${dataservice.id}`))
+  navigateTo(dataservice.self_web_url, { external: true })
 }
 
 watchEffect(() => {
