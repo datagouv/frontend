@@ -62,6 +62,8 @@ const localePath = useLocalePath()
 const localeRoute = useLocaleRoute()
 const me = useMe()
 
+useHead({ title: 'Admin' })
+
 // Works only because we are using MongoDB and there is no
 // collision between orgs' IDs and users' IDs.
 const defaultOpenId = ref<null | string>(null)
