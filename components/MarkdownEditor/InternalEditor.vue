@@ -1,5 +1,5 @@
 <template>
-  <div class="editor__container px-4 py-2 rounded bg-neutral-100">
+  <div class="editor__container px-4 py-2 rounded-t shadow-[inset_0_-2px_0_0_var(--border-plain-grey)] bg-[var(--background-contrast-grey)]">
     <div
       class="mx-auto flex flex-wrap pb-1 gap-2 *:flex *:gap-1"
       role="menubar"
@@ -90,7 +90,7 @@
     </div>
     <div class="p-1">
       <Milkdown
-        class="prose prose-neutral dark:prose-invert max-w-none prose-h1:text-xl prose-h1:leading-6 prose-h1:font-extrabold"
+        class="prose prose-neutral max-w-none prose-h1:text-xl prose-h1:leading-6 prose-h1:font-extrabold"
         :class="[
           proseTable,
           proseHeading,

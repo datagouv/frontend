@@ -2,6 +2,10 @@
     color: #B32000;
 }
 
-.fr-fieldset--warning .fr-input, .fr-input-group--warning .fr-input, .fr-fieldset--warning .fr-select, .fr-select-group--warning .fr-select {
+.fr-fieldset--warning .fr-input, .fr-input-group--warning .fr-input, .fr-fieldset--warning .editor__container, .fr-input-group--warning .editor__container, .fr-fieldset--warning .fr-select, .fr-select-group--warning .fr-select {
     box-shadow: inset 0 -2px 0 0 #b34000;
+}
+
+.fr-fieldset--error .editor__container, .fr-input-group--error .editor__container {
+    box-shadow: inset 0 -2px 0 0 var(--border-plain-error);
 }
