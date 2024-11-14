@@ -298,10 +298,8 @@
             >
               <img
                 :src="imagePreview"
-                class="fr-responsive-img fr-mx-1w fr-mb-1w"
+                class="border mx-auto max-h-40 aspect-square"
                 alt=""
-                width="300"
-                height="300"
               >
             </div>
           </LinkedToAccordion>
@@ -375,6 +373,7 @@ const setFiles = (files: Array<File>) => {
 }
 const imagePreview = computed(() => {
   if (!reuseForm.value.image) return null
+  if (typeof reuseForm.value.image === 'string') return reuseForm.value.image
   return URL.createObjectURL(reuseForm.value.image)
 })
 

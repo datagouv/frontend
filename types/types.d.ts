@@ -178,7 +178,7 @@ export type ReuseForm = {
   topic: ReuseTopic | null
   description: string
   tags: Array<Tag>
-  image: File | null
+  image: File | string | null
 }
 export type NewReuseForApi = {
   organization?: string

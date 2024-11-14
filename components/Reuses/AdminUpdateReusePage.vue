@@ -24,7 +24,7 @@ import type { ReuseForm, ReuseTopic } from '~/types/types'
 import { toForm, toApi } from '~/utils/reuses'
 
 const { t } = useI18n()
-const { $api } = useNuxtApp()
+const { $api, $fileApi } = useNuxtApp()
 const { toast } = useToast()
 
 const route = useRoute()
@@ -51,6 +51,15 @@ const save = async () => {
       method: 'PUT',
       body: JSON.stringify(toApi(reuseForm.value)),
     })
+
+    if (reuseForm.value.image && typeof reuseForm.value.image !== 'string') {
+      const formData = new FormData()
+      formData.set('file', reuseForm.value.image)
+      await $fileApi(`/api/1/reuses/${reuse.value.id}/image`, {
+        method: 'POST',
+        body: formData,
+      })
+    }
 
     toast.success(t('Reuse updated!'))
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
