@@ -24,7 +24,8 @@
     </Well>
     <div class="fr-grid-row justify-between">
       <a
-        :href="config.public.feedbackUrl"
+        v-if="config.public.publishingReuseFeedbackUrl"
+        :href="config.public.publishingReuseFeedbackUrl"
         class="fr-btn fr-btn--tertiary-no-outline fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-lightbulb-line"
       >
         {{ $t('Give us your feedback on the publishing form') }}

@@ -25,7 +25,8 @@
     <DatasetCardLg :dataset="publicDataset" />
     <div class="fr-grid-row justify-between">
       <a
-        :href="config.public.feedbackUrl"
+        v-if="config.public.publishingDatasetFeedbackUrl"
+        :href="config.public.publishingDatasetFeedbackUrl"
         class="fr-btn fr-btn--tertiary-no-outline fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-lightbulb-line"
         target="_blank"
       >
