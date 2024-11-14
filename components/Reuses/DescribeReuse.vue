@@ -130,7 +130,7 @@
           <div class="fr-grid-row">
             <div class="fr-col-auto fr-mr-3v">
               <img
-                src="/illustrations/dataservice.svg"
+                src="/illustrations/reuse.svg"
                 alt=""
               >
             </div>
