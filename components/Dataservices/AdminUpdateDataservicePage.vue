@@ -25,6 +25,7 @@ import { toForm, toApi } from '~/utils/dataservices'
 
 const { t } = useI18n()
 const { $api } = useNuxtApp()
+const { toast } = useToast()
 
 const route = useRoute()
 const loading = ref(false)
@@ -62,6 +63,9 @@ const save = async () => {
       method: 'PATCH',
       body: JSON.stringify(toApi(dataserviceForm.value)),
     })
+
+    toast.success(t('Dataservice updated!'))
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
   finally {
     loading.value = false

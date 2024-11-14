@@ -202,6 +202,7 @@ async function updateCurrentOrganization(updatedOrganization: NewOrganization | 
     await updateOrganization(updatedOrganization as Organization)
     refreshOrganization()
     toast.success(t('Organization updated !'))
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
   catch (e) {
     toast.error(t('An error occured when updating the organization.'))

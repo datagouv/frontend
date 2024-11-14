@@ -277,8 +277,8 @@ import BrandedButton from '../BrandedButton/BrandedButton.vue'
 const me = useMe()
 const api = useNuxtApp().$api
 const config = useNuxtApp().$config
-const router = useRouter()
-const localePath = useLocalePath()
+const { toast } = useToast()
+const { t } = useI18n()
 
 const apiKeyId = useId()
 const emailId = useId()
@@ -309,6 +309,9 @@ async function updateMe() {
         website: me.value.website,
       },
     })
+
+    toast.success(t('Profile updated !'))
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
   finally {
     loading.value = false
