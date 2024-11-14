@@ -13,7 +13,6 @@
       >
         <component
           :is="icon"
-          v-if="hasState"
           class="fr-mr-2w"
           :class="iconColor"
           size="24px"
@@ -52,7 +51,6 @@ const register = inject(key) as AccordionRegister
 const { expanded, toggle, unregister } = register()
 
 const accordionId = props.id || useId()
-const hasState = computed(() => props.state !== 'default')
 const icon = computed(() => {
   switch (props.state) {
     case 'error':

@@ -62,7 +62,7 @@
     </template>
 
     <template #footer="{ close }">
-      <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--right">
+      <div class="w-full flex gap-4 justify-end">
         <div class="fr-col-auto">
           <button
             class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"

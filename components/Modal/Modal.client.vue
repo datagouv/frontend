@@ -55,7 +55,7 @@
               </DialogTitle>
               <slot />
             </div>
-            <div class="flex p-4 -mt-10 sticky bottom-0 bg-white contrast-more:border-solid contrast-more:border-t-1 motion-reduce:transition-none">
+            <div class="flex p-4 sm:px-8 -mt-10 sticky bottom-0 bg-white contrast-more:border-solid contrast-more:border-t-1 motion-reduce:transition-none">
               <slot name="footer" />
             </div>
           </div>

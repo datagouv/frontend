@@ -189,7 +189,7 @@ const proseTable = 'prose-table:bg-neutral-200 prose-table:!overflow-visible fir
 const proseHeading = 'prose-h1:text-xl prose-h1:leading-6 prose-h2:text-base prose-h3:text-sm prose-h3:leading-6 prose-headings:font-extrabold'
 const proseList = 'prose-ul:list-disc'
 const proseCode = 'prose-pre:font-mono prose-pre:bg-neutral-200 prose-pre:text-neutral-600'
-const proseOthers = 'prose-blockquote:border-neutral-800 prose-a:no-underline marker:text-neutral-800 prose-li:p-0 *:prose-li:m-0'
+const proseOthers = 'prose-blockquote:border-neutral-800 prose-a:no-underline prose-li:p-0 *:prose-li:m-0'
 
 const editor = useEditor(root =>
   Editor.make()

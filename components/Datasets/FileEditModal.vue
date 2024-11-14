@@ -47,7 +47,7 @@
                 :title="nameAFile"
                 :state="accordionState('title')"
               >
-                <div class="markdown fr-m-0">
+                <div class="prose prose-neutral fr-m-0">
                   <p class="fr-m-0 fr-mb-1w">
                     {{ $t("It is recommended to choose a title that can inform any user about the content of the file. Some practices to avoid:") }}
                   </p>
@@ -64,7 +64,7 @@
                 :title="$t('Publish the correct file types')"
                 :state="accordionState('type')"
               >
-                <div class="markdown fr-m-0">
+                <div class="prose prose-neutral fr-m-0">
                   <p class="fr-m-0 fr-mb-1w">
                     {{ $t("You can choose from the following types:") }}
                   </p>
@@ -83,7 +83,7 @@
                 :title="$t('Choose the right format')"
                 :state="accordionState('format')"
               >
-                <div class="markdown fr-m-0">
+                <div class="prose prose-neutral fr-m-0">
                   <p class="fr-m-0 fr-mb-1w">
                     {{ $t("The formats must be:") }}
                   </p>
@@ -99,7 +99,7 @@
                 :title="$t('Add documentation')"
                 :state="accordionState('description')"
               >
-                <div class="markdown fr-m-0">
+                <div class="prose prose-neutral fr-m-0">
                   <p class="fr-m-0 fr-mb-1w">
                     {{ $t("The description of a file facilitates the reuse of data. It includes, among others:") }}
                   </p>
@@ -138,7 +138,7 @@
             </AccordionGroup>
           </Sidemenu>
           <div class="fr-col-12 fr-col-md-7">
-            <Container>
+            <PaddedContainer class="overflow-auto">
               <fieldset
                 class="fr-fieldset min-width-0"
                 aria-labelledby="description-legend"
@@ -147,17 +147,18 @@
                   id="description-legend"
                   class="fr-fieldset__legend"
                 >
-                  <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+                  <h2 class="subtitle subtitle--uppercase !mb-3">
                     {{ $t("File metadata") }}
                   </h2>
                 </legend>
                 <div class="fr-fieldset__element">
                   <FileCard
                     v-model="form"
-                    class="fr-mb-3v"
+                    class="mb-3"
                     :hide-actions="true"
                   />
                 </div>
+                <RequiredExplanation class="px-2" />
                 <LinkedToAccordion
                   v-if="'url' in form"
                   class="fr-fieldset__element min-width-0"
@@ -271,23 +272,14 @@
                   />
                 </LinkedToAccordion>
               </fieldset>
-            </Container>
+            </PaddedContainer>
           </div>
         </div>
       </form>
     </template>
 
     <template #footer="{ close }">
-      <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--right">
-        <div class="fr-col-auto">
-          <button
-            class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
-            type="button"
-            @click="cancel(close)"
-          >
-            {{ t("Cancel") }}
-          </button>
-        </div>
+      <div class="w-full flex gap-4">
         <div class="fr-col-auto">
           <button
             class="fr-btn"
@@ -295,6 +287,15 @@
             :form="formId"
           >
             {{ t("Validate") }}
+          </button>
+        </div>
+        <div class="fr-col-auto">
+          <button
+            class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+            type="button"
+            @click="cancel(close)"
+          >
+            {{ t("Cancel") }}
           </button>
         </div>
       </div>

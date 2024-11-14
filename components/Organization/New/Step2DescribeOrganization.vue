@@ -28,7 +28,7 @@
           :title="t('Choose an acronym')"
           :state="state.acronym"
         >
-          <div class="markdown fr-m-0">
+          <div class="prose prose-neutral fr-m-0">
             <p class="fr-m-0">
               {{ t('The acronym of your organization, if it exists.') }}
             </p>

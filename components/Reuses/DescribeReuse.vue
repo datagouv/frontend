@@ -37,7 +37,7 @@
           :title="('Choose a type')"
           :state="accordionState('type')"
         >
-          <div class="markdown fr-m-0">
+          <div class="prose prose-neutral fr-m-0">
             <p class="fr-m-0">
               {{ t('Please indicate the type under which to categorize the reuse (API, application, news article, visualization, etc.).') }}
             </p>

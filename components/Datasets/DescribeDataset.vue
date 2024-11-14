@@ -39,7 +39,7 @@
           :title="$t('Write a good description')"
           :state="accordionState('description')"
         >
-          <div class="prose marker:text-neutral-800 m-0">
+          <div class="prose prose-neutral m-0">
             <p class="m-0">
               {{ $t(`The description of your dataset allows to obtain information about the content and structure of the published resources. You can provide:`) }}
             </p>
@@ -157,26 +157,26 @@
           v-if="type === 'create'"
           color="blue-cumulus"
           weight="regular"
-          class="fr-mb-2w"
+          class="mb-4"
         >
           <div class="fr-grid-row">
-            <div class="fr-col-auto fr-mr-3v">
+            <div class="fr-col-auto mr-3">
               <img
                 src="/illustrations/edit.svg"
                 alt=""
               >
             </div>
             <div class="fr-col">
-              <p class="fr-m-0 fr-text--bold">
+              <p class="m-0 font-bold">
                 {{ $t('What is a dataset?') }}
               </p>
-              <p class="fr-m-0 fr-text--xs">
+              <p class="m-0 text-xs">
                 {{ $t('On {site}, a dataset is a set of files.', { site: config.public.title }) }}
               </p>
             </div>
           </div>
         </Well>
-
+        <RequiredExplanation />
         <fieldset
           v-if="type === 'create'"
           class="fr-fieldset"
@@ -186,7 +186,7 @@
             id="description-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="subtitle subtitle--uppercase !mb-3">
               {{ $t("Producer") }}
             </h2>
           </legend>
@@ -208,7 +208,7 @@
             id="description-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="subtitle subtitle--uppercase !mb-3">
               {{ $t("Description") }}
             </h2>
           </legend>
@@ -259,7 +259,6 @@
           >
             <TagsSelect
               v-model="form.tags"
-              class="mb-6"
               :error-text="getFirstError('tags')"
               :warning-text="getFirstWarning('tags')"
             />
@@ -277,7 +276,6 @@
               :display-value="(option) => option.title"
               :multiple="false"
               :group-by="(option) => option.group"
-
               :error-text="getFirstError('license')"
               :warning-text="getFirstWarning('license')"
             >
@@ -329,7 +327,7 @@
             id="time-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="subtitle subtitle--uppercase !mb-3">
               {{ $t("Time") }}
             </h2>
           </legend>
@@ -342,7 +340,6 @@
               v-model="form.frequency"
               :label="$t('Update frequency')"
               :placeholder="$t('Search a frequency…')"
-              class="mb-6"
               :get-option-id="(frequency) => frequency.label"
               :display-value="(frequency) => frequency.label"
               :options="frequencies"
@@ -376,7 +373,7 @@
             id="space-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="subtitle subtitle--uppercase !mb-3">
               {{ $t("Space") }}
             </h2>
           </legend>
@@ -387,7 +384,7 @@
           >
             <div class="fr-grid-row fr-grid-row--gutters">
               <div class="fr-col-12">
-                <div class="mb-6">
+                <div>
                   <SearchableSelect
                     v-model="form.spatial_zones"
                     :label="$t('Spatial coverage')"
@@ -440,7 +437,6 @@
                   v-model="form.spatial_granularity"
                   :label="$t('Spatial granularity')"
                   :placeholder="$t('Search a granularity…')"
-                  class="mb-6"
                   :get-option-id="(granularity) => granularity.id"
                   :display-value="(granularity) => granularity.name"
                   :options="granularities"
