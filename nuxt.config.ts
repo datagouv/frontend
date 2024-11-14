@@ -68,6 +68,9 @@ export default defineNuxtConfig({
       bodyAttrs: {
         class: 'datagouv-components',
       },
+      link: [
+        { rel: 'shortcut icon', href: '/favicon.png' },
+      ],
     },
   },
 
