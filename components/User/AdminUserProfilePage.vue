@@ -96,6 +96,12 @@
           :for="apiKeyId"
         >
           {{ $t('API Key') }}
+          <CopyButton
+            v-if="me.apikey"
+            :label="$t('Copy API key')"
+            :copied-label="$t('API ley copied')"
+            :text="me.apikey"
+          />
           <span class="fr-hint-text">
             {{ $t('Warning: If you erase your API key you risk to loose acces to {site} services', { site: config.public.title }) }}
           </span>
@@ -110,13 +116,6 @@
                 disabled
                 type="text"
               >
-              <CopyButton
-                v-if="me.apikey"
-                class="absolute right-1 top-1"
-                :label="$t('Copy API key')"
-                :copied-label="$t('API ley copied')"
-                :text="me.apikey"
-              />
             </div>
           </div>
           <div class="fr-col-auto flex gap-4">
@@ -275,10 +274,10 @@ import { RiDeleteBin6Line, RiEditLine, RiEyeLine, RiRecycleLine, RiSaveLine } fr
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
 
 const me = useMe()
-const api = useNuxtApp().$api
 const config = useNuxtApp().$config
 const { toast } = useToast()
 const { t } = useI18n()
+const { $api } = useNuxtApp()
 
 const apiKeyId = useId()
 const emailId = useId()
@@ -300,7 +299,7 @@ function closeDeleteModal() {
 async function updateMe() {
   loading.value = true
   try {
-    me.value = await api<Me>('/api/1/me/', {
+    me.value = await $api<Me>('/api/1/me/', {
       method: 'PUT',
       body: {
         first_name: me.value.first_name,
@@ -321,7 +320,7 @@ async function updateMe() {
 async function regenerateApiKey() {
   loading.value = true
   try {
-    const res = await api<{ apikey: string }>('/api/1/me/apikey/', {
+    const res = await $api<{ apikey: string }>('/api/1/me/apikey', {
       method: 'POST',
     })
     me.value.apikey = res.apikey
@@ -334,7 +333,7 @@ async function regenerateApiKey() {
 async function deleteApiKey() {
   loading.value = true
   try {
-    await api('/api/1/me/apikey/', {
+    await $api('/api/1/me/apikey', {
       method: 'DELETE',
     })
     me.value.apikey = null
@@ -347,7 +346,7 @@ async function deleteApiKey() {
 async function deleteUser() {
   loading.value = true
   try {
-    await api('/api/1/me/', {
+    await $api('/api/1/me/', {
       method: 'DELETE',
     })
     navigateTo(`${config.public.apiBase}/en/logout`, { external: true })
