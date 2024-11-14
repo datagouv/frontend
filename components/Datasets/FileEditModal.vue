@@ -305,7 +305,7 @@
 
 <script setup lang="ts">
 import { getResourceLabel, RESOURCE_TYPE, Well, type SchemaResponseData } from '@datagouv/components'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import type { NewDatasetFile } from '~/types/types'
