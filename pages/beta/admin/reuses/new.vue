@@ -128,7 +128,7 @@ const save = async (asPrivate: boolean) => {
     body: JSON.stringify(toApi(reuseForm.value, { private: asPrivate, datasets: datasets.value })),
   })
 
-  if (reuseForm.value.image) {
+  if (reuseForm.value.image && typeof reuseForm.value.image !== 'string') {
     const formData = new FormData()
     formData.set('file', reuseForm.value.image)
     await $fileApi(`/api/1/reuses/${reuse.id}/image`, {
