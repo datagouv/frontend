@@ -84,7 +84,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
-    'nuxt-headlessui',
   ],
   eslint: {
     config: {

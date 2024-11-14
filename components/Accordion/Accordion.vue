@@ -1,11 +1,11 @@
 <template>
-  <HeadlessDisclosure
+  <Disclosure
     as="div"
     class="fr-accordion"
     data-type="accordion"
   >
     <h3 class="fr-accordion__title !mb-0">
-      <HeadlessDisclosureButton
+      <DisclosureButton
         class="fr-accordion__btn !text-neutral-900"
         :aria-expanded="expanded"
         :aria-controls="accordionId"
@@ -19,22 +19,23 @@
           size="24px"
         />
         {{ title }}
-      </HeadlessDisclosureButton>
+      </DisclosureButton>
     </h3>
-    <HeadlessDisclosurePanel
+    <DisclosurePanel
       v-show="expanded"
       :id="accordionId"
       class="px-4 pt-4 pb-6"
       static
     >
       <slot />
-    </HeadlessDisclosurePanel>
-  </HeadlessDisclosure>
+    </DisclosurePanel>
+  </Disclosure>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RiCheckLine, RiCloseLine, RiErrorWarningLine, RiInformationLine, RiSubtractLine } from '@remixicon/vue'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import type { AccordionState } from '~/types/form'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 

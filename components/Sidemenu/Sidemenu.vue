@@ -8,18 +8,18 @@
       :class="{ 'fr-sidemenu--right': onRight, 'fr-sidemenu--no-border': !showBorder, 'fr-sidemenu--sticky': fixed }"
       :aria-labelledby="titleId"
     >
-      <HeadlessDisclosure
+      <Disclosure
         as="div"
         class="fr-sidemenu__inner"
         :default-open="true"
       >
-        <HeadlessDisclosureButton
+        <DisclosureButton
           class="fr-sidemenu__btn"
           hidden
         >
           {{ buttonText }}
-        </HeadlessDisclosureButton>
-        <HeadlessDisclosurePanel>
+        </DisclosureButton>
+        <DisclosurePanel>
           <div
             :id="titleId"
             class="fr-sidemenu__title fr-text--sm"
@@ -27,13 +27,15 @@
             <slot name="title" />
           </div>
           <slot />
-        </HeadlessDisclosurePanel>
-      </HeadlessDisclosure>
+        </DisclosurePanel>
+      </Disclosure>
     </nav>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+
 withDefaults(defineProps<
   {
     fixed?: boolean

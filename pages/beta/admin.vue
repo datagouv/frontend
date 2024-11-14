@@ -7,18 +7,18 @@
           :aria-label="t('Administration menu')"
         >
           <ClientOnly>
-            <HeadlessDisclosure
+            <Disclosure
               :default-open="true"
               as="div"
               class="fr-sidemenu__inner !p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
             >
-              <HeadlessDisclosureButton
+              <DisclosureButton
                 class="fr-sidemenu__btn"
                 hidden
               >
                 {{ t('Open menu') }}
-              </HeadlessDisclosureButton>
-              <HeadlessDisclosurePanel>
+              </DisclosureButton>
+              <DisclosurePanel>
                 <AccordionGroup
                   v-if="me"
                   class="fr-sidemenu__list"
@@ -35,8 +35,8 @@
                     :organization="organization"
                   />
                 </AccordionGroup>
-              </HeadlessDisclosurePanel>
-            </HeadlessDisclosure>
+              </DisclosurePanel>
+            </Disclosure>
           </ClientOnly>
         </nav>
       </div>
@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'
 
 definePageMeta({

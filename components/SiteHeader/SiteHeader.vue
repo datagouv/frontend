@@ -210,70 +210,74 @@
               >
                 {{ link.label }}
               </NuxtLinkLocale>
-              <HeadlessDisclosure v-else-if="link.items">
-                <HeadlessDisclosureButton
-                  class="fr-nav__btn"
-                >
-                  {{ link.label }}
-                </HeadlessDisclosureButton>
-                <HeadlessDisclosurePanel
-                  class="fr-menu"
-                >
-                  <ul class="fr-menu__list">
-                    <li
-                      v-for="item in link.items"
-                      :key="item.label"
-                    >
-                      <NuxtLinkLocale
-                        class="fr-nav__link"
-                        :to="item.link"
-                        :external="true"
+              <ClientOnly v-else-if="link.items">
+                <Disclosure>
+                  <DisclosureButton
+                    class="fr-nav__btn"
+                  >
+                    {{ link.label }}
+                  </DisclosureButton>
+                  <DisclosurePanel
+                    class="fr-menu"
+                  >
+                    <ul class="fr-menu__list">
+                      <li
+                        v-for="item in link.items"
+                        :key="item.label"
                       >
-                        {{ item.label }}
-                      </NuxtLinkLocale>
-                    </li>
-                  </ul>
-                </HeadlessDisclosurePanel>
-              </HeadlessDisclosure>
+                        <NuxtLinkLocale
+                          class="fr-nav__link"
+                          :to="item.link"
+                          :external="true"
+                        >
+                          {{ item.label }}
+                        </NuxtLinkLocale>
+                      </li>
+                    </ul>
+                  </DisclosurePanel>
+                </Disclosure>
+              </ClientOnly>
             </li>
             <li
               class="fr-nav__item ml-auto"
             >
-              <HeadlessPopover>
-                <HeadlessPopoverButton
-                  class="fr-nav__btn space-x-1.5 !w-64"
-                >
-                  <RiAddLine class="size-4" />
-                  <span>{{ $t('Publish on') }}</span>
-                  <SiteLogo class="mt-0.5 h-4" />
-                </HeadlessPopoverButton>
-                <HeadlessPopoverPanel
-                  v-slot="{ close }"
-                  class="fr-menu"
-                >
-                  <ul
-                    class="fr-menu__list !w-64"
+              <ClientOnly>
+                <Popover>
+                  <PopoverButton
+                    class="fr-nav__btn space-x-1.5 !w-64"
                   >
-                    <li
-                      v-for="item in filteredPublishMenu"
-                      :key="item.link"
+                    <RiAddLine class="size-4" />
+                    <span>{{ $t('Publish on') }}</span>
+                    <SiteLogo class="mt-0.5 h-4" />
+                  </PopoverButton>
+                  <PopoverPanel
+                    v-slot="{ close }"
+                    class="fr-menu"
+                  >
+                    <ul
+                      class="fr-menu__list !w-64"
                     >
-                      <NuxtLinkLocale
-                        class="fr-nav__link flex items-center space-x-1"
-                        :to="item.link"
-                        :external="item.external"
-                        @click="close()"
+                      <li
+                        v-for="item in filteredPublishMenu"
+                        :key="item.link"
                       >
-                        <component
-                          :is="item.icon"
-                          class="inline size-4"
-                        />
-                        <span>{{ item.label }}</span>
-                      </NuxtLinkLocale>
-                    </li>
-                  </ul>
-                </HeadlessPopoverPanel>
-              </HeadlessPopover>
+                        <NuxtLinkLocale
+                          class="fr-nav__link flex items-center space-x-1"
+                          :to="item.link"
+                          :external="item.external"
+                          @click="close()"
+                        >
+                          <component
+                            :is="item.icon"
+                            class="inline size-4"
+                          />
+                          <span>{{ item.label }}</span>
+                        </NuxtLinkLocale>
+                      </li>
+                    </ul>
+                  </PopoverPanel>
+                </Popover>
+              </ClientOnly>
             </li>
           </ul>
         </nav>
@@ -309,67 +313,71 @@
               >
                 {{ link.label }}
               </NuxtLinkLocale>
-              <HeadlessDisclosure v-else-if="link.items">
-                <HeadlessDisclosureButton
-                  class="fr-nav__btn"
-                >
-                  {{ link.label }}
-                </HeadlessDisclosureButton>
-                <HeadlessDisclosurePanel
-                  class="fr-menu"
-                >
-                  <ul class="fr-menu__list">
-                    <li
-                      v-for="item in link.items"
-                      :key="item.label"
-                    >
-                      <HeadlessDisclosureButton
-                        :as="NuxtLinkLocale"
-                        class="fr-nav__link"
-                        :to="item.link"
-                        :external="true"
+              <ClientOnly v-else-if="link.items">
+                <Disclosure>
+                  <DisclosureButton
+                    class="fr-nav__btn"
+                  >
+                    {{ link.label }}
+                  </DisclosureButton>
+                  <DisclosurePanel
+                    class="fr-menu"
+                  >
+                    <ul class="fr-menu__list">
+                      <li
+                        v-for="item in link.items"
+                        :key="item.label"
                       >
-                        {{ item.label }}
-                      </HeadlessDisclosureButton>
-                    </li>
-                  </ul>
-                </HeadlessDisclosurePanel>
-              </HeadlessDisclosure>
+                        <DisclosureButton
+                          :as="NuxtLinkLocale"
+                          class="fr-nav__link"
+                          :to="item.link"
+                          :external="true"
+                        >
+                          {{ item.label }}
+                        </DisclosureButton>
+                      </li>
+                    </ul>
+                  </DisclosurePanel>
+                </Disclosure>
+              </ClientOnly>
             </li>
             <li
               class="fr-nav__item"
             >
-              <HeadlessDisclosure>
-                <HeadlessDisclosureButton
-                  class="fr-nav__btn space-x-1.5 justify-start after:!ml-auto"
-                >
-                  <RiAddLine class="size-4" />
-                  <span>{{ $t('Publish on') }}</span>
-                  <SiteLogo class="mt-0.5 h-4" />
-                </HeadlessDisclosureButton>
-                <HeadlessDisclosurePanel
-                  class="fr-menu"
-                >
-                  <ul class="fr-menu__list">
-                    <li
-                      v-for="item in filteredPublishMenu"
-                      :key="item.link"
-                    >
-                      <NuxtLinkLocale
-                        class="fr-nav__link flex items-center space-x-1"
-                        :to="item.link"
-                        :external="item.external"
+              <ClientOnly>
+                <Disclosure>
+                  <DisclosureButton
+                    class="fr-nav__btn space-x-1.5 justify-start after:!ml-auto"
+                  >
+                    <RiAddLine class="size-4" />
+                    <span>{{ $t('Publish on') }}</span>
+                    <SiteLogo class="mt-0.5 h-4" />
+                  </DisclosureButton>
+                  <DisclosurePanel
+                    class="fr-menu"
+                  >
+                    <ul class="fr-menu__list">
+                      <li
+                        v-for="item in filteredPublishMenu"
+                        :key="item.link"
                       >
-                        <component
-                          :is="item.icon"
-                          class="inline size-4"
-                        />
-                        <span>{{ item.label }}</span>
-                      </NuxtLinkLocale>
-                    </li>
-                  </ul>
-                </HeadlessDisclosurePanel>
-              </HeadlessDisclosure>
+                        <NuxtLinkLocale
+                          class="fr-nav__link flex items-center space-x-1"
+                          :to="item.link"
+                          :external="item.external"
+                        >
+                          <component
+                            :is="item.icon"
+                            class="inline size-4"
+                          />
+                          <span>{{ item.label }}</span>
+                        </NuxtLinkLocale>
+                      </li>
+                    </ul>
+                  </DisclosurePanel>
+                </Disclosure>
+              </ClientOnly>
             </li>
           </ul>
         </nav>
@@ -379,7 +387,8 @@
 </template>
 
 <script setup lang="ts">
-import { RiAccountCircleLine, RiAddLine, RiArticleLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiServerLine, RiRobot2Line, RiLineChartLine } from '@remixicon/vue'
+import { RiAccountCircleLine, RiAddLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiRobot2Line, RiLineChartLine } from '@remixicon/vue'
+import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { NuxtLinkLocale } from '#components'
 import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'

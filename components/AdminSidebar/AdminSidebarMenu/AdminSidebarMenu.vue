@@ -1,10 +1,10 @@
 <template>
-  <HeadlessDisclosure>
+  <Disclosure>
     <li
       class="fr-sidemenu__item"
       :class="{ 'fr-sidemenu__item--active': expanded }"
     >
-      <HeadlessDisclosureButton
+      <DisclosureButton
         class="fr-sidemenu__btn"
         :aria-current="expanded"
         :aria-expanded="expanded"
@@ -33,8 +33,8 @@
             {{ organization.name }}
           </p>
         </template>
-      </HeadlessDisclosureButton>
-      <HeadlessDisclosurePanel
+      </DisclosureButton>
+      <DisclosurePanel
         v-show="expanded"
         static
       >
@@ -122,13 +122,14 @@
             />
           </template>
         </ul>
-      </HeadlessDisclosurePanel>
+      </DisclosurePanel>
     </li>
-  </HeadlessDisclosure>
+  </Disclosure>
 </template>
 
 <script setup lang="ts">
 import { Avatar, type Organization, type User } from '@datagouv/components'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { RiAccountCircleLine, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiLineChartLine, RiParentLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 import AdminSidebarLink from '~/components/AdminSidebar/AdminSidebarLink/AdminSidebarLink.vue'

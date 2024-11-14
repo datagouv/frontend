@@ -1,5 +1,5 @@
 <template>
-  <HeadlessDialog
+  <Dialog
     :id="modalId"
     :aria-labelledby="showTitle ? modalTitleId : null"
     :aria-label="!showTitle ? title : null"
@@ -14,7 +14,7 @@
     as="dialog"
     @close="emit('close')"
   >
-    <HeadlessDialogPanel
+    <DialogPanel
       class="fr-container fr-container--fluid pointer-events-none"
       :class="{ 'fr-container-md': !isFullscreen }"
     >
@@ -45,14 +45,14 @@
               class="px-4 sm:px-8 mb-[3.5rem] sm:mb-[4rem] contrast-more:border-solid contrast-more:border-1"
               :class="{ 'pl-0 pr-0': isFullscreen }"
             >
-              <HeadlessDialogTitle
+              <DialogTitle
                 v-if="showTitle"
                 :id="modalTitleId"
                 class="mb-4 font-bold text-gray-950 text-xl md:text-2xl flex items-center space-x-2"
               >
                 <slot name="iconTitle" />
                 <span>{{ title }}</span>
-              </HeadlessDialogTitle>
+              </DialogTitle>
               <slot />
             </div>
             <div class="flex p-4 -mt-10 sticky bottom-0 bg-white contrast-more:border-solid contrast-more:border-t-1 motion-reduce:transition-none">
@@ -61,11 +61,13 @@
           </div>
         </div>
       </div>
-    </HeadlessDialogPanel>
-  </HeadlessDialog>
+    </DialogPanel>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
+
 const props = withDefaults(defineProps<{
   /** Modal id to set for an external button `arial-controls` */
   id?: string
