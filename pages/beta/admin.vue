@@ -1,50 +1,48 @@
 <template>
-  <div class="fr-container--fluid min-h-full">
-    <div class="fr-grid-row h-full bg-gray-100">
-      <div class="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-col-xl-2">
-        <nav
-          class="fr-sidemenu !p-0 md:h-full"
-          :aria-label="t('Administration menu')"
-        >
-          <ClientOnly>
-            <Disclosure
-              :default-open="true"
-              as="div"
-              class="fr-sidemenu__inner !p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
+  <div class="fr-grid-row bg-gray-100 flex-1">
+    <div class="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-col-xl-2">
+      <nav
+        class="fr-sidemenu !p-0 md:h-full"
+        :aria-label="t('Administration menu')"
+      >
+        <ClientOnly>
+          <Disclosure
+            :default-open="true"
+            as="div"
+            class="fr-sidemenu__inner !p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
+          >
+            <DisclosureButton
+              class="fr-sidemenu__btn"
+              hidden
             >
-              <DisclosureButton
-                class="fr-sidemenu__btn"
-                hidden
+              {{ t('Open menu') }}
+            </DisclosureButton>
+            <DisclosurePanel>
+              <AccordionGroup
+                v-if="me"
+                class="fr-sidemenu__list"
+                as="ul"
               >
-                {{ t('Open menu') }}
-              </DisclosureButton>
-              <DisclosurePanel>
-                <AccordionGroup
-                  v-if="me"
-                  class="fr-sidemenu__list"
-                  as="ul"
-                >
-                  <AdminSidebarMenu
-                    :user="me"
-                    :default-open="defaultOpenId === me.id"
-                  />
-                  <AdminSidebarMenu
-                    v-for="organization in me.organizations"
-                    :key="organization.id"
-                    :default-open="defaultOpenId === organization.id"
-                    :organization="organization"
-                  />
-                </AccordionGroup>
-              </DisclosurePanel>
-            </Disclosure>
-          </ClientOnly>
-        </nav>
-      </div>
-      <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-5w overflow-auto">
-        <NuxtPage
-          :page-key="route => route.fullPath"
-        />
-      </div>
+                <AdminSidebarMenu
+                  :user="me"
+                  :default-open="defaultOpenId === me.id"
+                />
+                <AdminSidebarMenu
+                  v-for="organization in me.organizations"
+                  :key="organization.id"
+                  :default-open="defaultOpenId === organization.id"
+                  :organization="organization"
+                />
+              </AccordionGroup>
+            </DisclosurePanel>
+          </Disclosure>
+        </ClientOnly>
+      </nav>
+    </div>
+    <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-5w overflow-auto">
+      <NuxtPage
+        :page-key="route => route.fullPath"
+      />
     </div>
   </div>
 </template>
