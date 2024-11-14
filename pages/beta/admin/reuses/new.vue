@@ -73,7 +73,6 @@ import { toApi } from '~/utils/reuses'
 const { t } = useI18n()
 const route = useRoute()
 const { $api, $fileApi } = useNuxtApp()
-const localePath = useLocalePath()
 
 const steps = computed(() => [
   t('Describe your reuse'),
@@ -137,7 +136,7 @@ const save = async (asPrivate: boolean) => {
     })
   }
 
-  navigateTo(localePath(`/reuses/${reuse.id}`))
+  await navigateTo(reuse.page, { external: true })
 }
 
 watchEffect(() => {
