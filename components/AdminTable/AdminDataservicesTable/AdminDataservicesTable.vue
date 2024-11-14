@@ -72,7 +72,6 @@ import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
 import type { AdminBadgeState, DataserviceSortedBy, SortDirection } from '~/types/types'
-import TextClampClient from '~/components/TextClamp.client.vue'
 
 const props = defineProps<{
   dataservices: Array<Dataservice>
