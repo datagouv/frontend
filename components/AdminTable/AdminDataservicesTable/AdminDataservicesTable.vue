@@ -37,7 +37,7 @@
               class="fr-link fr-reset-link"
               :to="getDataserviceAdminUrl(dataservice)"
             >
-              <TextClampClient
+              <TextClamp
                 :text="dataservice.title"
                 :auto-resize="true"
                 :max-lines="2"
