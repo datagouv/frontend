@@ -17,11 +17,11 @@
         {{ tag.text }}
       </template>
     </SearchableSelect>
-    <div class="flex space-x-2">
+    <div class="flex flex-wrap">
       <button
         v-for="tag in tags"
         :key="tag.text"
-        class="fr-tag fr-tag--sm fr-tag--dismiss"
+        class="fr-tag fr-tag--sm fr-tag--dismiss mr-2 mb-2"
         type="button"
         @click="removeTag(tag)"
       >
