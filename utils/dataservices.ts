@@ -22,6 +22,7 @@ export function toForm(dataservice: Dataservice): DataserviceForm {
     base_api_url: dataservice.base_api_url || '',
     authorization_request_url: dataservice.authorization_request_url || '',
     endpoint_description_url: dataservice.endpoint_description_url || '',
+    business_documentation_url: dataservice.business_documentation_url || '',
     rate_limiting: dataservice.rate_limiting,
     availability: dataservice.availability?.toString() || '',
   }
@@ -42,6 +43,7 @@ export function toApi(form: DataserviceForm, overrides: { datasets?: Array<Datas
     base_api_url: form.base_api_url || null,
     authorization_request_url: form.authorization_request_url || null,
     endpoint_description_url: form.endpoint_description_url || null,
+    business_documentation_url: form.business_documentation_url || null,
     rate_limiting: form.rate_limiting,
     availability: form.availability ? parseFloat(form.availability) : null,
   }

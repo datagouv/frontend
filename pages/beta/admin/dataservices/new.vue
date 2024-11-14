@@ -94,6 +94,7 @@ const dataserviceForm = useState(
       base_api_url: '',
       datasets: [],
       endpoint_description_url: '',
+      business_documentation_url: '',
       has_token: false,
       is_restricted: false,
       license: null,
