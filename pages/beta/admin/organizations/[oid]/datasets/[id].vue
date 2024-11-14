@@ -36,9 +36,17 @@
     </Breadcrumb>
 
     <div v-if="dataset">
-      <h1 class="fr-h3 fr-mb-5v">
-        {{ dataset.title }}
-      </h1>
+      <div class="flex items-center justify-between">
+        <h1 class="fr-h3 fr-mb-5v">
+          {{ dataset.title }}
+        </h1>
+        <a
+          :href="dataset.page"
+          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-eye-line"
+        >
+          {{ t('See the dataset page') }}
+        </a>
+      </div>
 
       <TabLinks
         :links="[

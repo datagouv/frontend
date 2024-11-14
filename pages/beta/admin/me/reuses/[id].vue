@@ -28,9 +28,17 @@
     </Breadcrumb>
 
     <div v-if="reuse">
-      <h1 class="fr-h3 fr-mb-5v">
-        {{ reuse.title }}
-      </h1>
+      <div class="flex items-center justify-between">
+        <h1 class="fr-h3 fr-mb-5v">
+          {{ reuse.title }}
+        </h1>
+        <a
+          :href="reuse.page"
+          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-eye-line"
+        >
+          {{ t('See the reuse page') }}
+        </a>
+      </div>
 
       <TabLinks
         :links="[
