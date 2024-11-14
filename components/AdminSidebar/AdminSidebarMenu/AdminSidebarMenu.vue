@@ -41,11 +41,6 @@
         <ul class="fr-sidemenu__list !mx-2 !my-3">
           <template v-if="user">
             <AdminSidebarLink
-              :icon="RiAccountCircleLine"
-              :label="$t('Me')"
-              to="/beta/admin/me"
-            />
-            <AdminSidebarLink
               :icon="RiDatabase2Line"
               :label="$t('Datasets')"
               to="/beta/admin/me/datasets"
