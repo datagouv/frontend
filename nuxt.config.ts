@@ -32,7 +32,7 @@ export default defineNuxtConfig({
       guidesUrl: 'https://guides.data.gouv.fr/',
       guidesHarvestingUrl: '',
       supportUrl: 'https://support.data.gouv.fr/',
-      catalogUrl: 'https://catalogue.data.gouv.fr/',
+      catalogUrl: 'https://guides.data.gouv.fr/autres-ressources-utiles/catalogage-de-donnees-grist',
 
       feedbackUrl: 'https://tally.so/r/wdNk1y',
 
