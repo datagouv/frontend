@@ -21,7 +21,7 @@
           :state="accordionState('files')"
           :opened="true"
         >
-          <div class="markdown fr-m-0">
+          <div class="prose prose-neutral fr-m-0">
             <p class="fr-m-0 fr-mb-1w">
               {{ $t("Formats should be :") }}
             </p>
@@ -44,7 +44,7 @@
           :title="$t('Add documentation')"
           :state="accordionState('hasDocumentation')"
         >
-          <div class="markdown fr-m-0">
+          <div class="prose prose-neutral fr-m-0">
             <p class="fr-m-0 fr-mb-1w">
               {{ $t("The description of a file facilitates the reuse of data. It includes, among others:") }}
             </p>
@@ -68,7 +68,7 @@
       </AccordionGroup>
     </Sidemenu>
     <div class="fr-col-12 fr-col-md-7">
-      <div>
+      <PaddedContainer>
         <Well
           color="blue-cumulus"
           weight="regular"
@@ -107,9 +107,10 @@
             class="fr-fieldset__element min-width-0"
             :accordion="publishFileAccordionId"
           >
-            <div
+            <PaddedContainer
               v-if="form.files.length === 0"
-              class="bg-white p-8 flex flex-col items-center"
+              class="flex flex-col items-center"
+              color="alt-grey"
             >
               <h3 class="fr-text--md fr-text--bold fr-m-0 fr-mb-2w">
                 {{ $t("Add your first files") }}
@@ -118,7 +119,7 @@
                 :error-text="getFirstError('files')"
                 @new-files="addFiles"
               />
-            </div>
+            </PaddedContainer>
             <template v-else>
               <FileCard
                 v-for="(_, index) in form.files"
@@ -168,7 +169,7 @@
             {{ $t("Next") }}
           </button>
         </div>
-      </div>
+      </PaddedContainer>
     </div>
   </div>
 </template>

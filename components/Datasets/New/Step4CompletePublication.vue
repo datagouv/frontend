@@ -22,10 +22,12 @@
         </div>
       </div>
     </Well>
+    <DatasetCardLg :dataset="publicDataset" />
     <div class="fr-grid-row justify-between">
       <a
         :href="config.public.feedbackUrl"
         class="fr-btn fr-btn--tertiary-no-outline fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-lightbulb-line"
+        target="_blank"
       >
         {{ $t('Give us your feedback on the publishing form') }}
       </a>
@@ -48,7 +50,11 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { Well, type Dataset } from '@datagouv/components'
+
+const props = defineProps<{ dataset: Dataset }>()
+
+const publicDataset = computed(() => ({ ...props.dataset, private: false }))
 
 const emit = defineEmits<{
   (e: 'next', asPrivate: boolean): void

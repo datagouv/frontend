@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fr-p-3w"
+    class="!p-6"
     :class="background"
   >
     <slot />

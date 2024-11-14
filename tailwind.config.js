@@ -33,6 +33,13 @@ export default {
           tint: '#c1c1fd',
         },
       },
+      typography: theme => ({
+        neutral: {
+          css: {
+            '--tw-prose-bullets': theme('colors.neutral[800]'),
+          },
+        },
+      }),
     },
   },
   plugins: [
