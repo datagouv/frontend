@@ -102,6 +102,7 @@ const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
   if (currentStep.value > steps.value.length) return false
+  if (currentStep.value === 3 && !datasetForm.value.title) return false
   if (currentStep.value > 3 && !newDataset.value) return false
   return true
 })
