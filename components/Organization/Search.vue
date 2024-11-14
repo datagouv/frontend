@@ -1,21 +1,21 @@
 <template>
-  <HeadlessCombobox
+  <Combobox
     v-slot="{ activeOption }"
     as="div"
     class="flex-1 relative"
   >
     <div class="fr-search-bar flex-wrap">
-      <HeadlessComboboxLabel
+      <ComboboxLabel
         class="fr-label"
       >
         {{ t('Search for data') }}
-      </HeadlessComboboxLabel>
+      </ComboboxLabel>
       <RiSearch2Line
         class="absolute text-base top-3 left-2"
         size="16"
         aria-hidden="true"
       />
-      <HeadlessComboboxInput
+      <ComboboxInput
         class="fr-input fr-col-12 !pl-8"
         :placeholder="t('Search an organization on data.gouv.fr')"
         autocomplete="off"
@@ -25,10 +25,10 @@
         @change="q = $event.target.value"
       />
     </div>
-    <HeadlessComboboxOptions
+    <ComboboxOptions
       class="absolute w-full mt-2 max-h-60 overflow-auto bg-white py-1 drop-shadow rounded-b p-0"
     >
-      <HeadlessComboboxOption
+      <ComboboxOption
         v-for="option in options"
         :key="option.id"
         v-slot="{ active }"
@@ -42,9 +42,9 @@
           :link="option.page"
           @mousedown.left="moveToOrganization(option.page)"
         />
-      </HeadlessComboboxOption>
-    </HeadlessComboboxOptions>
-  </HeadlessCombobox>
+      </ComboboxOption>
+    </ComboboxOptions>
+  </Combobox>
 </template>
 
 <script setup lang="ts">
@@ -53,6 +53,7 @@ import { useI18n } from 'vue-i18n'
 import type { Organization } from '@datagouv/components/ts'
 import { watchDebounced } from '@vueuse/core'
 import { RiSearch2Line } from '@remixicon/vue'
+import { Combobox, ComboboxInput, ComboboxLabel, ComboboxOption, ComboboxOptions } from '@headlessui/vue'
 
 const { t } = useI18n()
 const { toast } = useToast()
