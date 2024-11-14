@@ -5,7 +5,6 @@
         <tr>
           <AdminTableTh
             scope="col"
-            @sort="(direction: SortDirection) => updateSort('title', direction)"
           >
             {{ t('File name') }}
           </AdminTableTh>
@@ -20,13 +19,11 @@
           </AdminTableTh>
           <AdminTableTh
             scope="col"
-            @sort="(direction: SortDirection) => updateSort('created_at', direction)"
           >
             {{ t('Created at') }}
           </AdminTableTh>
           <AdminTableTh
             scope="col"
-            @sort="(direction: SortDirection) => updateSort('last_modified', direction)"
           >
             {{ t('Updated at') }}
           </AdminTableTh>
@@ -86,7 +83,7 @@ import { formatDate, Pagination, type DatasetV2, type Resource } from '@datagouv
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
-import type { AdminBadgeState, ResourceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
+import type { AdminBadgeState, PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 

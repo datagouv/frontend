@@ -22,6 +22,7 @@ const config = useRuntimeConfig()
 
 const route = useRoute()
 const loading = ref(false)
+const { toast } = useToast()
 
 const { data: frequencies } = await useAPI<Array<Frequency>>('/api/1/datasets/frequencies', { lazy: true })
 
@@ -64,6 +65,9 @@ const save = async () => {
       method: 'PUT',
       body: JSON.stringify(toApi(datasetForm.value)),
     })
+
+    toast.success(t('Dataset updated!'))
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
   finally {
     loading.value = false

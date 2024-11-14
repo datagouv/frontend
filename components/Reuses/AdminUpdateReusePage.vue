@@ -25,6 +25,7 @@ import { toForm, toApi } from '~/utils/reuses'
 
 const { t } = useI18n()
 const { $api } = useNuxtApp()
+const { toast } = useToast()
 
 const route = useRoute()
 const loading = ref(false)
@@ -50,6 +51,9 @@ const save = async () => {
       method: 'PUT',
       body: JSON.stringify(toApi(reuseForm.value)),
     })
+
+    toast.success(t('Reuse updated!'))
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }
   finally {
     loading.value = false

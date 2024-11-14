@@ -23,6 +23,7 @@ import type { DatasetSuggest, PaginatedArray } from '~/types/types'
 
 const { t } = useI18n()
 const { $api } = useNuxtApp()
+const { toast } = useToast()
 
 const route = useRoute()
 const url = computed(() => `/api/1/dataservices/${route.params.id}`)
@@ -43,5 +44,8 @@ const submit = async () => {
       datasets: datasets.value.map(({ id }) => id),
     }),
   })
+
+  toast.success(t('Dataservice updated!'))
+  window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
 }
 </script>
