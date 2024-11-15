@@ -96,12 +96,6 @@
           :for="apiKeyId"
         >
           {{ $t('API Key') }}
-          <CopyButton
-            v-if="me.apikey"
-            :label="$t('Copy API key')"
-            :copied-label="$t('API ley copied')"
-            :text="me.apikey"
-          />
           <span class="fr-hint-text">
             {{ $t('Warning: If you erase your API key you risk to loose acces to {site} services', { site: config.public.title }) }}
           </span>
@@ -112,10 +106,18 @@
               <input
                 :id="apiKeyId"
                 v-model="me.apikey"
-                class="fr-input pr-12"
+                class="fr-input !pr-12"
                 disabled
                 type="text"
               >
+              <CopyButton
+                v-if="me.apikey"
+                class="absolute right-1 top-1 !mt-0.5 !mr-0.5"
+                :label="$t('Copy API key')"
+                :copied-label="$t('API ley copied')"
+                :text="me.apikey"
+                :hide-label="true"
+              />
             </div>
           </div>
           <div class="fr-col-auto flex gap-4">
