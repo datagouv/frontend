@@ -15,10 +15,9 @@
     @close="emit('close')"
   >
     <DialogPanel
-      class="fr-container fr-container--fluid pointer-events-none"
-      :class="{ 'fr-container-md': !isFullscreen }"
+      class="fr-container-md md:mx-auto fr-container--fluid pointer-events-none"
     >
-      <div class="grid grid-cols-12 p-0 m-0 justify-center">
+      <div class="grid grid-cols-12 p-0 m-0 justify-center max-h-full overflow-auto">
         <div
           class="col-span-12"
           :class="contentSize"
