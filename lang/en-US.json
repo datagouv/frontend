@@ -590,9 +590,16 @@
     "Home": "Home",
     "description": "description",
     "Close the modal window": "Close the modal window",
-
+    "A dataservice": "A dataservice",
+    "A reuse": "A reuse",
+    "An organization": "An organization",
     "{n} dataservices": "{n} dataservices",
-
+    "Dataservice title": "Dataservice title",
+    "Access": "Access",
+    "Rate Limiting": "Rate Limiting",
+    "Availability": "Availability",
+    "Restricted": "Restricted",
+    "Open": "Open",
     "": ""
   }
   

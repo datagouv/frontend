@@ -589,6 +589,14 @@
     "Home": "Accueil",
     "description": "description",
     "Close the modal window": "Fermer la fenêtre modale",
-
+    "A dataservice": "Une API",
+    "A reuse": "Une réutilisation",
+    "An organization": "Une organisation",
+    "Dataservice title": "Titre de l'API",
+    "Access": "Accès",
+    "Rate Limiting": "Limite",
+    "Availability": "Disponibilité",
+    "Restricted": "Restreint",
+    "Open": "Ouvert",
     "": ""
   }
