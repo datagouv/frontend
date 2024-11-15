@@ -8,11 +8,12 @@
       :class="{ 'text-blue-400': isPrimary }"
     >
       <div class="flex-none">
-        <img
+        <NuxtImg
           class="w-full"
           :src="icon"
+          loading="lazy"
           alt=""
-        >
+        />
       </div>
       <div class="fr-col-12 fr-col-sm flex flex-col justify-between">
         <div class="mb-2">

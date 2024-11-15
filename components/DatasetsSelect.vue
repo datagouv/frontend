@@ -22,11 +22,12 @@
       >
         <template #option="{ option: dataset }">
           <div class="flex items-center space-x-2">
-            <img
+            <NuxtImg
               :src="dataset.image_url"
               alt=""
+              loading="lazy"
               class="size-5 rounded-full"
-            >
+            />
             <span>{{ dataset.title }}</span>
           </div>
         </template>

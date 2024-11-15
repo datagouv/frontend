@@ -20,13 +20,13 @@
           :src="option.organization.logo_thumbnail"
           :size="20"
         />
-        <img
+        <NuxtImg
           v-else
           class="rounded-full border border-default-grey size-5"
           :src="avatar"
           loading="lazy"
           alt=""
-        >
+        />
         <span v-if="option.organization">{{ option.organization.name }}</span>
         <span v-else>{{ option.owner.first_name }} {{ option.owner.last_name }}</span>
       </div>

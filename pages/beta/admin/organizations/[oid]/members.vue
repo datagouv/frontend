@@ -67,12 +67,12 @@
                 >
                   <template #option="{ option: user }">
                     <div class="flex items-center space-x-2">
-                      <img
+                      <NuxtImg
                         class="rounded-full border border-default-grey size-5"
                         :src="useUserAvatar(user, 24)"
                         loading="lazy"
                         alt=""
-                      >
+                      />
                       <span>{{ user.first_name }} {{ user.last_name }}</span>
                     </div>
                   </template>

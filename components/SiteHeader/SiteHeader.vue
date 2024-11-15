@@ -59,14 +59,14 @@
                     :href="me.page"
                     class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
                   >
-                    <img
+                    <NuxtImg
                       :src="useUserAvatar(me, 24)"
                       width="24"
                       height="24"
                       loading="lazy"
                       alt=""
                       class="mr-2 rounded-full"
-                    >
+                    />
                     {{ me.first_name }} {{ me.last_name }}
                   </a>
                 </li>

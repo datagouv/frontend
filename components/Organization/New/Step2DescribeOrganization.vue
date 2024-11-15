@@ -102,10 +102,11 @@
         >
           <div class="fr-grid-row">
             <div class="fr-col-auto fr-mr-3v">
-              <img
+              <NuxtImg
                 src="/illustrations/organization.svg"
+                loading="lazy"
                 alt=""
-              >
+              />
             </div>
             <div class="fr-col">
               <p class="fr-m-0 fr-text--bold">
@@ -251,11 +252,13 @@
               v-show="imagePreview?.src"
               class="text-align-center"
             >
-              <img
+              <NuxtImg
                 ref="imagePreview"
                 class="fr-col fr-mx-1w fr-mb-1w"
                 width="300px"
-              >
+                loading="lazy"
+                alt=""
+              />
             </div>
           </LinkedToAccordion>
         </fieldset>
