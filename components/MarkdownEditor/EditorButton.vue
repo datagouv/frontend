@@ -2,6 +2,7 @@
   <button
     class="text-neutral-700 h-8 p-2 rounded-full leading-none hover:!bg-neutral-200"
     role="menuitem"
+    type="button"
   >
     <component
       :is="icon"
