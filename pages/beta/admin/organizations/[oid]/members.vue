@@ -69,7 +69,7 @@
                     <div class="flex items-center space-x-2">
                       <img
                         class="rounded-full border border-default-grey size-5"
-                        :src="`${config.public.apiBase}/api/1/avatars/${user.id}/24`"
+                        :src="useUserAvatar(user, 24)"
                         loading="lazy"
                         alt=""
                       >
@@ -274,7 +274,7 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, formatDate, formatFromNow, type Member, type Organization } from '@datagouv/components'
+import { Avatar, formatDate, formatFromNow, useUserAvatar, type Member, type Organization } from '@datagouv/components'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiMailLine } from '@remixicon/vue'
