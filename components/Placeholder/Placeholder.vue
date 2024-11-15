@@ -1,12 +1,12 @@
 <template>
-  <img
+  <NuxtImg
     loading="lazy"
     :src="path"
     :alt="alternativeTextForDefinedImageOnly"
     :width="size"
     :height="size"
     v-bind="$attrs"
-  >
+  />
 </template>
 
 <script setup lang="ts">

@@ -8,27 +8,33 @@
     </h2>
     <div class="grid grid-cols-3 gap-6">
       <div>
-        <img
+        <NuxtImg
           v-if="img1"
           :src="img1"
           class="mb-2"
-        >
+          loading="lazy"
+          alt=""
+        />
         <slot name="col1" />
       </div>
       <div>
-        <img
+        <NuxtImg
           v-if="img2"
           :src="img2"
           class="mb-2"
-        >
+          loading="lazy"
+          alt=""
+        />
         <slot name="col2" />
       </div>
       <div>
-        <img
+        <NuxtImg
           v-if="img3"
           :src="img3"
           class="mb-2"
-        >
+          loading="lazy"
+          alt=""
+        />
         <slot name="col3" />
       </div>
     </div>

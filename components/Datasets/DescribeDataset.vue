@@ -161,10 +161,11 @@
         >
           <div class="fr-grid-row">
             <div class="fr-col-auto mr-3">
-              <img
+              <NuxtImg
                 src="/illustrations/edit.svg"
+                loading="lazy"
                 alt=""
-              >
+              />
             </div>
             <div class="fr-col">
               <p class="m-0 font-bold">
