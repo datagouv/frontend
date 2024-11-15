@@ -302,8 +302,7 @@
                       v-if="option.recommended"
                       class="flex items-center space-x-1"
                     >
-                      <Icon
-                        name="ri-star-fill"
+                      <RiStarFill
                         class="self-center size-3 "
                         :class="{ 'text-primary': !active }"
                         aria-hidden="true"
@@ -469,6 +468,7 @@
 
 <script setup lang="ts">
 import { Well, type Frequency, type License } from '@datagouv/components'
+import { RiStarFill } from '@remixicon/vue'
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
