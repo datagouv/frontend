@@ -315,6 +315,7 @@
               :aria-describedby="acronymDataserviceAccordionId"
               :label="t('Availability')"
               type="number"
+              placeholder="99,9"
               :required="false"
               :has-error="!!getFirstError('availability')"
               :has-warning="!!getFirstWarning('availability')"
@@ -381,8 +382,8 @@
               v-model="form.has_token"
               :label="t('Access token')"
               :options="[
-                { value: true, label: t('Yes') },
-                { value: false, label: t('No') },
+                { value: true, label: t('With access token') },
+                { value: false, label: t('Without access token') },
               ]"
             />
           </LinkedToAccordion>

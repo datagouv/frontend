@@ -224,7 +224,7 @@ function getStatus(dataset: Dataset | DatasetV2): { label: string, type: AdminBa
   }
   else if (dataset.private) {
     return {
-      label: t('Private'),
+      label: t('Draft'),
       type: 'default',
     }
   }

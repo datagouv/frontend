@@ -82,7 +82,7 @@
   function getStatus(dataservice: Dataservice): {label: string, type: AdminBadgeState} {
     if (dataservice.private) {
       return {
-        label: t("Private"),
+        label: t("Draft"),
         type: "default",
       };
     } else {
