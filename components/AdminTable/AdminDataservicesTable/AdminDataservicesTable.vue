@@ -19,7 +19,7 @@
           {{ t("Created at") }}
         </AdminTableTh>
         <AdminTableTh>
-          {{ t("Rate Limiting") }}
+          {{ t("Rate limiting") }}
         </AdminTableTh>
         <AdminTableTh>
           {{ t("Availability") }}
