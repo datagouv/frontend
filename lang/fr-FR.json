@@ -654,5 +654,12 @@
     "See the dataservice page": "Voir la page publique de l'API",
     "See the dataset page": "Voir la page publique du jeu de données",
     "See the reuse page": "Voir la page publique de la réutilisation",
+    "Delete your account": "Supprimer votre compte",
+    "Delete the dataservice": "Supprimer l'API",
+    "Are you sure you want to delete this dataservice ?": "Etes-vous sûr de vouloir supprimer cette API ?",
+    "Delete the dataset": "Supprimer le jeu de donnée",
+    "Are you sure you want to delete this dataset ?": "Etes-vous sûr de vouloir supprimer ce jeu de donnée ?",
+    "Delete the reuse": "Supprimer la réutilisation",
+    "Are you sure you want to delete this reuse ?": "Etes-vous sûr de vouloir supprimer cette réutilisation ?",
     "": ""
   }
