@@ -352,15 +352,15 @@ const ownedOptions = computed<Array<Owned>>(() => {
 })
 
 const { form, touch, getFirstError, getFirstWarning, validate } = useForm(reuseForm, {
-  // owned: [required()],
-  // title: [required()],
-  // description: [required()],
-  // base_api_url: [url()],
-  // authorization_request_url: [url()],
-  // endpoint_description_url: [url()],
+  owned: [required()],
+  title: [required()],
+  description: [required()],
+  url: [required(), url()],
+  type: [required()],
+  topic: [required()],
+  image: [required()],
 }, {
-  // description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
-  // license: [required()],
+  description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
 })
 
 const accordionState = (key: keyof typeof form.value) => {
