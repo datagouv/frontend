@@ -209,6 +209,7 @@ export type DataserviceForm = {
   base_api_url: string
   authorization_request_url: string
   endpoint_description_url: string
+  business_documentation_url: string
   rate_limiting: string
   availability: string
 }
@@ -227,6 +228,7 @@ export type NewDataserviceForApi = {
   base_api_url: string | null
   authorization_request_url: string | null
   endpoint_description_url: string | null
+  business_documentation_url: string | null
   rate_limiting: string
   availability: number | null
 }

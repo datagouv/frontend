@@ -161,10 +161,11 @@
         >
           <div class="fr-grid-row">
             <div class="fr-col-auto mr-3">
-              <img
+              <NuxtImg
                 src="/illustrations/edit.svg"
+                loading="lazy"
                 alt=""
-              >
+              />
             </div>
             <div class="fr-col">
               <p class="m-0 font-bold">
@@ -302,8 +303,7 @@
                       v-if="option.recommended"
                       class="flex items-center space-x-1"
                     >
-                      <Icon
-                        name="ri-star-fill"
+                      <RiStarFill
                         class="self-center size-3 "
                         :class="{ 'text-primary': !active }"
                         aria-hidden="true"
@@ -469,6 +469,7 @@
 
 <script setup lang="ts">
 import { Well, type Frequency, type License } from '@datagouv/components'
+import { RiStarFill } from '@remixicon/vue'
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'

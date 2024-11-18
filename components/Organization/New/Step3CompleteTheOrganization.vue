@@ -7,12 +7,12 @@
     >
       <div class="flex flex-wrap gap-3">
         <div class="flex-none">
-          <img
+          <NuxtImg
             src="/illustrations/organization.svg"
             width="50"
             loading="lazy"
             alt=""
-          >
+          />
         </div>
         <div class="flex-1">
           <p class="m-0 font-bold">

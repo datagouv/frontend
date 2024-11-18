@@ -118,6 +118,15 @@
           </p>
         </Accordion>
         <Accordion
+          :id="addBusinessUrlAccordionId"
+          :title="t('Add a link to the business documentation')"
+          :state="accordionState('business_documentation_url')"
+        >
+          <p class="fr-m-0">
+            {{ t("The business documentation of your API that explains its capabilities and use cases, in addition to the technical documentation.") }}
+          </p>
+        </Accordion>
+        <Accordion
           :id="rateLimitingDataserviceAccordionId"
           :title="t('Set the rate limiting')"
           :state="accordionState('rate_limiting')"
@@ -150,10 +159,11 @@
         >
           <div class="fr-grid-row">
             <div class="fr-col-auto fr-mr-3v">
-              <img
+              <NuxtImg
                 src="/illustrations/dataservice.svg"
+                loading="lazy"
                 alt=""
-              >
+              />
             </div>
             <div class="fr-col">
               <p class="fr-m-0 fr-text--bold">
@@ -353,13 +363,30 @@
             <InputGroup
               v-model="form.endpoint_description_url"
               :aria-describedby="addEndpointUrlAccordionId"
-              :label="t('Dataservice endpoint URL')"
+              :label="t('Dataservice endpoint description URL')"
               type="url"
               :placeholder="t('https://...')"
               :required="false"
               :has-error="!!getFirstError('endpoint_description_url')"
               :has-warning="!!getFirstWarning('endpoint_description_url')"
               :error-text="getFirstError('endpoint_description_url')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="addBusinessUrlAccordionId"
+            @blur="touch('business_documentation_url')"
+          >
+            <InputGroup
+              v-model="form.business_documentation_url"
+              :aria-describedby="addBusinessUrlAccordionId"
+              :label="t('Dataservice business documentation URL')"
+              type="url"
+              :placeholder="t('https://...')"
+              :required="false"
+              :has-error="!!getFirstError('business_documentation_url')"
+              :has-warning="!!getFirstWarning('business_documentation_url')"
+              :error-text="getFirstError('business_documentation_url')"
             />
           </LinkedToAccordion>
           <LinkedToAccordion
@@ -433,6 +460,7 @@ const selectHasTokenAccordionId = useId()
 const addBaseUrlAccordionId = useId()
 const addAuthorizationUrlAccordionId = useId()
 const addEndpointUrlAccordionId = useId()
+const addBusinessUrlAccordionId = useId()
 const rateLimitingDataserviceAccordionId = useId()
 const availabilityDataserviceAccordionId = useId()
 const contactPointAccordionId = useId()
@@ -448,6 +476,7 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(datase
   base_api_url: [url()],
   authorization_request_url: [url()],
   endpoint_description_url: [url()],
+  business_documentation_url: [url()],
 }, {
   description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
 })

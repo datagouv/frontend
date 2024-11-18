@@ -59,7 +59,14 @@
                     :href="me.page"
                     class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
                   >
-                    <!-- <img src="/api/1/avatars/65cb36cd69808422020f9b04/24" width="24" height="24" loading="lazy" alt="" class="fr-mr-1w rounded-circle"> -->
+                    <NuxtImg
+                      :src="useUserAvatar(me, 24)"
+                      width="24"
+                      height="24"
+                      loading="lazy"
+                      alt=""
+                      class="mr-2 rounded-full"
+                    />
                     {{ me.first_name }} {{ me.last_name }}
                   </a>
                 </li>
@@ -387,11 +394,12 @@
 </template>
 
 <script setup lang="ts">
-import { RiAccountCircleLine, RiAddLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiRobot2Line, RiLineChartLine } from '@remixicon/vue'
+import { RiAccountCircleLine, RiAddLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiRobot2Line, RiLineChartLine, RiServerLine, RiArticleLine } from '@remixicon/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { NuxtLinkLocale } from '#components'
 import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'
+import { useUserAvatar } from '@datagouv/components'
 
 defineProps<{
   fluid?: boolean
@@ -425,14 +433,13 @@ const menu = [
   { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
 ]
 
-// TODO: Add publishing forms when available
 const publishMenu = [
   { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
   { label: t('A dataservice'), icon: RiRobot2Line, link: '/beta/admin/dataservices/new/' },
-  // { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
-  { label: t('An organization'), icon: RiGovernmentLine, link: '/beta/admin/organizations/new/' },
   { label: t('A reuse'), icon: RiLineChartLine, link: '/beta/admin/reuses/new/' },
-  // { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
+  { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
+  { label: t('An organization'), icon: RiGovernmentLine, link: '/beta/admin/organizations/new/' },
+  { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
 ]
 
 const filteredPublishMenu = computed(() => publishMenu.filter(item => !('show' in item) || item.show))
