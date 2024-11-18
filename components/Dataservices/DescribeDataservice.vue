@@ -49,6 +49,42 @@
           </Well>
         </Accordion>
         <Accordion
+          :id="addBaseUrlAccordionId"
+          :title="t('Define the correct link to the API')"
+          :state="accordionState('base_api_url')"
+        >
+          <p class="fr-m-0">
+            {{ t("The base URL of an API is the common entry point for all requests, often consisting of a domain or server address. It serves as the foundation to which specific paths (endpoints) are added to access the various resources of the API.") }}
+          </p>
+        </Accordion>
+        <Accordion
+          :id="addEndpointUrlAccordionId"
+          :title="t('Add a link to the technical documentation')"
+          :state="accordionState('endpoint_description_url')"
+        >
+          <p class="fr-m-0">
+            {{ t("Ideally, provide an OpenAPI (swagger) link that allows developers to explore the endpoints, see the available methods, and test requests directly from the documentation. In the case of geographic services, you can provide a link to the service with a GetCapabilities request to obtain the service's metadata.") }}
+          </p>
+        </Accordion>
+        <Accordion
+          :id="rateLimitingDataserviceAccordionId"
+          :title="t('Set the rate limiting')"
+          :state="accordionState('rate_limiting')"
+        >
+          <p class="fr-m-0">
+            {{ t('You can specify the rate limiting for your API.') }}
+          </p>
+        </Accordion>
+        <Accordion
+          :id="availabilityDataserviceAccordionId"
+          :title="t('Add the availability')"
+          :state="accordionState('availability')"
+        >
+          <p class="fr-m-0">
+            {{ t('Specify the mean availability of your dataservice. Value should be a percentage.') }}
+          </p>
+        </Accordion>
+        <Accordion
           v-if="form.owned?.organization"
           :id="contactPointAccordionId"
           :title="$t('Define a point of contact')"
@@ -76,7 +112,7 @@
         </Accordion>
         <Accordion
           :id="selectHasTokenAccordionId"
-          :title="$t('Access token')"
+          :title="$t('Add an access token')"
           :state="accordionState('has_token')"
         >
           <p class="fr-m-0">
@@ -91,15 +127,6 @@
           </Well>
         </Accordion>
         <Accordion
-          :id="addBaseUrlAccordionId"
-          :title="t('Define the correct link to the API')"
-          :state="accordionState('base_api_url')"
-        >
-          <p class="fr-m-0">
-            {{ t("The base URL of an API is the common entry point for all requests, often consisting of a domain or server address. It serves as the foundation to which specific paths (endpoints) are added to access the various resources of the API.") }}
-          </p>
-        </Accordion>
-        <Accordion
           :id="addAuthorizationUrlAccordionId"
           :title="t('Add a link to the authorization')"
           :state="accordionState('authorization_request_url')"
@@ -109,39 +136,12 @@
           </p>
         </Accordion>
         <Accordion
-          :id="addEndpointUrlAccordionId"
-          :title="t('Add a link to the technical documentation')"
-          :state="accordionState('endpoint_description_url')"
-        >
-          <p class="fr-m-0">
-            {{ t("Ideally, provide an OpenAPI (swagger) link that allows developers to explore the endpoints, see the available methods, and test requests directly from the documentation. In the case of geographic services, you can provide a link to the service with a GetCapabilities request to obtain the service's metadata.") }}
-          </p>
-        </Accordion>
-        <Accordion
           :id="addBusinessUrlAccordionId"
           :title="t('Add a link to the business documentation')"
           :state="accordionState('business_documentation_url')"
         >
           <p class="fr-m-0">
             {{ t("The business documentation of your API that explains its capabilities and use cases, in addition to the technical documentation.") }}
-          </p>
-        </Accordion>
-        <Accordion
-          :id="rateLimitingDataserviceAccordionId"
-          :title="t('Set the rate limiting')"
-          :state="accordionState('rate_limiting')"
-        >
-          <p class="fr-m-0">
-            {{ t('You can specify the rate limiting for your API.') }}
-          </p>
-        </Accordion>
-        <Accordion
-          :id="availabilityDataserviceAccordionId"
-          :title="t('Availability')"
-          :state="accordionState('availability')"
-        >
-          <p class="fr-m-0">
-            {{ t('Specify the mean availability of your dataservice. Value should be a percentage.') }}
           </p>
         </Accordion>
       </AccordionGroup>
@@ -256,6 +256,72 @@
               :error-text="getFirstError('description')"
             />
           </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="addBaseUrlAccordionId"
+            @blur="touch('base_api_url')"
+          >
+            <InputGroup
+              v-model="form.base_api_url"
+              :aria-describedby="addBaseUrlAccordionId"
+              :label="t('Dataservice Base URL')"
+              type="url"
+              :placeholder="t('https://...')"
+              :required="false"
+              :has-error="!!getFirstError('base_api_url')"
+              :has-warning="!!getFirstWarning('base_api_url')"
+              :error-text="getFirstError('base_api_url')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="addEndpointUrlAccordionId"
+            @blur="touch('endpoint_description_url')"
+          >
+            <InputGroup
+              v-model="form.endpoint_description_url"
+              :aria-describedby="addEndpointUrlAccordionId"
+              :label="t('Dataservice endpoint description URL')"
+              type="url"
+              :placeholder="t('https://...')"
+              :required="false"
+              :has-error="!!getFirstError('endpoint_description_url')"
+              :has-warning="!!getFirstWarning('endpoint_description_url')"
+              :error-text="getFirstError('endpoint_description_url')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="rateLimitingDataserviceAccordionId"
+            @blur="touch('rate_limiting')"
+          >
+            <InputGroup
+              v-model="form.rate_limiting"
+              :aria-describedby="rateLimitingDataserviceAccordionId"
+              :label="t('Rate limiting')"
+              :required="false"
+              :has-error="!!getFirstError('rate_limiting')"
+              :has-warning="!!getFirstWarning('rate_limiting')"
+              :error-text="getFirstError('rate_limiting')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="availabilityDataserviceAccordionId"
+            @blur="touch('availability')"
+          >
+            <InputGroup
+              v-model="form.availability"
+              :aria-describedby="acronymDataserviceAccordionId"
+              :label="t('Availability')"
+              type="number"
+              placeholder="99,9"
+              :required="false"
+              :has-error="!!getFirstError('availability')"
+              :has-warning="!!getFirstWarning('availability')"
+              :error-text="getFirstError('availability')"
+            />
+          </LinkedToAccordion>
         </fieldset>
         <fieldset
           v-if="form.owned?.organization"
@@ -316,26 +382,9 @@
               v-model="form.has_token"
               :label="t('Access token')"
               :options="[
-                { value: true, label: t('Yes') },
-                { value: false, label: t('No') },
+                { value: true, label: t('With access token') },
+                { value: false, label: t('Without access token') },
               ]"
-            />
-          </LinkedToAccordion>
-          <LinkedToAccordion
-            class="fr-fieldset__element"
-            :accordion="addBaseUrlAccordionId"
-            @blur="touch('base_api_url')"
-          >
-            <InputGroup
-              v-model="form.base_api_url"
-              :aria-describedby="addBaseUrlAccordionId"
-              :label="t('Dataservice Base URL')"
-              type="url"
-              :placeholder="t('https://...')"
-              :required="false"
-              :has-error="!!getFirstError('base_api_url')"
-              :has-warning="!!getFirstWarning('base_api_url')"
-              :error-text="getFirstError('base_api_url')"
             />
           </LinkedToAccordion>
           <LinkedToAccordion
@@ -357,23 +406,6 @@
           </LinkedToAccordion>
           <LinkedToAccordion
             class="fr-fieldset__element"
-            :accordion="addEndpointUrlAccordionId"
-            @blur="touch('endpoint_description_url')"
-          >
-            <InputGroup
-              v-model="form.endpoint_description_url"
-              :aria-describedby="addEndpointUrlAccordionId"
-              :label="t('Dataservice endpoint description URL')"
-              type="url"
-              :placeholder="t('https://...')"
-              :required="false"
-              :has-error="!!getFirstError('endpoint_description_url')"
-              :has-warning="!!getFirstWarning('endpoint_description_url')"
-              :error-text="getFirstError('endpoint_description_url')"
-            />
-          </LinkedToAccordion>
-          <LinkedToAccordion
-            class="fr-fieldset__element"
             :accordion="addBusinessUrlAccordionId"
             @blur="touch('business_documentation_url')"
           >
@@ -387,37 +419,6 @@
               :has-error="!!getFirstError('business_documentation_url')"
               :has-warning="!!getFirstWarning('business_documentation_url')"
               :error-text="getFirstError('business_documentation_url')"
-            />
-          </LinkedToAccordion>
-          <LinkedToAccordion
-            class="fr-fieldset__element"
-            :accordion="rateLimitingDataserviceAccordionId"
-            @blur="touch('rate_limiting')"
-          >
-            <InputGroup
-              v-model="form.rate_limiting"
-              :aria-describedby="rateLimitingDataserviceAccordionId"
-              :label="t('Rate limiting')"
-              :required="false"
-              :has-error="!!getFirstError('rate_limiting')"
-              :has-warning="!!getFirstWarning('rate_limiting')"
-              :error-text="getFirstError('rate_limiting')"
-            />
-          </LinkedToAccordion>
-          <LinkedToAccordion
-            class="fr-fieldset__element"
-            :accordion="availabilityDataserviceAccordionId"
-            @blur="touch('availability')"
-          >
-            <InputGroup
-              v-model="form.availability"
-              :aria-describedby="acronymDataserviceAccordionId"
-              :label="t('Availability')"
-              type="number"
-              :required="false"
-              :has-error="!!getFirstError('availability')"
-              :has-warning="!!getFirstWarning('availability')"
-              :error-text="getFirstError('availability')"
             />
           </LinkedToAccordion>
         </fieldset>
