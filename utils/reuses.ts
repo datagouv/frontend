@@ -20,6 +20,7 @@ export function toForm(reuse: Reuse, types: Array<ReuseType>, topics: Array<Reus
     topic: { id: reuse.topic, label: topics.find(t => t.id === reuse.topic)?.label || reuse.topic },
     tags: reuse.tags?.map(text => ({ text })) || [],
     image: reuse.image,
+    private: reuse.private,
   }
 }
 

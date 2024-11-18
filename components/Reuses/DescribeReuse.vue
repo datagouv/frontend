@@ -306,6 +306,30 @@
               />
             </div>
           </LinkedToAccordion>
+          <fieldset
+            class="fr-fieldset__element"
+            v-if="type === 'update'"
+          >
+            <fieldset class="fr-fieldset" id="checkboxes-hint-el-sm" aria-labelledby="checkboxes-hint-el-sm-legend checkboxes-hint-el-sm-messages">
+              <div class="fr-fieldset__element">
+                  <div class="fr-checkbox-group fr-checkbox-group--sm">
+                      <input 
+                        name="checkboxes-hint-el-sm-1" 
+                        id="checkboxes-hint-el-sm-1" 
+                        type="checkbox" 
+                        aria-describedby="checkboxes-hint-el-sm-1-messages"
+                        v-model="reuseForm.private"
+                      >
+                      <label class="fr-label" for="checkboxes-hint-el-sm-1">
+                          {{ t('Switch to private mode') }}
+                          <span class="fr-hint-text">{{ t('The reuse will only be visible to members of your organization.') }}</span>
+                      </label>
+                      <div class="fr-messages-group" id="checkboxes-hint-el-sm-1-messages" aria-live="assertive">
+                      </div>
+                  </div>
+              </div>
+            </fieldset>
+          </fieldset>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
           <slot />
@@ -359,6 +383,7 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(reuseF
   type: [required()],
   topic: [required()],
   image: [required()],
+  private: [],
 }, {
   description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
 })

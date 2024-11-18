@@ -693,6 +693,10 @@
     "See the dataset page": "See the dataset page",
     "See the reuse page": "See the reuse page",
     "Dataservice updated!": "Dataservice updated!",
+    "Switch to private mode": "Switch to private mode",
+    "The dataset will only be visible to members of your organization.": "The dataset will only be visible to members of your organization.",
+    "The dataservice will only be visible to members of your organization.": "The dataservice will only be visible to members of your organization.",
+    "The reuse will only be visible to members of your organization.": "The reuse will only be visible to members of your organization.",
     "": ""
   }
   

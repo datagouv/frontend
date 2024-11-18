@@ -116,7 +116,7 @@ const save = async () => {
 
     await $api(`/api/1/reuses/${reuse.value.id}/`, {
       method: 'PUT',
-      body: JSON.stringify(toApi(reuseForm.value)),
+      body: JSON.stringify(toApi(reuseForm.value, { private: reuseForm.value.private })),
     })
 
     if (reuseForm.value.image && typeof reuseForm.value.image !== 'string') {

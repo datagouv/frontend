@@ -118,6 +118,7 @@ export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: 
     temporal_coverage: dataset.temporal_coverage ? { start: dataset.temporal_coverage.start, end: dataset.temporal_coverage.end } : { start: null, end: null }, // TODO fix this type, the API returns an object not a string
     spatial_zones: dataset.spatial?.zones?.map(id => zones.find(z => z.id === id)).filter(z => z !== undefined) || [],
     spatial_granularity: granularities.find(g => g.id === dataset.spatial?.granularity) || null,
+    private: dataset.private,
   }
 }
 

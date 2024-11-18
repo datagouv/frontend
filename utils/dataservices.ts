@@ -25,6 +25,7 @@ export function toForm(dataservice: Dataservice): DataserviceForm {
     business_documentation_url: dataservice.business_documentation_url || '',
     rate_limiting: dataservice.rate_limiting,
     availability: dataservice.availability?.toString() || '',
+    private: dataservice.private,
   }
 }
 
