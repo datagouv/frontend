@@ -45,29 +45,26 @@
         weight="regular"
         class="mt-6"
       >
-        <div class="font-bold mb-2">
-          {{ t("You're on our new admin.") }}
-        </div>
-        <div>{{ t("Feel free to report us the bugs you encounter.") }}</div>
-        <div class="space-x-4 mt-4">
-          <BrandedButton
-            as="a"
-            :href="`/${locale}/admin`"
-            color="primary"
-            size="sm"
-            type="secondary"
-          >
-            {{ $t('Go back to the old admin') }}
-          </BrandedButton>
-          <BrandedButton
-            as="a"
-            :href="config.public.supportUrl"
-            color="primary"
-            size="sm"
-            type="secondary"
-          >
-            {{ $t('Contact us') }}
-          </BrandedButton>
+        <div class="flex space-x-8">
+          <div class="flex items-center space-x-2">
+            <RiFileInfoLine class="size-6" />
+            <div>{{ t("You're on the new admin interface in beta.") }}</div>
+          </div>
+          <div class="space-x-4">
+            <a
+              class="fr-link fr-link--external"
+              :href="config.public.betaAdminFeedbackUrl"
+              target="_blank"
+            >
+              {{ $t('Give your opinion') }}
+            </a>
+            <a
+              class="fr-link fr-link--external"
+              :href="`/${locale}/admin`"
+            >
+              {{ $t('Go back to the old admin') }}
+            </a>
+          </div>
         </div>
       </Well>
       <NuxtPage
@@ -80,6 +77,7 @@
 <script setup lang="ts">
 import { Well } from '@datagouv/components'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { RiFileInfoLine } from '@remixicon/vue'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 
