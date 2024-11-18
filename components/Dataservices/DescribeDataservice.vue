@@ -456,7 +456,7 @@ import ContactPointSelect from '~/components/ContactPointSelect.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import type { DataserviceForm, Owned } from '~/types/types'
 
-defineProps<{
+const props = defineProps<{
   type: 'create' | 'update'
 }>()
 const dataserviceForm = defineModel<DataserviceForm>({ required: true })
@@ -496,6 +496,10 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(datase
   business_documentation_url: [url()],
 }, {
   description: [minLength(200, t(`It's advised to have a {property} of at least {min} characters.`, { property: t('description'), min: 200 }))],
+})
+
+onMounted(() => {
+  if (props.type === 'update') validate()
 })
 
 const accordionState = (key: keyof typeof form.value) => {
