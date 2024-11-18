@@ -72,7 +72,7 @@
                 </li>
                 <li>
                   <a
-                    href="/en/beta/admin/"
+                    :href="localePath('/beta/admin/')"
                     class="fr-btn fr-icon-svg fr-icon--sm"
                   >
                     <span class="fr-mr-1w fr-grid-row">
@@ -406,6 +406,7 @@ defineProps<{
 }>()
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const me = useMaybeMe()
 
