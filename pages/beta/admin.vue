@@ -40,6 +40,33 @@
       </nav>
     </div>
     <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-5w overflow-auto">
+      <Well
+        color="blue-cumulus"
+        weight="regular"
+        class="mt-6"
+      >
+        <div class="flex space-x-8">
+          <div class="flex items-center space-x-2">
+            <RiFileInfoLine class="size-6" />
+            <div>{{ t("You're on the new admin interface in beta.") }}</div>
+          </div>
+          <div class="space-x-4">
+            <a
+              class="fr-link fr-link--external"
+              :href="config.public.betaAdminFeedbackUrl"
+              target="_blank"
+            >
+              {{ $t('Give your opinion') }}
+            </a>
+            <a
+              class="fr-link fr-link--external"
+              :href="`/${locale}/admin`"
+            >
+              {{ $t('Go back to the old admin') }}
+            </a>
+          </div>
+        </div>
+      </Well>
       <NuxtPage
         :page-key="route => route.fullPath"
       />
@@ -48,8 +75,11 @@
 </template>
 
 <script setup lang="ts">
+import { Well } from '@datagouv/components'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { RiFileInfoLine } from '@remixicon/vue'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'
+import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 
 definePageMeta({
   layout: 'fluid',
@@ -61,6 +91,8 @@ const route = useRoute()
 const localePath = useLocalePath()
 const localeRoute = useLocaleRoute()
 const me = useMe()
+const { locale } = useI18n()
+const config = useRuntimeConfig()
 
 useHead({ title: 'Admin' })
 
