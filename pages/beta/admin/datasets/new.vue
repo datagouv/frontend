@@ -83,7 +83,7 @@ const steps = computed(() => ([
   t('Complete your publishing'),
 ]))
 
-const datasetForm = useState('dataset-form', () => ({
+const datasetForm = useState(DATASET_FORM_STATE, () => ({
   title: '',
   acronym: '',
   description: '',
@@ -95,7 +95,7 @@ const datasetForm = useState('dataset-form', () => ({
   spatial_zones: [] as Array<SpatialZone>,
   spatial_granularity: null as SpatialGranularity | null,
 } as DatasetForm))
-const datasetFiles = useState<Array<NewDatasetFile>>('dataset-files', () => [])
+const datasetFiles = useState<Array<NewDatasetFile>>(DATASET_FILES_STATE, () => [])
 const newDataset = useState<Dataset | null>('new-dataset', () => null)
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
