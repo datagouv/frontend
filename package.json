@@ -36,6 +36,7 @@
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@prosemirror-adapter/vue": "^0.2.6",
     "@remixicon/vue": "^4.5.0",
+    "@sentry/nuxt": "^8.38.0",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^11.0.3",

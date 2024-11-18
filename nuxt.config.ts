@@ -66,6 +66,10 @@ export default defineNuxtConfig({
 
       changeEmailPage: 'change-email',
       changePasswordPage: 'change',
+
+      sentry: {
+        dsn: '',
+      },
     },
   },
 
@@ -93,6 +97,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
+    '@sentry/nuxt/module',
   ],
   eslint: {
     config: {
@@ -128,4 +133,6 @@ export default defineNuxtConfig({
       xl: 1248,
     },
   },
+  // TODO: add sentry config for stack traces based on source maps
+  // https://docs.sentry.io/platforms/javascript/guides/nuxt/#add-readable-stack-traces-to-errors
 })
