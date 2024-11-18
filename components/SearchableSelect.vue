@@ -21,6 +21,7 @@
       >{{ hintText }}</span>
     </label>
     <Combobox
+      v-slot="{ open }"
       v-model="model"
       :multiple
       :by="compareTwoOptions"
@@ -32,13 +33,13 @@
         >
           <ComboboxInput
             :id
-            class="fr-input"
+            class="fr-input !pr-10"
             :display-value="(option: ModelType) => option ? displayValue(option): null"
             :placeholder
             @change="query = $event.target.value"
           />
           <ComboboxButton
-            class="absolute inset-y-0  flex items-center justify-end pr-4 hover:!bg-transparent"
+            class="absolute inset-y-0 flex items-center justify-end pr-4 hover:!bg-transparent"
             :class="{
               'right-0': open,
               'inset-x-0': !open,
@@ -197,7 +198,6 @@ const ariaDescribedBy = computed(() => {
 })
 
 const query = ref('')
-const open = ref(false)
 
 const suggestedOptions = ref<Array<T> | null>(null)
 
