@@ -39,7 +39,7 @@
         </ClientOnly>
       </nav>
     </div>
-    <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-5w overflow-auto">
+    <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-5w overflow-auto pb-64">
       <Well
         color="blue-cumulus"
         weight="regular"
