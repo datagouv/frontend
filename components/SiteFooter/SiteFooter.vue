@@ -19,7 +19,7 @@
                 </p>
                 <p class="fr-text--lg fr-text--alt f-italic">
                   {{
-                    $t("To stay up to date about {site} and open data news, subscribe to our newsletter and follow our events.", 
+                    $t("To stay up to date about {site} and open data news, subscribe to our newsletter and follow our events.",
                        { site: title })
                   }}
                 </p>
@@ -302,9 +302,8 @@
           </ul>
           <div class="fr-footer__bottom-copy">
             <p>
-              {{ $t("Unless otherwise stated, all content of this site is availabe under <a href='{lo_url}'>Open Licence 2.0 </a>", {
-                lo_url: "https://github.com/etalab/licence-ouverte/blob/master/LO.md#licence-ouverte-20open-licence-20",
-              }) }}
+              {{ $t("Unless otherwise stated, all content of this site is availabe under") }}
+              <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md#licence-ouverte-20open-licence-20">Open Licence 2.0</a>
             </p>
           </div>
         </div>
