@@ -98,12 +98,12 @@
                   </NuxtLinkLocale>
                 </li>
                 <li>
-                  <NuxtLinkLocale
-                    to="/logout"
+                  <a
+                    :href="`${config.public.apiBase}/logout`"
                     class="fr-btn fr-icon-logout-box-r-line"
                   >
                     {{ $t('Logout') }}
-                  </NuxtLinkLocale>
+                  </a>
                 </li>
               </ul>
               <ul
