@@ -52,8 +52,9 @@
       @next="datasetsNext"
     />
     <Step3CompletePublication
-      v-if="currentStep === 3"
-      @next="save"
+      v-if="currentStep === 3 && newReuse"
+      :reuse="newReuse"
+      @next="updateReuse"
     />
   </div>
 </template>
@@ -80,8 +81,11 @@ const steps = computed(() => [
   t('Complete your publishing'),
 ])
 
+const REUSE_FORM_STATE = 'reuse-form'
+const REUSE_DATASET_STATE = 'reuse-datasets'
+
 const reuseForm = useState(
-  'reuse-form',
+  REUSE_FORM_STATE,
   () =>
     ({
       owned: null,
@@ -96,47 +100,66 @@ const reuseForm = useState(
 )
 
 const datasets = useState<Array<Dataset | DatasetSuggest>>(
-  'reuse-datasets',
+  REUSE_DATASET_STATE,
   () => [],
 )
+
+const newReuse = useState<Reuse | null>('new-reuse', () => null)
 
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
   if (currentStep.value > steps.value.length) return false
-
-  // TODO check that reuse exists
+  if (currentStep.value === 2 && (!reuseForm.value || !reuseForm.value.title)) return false
+  if (currentStep.value > 2 && !newReuse.value) return false
 
   return true
 })
 
-const moveToStep = (step: number) => {
-  navigateTo({ path: route.path, query: { ...route.query, step } })
+function moveToStep(step: number) {
+  return navigateTo({ path: route.path, query: { ...route.query, step } })
 }
 
-const reuseNext = () => {
+function reuseNext() {
   moveToStep(2)
 }
-const datasetsNext = () => {
-  moveToStep(3)
+function datasetsNext() {
+  save()
 }
 
-const save = async (asPrivate: boolean) => {
-  const reuse = await $api<Reuse>('/api/1/reuses/', {
+async function save() {
+  newReuse.value = await $api<Reuse>('/api/1/reuses/', {
     method: 'POST',
-    body: JSON.stringify(toApi(reuseForm.value, { private: asPrivate, datasets: datasets.value })),
+    body: JSON.stringify(toApi(reuseForm.value, { private: true, datasets: datasets.value })),
   })
 
   if (reuseForm.value.image && typeof reuseForm.value.image !== 'string') {
     const formData = new FormData()
     formData.set('file', reuseForm.value.image)
-    await $fileApi(`/api/1/reuses/${reuse.id}/image`, {
+    await $fileApi(`/api/1/reuses/${newReuse.value.id}/image`, {
       method: 'POST',
       body: formData,
     })
   }
 
-  await navigateTo(reuse.page, { external: true })
+  await moveToStep(3)
+  clearNuxtState(REUSE_FORM_STATE)
+  clearNuxtState(REUSE_DATASET_STATE)
+}
+
+async function updateReuse(asPrivate: boolean) {
+  if (!newReuse.value) {
+    return moveToStep(3)
+  }
+  if (!asPrivate) {
+    newReuse.value.private = false
+    await $api<Reuse>(`/api/1/reuses/${newReuse.value.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(newReuse.value),
+    })
+  }
+
+  await navigateTo(newReuse.value.page, { external: true })
 }
 
 watchEffect(() => {

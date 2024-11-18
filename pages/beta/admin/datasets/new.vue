@@ -101,13 +101,13 @@ const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
   if (currentStep.value > steps.value.length) return false
-  if (currentStep.value === 3 && !datasetForm.value.title) return false
+  if (currentStep.value === 3 && (!datasetForm.value || !datasetForm.value.title)) return false
   if (currentStep.value > 3 && !newDataset.value) return false
   return true
 })
 
 const moveToStep = (step: number) => {
-  navigateTo({ path: route.path, query: { ...route.query, step } })
+  return navigateTo({ path: route.path, query: { ...route.query, step } })
 }
 
 const datasetNext = () => {
@@ -134,7 +134,7 @@ async function save() {
     }))
 
     if (results.every(f => f.status !== 'rejected')) {
-      moveToStep(4)
+      await moveToStep(4)
       clearNuxtState(DATASET_FORM_STATE)
       clearNuxtState(DATASET_FILES_STATE)
     }

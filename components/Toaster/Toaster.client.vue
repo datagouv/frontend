@@ -199,23 +199,28 @@ onBeforeUnmount(() => {
 
 <style>
 .c-toast--success {
-  background-color: var(--background-flat-success);
+  background-color: var(--background-action-high-success);
+  --hover-tint: var(--background-action-high-success-hover);
 }
 
 .c-toast--info {
-  background-color: var(--background-flat-info);
+  background-color: var(--background-action-high-info);
+  --hover-tint: var(--background-action-high-info-hover);
 }
 
 .c-toast--warning {
-  background-color: var(--background-flat-warning);
+  background-color: var(--background-action-high-warning);
+  --hover-tint: var(--background-action-high-warning-hover);
 }
 
 .c-toast--error {
-  background-color: var(--background-flat-error);
+  background-color: var(--background-action-high-error);
+  --hover-tint: var(--background-action-high-error-hover);
 }
 
 .c-toast--default {
   background-color: #343a40;
+  --hover-tint: #343a40;
 }
 
 .c-toast--top, .c-toast--bottom {

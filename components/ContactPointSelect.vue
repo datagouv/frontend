@@ -16,7 +16,7 @@
       >
         <template #option="{ option }">
           <span v-if="'id' in option">
-            {{ option.name }} ({{ option.email }})
+            {{ option.name }} <template v-if="option.email">({{ option.email }})</template>
           </span>
           <span v-else>
             {{ t('New contact') }}
@@ -40,7 +40,7 @@
       <InputGroup
         v-model="newContactForm.email"
         :label="t('Contact Email')"
-        :placeholder="t('contact [at] organization.org')"
+        placeholder="contact@organization.org"
         :has-error="!!getFirstError('email')"
         :has-warning="!!getFirstWarning('email')"
         :error-text="getFirstError('email')"
@@ -50,7 +50,7 @@
         v-model="newContactForm.contact_form"
         type="url"
         :label="t('Contact URL')"
-        :placeholder="t('https://...')"
+        placeholder="https://..."
         :has-error="!!getFirstError('contact_form')"
         :has-warning="!!getFirstWarning('contact_form')"
         :error-text="getFirstError('contact_form')"
@@ -62,7 +62,7 @@
         v-if="contact?.email"
         class="fr-fieldset__element"
       >
-        {{ t("Contact mail:") }} {{ contact.email }}
+        {{ t("Contact email:") }} {{ contact.email }}
       </div>
       <div
         v-if="contact?.contact_form"

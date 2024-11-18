@@ -15,7 +15,7 @@
         </div>
         <div class="fr-col">
           <p class="fr-m-0 fr-text--bold">
-            {{ $t('Your reuse is almost created!') }}
+            {{ $t('Your reuse is created!') }}
           </p>
           <p class="fr-m-0 fr-text--xs">
             {{ $t('You can now publish it or save it as a draft.') }}
@@ -23,7 +23,13 @@
         </div>
       </div>
     </Well>
-    <div class="fr-grid-row justify-between">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mb-3">
+      <ReuseCard
+        :reuse
+        class="xl:col-start-2"
+      />
+    </div>
+    <div class="flex justify-between">
       <a
         v-if="config.public.publishingReuseFeedbackUrl"
         :href="config.public.publishingReuseFeedbackUrl"
@@ -50,7 +56,10 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { Well, type Reuse } from '@datagouv/components'
+import ReuseCard from '~/components/Reuses/Card/Card.vue'
+
+defineProps<{ reuse: Reuse }>()
 
 const emit = defineEmits<{
   (e: 'next', asPrivate: boolean): void

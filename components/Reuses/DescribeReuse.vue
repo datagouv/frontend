@@ -163,6 +163,7 @@
             <ProducerSelect
               v-model="form.owned"
               :options="ownedOptions"
+              :required="true"
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"
               @focusout="touch('owned')"
@@ -206,7 +207,7 @@
               :aria-describedby="addLinkAccordionId"
               :label="t('Link')"
               type="url"
-              :placeholder="t('https://...')"
+              placeholder="https://..."
               :required="true"
               :has-error="!!getFirstError('url')"
               :has-warning="!!getFirstWarning('url')"
@@ -227,7 +228,7 @@
               :display-value="(type) => type.label"
               :options="types"
               :multiple="false"
-
+              :required="true"
               :error-text="getFirstError('type')"
               :warning-text="getFirstWarning('type')"
             />
@@ -246,7 +247,7 @@
               :display-value="(topic) => topic.label"
               :options="topics"
               :multiple="false"
-
+              :required="true"
               :error-text="getFirstError('topic')"
               :warning-text="getFirstWarning('topic')"
             />

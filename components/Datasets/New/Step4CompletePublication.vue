@@ -15,7 +15,7 @@
         </div>
         <div class="fr-col">
           <p class="fr-m-0 fr-text--bold">
-            {{ $t('Your dataset is almost created!') }}
+            {{ $t('Your dataset is created!') }}
           </p>
           <p class="fr-m-0 fr-text--xs">
             {{ $t('You can now publish it or save it as a draft.') }}
