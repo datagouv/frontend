@@ -114,7 +114,7 @@
                 v-if="me.apikey"
                 class="absolute right-1 top-1 !mt-0.5 !mr-0.5"
                 :label="$t('Copy API key')"
-                :copied-label="$t('API ley copied')"
+                :copied-label="$t('API key copied')"
                 :text="me.apikey"
                 :hide-label="true"
               />
