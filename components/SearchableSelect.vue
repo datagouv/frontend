@@ -38,7 +38,11 @@
             @change="query = $event.target.value"
           />
           <ComboboxButton
-            class="absolute inset-y-0 right-0 flex items-center pr-4 hover:!bg-transparent"
+            class="absolute inset-y-0  flex items-center justify-end pr-4 hover:!bg-transparent"
+            :class="{
+              'right-0': open,
+              'inset-x-0': !open,
+            }"
           >
             <RiArrowDownSLine class="size-4 text-gray-800" />
           </ComboboxButton>
@@ -193,6 +197,7 @@ const ariaDescribedBy = computed(() => {
 })
 
 const query = ref('')
+const open = ref(false)
 
 const suggestedOptions = ref<Array<T> | null>(null)
 
