@@ -360,7 +360,7 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(reuseF
   topic: [required()],
   image: [required()],
 }, {
-  description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
+  description: [minLength(200, t(`It's advised to have a {property} of at least {min} characters.`, { property: t('description'), min: 200 }))],
 })
 
 const accordionState = (key: keyof typeof form.value) => {

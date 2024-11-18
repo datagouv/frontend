@@ -136,7 +136,7 @@ const selectedDatasets = computed<Array<Dataset>>(() => {
 const loadDatasetByLink = async () => {
   const matches = /\/datasets\/(.+?)\/?$/.exec(datasetUrl.value)
   if (!matches) {
-    datasetUrlError.value = t('The provided URL doesn\'t look like a datasets URL.')
+    datasetUrlError.value = t(`The provided URL doesn't look like a datasets URL.`)
     return
   }
   const id = matches[1]
