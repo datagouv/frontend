@@ -13,7 +13,7 @@
       >
         <component
           :is="icon"
-          class="fr-mr-2w"
+          class="fr-mr-2w shrink-0"
           :class="iconColor"
           size="24px"
         />
