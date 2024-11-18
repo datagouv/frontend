@@ -501,7 +501,7 @@ import type { DatasetForm, EnrichedLicense, SpatialGranularity, SpatialZone } fr
 
 const datasetForm = defineModel<DatasetForm>({ required: true })
 
-defineProps<{
+const props = defineProps<{
   submitLabel: string
   type: 'create' | 'update'
 }>()
@@ -570,7 +570,7 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(datase
   frequency: [required()],
   private: [],
 }, {
-  description: [minLength(200, t('It\'s advised to have a {property} of at least {min} characters.', { property: t('description'), min: 200 }))],
+  description: [minLength(200, t(`It's advised to have a {property} of at least {min} characters.`, { property: t('description'), min: 200 }))],
   tags: [required(t('Adding tags helps improve the SEO of your data.'))],
   license: [required()],
   frequency: [(f) => {
@@ -580,6 +580,10 @@ const { form, touch, getFirstError, getFirstWarning, validate } = useForm(datase
   }],
   spatial_granularity: [required(t('You have not specified the spatial granularity.'))],
   temporal_coverage: [required(t('You did not provide the temporal coverage.'))],
+})
+
+onMounted(() => {
+  if (props.type === 'update') validate()
 })
 
 const accordionState = (key: keyof typeof form.value) => {

@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <template v-if="errors">
+    <template v-if="errors && showEditAndWarning">
       <template
         v-for="(fieldErrors, key) in errors"
         :key="key"
@@ -80,17 +80,7 @@
         </p>
       </template>
     </template>
-    <p
-      v-if="file.errorMessage"
-      class="fr-mt-1w fr-mb-0 fr-text--xs text-default-error"
-    >
-      <span
-        class="fr-icon-error-line fr-icon--sm"
-        aria-hidden="true"
-      />
-      {{ file.errorMessage }}
-    </p>
-    <template v-if="warnings">
+    <template v-if="warnings && showEditAndWarning">
       <template
         v-for="(fieldWarnings, key) in warnings"
         :key="key"
@@ -108,6 +98,16 @@
         </p>
       </template>
     </template>
+    <p
+      v-if="file.errorMessage"
+      class="fr-mt-1w fr-mb-0 fr-text--xs text-default-error"
+    >
+      <span
+        class="fr-icon-error-line fr-icon--sm"
+        aria-hidden="true"
+      />
+      {{ file.errorMessage }}
+    </p>
   </div>
 </template>
 

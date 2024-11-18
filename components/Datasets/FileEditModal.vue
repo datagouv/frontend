@@ -229,7 +229,7 @@
                     :label="$t('Description')"
                     :has-warning="!!getFirstWarning('description')"
                     :error-text="getFirstWarning('description')"
-                    type="textarea"
+                    type="markdown"
                   />
                 </LinkedToAccordion>
                 <LinkedToAccordion
