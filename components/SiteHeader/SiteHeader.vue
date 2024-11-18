@@ -71,8 +71,8 @@
                   </a>
                 </li>
                 <li>
-                  <a
-                    :href="localePath('/beta/admin/')"
+                  <NuxtLinkLocale
+                    to="/beta/admin/"
                     class="fr-btn fr-icon-svg fr-icon--sm"
                   >
                     <span class="fr-mr-1w fr-grid-row">
@@ -94,16 +94,16 @@
                         </g>
                       </svg>
                     </span>
-                    Administration
-                  </a>
+                    {{ $t("Administration") }}
+                  </NuxtLinkLocale>
                 </li>
                 <li>
-                  <a
-                    :href="`${config.public.apiBase}/en/logout`"
+                  <NuxtLinkLocale
+                    to="/logout"
                     class="fr-btn fr-icon-logout-box-r-line"
                   >
                     {{ $t('Logout') }}
-                  </a>
+                  </NuxtLinkLocale>
                 </li>
               </ul>
               <ul
