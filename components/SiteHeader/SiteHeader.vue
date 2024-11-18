@@ -406,7 +406,6 @@ defineProps<{
 }>()
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const me = useMaybeMe()
 
