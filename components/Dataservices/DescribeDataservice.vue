@@ -266,7 +266,7 @@
               :aria-describedby="addBaseUrlAccordionId"
               :label="t('Dataservice Base URL')"
               type="url"
-              :placeholder="t('https://...')"
+              placeholder="https://..."
               :required="false"
               :has-error="!!getFirstError('base_api_url')"
               :has-warning="!!getFirstWarning('base_api_url')"
@@ -283,7 +283,7 @@
               :aria-describedby="addEndpointUrlAccordionId"
               :label="t('Dataservice endpoint description URL')"
               type="url"
-              :placeholder="t('https://...')"
+              placeholder="https://..."
               :required="false"
               :has-error="!!getFirstError('endpoint_description_url')"
               :has-warning="!!getFirstWarning('endpoint_description_url')"
@@ -389,6 +389,23 @@
           </LinkedToAccordion>
           <LinkedToAccordion
             class="fr-fieldset__element"
+            :accordion="addBaseUrlAccordionId"
+            @blur="touch('base_api_url')"
+          >
+            <InputGroup
+              v-model="form.base_api_url"
+              :aria-describedby="addBaseUrlAccordionId"
+              :label="t('Dataservice Base URL')"
+              type="url"
+              placeholder="https://..."
+              :required="false"
+              :has-error="!!getFirstError('base_api_url')"
+              :has-warning="!!getFirstWarning('base_api_url')"
+              :error-text="getFirstError('base_api_url')"
+            />
+          </LinkedToAccordion>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
             :accordion="addAuthorizationUrlAccordionId"
             @blur="touch('authorization_request_url')"
           >
@@ -397,7 +414,7 @@
               :aria-describedby="addAuthorizationUrlAccordionId"
               :label="t('Dataservice authorization request URL')"
               type="url"
-              :placeholder="t('https://...')"
+              placeholder="https://..."
               :required="false"
               :has-error="!!getFirstError('authorization_request_url')"
               :has-warning="!!getFirstWarning('authorization_request_url')"
@@ -414,7 +431,7 @@
               :aria-describedby="addBusinessUrlAccordionId"
               :label="t('Dataservice business documentation URL')"
               type="url"
-              :placeholder="t('https://...')"
+              placeholder="https://..."
               :required="false"
               :has-error="!!getFirstError('business_documentation_url')"
               :has-warning="!!getFirstWarning('business_documentation_url')"

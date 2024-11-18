@@ -19,7 +19,7 @@
       </li>
     </Breadcrumb>
     <h1 class="fr-h3 !mb-5">
-      {{ $t("Profil") }}
+      {{ $t("Profile") }}
     </h1>
     <PaddedContainer class="!p-5">
       <div class="flex items-center">

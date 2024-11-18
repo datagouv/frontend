@@ -51,8 +51,9 @@
       @next="datasetsNext"
     />
     <Step3CompletePublication
-      v-if="currentStep === 3"
-      @next="save"
+      v-if="currentStep === 3 && newDataservice"
+      :dataservice="newDataservice"
+      @next="updateDataservice"
     />
     <div class="h-64" />
   </div>
@@ -69,7 +70,7 @@ import type {
   DataserviceForm,
   DatasetSuggest,
 } from '~/types/types'
-import { toApi } from '~/utils/dataservices'
+import { toApi, toForm } from '~/utils/dataservices'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -81,8 +82,11 @@ const steps = computed(() => [
   t('Complete your publishing'),
 ])
 
+const DATASERVICE_FORM_STATE = 'dataservice-form'
+const DATASERVICE_DATASETS_STATE = 'dataservice-datasets'
+
 const dataserviceForm = useState(
-  'dataservice-form',
+  DATASERVICE_FORM_STATE,
   () =>
     ({
       owned: null,
@@ -105,32 +109,34 @@ const dataserviceForm = useState(
 )
 
 const datasets = useState<Array<Dataset | DatasetSuggest>>(
-  'dataservice-datasets',
+  DATASERVICE_DATASETS_STATE,
   () => [],
 )
+
+const newDataservice = useState<Dataservice | null>('new-dataservice', () => null)
 
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
   if (currentStep.value < 1) return false
   if (currentStep.value > steps.value.length) return false
-
-  // TODO check that dataservice exists
+  if (currentStep.value === 2 && (!dataserviceForm.value || !dataserviceForm.value.title)) return false
+  if (currentStep.value > 2 && !newDataservice.value) return false
 
   return true
 })
 
-const moveToStep = (step: number) => {
-  navigateTo({ path: route.path, query: { ...route.query, step } })
+function moveToStep(step: number) {
+  return navigateTo({ path: route.path, query: { ...route.query, step } })
 }
 
 const dataserviceNext = () => {
   moveToStep(2)
 }
-const datasetsNext = () => {
-  moveToStep(3)
+async function datasetsNext() {
+  await save()
 }
 
-const save = async (asPrivate: boolean) => {
+async function save() {
   if (
     dataserviceForm.value.contact_point
     && dataserviceForm.value.owned?.organization
@@ -147,15 +153,34 @@ const save = async (asPrivate: boolean) => {
     })
   }
 
-  const dataservice = await $api<Dataservice>('/api/1/dataservices/', {
+  newDataservice.value = await $api<Dataservice>('/api/1/dataservices/', {
     method: 'POST',
     body: JSON.stringify(toApi(dataserviceForm.value, {
       datasets: datasets.value,
-      private: asPrivate,
+      private: true,
     })),
   })
 
-  navigateTo(dataservice.self_web_url, { external: true })
+  await moveToStep(3)
+
+  clearNuxtState(DATASERVICE_FORM_STATE)
+  clearNuxtState(DATASERVICE_DATASETS_STATE)
+}
+
+async function updateDataservice(asPrivate: boolean) {
+  if (!newDataservice.value) {
+    return moveToStep(3)
+  }
+  if (!asPrivate) {
+    await $api<Dataservice>(`/api/1/dataservices/${newDataservice.value.id}/`, {
+      method: 'PATCH',
+      body: JSON.stringify(toApi(toForm(newDataservice.value), {
+        private: false,
+      })),
+    })
+  }
+
+  await navigateTo(newDataservice.value.self_web_url, { external: true })
 }
 
 watchEffect(() => {

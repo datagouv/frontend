@@ -15,7 +15,7 @@
         </div>
         <div class="fr-col">
           <p class="fr-m-0 fr-text--bold">
-            {{ $t('Your dataservice is almost created!') }}
+            {{ $t('Your dataservice is created!') }}
           </p>
           <p class="fr-m-0 fr-text--xs">
             {{ $t('You can now publish it or save it as a draft.') }}
@@ -23,6 +23,7 @@
         </div>
       </div>
     </Well>
+    <DataserviceCard :dataservice />
     <div class="fr-grid-row justify-between">
       <a
         v-if="config.public.publishingDataserviceFeedbackUrl"
@@ -50,7 +51,10 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { Well, type Dataservice } from '@datagouv/components'
+import DataserviceCard from '~/components/Dataservices/Card/Card.vue'
+
+defineProps<{ dataservice: Dataservice }>()
 
 const emit = defineEmits<{
   (e: 'next', asPrivate: boolean): void
