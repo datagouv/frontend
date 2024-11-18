@@ -159,10 +159,47 @@ const uploadFile = async (newDataset: Dataset, file: NewDatasetFile, retry: numb
     }
 
     // If it's a local file, first we need to send the file data as multipart/form-data
+    const uuid = uuidv4()
     const formData = new FormData()
-    formData.set('uuid', uuidv4())
+    formData.set('uuid', uuid)
     formData.set('filename', file.file.name)
     formData.set('file', file.file)
+
+    const chunkSize = config.public.resourceFileUploadChunk
+    if (file.filesize > chunkSize) {
+      const nbChunks = Math.ceil(file.filesize / chunkSize)
+      let chunkStart = 0
+      const promises = []
+
+      for (let i = 0; i < nbChunks; i++) {
+        const chunk = file.file.slice(chunkStart, chunkStart + chunkSize, file.file.type)
+        const chunkData = new FormData()
+        chunkData.set('uuid', uuid)
+        chunkData.set('filename', file.file.name)
+        chunkData.set('file', chunk)
+        chunkData.set('partindex', i.toString())
+        chunkData.set('partbyteoffset', chunkStart.toString())
+        chunkData.set('totalparts', nbChunks.toString())
+        chunkData.set('chunksize', chunk.size.toString())
+
+        const promise = $fileApi<{
+          error: string | null
+          message: string
+          success:
+          boolean
+        }>(`/api/1/datasets/${newDataset.id}/upload/`, {
+          method: 'POST',
+          body: chunkData,
+        })
+        promises.push(promise)
+        chunkStart += chunkSize
+      }
+
+      await Promise.all(promises)
+      formData.delete('file') // Remove the file, it has already be sent in chunks
+      formData.set('totalparts', nbChunks.toString())
+    }
+
     const newResource = await $fileApi<Resource>(`/api/1/datasets/${newDataset.id}/upload/`, {
       method: 'POST',
       body: formData,
