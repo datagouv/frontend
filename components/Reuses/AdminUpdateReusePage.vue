@@ -64,7 +64,6 @@
           </Modal>
         </div>
       </AdminDangerZone>
-      {{ route.params }}
   </div>
 </template>
 
@@ -82,12 +81,13 @@ const { toast } = useToast()
 
 const route = useRoute()
 const loading = ref(false)
-const config = useRuntimeConfig()
 
 const modalId = useId()
 const modalTitleId = useId()
 
 const openedDeleteModal = ref(false)
+
+const localePath = useLocalePath()
 
 function openDeleteModal() {
   openedDeleteModal.value = true
@@ -142,7 +142,12 @@ async function deleteReuse() {
     await $api(`/api/1/reuses/${route.params.id}`, {
       method: 'DELETE',
     })
-    navigateTo(`${config.public.apiBase}/en/beta/admin/organizations/${route.params.oid}/reuses`, { external: true })
+    if (route.params.oid) {
+      await navigateTo(localePath(`/beta/admin/organizations/${route.params.oid}/reuses`), { replace: true })
+    }
+    else {
+      await navigateTo(localePath('/beta/admin/me/reuses'), { replace: true })
+    }
   }
   finally {
     loading.value = false

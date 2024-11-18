@@ -82,9 +82,10 @@ const { toast } = useToast()
 const route = useRoute()
 const loading = ref(false)
 
-const config = useRuntimeConfig()
 const modalId = useId()
 const modalTitleId = useId()
+
+const localePath = useLocalePath()
 
 const openedDeleteModal = ref(false)
 
@@ -144,7 +145,12 @@ async function deleteDataservice() {
     await $api(`/api/1/dataservices/${route.params.id}`, {
       method: 'DELETE',
     })
-    navigateTo(`${config.public.apiBase}/en/beta/admin`, { external: true })
+    if (route.params.oid) {
+      await navigateTo(localePath(`/beta/admin/organizations/${route.params.oid}/dataservices`), { replace: true })
+    }
+    else {
+      await navigateTo(localePath('/beta/admin/me/dataservices'), { replace: true })
+    }
   }
   finally {
     loading.value = false
