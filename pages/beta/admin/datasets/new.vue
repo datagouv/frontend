@@ -53,6 +53,7 @@
       :dataset="newDataset"
       @next="updateDataset"
     />
+    <div class="h-64" />
   </div>
 </template>
 

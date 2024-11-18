@@ -55,6 +55,7 @@
       v-if="currentStep === 3"
       @next="save"
     />
+    <div class="h-64" />
   </div>
 </template>
 

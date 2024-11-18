@@ -462,7 +462,6 @@
           </button>
         </div>
       </div>
-      <div class="h-64" />
     </div>
   </div>
 </template>

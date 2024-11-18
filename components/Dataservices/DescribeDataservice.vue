@@ -426,7 +426,6 @@
           <slot />
         </div>
       </div>
-      <div class="h-64" />
     </form>
   </div>
 </template>
