@@ -197,7 +197,6 @@
               :required="true"
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"
-              @focusout="touch('owned')"
             />
           </div>
         </fieldset>
