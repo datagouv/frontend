@@ -36,9 +36,9 @@ export default defineNuxtConfig({
 
       betaAdminFeedbackUrl: 'https://tally.so/r/nP25OB',
 
-      publishingDatasetFeedbackUrl: 'https://tally.so/r/wdNk1y',
+      publishingDatasetFeedbackUrl: 'https://tally.so/r/nGo0yO',
       publishingDataserviceFeedbackUrl: 'https://tally.so/r/w2J7lL',
-      publishingReuseFeedbackUrl: '',
+      publishingReuseFeedbackUrl: 'https://tally.so/r/mV98y6',
 
       resourceFileUploadChunk: 2 * 1000 * 1000,
 
