@@ -103,7 +103,7 @@
                     class="fr-btn fr-icon-logout-box-r-line"
                   >
                     {{ $t('Logout') }}
-                </a>
+                  </a>
                 </li>
               </ul>
               <ul
