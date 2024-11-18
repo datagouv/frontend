@@ -56,6 +56,7 @@
       :reuse="newReuse"
       @next="updateReuse"
     />
+    <div class="h-64" />
   </div>
 </template>
 

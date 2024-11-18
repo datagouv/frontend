@@ -19,7 +19,7 @@
           {{ t("Created at") }}
         </AdminTableTh>
         <AdminTableTh>
-          {{ t("Rate Limiting") }}
+          {{ t("Rate limiting") }}
         </AdminTableTh>
         <AdminTableTh>
           {{ t("Availability") }}
@@ -97,7 +97,7 @@ function sorted(column: DataserviceSortedBy) {
 function getStatus(dataservice: Dataservice): { label: string, type: AdminBadgeState } {
   if (dataservice.private) {
     return {
-      label: t('Private'),
+      label: t('Draft'),
       type: 'default',
     }
   }
