@@ -150,17 +150,4 @@ async function deleteDataservice() {
     loading.value = false
   }
 }
-
-async function deleteDataset() {
-  loading.value = true
-  try {
-    await $api(`/api/1/datasets/${route.params.id}`, {
-      method: 'DELETE',
-    })
-    navigateTo(`${config.public.apiBase}/en/beta/admin/organizations/${route.params.oid}/datasets`, { external: true })
-  }
-  finally {
-    loading.value = false
-  }
-}
 </script>
