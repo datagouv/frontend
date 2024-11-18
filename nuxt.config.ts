@@ -40,6 +40,8 @@ export default defineNuxtConfig({
       publishingDataserviceFeedbackUrl: 'https://tally.so/r/w2J7lL',
       publishingReuseFeedbackUrl: '',
 
+      resourceFileUploadChunk: 2 * 1000 * 1000,
+
       licenses: {
         'Autorités administratives': [
           { value: 'lov2', recommended: true, code: 'etalab-2.0' },

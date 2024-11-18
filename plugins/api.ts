@@ -28,7 +28,10 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         let message
         try {
-          if ('message' in response._data) {
+          if ('error' in response._data) {
+            message = response._data.error
+          }
+          else if ('message' in response._data) {
             message = response._data.message
           }
         }
