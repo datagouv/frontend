@@ -246,7 +246,7 @@
               </ClientOnly>
             </li>
             <li
-              class="fr-nav__item ml-auto"
+              class="fr-nav__item ml-auto sm:!hidden xl:!flex"
             >
               <ClientOnly>
                 <Popover>
