@@ -223,7 +223,6 @@
               v-model="reuseForm.type"
               :label="$t('Type')"
               :placeholder="$t('Search a type…')"
-              class="mb-6"
               :get-option-id="(type) => type.label"
               :display-value="(type) => type.label"
               :options="types"
@@ -242,7 +241,6 @@
               v-model="reuseForm.topic"
               :label="$t('Theme')"
               :placeholder="$t('Search a theme…')"
-              class="mb-6"
               :get-option-id="(topic) => topic.label"
               :display-value="(topic) => topic.label"
               :options="topics"
@@ -274,7 +272,6 @@
           >
             <TagsSelect
               v-model="form.tags"
-              class="mb-6"
               :error-text="getFirstError('tags')"
               :warning-text="getFirstWarning('tags')"
             />

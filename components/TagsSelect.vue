@@ -8,7 +8,7 @@
       :allow-new-option="(query) => ({ text: query })"
       :suggest="suggestTags"
       :multiple="true"
-      class="mb-2"
+      class="!mb-0"
 
       :error-text
       :warning-text
@@ -17,7 +17,10 @@
         {{ tag.text }}
       </template>
     </SearchableSelect>
-    <div class="flex flex-wrap">
+    <div
+      v-if="tags.length"
+      class="mt-2 flex flex-wrap"
+    >
       <button
         v-for="tag in tags"
         :key="tag.text"
