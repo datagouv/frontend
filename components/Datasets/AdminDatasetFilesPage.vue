@@ -1,5 +1,27 @@
 <template>
   <div class="bg-white fr-p-3w">
+    <div class="flex justify-between items-center">
+      <h2
+        v-if="resourcesPage && resourcesPage.total"
+        class="subtitle subtitle--uppercase fr-m-0"
+      >
+        {{ t('{n} files', resourcesPage.total) }}
+      </h2>
+      <UploadResourceModal
+        @new-files="addFiles"
+      />
+    </div>
+
+    <!-- :key is here to force re-render when length change and then re-call onMounted -->
+    <FileEditModal
+      v-if="newFiles.length"
+      :key="newFiles.length"
+      v-model="newFiles[0]"
+      open-on-mounted
+      @submit="saveFirstNewFile"
+      @cancel="removeFirstNewFile"
+    />
+
     <AdminTable :loading>
       <thead>
         <tr>
@@ -83,7 +105,9 @@ import { formatDate, Pagination, type DatasetV2, type Resource } from '@datagouv
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
-import type { AdminBadgeState, PaginatedArray } from '~/types/types'
+import UploadResourceModal from './UploadResourceModal.vue'
+import FileEditModal from './FileEditModal.vue'
+import type { AdminBadgeState, NewDatasetFile, PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 
@@ -105,14 +129,31 @@ const resourcesUrl = computed(() => {
   return url.toString()
 })
 
-watchEffect(async () => {
+const refreshResources = async () => {
   if (!resourcesUrl.value) return
   resourcesPage.value = await $api<PaginatedArray<Resource>>(resourcesUrl.value)
-})
+}
+watchEffect(async () => await refreshResources())
 
 const loading = ref(false)
 
 const { t } = useI18n()
+
+const newFiles = ref<Array<NewDatasetFile>>([])
+
+const addFiles = (files: Array<NewDatasetFile>) => {
+  newFiles.value = files
+}
+const removeFirstNewFile = () => {
+  newFiles.value = [...newFiles.value.slice(1)]
+}
+const saveFirstNewFile = async () => {
+  await uploadFile(dataset.value, newFiles.value[0], 3)
+  removeFirstNewFile()
+
+  page.value = 1
+  refreshResources()
+}
 
 function getStatus(resource: Resource): { label: string, type: AdminBadgeState } {
   if (resource.extras['check:available'] === true) {

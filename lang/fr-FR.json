@@ -760,5 +760,7 @@
   "The dataset will only be visible to members of your organization.": "Le jeu de données ne sera visible que par les membres de l’organisation.",
   "The dataservice will only be visible to members of your organization.": "L'API ne sera visible que par les membres de l’organisation.",
   "The reuse will only be visible to members of your organization.": "La réutilisation ne sera visible que par les membres de l’organisation.",
+  "{n} files": "{n} fichiers | {n} fichier | {n} fichiers",
+
   "": ""
 }
