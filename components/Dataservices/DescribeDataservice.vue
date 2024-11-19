@@ -366,6 +366,7 @@
           >
             <RadioButtons
               v-model="form.is_restricted"
+              class="!mb-0"
               :label="t('Access type')"
               :options="[
                 { value: false, label: t('Open') },
@@ -381,6 +382,7 @@
             <RadioButtons
               v-model="form.has_token"
               :label="t('Access token')"
+              class="!mb-0"
               :options="[
                 { value: true, label: t('With access token') },
                 { value: false, label: t('Without access token') },

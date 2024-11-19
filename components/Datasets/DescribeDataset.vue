@@ -390,7 +390,7 @@
                     :placeholder="$t('Search a spatial coverage…')"
                     :suggest="suggestSpatial"
                     :multiple="true"
-                    class="mb-2"
+                    class="!mb-0"
 
                     :error-text="getFirstError('spatial_zones')"
                     :warning-text="getFirstWarning('spatial_zones')"
@@ -418,11 +418,14 @@
                       </div>
                     </template>
                   </SearchableSelect>
-                  <div class="flex space-x-2">
+                  <div
+                    v-if="form.spatial_zones.length"
+                    class="mt-2 flex flex-wrap"
+                  >
                     <button
                       v-for="zone in form.spatial_zones"
                       :key="zone.id"
-                      class="fr-tag fr-tag--sm fr-tag--dismiss"
+                      class="fr-tag fr-tag--sm fr-tag--dismiss  mr-2 mb-2"
                       type="button"
                       @click="removeZone(zone)"
                     >
