@@ -1,6 +1,6 @@
 <template>
-  <a
-    :href="link"
+  <NuxtLinkLocale
+    :to="link"
     class="fr-btn fr-icon-add-line fr-btn--icon-left"
   >
     <span>{{ t("Publish on") }}</span>
@@ -8,7 +8,7 @@
       class="ml-1.5 mt-0.5 h-4"
       white
     />
-  </a>
+  </NuxtLinkLocale>
 </template>
 
 <script setup lang="ts">
@@ -20,19 +20,18 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 
 const link = computed(() => {
   switch (props.type) {
     case 'dataset':
-      return localePath('/beta/admin/datasets/new')
+      return '/beta/admin/datasets/new'
     case 'harvester':
       return ''
       // return `${admin_root}harvester/new/`;
     case 'reuse':
-      return localePath('/beta/admin/reuses/new')
+      return '/beta/admin/reuses/new'
     case 'dataservice':
-      return localePath('/beta/admin/dataservices/new')
+      return '/beta/admin/dataservices/new'
     default:
       throwOnNever(props.type, '')
       return ''
