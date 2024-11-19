@@ -184,11 +184,10 @@ const emit = defineEmits<{
 const props = defineProps<{
   datasets: Array<Dataset | DatasetV2>
   loading: boolean
-  sortDirection: SortDirection
-  sortedBy: DatasetSortedBy
+  sortDirection?: SortDirection
+  sortedBy?: DatasetSortedBy
 }>()
 
-const config = useRuntimeConfig()
 const { t } = useI18n()
 
 function updateSort(column: DatasetSortedBy, direction: SortDirection) {
@@ -196,6 +195,9 @@ function updateSort(column: DatasetSortedBy, direction: SortDirection) {
 }
 
 function sorted(column: DatasetSortedBy) {
+  if (!props.sortedBy) {
+    return undefined
+  }
   if (props.sortedBy === column) {
     return props.sortDirection
   }

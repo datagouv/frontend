@@ -1,7 +1,7 @@
 <template>
-  <AdminDatasetsPage />
+  <AdminMeDatasetsPage />
 </template>
 
 <script setup lang="ts">
-import AdminDatasetsPage from '~/components/Datasets/AdminDatasetsPage.vue'
+import AdminMeDatasetsPage from '~/components/Datasets/AdminMeDatasetsPage.vue'
 </script>
