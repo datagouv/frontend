@@ -47,7 +47,7 @@
       >
         <div class="flex space-x-8">
           <div class="flex items-center space-x-2">
-            <RiFileInfoLine class="size-6" />
+            <RiInformationLine class="size-6 -mt-0.5" />
             <div>{{ t("You're on the new admin interface in beta.") }}</div>
           </div>
           <div class="space-x-4">
@@ -77,9 +77,8 @@
 <script setup lang="ts">
 import { Well } from '@datagouv/components'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { RiFileInfoLine } from '@remixicon/vue'
+import { RiInformationLine } from '@remixicon/vue'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'
-import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 
 definePageMeta({
   layout: 'fluid',
