@@ -1,10 +1,14 @@
 <template>
   <ModalWithButton
+    v-model="open"
     :title="t('File metadata')"
     size="fullscreen"
     @open="removeErrorsAndWarnings"
   >
-    <template #button="{ attrs, listeners }">
+    <template
+      v-if="!openOnMounted"
+      #button="{ attrs, listeners }"
+    >
       <button
         class="fr-btn fr-icon-pencil-line fr-icon--sm"
         v-bind="attrs"
@@ -316,7 +320,21 @@ const config = useRuntimeConfig()
 const { $api } = useNuxtApp()
 const formId = useId()
 
+const props = withDefaults(defineProps<{
+  openOnMounted?: boolean
+}>(), {
+  openOnMounted: false,
+})
+const emit = defineEmits<{
+  (e: 'submit' | 'cancel'): void
+}>()
+
 const file = defineModel<NewDatasetFile>({ required: true })
+const open = ref(false)
+
+onMounted(() => {
+  if (props.openOnMounted) open.value = true
+})
 
 const isRemote = computed(() => file.value.filetype === 'remote')
 const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a file'))
@@ -340,11 +358,13 @@ const submit = (close: () => void) => {
   if (validate()) {
     file.value = form.value
     close()
+    emit('submit')
   }
 }
 const cancel = (close: () => void) => {
   form.value = file.value
   close()
+  emit('cancel')
 }
 
 const suggestMime = async (query: string) => {

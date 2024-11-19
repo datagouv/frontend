@@ -58,9 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, Frequency, Owned, Resource } from '@datagouv/components'
-import type { FetchError } from 'ofetch'
-import { v4 as uuidv4 } from 'uuid'
+import type { Dataset, Frequency, Owned } from '@datagouv/components'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
@@ -145,85 +143,6 @@ async function save() {
   }
   finally {
     //
-  }
-}
-
-const uploadFile = async (newDataset: Dataset, file: NewDatasetFile, retry: number) => {
-  try {
-    // If this is a remote file, it's easy just send all the information to the server.
-    if (file.filetype === 'remote') {
-      return await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/`, {
-        method: 'POST',
-        body: JSON.stringify(file),
-      })
-    }
-
-    // If it's a local file, first we need to send the file data as multipart/form-data
-    const uuid = uuidv4()
-    const formData = new FormData()
-    formData.set('uuid', uuid)
-    formData.set('filename', file.file.name)
-    formData.set('file', file.file)
-
-    const chunkSize = config.public.resourceFileUploadChunk
-    if (file.filesize > chunkSize) {
-      const nbChunks = Math.ceil(file.filesize / chunkSize)
-      let chunkStart = 0
-      const promises = []
-
-      for (let i = 0; i < nbChunks; i++) {
-        const chunk = file.file.slice(chunkStart, chunkStart + chunkSize, file.file.type)
-        const chunkData = new FormData()
-        chunkData.set('uuid', uuid)
-        chunkData.set('filename', file.file.name)
-        chunkData.set('file', chunk)
-        chunkData.set('partindex', i.toString())
-        chunkData.set('partbyteoffset', chunkStart.toString())
-        chunkData.set('totalparts', nbChunks.toString())
-        chunkData.set('chunksize', chunk.size.toString())
-
-        const promise = $fileApi<{
-          error: string | null
-          message: string
-          success:
-          boolean
-        }>(`/api/1/datasets/${newDataset.id}/upload/`, {
-          method: 'POST',
-          body: chunkData,
-        })
-        promises.push(promise)
-        chunkStart += chunkSize
-      }
-
-      await Promise.all(promises)
-      formData.delete('file') // Remove the file, it has already be sent in chunks
-      formData.set('totalparts', nbChunks.toString())
-    }
-
-    const newResource = await $fileApi<Resource>(`/api/1/datasets/${newDataset.id}/upload/`, {
-      method: 'POST',
-      body: formData,
-    })
-
-    // Then we need to update the new resource with all the metadata
-    const updatedNewResource = await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/${newResource.id}/`, {
-      method: 'PUT',
-      body: JSON.stringify(file),
-    })
-
-    file.state = 'loaded'
-    return updatedNewResource
-  }
-  catch (e) {
-    if (retry === 0) {
-      const fetchError = e as unknown as FetchError
-      if ('data' in fetchError && 'message' in fetchError.data) {
-        file.errorMessage = fetchError.data.message
-      }
-      file.state = 'failed'
-      throw new Error(t('Failed to upload file {title}', { title: file.title }))
-    }
-    await uploadFile(newDataset, file, retry - 1)
   }
 }
 
