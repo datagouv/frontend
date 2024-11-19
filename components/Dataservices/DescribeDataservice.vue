@@ -391,23 +391,6 @@
           </LinkedToAccordion>
           <LinkedToAccordion
             class="fr-fieldset__element"
-            :accordion="addBaseUrlAccordionId"
-            @blur="touch('base_api_url')"
-          >
-            <InputGroup
-              v-model="form.base_api_url"
-              :aria-describedby="addBaseUrlAccordionId"
-              :label="t('Dataservice Base URL')"
-              type="url"
-              placeholder="https://..."
-              :required="false"
-              :has-error="!!getFirstError('base_api_url')"
-              :has-warning="!!getFirstWarning('base_api_url')"
-              :error-text="getFirstError('base_api_url')"
-            />
-          </LinkedToAccordion>
-          <LinkedToAccordion
-            class="fr-fieldset__element"
             :accordion="addAuthorizationUrlAccordionId"
             @blur="touch('authorization_request_url')"
           >
