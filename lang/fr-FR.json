@@ -756,5 +756,9 @@
   "and": "et",
   "Availability :": "Disponibilité :",
   "unknown": "inconnue",
+  "Switch to private mode": "Passer en mode privé",
+  "The dataset will only be visible to members of your organization.": "Le jeu de données ne sera visible que par les membres de l’organisation.",
+  "The dataservice will only be visible to members of your organization.": "L'API ne sera visible que par les membres de l’organisation.",
+  "The reuse will only be visible to members of your organization.": "La réutilisation ne sera visible que par les membres de l’organisation.",
   "": ""
 }

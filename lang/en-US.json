@@ -745,5 +745,9 @@
   "Failed to upload file {title}": "Failed to upload file {title}",
   "The API returned an unexpected error": "The API returned an unexpected error",
   "and": "and",
+  "Switch to private mode": "Switch to private mode",
+  "The dataset will only be visible to members of your organization.": "The dataset will only be visible to members of your organization.",
+  "The dataservice will only be visible to members of your organization.": "The dataservice will only be visible to members of your organization.",
+  "The reuse will only be visible to members of your organization.": "The reuse will only be visible to members of your organization.",
   "": ""
 }

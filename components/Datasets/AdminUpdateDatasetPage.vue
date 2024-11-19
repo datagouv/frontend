@@ -131,7 +131,7 @@ const save = async () => {
 
     await $api(`/api/1/datasets/${dataset.value.id}/`, {
       method: 'PUT',
-      body: JSON.stringify(toApi(datasetForm.value)),
+      body: JSON.stringify(toApi(datasetForm.value, { private: datasetForm.value.private })),
     })
 
     toast.success(t('Dataset updated!'))

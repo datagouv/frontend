@@ -125,10 +125,9 @@ const save = async () => {
         }),
       })
     }
-
     await $api(`/api/1/dataservices/${dataservice.value.id}/`, {
       method: 'PATCH',
-      body: JSON.stringify(toApi(dataserviceForm.value)),
+      body: JSON.stringify(toApi(dataserviceForm.value, { private: dataserviceForm.value.private })),
     })
 
     toast.success(t('Dataservice updated!'))

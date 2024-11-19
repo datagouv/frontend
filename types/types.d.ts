@@ -151,6 +151,7 @@ export type DatasetForm = {
   frequency: Frequency | null
   spatial_zones: Array<SpatialZone>
   spatial_granularity: SpatialGranularity | null
+  private: boolean
 }
 
 export type NewDatasetForApi = {
@@ -179,7 +180,9 @@ export type ReuseForm = {
   description: string
   tags: Array<Tag>
   image: File | string | null
+  private: boolean
 }
+
 export type NewReuseForApi = {
   organization?: string
   owner?: string
@@ -212,6 +215,7 @@ export type DataserviceForm = {
   business_documentation_url: string
   rate_limiting: string
   availability: string
+  private: boolean
 }
 
 export type NewDataserviceForApi = {
