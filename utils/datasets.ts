@@ -146,6 +146,19 @@ export function toApi(form: DatasetForm, overrides: { private?: boolean } = {}):
   }
 }
 
+export function resourceToForm(resource: Resource): NewDatasetFile {
+  return {
+    description: resource.description || '',
+    format: resource.format,
+    filesize: resource.filesize,
+    filetype: resource.filetype,
+    mime: resource.mime,
+    title: resource.title,
+    type: resource.type,
+    state: 'none',
+  }
+}
+
 export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatasetFile, retry: number) {
   const { $api, $fileApi, $i18n } = useNuxtApp()
   const config = useRuntimeConfig()

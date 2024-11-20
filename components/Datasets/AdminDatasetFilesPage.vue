@@ -53,7 +53,7 @@
       </thead>
       <tbody v-if="resourcesPage">
         <tr
-          v-for="resource in resourcesPage.data"
+          v-for="resource, index in resourcesPage.data"
           :key="resource.id"
         >
           <td>
@@ -86,6 +86,13 @@
           </td>
           <td>
             {{ formatDate(resource.last_modified) }}
+          </td>
+          <td>
+            <FileEditModal
+              :model-value="resourceToForm(resource)"
+              @update:model-value="() => {}"
+              @submit="(file) => saveFile(index, resource, file)"
+            />
           </td>
         </tr>
       </tbody>
@@ -153,6 +160,15 @@ const saveFirstNewFile = async () => {
 
   page.value = 1
   refreshResources()
+}
+const saveFile = async (index: number, resource: Resource, file: NewDatasetFile) => {
+  const updated = await $api<Resource>(`/api/1/datasets/${dataset.value.id}/resources/${resource.id}/`, {
+    method: 'PUT',
+    body: JSON.stringify(file),
+  })
+  if (resourcesPage.value) {
+    resourcesPage.value.data[index] = updated
+  }
 }
 
 function getStatus(resource: Resource): { label: string, type: AdminBadgeState } {
