@@ -146,7 +146,7 @@
                                       :key="item.link"
                                     >
                                       <NuxtLinkLocale
-                                        class="fr-nav__link flex items-center space-x-1"
+                                        class="fr-nav__link flex items-baseline space-x-1"
                                         :to="item.link"
                                         :external="item.external"
                                       >
@@ -365,7 +365,7 @@
                         >
                           <component
                             :is="item.icon"
-                            class="inline size-4"
+                            class=" size-4 -mt-1"
                           />
                           <span>{{ item.label }}</span>
                         </NuxtLinkLocale>
