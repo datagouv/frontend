@@ -89,7 +89,7 @@
           </td>
           <td>
             <FileEditModal
-              :model-value="resourceToForm(resource)"
+              :model-value="resourceToForm(resource, schemas || [])"
               @update:model-value="() => {}"
               @submit="(file) => saveFile(index, resource, file)"
             />
@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination, type DatasetV2, type Resource } from '@datagouv/components'
+import { formatDate, Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
@@ -117,9 +117,11 @@ import FileEditModal from './FileEditModal.vue'
 import type { AdminBadgeState, NewDatasetFile, PaginatedArray } from '~/types/types'
 
 const route = useRoute()
-
+const { toast } = useToast()
 const { $api } = useNuxtApp()
 const { locale } = useI18n()
+
+const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
 
 const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
 const { data: dataset } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
@@ -164,11 +166,12 @@ const saveFirstNewFile = async () => {
 const saveFile = async (index: number, resource: Resource, file: NewDatasetFile) => {
   const updated = await $api<Resource>(`/api/1/datasets/${dataset.value.id}/resources/${resource.id}/`, {
     method: 'PUT',
-    body: JSON.stringify(file),
+    body: JSON.stringify(resourceToApi(file)),
   })
   if (resourcesPage.value) {
     resourcesPage.value.data[index] = updated
   }
+  toast.success(t('Resource updated!'))
 }
 
 function getStatus(resource: Resource): { label: string, type: AdminBadgeState } {
