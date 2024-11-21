@@ -129,11 +129,13 @@
                             <ClientOnly>
                               <Disclosure>
                                 <DisclosureButton
-                                  class="fr-nav__btn space-x-1.5 justify-start after:!ml-auto"
+                                  class="fr-nav__btn justify-start after:!ml-auto"
                                 >
-                                  <RiAddLine class="size-4" />
-                                  <span>{{ $t('Publish on') }}</span>
-                                  <SiteLogo class="mt-0.5 h-4" />
+                                  <RiAddLine class="size-4 mr-1" />
+                                  <div class="mr-1">
+                                    {{ $t('Publish on') }}
+                                  </div>
+                                  <span class="font-bold">data.gouv</span><span class="fr-text--alt italic">.fr</span>
                                 </DisclosureButton>
                                 <DisclosurePanel
                                   class="fr-menu"
@@ -338,11 +340,11 @@
               <ClientOnly>
                 <Popover>
                   <PopoverButton
-                    class="fr-nav__btn space-x-1.5 !w-64"
+                    class="fr-nav__btn !w-64 inline after:!align-middle"
                   >
-                    <RiAddLine class="size-4" />
-                    <span>{{ $t('Publish on') }}</span>
-                    <SiteLogo class="mt-0.5 h-4" />
+                    <RiAddLine class="inline size-4" />
+                    {{ $t('Publish on') }}
+                    <span class="font-bold">data.gouv</span><span class="fr-text--alt italic">.fr</span>
                   </PopoverButton>
                   <PopoverPanel
                     v-slot="{ close }"
