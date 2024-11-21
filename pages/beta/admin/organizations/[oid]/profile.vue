@@ -101,28 +101,29 @@
             </p>
           </div>
           <div class="fr-col-auto">
-            <button
-              class="fr-btn fr-btn--secondary fr-btn--secondary--error fr-btn--icon-left fr-icon-delete-line"
-              :disabled="loading"
-              :aria-controls="modalId"
-              @click="openDeleteModal"
-            >
-              {{ t('Delete') }}
-            </button>
-            <Modal
-              :id="modalId"
-              :opened="openedDeleteModal"
-              :aria-labelledby="modalTitleId"
-              role="dialog"
+            <ModalWithButton
               :title="t('Are you sure you want to delete this organization ?')"
               size="lg"
-              @close="closeDeleteModal"
             >
-              <p class="fr-text--bold">
-                {{ t("This action can't be reverse.") }}
-              </p>
-              <p>{{ t("All content published with this organization will stay online, with the same URL but in an anonymous form, i.e. without being linked to a data producer.") }}</p>
-              <p>{{ t("If you want to delete your published content too, start by deleting the contents before deleting your account.") }}</p>
+              <template #button="{ attrs, listeners }">
+                <BrandedButton
+                  :disabled="loading"
+                  level="secondary"
+                  color="red"
+                  :icon="RiDeleteBin6Line"
+                  v-bind="attrs"
+                  v-on="listeners"
+                >
+                  {{ t('Delete') }}
+                </BrandedButton>
+              </template>
+              <template #default>
+                <p class="fr-text--bold">
+                  {{ t("This action can't be reverse.") }}
+                </p>
+                <p>{{ t("All content published with this organization will stay online, with the same URL but in an anonymous form, i.e. without being linked to a data producer.") }}</p>
+                <p>{{ t("If you want to delete your published content too, start by deleting the contents before deleting your account.") }}</p>
+              </template>
               <template #footer>
                 <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
                   <button
@@ -135,7 +136,7 @@
                   </button>
                 </div>
               </template>
-            </Modal>
+            </ModalWithButton>
           </div>
         </AdminDangerZone>
       </template>
@@ -147,6 +148,7 @@
 import { Placeholder, useOrganizationCertified, type NewOrganization, type Organization } from '@datagouv/components'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RiDeleteBin6Line } from '@remixicon/vue'
 import AdminDangerZone from '~/components/AdminDangerZone/AdminDangerZone.vue'
 import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
@@ -165,23 +167,12 @@ const form = ref<InstanceType<typeof DescribeOrganizationFrom> | null>(null)
 const { currentOrganization } = useCurrentOrganization()
 
 const errors = ref([])
-const modalId = useId()
-const modalTitleId = useId()
-const openedDeleteModal = ref(false)
 
 const { data: organization, status, refresh: refreshOrganization } = await useAPI<Organization>(`api/1/organizations/${oid}/`, { lazy: true })
 
 const loading = computed(() => status.value === 'pending')
 
 const { organizationCertified } = useOrganizationCertified(organization)
-
-function openDeleteModal() {
-  openedDeleteModal.value = true
-}
-
-function closeDeleteModal() {
-  openedDeleteModal.value = false
-}
 
 async function deleteCurrentOrganization() {
   if (currentOrganization.value) {

@@ -18,6 +18,7 @@
     :title
     :show-title
     :size
+    v-bind="$attrs"
     @close="close"
   >
     <template #iconTitle>

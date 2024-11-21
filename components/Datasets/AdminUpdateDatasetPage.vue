@@ -8,65 +8,61 @@
       @submit="save"
     />
     <AdminDangerZone
-        class="mt-5"
-      >
-        <div class="fr-col">
-          <p class="fr-m-0 text-neutral-800">
-            {{ $t('Delete the dataset') }}
+      class="mt-5"
+    >
+      <div class="fr-col">
+        <p class="fr-m-0 text-neutral-800">
+          {{ $t('Delete the dataset') }}
+        </p>
+        <p class="fr-m-0 fr-text--xs text-red-600">
+          {{ $t("Be careful, this action can't be reverse.") }}
+        </p>
+      </div>
+      <div class="fr-col-auto">
+        <ModalWithButton
+          :title="$t('Are you sure you want to delete this dataset ?')"
+          size="lg"
+        >
+          <template #button="{ attrs, listeners }">
+            <BrandedButton
+              color="red"
+              size="sm"
+              level="secondary"
+              :icon="RiDeleteBin6Line"
+              v-bind="attrs"
+              v-on="listeners"
+            >
+              {{ $t('Delete') }}
+            </BrandedButton>
+          </template>
+          <p class="fr-text--bold">
+            {{ $t("This action can't be reverse.") }}
           </p>
-          <p class="fr-m-0 fr-text--xs text-red-600">
-            {{ $t("Be careful, this action can't be reverse.") }}
-          </p>
-        </div>
-        <div class="fr-col-auto">
-          <BrandedButton
-            color="red"
-            size="sm"
-            type="secondary"
-            :aria-controls="modalId"
-            :icon="RiDeleteBin6Line"
-            @click="openDeleteModal"
-          >
-            {{ $t('Delete') }}
-          </BrandedButton>
-          <Modal
-            :id="modalId"
-            :opened="openedDeleteModal"
-            :aria-labelledby="modalTitleId"
-            role="dialog"
-            :title="$t('Are you sure you want to delete this dataset ?')"
-            size="lg"
-            @close="closeDeleteModal"
-          >
-            <p class="fr-text--bold">
-              {{ $t("This action can't be reverse.") }}
-            </p>
-            <template #footer>
-              <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
-                <BrandedButton
-                  color="red"
-                  type="secondary"
-                  role="button"
-                  :disabled="loading"
-                  @click="deleteDataset"
-                >
-                  {{ $t("Delete the dataset") }}
-                </BrandedButton>
-              </div>
-            </template>
-          </Modal>
-        </div>
-      </AdminDangerZone>
+          <template #footer>
+            <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+              <BrandedButton
+                color="red"
+                level="secondary"
+                role="button"
+                :disabled="loading"
+                @click="deleteDataset"
+              >
+                {{ $t("Delete the dataset") }}
+              </BrandedButton>
+            </div>
+          </template>
+        </ModalWithButton>
+      </div>
+    </AdminDangerZone>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Dataset, Frequency, License } from '@datagouv/components'
+import { RiDeleteBin6Line } from '@remixicon/vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import type { DatasetForm, EnrichedLicense, SpatialGranularity } from '~/types/types'
 import { toForm, toApi } from '~/utils/datasets'
-import { RiDeleteBin6Line } from '@remixicon/vue'
-import BrandedButton from '../BrandedButton/BrandedButton.vue'
 
 const { t } = useI18n()
 const { $api } = useNuxtApp()
@@ -75,20 +71,7 @@ const config = useRuntimeConfig()
 const route = useRoute()
 const loading = ref(false)
 
-const modalId = useId()
-const modalTitleId = useId()
-
 const localePath = useLocalePath()
-
-const openedDeleteModal = ref(false)
-
-function openDeleteModal() {
-  openedDeleteModal.value = true
-}
-
-function closeDeleteModal() {
-  openedDeleteModal.value = false
-}
 
 const { toast } = useToast()
 
