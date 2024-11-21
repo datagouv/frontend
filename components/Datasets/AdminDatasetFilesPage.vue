@@ -49,11 +49,16 @@
           >
             {{ t('Updated at') }}
           </AdminTableTh>
+          <AdminTableTh
+            scope="col"
+          >
+            {{ t("Action") }}
+          </AdminTableTh>
         </tr>
       </thead>
       <tbody v-if="resourcesPage">
         <tr
-          v-for="resource in resourcesPage.data"
+          v-for="resource, index in resourcesPage.data"
           :key="resource.id"
         >
           <td>
@@ -87,6 +92,16 @@
           <td>
             {{ formatDate(resource.last_modified) }}
           </td>
+          <td>
+            <FileEditModal
+              :model-value="resourceToForm(resource, schemas || [])"
+              button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+              @update:model-value="() => {}"
+              @submit="(file) => saveFile(index, resource, file)"
+            >
+              <template #button />
+            </FileEditModal>
+          </td>
         </tr>
       </tbody>
     </AdminTable>
@@ -101,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination, type DatasetV2, type Resource } from '@datagouv/components'
+import { formatDate, Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
@@ -110,9 +125,11 @@ import FileEditModal from './FileEditModal.vue'
 import type { AdminBadgeState, NewDatasetFile, PaginatedArray } from '~/types/types'
 
 const route = useRoute()
-
+const { toast } = useToast()
 const { $api } = useNuxtApp()
 const { locale } = useI18n()
+
+const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
 
 const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
 const { data: dataset } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
@@ -153,6 +170,16 @@ const saveFirstNewFile = async () => {
 
   page.value = 1
   refreshResources()
+}
+const saveFile = async (index: number, resource: Resource, file: NewDatasetFile) => {
+  const updated = await $api<Resource>(`/api/1/datasets/${dataset.value.id}/resources/${resource.id}/`, {
+    method: 'PUT',
+    body: JSON.stringify(resourceToApi(file)),
+  })
+  if (resourcesPage.value) {
+    resourcesPage.value.data[index] = updated
+  }
+  toast.success(t('Resource updated!'))
 }
 
 function getStatus(resource: Resource): { label: string, type: AdminBadgeState } {

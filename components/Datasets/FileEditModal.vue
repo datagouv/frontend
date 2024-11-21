@@ -10,7 +10,7 @@
       #button="{ attrs, listeners }"
     >
       <button
-        class="fr-btn fr-icon-pencil-line fr-icon--sm"
+        :class="buttonClasses"
         v-bind="attrs"
         v-on="listeners"
       >
@@ -249,7 +249,6 @@
                     :get-option-id="(option) => option.name"
                     :options="schemas"
                     :multiple="false"
-                    class="mb-6"
 
                     :error-text="getFirstError('schema')"
                     :warning-text="getFirstWarning('schema')"
@@ -269,7 +268,6 @@
                     :allow-new-option="isRemote ? (query) => ({ text: query }) : undefined"
                     :suggest="suggestMime"
                     :multiple="false"
-                    class="mb-6"
 
                     :error-text="getFirstError('mime')"
                     :warning-text="getFirstWarning('mime')"
@@ -322,11 +320,14 @@ const formId = useId()
 
 const props = withDefaults(defineProps<{
   openOnMounted?: boolean
+  buttonClasses?: string
 }>(), {
   openOnMounted: false,
+  buttonClasses: 'fr-btn fr-icon-pencil-line fr-icon--sm',
 })
 const emit = defineEmits<{
-  (e: 'submit' | 'cancel'): void
+  (e: 'submit', file: NewDatasetFile): void
+  (e: 'cancel'): void
 }>()
 
 const file = defineModel<NewDatasetFile>({ required: true })
@@ -358,7 +359,7 @@ const submit = (close: () => void) => {
   if (validate()) {
     file.value = form.value
     close()
-    emit('submit')
+    emit('submit', form.value)
   }
 }
 const cancel = (close: () => void) => {

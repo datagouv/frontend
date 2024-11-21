@@ -1,4 +1,4 @@
-import type { Dataset, DatasetV2, Frequency, License, Resource } from '@datagouv/components'
+import type { Dataset, DatasetV2, Frequency, License, RegisteredSchema, Resource } from '@datagouv/components'
 import type { FetchError } from 'ofetch'
 import type { Component } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
@@ -146,6 +146,26 @@ export function toApi(form: DatasetForm, overrides: { private?: boolean } = {}):
   }
 }
 
+export function resourceToForm(resource: Resource, schemas: Array<RegisteredSchema>): NewDatasetFile {
+  return {
+    description: resource.description || '',
+    format: resource.format,
+    filesize: resource.filesize,
+    filetype: resource.filetype,
+    mime: { text: resource.mime },
+    title: resource.title,
+    type: resource.type,
+    state: 'none',
+    schema: schemas.find(schema => schema.name === resource.schema?.name),
+  }
+}
+export function resourceToApi(form: NewDatasetFile): Resource {
+  return {
+    ...form,
+    mime: form.mime?.text || null,
+  }
+}
+
 export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatasetFile, retry: number) {
   const { $api, $fileApi, $i18n } = useNuxtApp()
   const config = useRuntimeConfig()
@@ -155,7 +175,7 @@ export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatas
     if (file.filetype === 'remote') {
       return await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/`, {
         method: 'POST',
-        body: JSON.stringify(file),
+        body: JSON.stringify(resourceToApi(file)),
       })
     }
 
@@ -167,7 +187,7 @@ export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatas
     formData.set('file', file.file)
 
     const chunkSize = config.public.resourceFileUploadChunk
-    if (file.filesize > chunkSize) {
+    if (file.filesize && file.filesize > chunkSize) {
       const nbChunks = Math.ceil(file.filesize / chunkSize)
       let chunkStart = 0
       const promises = []
@@ -209,7 +229,7 @@ export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatas
     // Then we need to update the new resource with all the metadata
     const updatedNewResource = await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/${newResource.id}/`, {
       method: 'PUT',
-      body: JSON.stringify(file),
+      body: JSON.stringify(resourceToApi(file)),
     })
 
     file.state = 'loaded'

@@ -1,4 +1,4 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, Schema, RegisteredSchema } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -245,9 +245,9 @@ export type FileResourceFileType = 'file'
 
 export type ResourceFileType = RemoteResourceFileType | FileResourceFileType
 
-export type DatasetRemoteFile = { description?: string, filetype: RemoteResourceFileType, format: string, mime: string, schema?: string, title: string, type: ResourceType, url: string }
+export type DatasetRemoteFile = { description?: string, filetype: RemoteResourceFileType, format: string, mime: { text: string } | null, schema?: RegisteredSchema, title: string, type: ResourceType, url: string }
 
-export type DatasetLocalFile = { file: File, sha256?: string, description?: string, format: string, filesize: number, filetype: FileResourceFileType, mime: string, schema?: string, title: string, type: ResourceType }
+export type DatasetLocalFile = { file: File, sha256?: string, description?: string, format: string, filesize: number | null, filetype: FileResourceFileType, mime: { text: string } | null, schema?: RegisteredSchema, title: string, type: ResourceType }
 
 export type FileLoadingState = 'none' | 'loading' | 'failed' | 'loaded'
 
