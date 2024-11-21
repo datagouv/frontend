@@ -49,6 +49,11 @@
           >
             {{ t('Updated at') }}
           </AdminTableTh>
+          <AdminTableTh
+            scope="col"
+          >
+            {{ t("Action") }}
+          </AdminTableTh>
         </tr>
       </thead>
       <tbody v-if="resourcesPage">
@@ -90,9 +95,12 @@
           <td>
             <FileEditModal
               :model-value="resourceToForm(resource, schemas || [])"
+              button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
               @update:model-value="() => {}"
               @submit="(file) => saveFile(index, resource, file)"
-            />
+            >
+              <template #button />
+            </FileEditModal>
           </td>
         </tr>
       </tbody>

@@ -10,7 +10,7 @@
       #button="{ attrs, listeners }"
     >
       <button
-        class="fr-btn fr-icon-pencil-line fr-icon--sm"
+        :class="buttonClasses"
         v-bind="attrs"
         v-on="listeners"
       >
@@ -320,8 +320,10 @@ const formId = useId()
 
 const props = withDefaults(defineProps<{
   openOnMounted?: boolean
+  buttonClasses?: string
 }>(), {
   openOnMounted: false,
+  buttonClasses: 'fr-btn fr-icon-pencil-line fr-icon--sm',
 })
 const emit = defineEmits<{
   (e: 'submit', file: NewDatasetFile): void
