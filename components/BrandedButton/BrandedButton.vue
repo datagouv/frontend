@@ -20,18 +20,18 @@ const props = withDefaults(defineProps<{
   as?: 'a' | 'button'
   color?: 'primary' | 'neutral' | 'red'
   size?: 'sm' | 'md' | 'lg'
-  type?: 'primary' | 'secondary'
+  level?: 'primary' | 'secondary'
   icon?: Component
 }>(), {
   as: 'button',
   color: 'primary',
   size: 'md',
-  type: 'primary',
+  level: 'primary',
 })
 
 const colors = computed(() => {
   if (props.color === 'neutral') {
-    if (props.type === 'primary') {
+    if (props.level === 'primary') {
       return '!bg-neutral-800'
     }
     else {
@@ -39,14 +39,14 @@ const colors = computed(() => {
     }
   }
   if (props.color === 'red') {
-    if (props.type === 'primary') {
+    if (props.level === 'primary') {
       return '!bg-red-600'
     }
     else {
       return '!text-red-600 !border-red-600'
     }
   }
-  if (props.type === 'primary') {
+  if (props.level === 'primary') {
     return '!bg-primary'
   }
   return '!text-primary !border-primary'
@@ -60,9 +60,9 @@ const size = computed(() => {
 })
 
 const type = computed(() => {
-  if (props.type === 'primary') {
+  if (props.level === 'primary') {
     return ''
   }
-  return `fr-btn--${props.type} border border-solid !shadow-none`
+  return `fr-btn--${props.level} border border-solid !shadow-none`
 })
 </script>

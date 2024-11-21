@@ -15,7 +15,7 @@
     @close="emit('close')"
   >
     <DialogPanel
-      class="fr-container-md md:mx-auto fr-container--fluid pointer-events-none"
+      class="md:!container md:mx-auto fr-container--fluid pointer-events-none"
     >
       <div class="grid grid-cols-12 p-0 m-0 justify-center max-h-full overflow-auto">
         <div

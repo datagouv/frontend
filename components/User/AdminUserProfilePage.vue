@@ -36,7 +36,7 @@
         <div class="flex-none">
           <BrandedButton
             size="sm"
-            type="secondary"
+            level="secondary"
             as="a"
             :href="me.page"
             :icon="RiEyeLine"
@@ -125,7 +125,7 @@
               <BrandedButton
                 color="neutral"
                 size="sm"
-                type="secondary"
+                level="secondary"
                 :disabled="loading"
                 :icon="RiRecycleLine"
                 @click="regenerateApiKey"
@@ -137,7 +137,7 @@
               <BrandedButton
                 color="red"
                 size="sm"
-                type="secondary"
+                level="secondary"
                 :disabled="loading"
                 :icon="RiDeleteBin6Line"
                 @click="deleteApiKey"
@@ -171,7 +171,7 @@
             <BrandedButton
               color="neutral"
               size="sm"
-              type="secondary"
+              level="secondary"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changeEmailPage}`"
               :icon="RiEditLine"
@@ -204,7 +204,7 @@
             <BrandedButton
               color="neutral"
               size="sm"
-              type="secondary"
+              level="secondary"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changePasswordPage}`"
               :icon="RiEditLine"
@@ -226,35 +226,34 @@
           </p>
         </div>
         <div class="fr-col-auto">
-          <BrandedButton
-            color="red"
-            size="sm"
-            type="secondary"
-            :aria-controls="modalId"
-            :icon="RiDeleteBin6Line"
-            @click="openDeleteModal"
-          >
-            {{ $t('Delete') }}
-          </BrandedButton>
-          <Modal
-            :id="modalId"
-            :opened="openedDeleteModal"
-            :aria-labelledby="modalTitleId"
-            role="dialog"
+          <ModalWithButton
             :title="$t('Are you sure you want to delete this organization ?')"
             size="lg"
-            @close="closeDeleteModal"
           >
-            <p class="fr-text--bold">
-              {{ $t("This action can't be reverse.") }}
-            </p>
-            <p>{{ $t("All content published with this organization will stay online, with the same URL but in an anonymous form, i.e. without being linked to a data producer.") }}</p>
-            <p>{{ $t("If you want to delete your published content too, start by deleting the contents before deleting your account.") }}</p>
+            <template #button="{ attrs, listeners }">
+              <BrandedButton
+                color="red"
+                size="sm"
+                level="secondary"
+                :icon="RiDeleteBin6Line"
+                v-bind="attrs"
+                v-on="listeners"
+              >
+                {{ $t('Delete') }}
+              </BrandedButton>
+            </template>
+            <template #default>
+              <p class="fr-text--bold">
+                {{ $t("This action can't be reverse.") }}
+              </p>
+              <p>{{ $t("All content published with this organization will stay online, with the same URL but in an anonymous form, i.e. without being linked to a data producer.") }}</p>
+              <p>{{ $t("If you want to delete your published content too, start by deleting the contents before deleting your account.") }}</p>
+            </template>
             <template #footer>
               <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
                 <BrandedButton
                   color="red"
-                  type="secondary"
+                  level="secondary"
                   role="button"
                   :disabled="loading"
                   @click="deleteUser"
@@ -263,7 +262,7 @@
                 </BrandedButton>
               </div>
             </template>
-          </Modal>
+          </ModalWithButton>
         </div>
       </AdminDangerZone>
     </PaddedContainer>
@@ -273,7 +272,6 @@
 <script setup lang="ts">
 import { Avatar, CopyButton } from '@datagouv/components'
 import { RiDeleteBin6Line, RiEditLine, RiEyeLine, RiRecycleLine, RiSaveLine } from '@remixicon/vue'
-import BrandedButton from '../BrandedButton/BrandedButton.vue'
 
 const me = useMe()
 const config = useNuxtApp().$config
@@ -284,19 +282,8 @@ const { $api } = useNuxtApp()
 const apiKeyId = useId()
 const emailId = useId()
 const passwordId = useId()
-const modalId = useId()
-const modalTitleId = useId()
 
 const loading = ref(false)
-const openedDeleteModal = ref(false)
-
-function openDeleteModal() {
-  openedDeleteModal.value = true
-}
-
-function closeDeleteModal() {
-  openedDeleteModal.value = false
-}
 
 async function updateMe() {
   loading.value = true
