@@ -365,7 +365,7 @@
                         >
                           <component
                             :is="item.icon"
-                            class="inline size-4"
+                            class="size-4 -mt-1"
                           />
                           <span>{{ item.label }}</span>
                         </NuxtLinkLocale>
