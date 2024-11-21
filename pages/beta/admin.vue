@@ -9,10 +9,10 @@
           <Disclosure
             :default-open="true"
             as="div"
-            class="fr-sidemenu__inner !p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
+            class="fr-sidemenu__inner !p-2 !md:p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
           >
             <DisclosureButton
-              class="fr-sidemenu__btn"
+              class="fr-sidemenu__btn after:!mr-0"
               hidden
             >
               {{ t('Open menu') }}

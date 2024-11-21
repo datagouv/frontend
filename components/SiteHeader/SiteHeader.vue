@@ -19,7 +19,7 @@
               <div class="lg:!hidden flex flex-row items-start justify-end p-1 -mr-1 mt-1 order-3 flex-1 self-stretch z-[1000] gap-3">
                 <button
                   :id="searchButtonId"
-                  class="flex-none w-10 h-10 text-primary inline-flex items-center justify-center"
+                  class="hidden flex-none w-10 h-10 text-primary inline-flex items-center justify-center"
                   :aria-controls="searchModalId"
                   :title="$t('Search')"
                   type="button"
@@ -72,7 +72,8 @@
                 </li>
                 <li>
                   <NuxtLinkLocale
-                    to="/beta/admin/"
+                    to="/admin/"
+                    :external="true"
                     class="fr-btn fr-icon-svg fr-icon--sm"
                   >
                     <span class="fr-mr-1w fr-grid-row">
@@ -396,10 +397,10 @@
 <script setup lang="ts">
 import { RiAccountCircleLine, RiAddLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiRobot2Line, RiLineChartLine, RiServerLine, RiArticleLine } from '@remixicon/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
+import { useUserAvatar } from '@datagouv/components'
 import { NuxtLinkLocale } from '#components'
 import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'
-import { useUserAvatar } from '@datagouv/components'
 
 defineProps<{
   fluid?: boolean
