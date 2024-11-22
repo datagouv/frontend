@@ -203,7 +203,7 @@ const { form, getFirstError, getFirstWarning, touch, validate, errorsAsList: err
 })
 
 watchEffect(() => {
-  form.value.hasDocumentation = (!form.value.files.length) && form.value.files.some(file => file.type === 'documentation')
+  form.value.hasDocumentation = !!form.value.files.length && form.value.files.some(file => file.type === 'documentation')
   touch('hasDocumentation')
 })
 
