@@ -157,18 +157,20 @@
             {{ errors[0] }}
           </p>
         </Alert>
-        <div class="fr-grid-row fr-grid-row--right">
-          <AdminLoader
-            v-if="loading"
-            class="size-8"
-          />
-          <button
-            v-else
-            class="fr-btn"
+        <div class="fr-grid-row justify-between">
+          <BrandedButton
+            level="secondary"
+            @click="$emit('previous')"
+          >
+            {{ $t("Previous") }}
+          </BrandedButton>
+          <BrandedButton
+            :loading
+            level="primary"
             @click="submit"
           >
             {{ $t("Next") }}
-          </button>
+          </BrandedButton>
         </div>
       </PaddedContainer>
     </div>
@@ -179,10 +181,14 @@
 import { Well } from '@datagouv/components'
 import UploadResourceModal from '../UploadResourceModal.vue'
 import type { NewDatasetFile } from '~/types/types'
-import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
+
+defineProps<{
+  loading: boolean
+}>()
 
 const emit = defineEmits<{
-  (e: 'next', files: Array<NewDatasetFile>): void
+  previous: []
+  next: [value: Array<NewDatasetFile>]
 }>()
 
 const files = defineModel<Array<NewDatasetFile>>({ required: true })
@@ -207,7 +213,6 @@ watchEffect(() => {
   touch('hasDocumentation')
 })
 
-const loading = ref(false)
 const addFiles = (files: Array<NewDatasetFile>) => {
   for (const file of files) form.value.files.push(file)
   touch('files')
@@ -220,14 +225,13 @@ const removeFile = (position: number) => {
 const submit = () => {
   if (validate()) {
     try {
-      loading.value = true
       emit('next', form.value.files)
     }
     catch {
       // here
     }
     finally {
-      loading.value = false
+      //
     }
   }
 }

@@ -489,13 +489,23 @@
             </fieldset>
           </fieldset>
         </fieldset>
-        <div class="fr-grid-row fr-grid-row--right">
-          <button
-            class="fr-btn"
+        <div
+          class="fr-grid-row"
+          :class="{ 'fr-grid-row--right': type === 'update', 'justify-between': type === 'create' }"
+        >
+          <BrandedButton
+            v-if="type === 'create'"
+            level="secondary"
+            @click="$emit('previous')"
+          >
+            {{ $t('Previous') }}
+          </BrandedButton>
+          <BrandedButton
+            level="primary"
             @click="submit"
           >
             {{ submitLabel }}
-          </button>
+          </BrandedButton>
         </div>
       </div>
     </div>
@@ -519,7 +529,8 @@ const props = defineProps<{
   type: 'create' | 'update'
 }>()
 const emit = defineEmits<{
-  (event: 'submit'): void
+  previous: []
+  submit: []
 }>()
 
 const { t } = useI18n()

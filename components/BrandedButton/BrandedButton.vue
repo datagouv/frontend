@@ -3,7 +3,12 @@
     :is="as"
     class="fr-btn rounded-full disabled:!text-neutral-500 disabled:!border-neutral-200"
     :class="[colors, size, type]"
+    :disabled="loading"
   >
+    <AdminLoader
+      v-if="loading"
+      class="text-sm mr-1"
+    />
     <component
       :is="icon"
       v-if="icon"
@@ -21,6 +26,7 @@ const props = withDefaults(defineProps<{
   color?: 'primary' | 'neutral' | 'red'
   size?: 'sm' | 'md' | 'lg'
   level?: 'primary' | 'secondary'
+  loading?: boolean
   icon?: Component
 }>(), {
   as: 'button',
@@ -47,7 +53,7 @@ const colors = computed(() => {
     }
   }
   if (props.level === 'primary') {
-    return '!bg-primary'
+    return '!bg-primary disabled:!bg-neutral-200'
   }
   return '!text-primary !border-primary'
 })

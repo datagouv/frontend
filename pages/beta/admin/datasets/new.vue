@@ -41,11 +41,14 @@
       v-model="datasetForm"
       :submit-label="t('Next')"
       type="create"
+      @previous="moveToStep(1)"
       @submit="datasetNext"
     />
     <Step3AddFiles
       v-if="currentStep === 3"
       v-model="datasetFiles"
+      :loading
+      @previous="moveToStep(2)"
       @next="filesNext"
     />
     <Step4CompletePublication
@@ -70,10 +73,11 @@ import { toApi } from '~/utils/datasets'
 const { t } = useI18n()
 const config = useRuntimeConfig()
 const route = useRoute()
-const { $api, $fileApi } = useNuxtApp()
+const { $api } = useNuxtApp()
 
 const DATASET_FORM_STATE = 'dataset-form'
 const DATASET_FILES_STATE = 'dataset-files'
+const LOADING_STATE = 'loading'
 
 const steps = computed(() => ([
   t('Publish data on {site}', { site: config.public.title }),
@@ -81,6 +85,8 @@ const steps = computed(() => ([
   t('Add files'),
   t('Complete your publishing'),
 ]))
+
+const loading = useState(LOADING_STATE, () => false)
 
 const datasetForm = useState(DATASET_FORM_STATE, () => ({
   title: '',
@@ -120,6 +126,7 @@ const filesNext = (files: Array<NewDatasetFile>) => {
 
 async function save() {
   try {
+    loading.value = true
     newDataset.value = newDataset.value || await $api<Dataset>('/api/1/datasets/', {
       method: 'POST',
       body: JSON.stringify(toApi(datasetForm.value, { private: true })),
@@ -131,7 +138,7 @@ async function save() {
       datasetFiles.value[i].state = 'loading'
       return uploadFile(newDataset.value as Dataset, datasetFiles.value[i], 3)
     }))
-
+    loading.value = false
     if (results.every(f => f.status !== 'rejected')) {
       await moveToStep(4)
       clearNuxtState(DATASET_FORM_STATE)
@@ -142,7 +149,7 @@ async function save() {
     //
   }
   finally {
-    //
+    clearNuxtState(LOADING_STATE)
   }
 }
 
@@ -151,11 +158,17 @@ async function updateDataset(asPrivate: boolean) {
     return moveToStep(3)
   }
   if (!asPrivate) {
-    newDataset.value.private = false
-    await $api<Dataset>(`/api/1/datasets/${newDataset.value.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(newDataset.value),
-    })
+    loading.value = true
+    try {
+      newDataset.value.private = false
+      await $api<Dataset>(`/api/1/datasets/${newDataset.value.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(newDataset.value),
+      })
+    }
+    finally {
+      loading.value = false
+    }
   }
 
   await navigateTo(newDataset.value.page, { external: true })
