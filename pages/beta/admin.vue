@@ -33,6 +33,10 @@
                   :default-open="defaultOpenId === organization.id"
                   :organization="organization"
                 />
+                <AdminSidebarMenu
+                  v-if="isSiteAdmin"
+                  :default-open="false"
+                />
               </AccordionGroup>
             </DisclosurePanel>
           </Disclosure>
@@ -98,6 +102,8 @@ useHead({ title: 'Admin' })
 // Works only because we are using MongoDB and there is no
 // collision between orgs' IDs and users' IDs.
 const defaultOpenId = ref<null | string>(null)
+
+const isSiteAdmin = computed(() => me.value.roles?.includes('admin') || false)
 
 if (route.name === localeRoute('/beta/admin/')?.name) {
   if (me.value.organizations.length > 0) {

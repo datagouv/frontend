@@ -98,15 +98,7 @@ const includeInSubtype = <T, U extends T>(array: ReadonlyArray<U>, value: T): va
 export const isClosedFormat = (format: string) => includeInSubtype(CLOSED_FORMATS, format)
 
 export function getDatasetAdminUrl(dataset: Dataset | DatasetV2): string {
-  if (dataset.owner) {
-    return `/beta/admin/me/datasets/${dataset.id}`
-  }
-  else if (dataset.organization) {
-    return `/beta/admin/organizations/${dataset.organization.id}/datasets/${dataset.id}`
-  }
-  else {
-    throw new Error(`Dataset #${dataset.id} without owner and organization`)
-  }
+  return `/beta/admin/datasets/${dataset.id}`
 }
 
 export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: Array<Frequency>, zones: Array<SpatialZone>, granularities: Array<SpatialGranularity>): DatasetForm {

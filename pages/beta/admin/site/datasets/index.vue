@@ -1,9 +1,7 @@
 <template>
-  <AdminDatasetsPage :organization />
+  <AdminDatasetsPage />
 </template>
 
 <script setup lang="ts">
 import AdminDatasetsPage from '~/components/Datasets/AdminDatasetsPage.vue'
-
-const { currentOrganization: organization } = useCurrentOrganization()
 </script>

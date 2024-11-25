@@ -9,12 +9,12 @@
           {{ t('Administration') }}
         </NuxtLinkLocale>
       </li>
-      <li v-if="currentOrganization">
+      <li v-if="organization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
+          :to="`/beta/admin/organizations/${organization.id}/profile`"
         >
-          {{ currentOrganization.name }}
+          {{ organization.name }}
         </NuxtLinkLocale>
       </li>
       <li>
@@ -31,8 +31,8 @@
     </h1>
 
     <DatasetsMetrics
-      v-if="currentOrganization && pageData && pageData.total > 0"
-      :organization="currentOrganization"
+      v-if="organization && pageData && pageData.total > 0"
+      :organization
     />
 
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
@@ -45,9 +45,9 @@
         </h2>
       </div>
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <div v-if="status === 'success' && currentOrganization && pageData.total">
+        <div v-if="status === 'success' && organization && pageData.total">
           <a
-            :href="`/organizations/${currentOrganization.id}/datasets.csv`"
+            :href="`/organizations/${organization.id}/datasets.csv`"
             class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left"
           >
             {{ t('Download catalog') }}
@@ -87,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination, type Dataset } from '@datagouv/components'
+import { Pagination, type Dataset, type Organization, type User } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -96,6 +96,10 @@ import DatasetsMetrics from './DatasetsMetrics.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
 import type { DatasetSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
+const props = defineProps<{
+  organization?: Organization | null
+  user?: User | null
+}>()
 const { t } = useI18n()
 const config = useRuntimeConfig()
 
@@ -107,9 +111,6 @@ const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${s
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
-const { currentOrganization } = useCurrentOrganization()
-const me = useMe()
-
 function sort(column: DatasetSortedBy, newDirection: SortDirection) {
   sortedBy.value = column
   direction.value = newDirection
@@ -117,12 +118,15 @@ function sort(column: DatasetSortedBy, newDirection: SortDirection) {
 
 const url = computed(() => {
   let url
-  if (currentOrganization.value) {
-    url = new URL(`/api/1/organizations/${currentOrganization.value.id}/datasets/`, config.public.apiBase)
+  if (props.organization) {
+    url = new URL(`/api/1/organizations/${props.organization.id}/datasets/`, config.public.apiBase)
+  }
+  else if (props.user) {
+    url = new URL(`/api/1/datasets/`, config.public.apiBase)
+    url.searchParams.set('owner', props.user.id)
   }
   else {
     url = new URL(`/api/1/datasets/`, config.public.apiBase)
-    url.searchParams.set('owner', me.value.id)
   }
 
   url.searchParams.set('sort', sortDirection.value)
