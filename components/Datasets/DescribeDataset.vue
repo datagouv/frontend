@@ -496,6 +496,7 @@
           <BrandedButton
             v-if="type === 'create'"
             level="secondary"
+            color="neutral"
             @click="$emit('previous')"
           >
             {{ $t('Previous') }}

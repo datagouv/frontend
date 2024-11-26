@@ -49,10 +49,13 @@
     <Step2AddDatasets
       v-if="currentStep === 2"
       v-model="datasets"
+      :loading
+      @previous="moveToStep(1)"
       @next="datasetsNext"
     />
     <Step3CompletePublication
       v-if="currentStep === 3 && newReuse"
+      :loading
       :reuse="newReuse"
       @next="updateReuse"
     />
@@ -84,6 +87,7 @@ const steps = computed(() => [
 
 const REUSE_FORM_STATE = 'reuse-form'
 const REUSE_DATASET_STATE = 'reuse-datasets'
+const LOADING_STATE = 'reuse-loading'
 
 const reuseForm = useState(
   REUSE_FORM_STATE,
@@ -98,6 +102,11 @@ const reuseForm = useState(
       tags: [],
       image: null,
     } as ReuseForm),
+)
+
+const loading = useState<boolean>(
+  LOADING_STATE,
+  () => false,
 )
 
 const datasets = useState<Array<Dataset | DatasetSuggest>>(
@@ -124,28 +133,35 @@ function moveToStep(step: number) {
 function reuseNext() {
   moveToStep(2)
 }
+
 function datasetsNext() {
   save()
 }
 
 async function save() {
-  newReuse.value = await $api<Reuse>('/api/1/reuses/', {
-    method: 'POST',
-    body: JSON.stringify(toApi(reuseForm.value, { private: true, datasets: datasets.value })),
-  })
-
-  if (reuseForm.value.image && typeof reuseForm.value.image !== 'string') {
-    const formData = new FormData()
-    formData.set('file', reuseForm.value.image)
-    await $fileApi(`/api/1/reuses/${newReuse.value.id}/image`, {
+  try {
+    loading.value = true
+    newReuse.value = await $api<Reuse>('/api/1/reuses/', {
       method: 'POST',
-      body: formData,
+      body: JSON.stringify(toApi(reuseForm.value, { private: true, datasets: datasets.value })),
     })
-  }
 
-  await moveToStep(3)
-  clearNuxtState(REUSE_FORM_STATE)
-  clearNuxtState(REUSE_DATASET_STATE)
+    if (reuseForm.value.image && typeof reuseForm.value.image !== 'string') {
+      const formData = new FormData()
+      formData.set('file', reuseForm.value.image)
+      await $fileApi(`/api/1/reuses/${newReuse.value.id}/image/`, {
+        method: 'POST',
+        body: formData,
+      })
+    }
+
+    await moveToStep(3)
+    clearNuxtState(REUSE_FORM_STATE)
+    clearNuxtState(REUSE_DATASET_STATE)
+  }
+  finally {
+    clearNuxtState(LOADING_STATE)
+  }
 }
 
 async function updateReuse(asPrivate: boolean) {
@@ -153,11 +169,17 @@ async function updateReuse(asPrivate: boolean) {
     return moveToStep(3)
   }
   if (!asPrivate) {
-    newReuse.value.private = false
-    await $api<Reuse>(`/api/1/reuses/${newReuse.value.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(newReuse.value),
-    })
+    try {
+      loading.value = true
+      newReuse.value.private = false
+      await $api<Reuse>(`/api/1/reuses/${newReuse.value.id}/`, {
+        method: 'PUT',
+        body: JSON.stringify(newReuse.value),
+      })
+    }
+    finally {
+      loading.value = false
+    }
   }
 
   await navigateTo(newReuse.value.page, { external: true })

@@ -34,18 +34,21 @@
         {{ $t('Give us your feedback on the publishing form') }}
       </a>
       <div class="fr-grid-row fr-grid-row--right">
-        <button
-          class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500 fr-mr-3v"
+        <BrandedButton
+          class="mr-3"
+          level="secondary"
+          color="neutral"
+          :disabled="loading"
           @click="submit(true)"
         >
           {{ $t("Save as draft") }}
-        </button>
-        <button
-          class="fr-btn"
+        </BrandedButton>
+        <BrandedButton
+          :loading
           @click="submit(false)"
         >
           {{ $t("Publish the dataset") }}
-        </button>
+        </BrandedButton>
       </div>
     </div>
   </div>
@@ -54,7 +57,10 @@
 <script setup lang="ts">
 import { Well, type Dataset } from '@datagouv/components'
 
-const props = defineProps<{ dataset: Dataset }>()
+const props = defineProps<{
+  dataset: Dataset
+  loading: boolean
+}>()
 
 const publicDataset = computed(() => ({ ...props.dataset, private: false }))
 

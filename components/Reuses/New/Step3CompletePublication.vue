@@ -38,18 +38,21 @@
         {{ $t('Give us your feedback on the publishing form') }}
       </a>
       <div class="fr-grid-row fr-grid-row--right">
-        <button
-          class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500 fr-mr-3v"
+        <BrandedButton
+          class="mr-3"
+          level="secondary"
+          color="neutral"
+          :disabled="loading"
           @click="submit(true)"
         >
           {{ $t("Save as draft") }}
-        </button>
-        <button
-          class="fr-btn"
+        </BrandedButton>
+        <BrandedButton
+          :loading
           @click="submit(false)"
         >
           {{ $t("Publish the reuse") }}
-        </button>
+        </BrandedButton>
       </div>
     </div>
   </div>
@@ -59,7 +62,10 @@
 import { Well, type Reuse } from '@datagouv/components'
 import ReuseCard from '~/components/Reuses/Card/Card.vue'
 
-defineProps<{ reuse: Reuse }>()
+defineProps<{
+  reuse: Reuse
+  loading: boolean
+}>()
 
 const emit = defineEmits<{
   (e: 'next', asPrivate: boolean): void
