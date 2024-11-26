@@ -87,7 +87,6 @@ const steps = computed(() => [
 
 const REUSE_FORM_STATE = 'reuse-form'
 const REUSE_DATASET_STATE = 'reuse-datasets'
-const LOADING_STATE = 'reuse-loading'
 
 const reuseForm = useState(
   REUSE_FORM_STATE,
@@ -105,7 +104,7 @@ const reuseForm = useState(
 )
 
 const loading = useState<boolean>(
-  LOADING_STATE,
+  'reuse-loading',
   () => false,
 )
 
@@ -160,7 +159,7 @@ async function save() {
     clearNuxtState(REUSE_DATASET_STATE)
   }
   finally {
-    clearNuxtState(LOADING_STATE)
+    loading.value = false
   }
 }
 
