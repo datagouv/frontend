@@ -160,6 +160,7 @@
         <div class="fr-grid-row justify-between">
           <BrandedButton
             level="secondary"
+            color="neutral"
             @click="$emit('previous')"
           >
             {{ $t("Previous") }}

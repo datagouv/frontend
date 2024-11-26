@@ -289,6 +289,8 @@
               :has-error="!!getFirstError('image')"
               :has-warning="!!getFirstWarning('image')"
               :error-text="getFirstError('image')"
+              :show-label="true"
+              :required="true"
               @change="setFiles"
             />
             <div

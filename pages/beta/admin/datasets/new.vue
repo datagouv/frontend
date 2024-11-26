@@ -54,6 +54,7 @@
     <Step4CompletePublication
       v-if="currentStep === 4 && newDataset"
       :dataset="newDataset"
+      :loading
       @next="updateDataset"
     />
     <div class="h-64" />
@@ -77,7 +78,7 @@ const { $api } = useNuxtApp()
 
 const DATASET_FORM_STATE = 'dataset-form'
 const DATASET_FILES_STATE = 'dataset-files'
-const LOADING_STATE = 'loading'
+const LOADING_STATE = 'dataset-loading'
 
 const steps = computed(() => ([
   t('Publish data on {site}', { site: config.public.title }),
