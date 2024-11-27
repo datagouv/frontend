@@ -44,7 +44,14 @@
           {{ t('{n} datasets', pageData.total) }}
         </h2>
       </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
+      <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
+        <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
+          <!-- <AdminInput
+            v-model="q"
+            :icon="RiSearchLine"
+            :placeholder="$t('Search')"
+          /> -->
+        </div>
         <div v-if="status === 'success' && organization && pageData.total">
           <a
             :href="`/organizations/${organization.id}/datasets.csv`"
@@ -91,6 +98,7 @@ import { Pagination, type Dataset, type Organization, type User } from '@datagou
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+// import { RiSearchLine } from '@remixicon/vue'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import DatasetsMetrics from './DatasetsMetrics.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
