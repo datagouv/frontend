@@ -82,10 +82,26 @@
             </div>
           </td>
           <td>{{ formatDate(organization.created_at) }}</td>
-          <td>{{ organization.metrics.datasets || 0 }}</td>
-          <td>{{ organization.metrics.dataservices || 0 }}</td>
-          <td>{{ organization.metrics.reuses || 0 }}</td>
-          <td>{{ organization.metrics.members || 0 }}</td>
+          <td>
+            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/datasets`">
+              {{ organization.metrics.datasets || 0 }}
+            </NuxtLinkLocale>
+          </td>
+          <td>
+            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/dataservices`">
+              {{ organization.metrics.dataservices || 0 }}
+            </NuxtLinkLocale>
+          </td>
+          <td>
+            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/reuses`">
+              {{ organization.metrics.reuses || 0 }}
+            </NuxtLinkLocale>
+          </td>
+          <td>
+            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/members`">
+              {{ organization.metrics.members || 0 }}
+            </NuxtLinkLocale>
+          </td>
         </tr>
       </tbody>
     </AdminTable>
