@@ -198,7 +198,6 @@
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="addDescriptionAccordionId"
-            @blur="vWarning$.description.$touch"
           >
             <InputGroup
               v-model="organization.description"
@@ -210,6 +209,7 @@
               :has-error="fieldHasError('description')"
               :has-warning="fieldHasWarning('description')"
               :error-text="getErrorText('description')"
+              @change="vWarning$.description.$touch"
             />
           </LinkedToAccordion>
           <LinkedToAccordion
