@@ -50,21 +50,20 @@
               <small v-if="organization.acronym">{{ organization.acronym }}</small>
             </a>
           </h4>
-          <!-- <Suspense>
+          <Suspense>
             <AsyncTextClamp
               class="fr-mt-1w fr-mb-2w fr-hidden fr-unhidden-sm overflow-wrap-anywhere"
               :auto-resize="true"
               :text="removeMarkdown(organization.description)"
               :max-lines="2"
             />
-          </Suspense> -->
+          </Suspense>
         </div>
       </div>
     </article>
     <div class="fr-grid-row fr-grid-row--right gap-3">
       <NuxtLinkLocale
         :to="`/beta/admin/organizations/${organization.id}/profile`"
-        :external="true"
         class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
       >
         {{ $t("Manage the organization") }}
@@ -106,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Organization } from '@datagouv/components'
+import { removeMarkdown, Well, type Organization } from '@datagouv/components'
 
 defineProps<{
   organization: Organization

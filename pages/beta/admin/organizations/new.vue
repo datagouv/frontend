@@ -42,6 +42,8 @@
       v-if="currentStep === 2"
       :organization="organizationForm"
       :errors="errors"
+      :loading
+      @previous="moveToStep(1)"
       @submit="createOrganizationAndMoveToNextStep"
     />
     <OrganizationNewStep3CompleteTheOrganization
@@ -83,6 +85,8 @@ const organizationForm = ref<NewOrganization>({
 const errors = ref<Array<string>>([])
 const newOrganization = useState<Organization | null>('new-organization', () => null)
 
+const loading = ref<boolean>(false)
+
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 
 const isCurrentStepValid = computed(() => {
@@ -102,6 +106,7 @@ async function createOrganizationAndMoveToNextStep(org: NewOrganization, logo_fi
   errors.value = []
   let moveToNextStep = false
   try {
+    loading.value = true
     newOrganization.value = await $api<Organization>('/api/1/organizations/', {
       method: 'POST',
       body: JSON.stringify(org),
@@ -113,13 +118,20 @@ async function createOrganizationAndMoveToNextStep(org: NewOrganization, logo_fi
       errors.value.push(e.message)
     }
   }
+  finally {
+    loading.value = false
+  }
   if (logo_file && newOrganization.value) {
     try {
+      loading.value = true
       const resp = await uploadLogo(newOrganization.value.id, logo_file)
       newOrganization.value.logo_thumbnail = resp.image
     }
-    catch (_e) {
+    catch {
       errors.value.push(t('Failed to upload logo, you can upload it again in your management panel'))
+    }
+    finally {
+      loading.value = false
     }
   }
   if (moveToNextStep) {
