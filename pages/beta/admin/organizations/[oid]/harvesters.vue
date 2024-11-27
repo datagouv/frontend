@@ -155,7 +155,7 @@ const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${s
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
-const { currentOrganization } = useCurrentOrganization()
+const { currentOrganization } = await useOrganizations()
 
 const url = computed(() => {
   const url = new URL(`/api/1/harvest/sources/`, config.public.apiBase)

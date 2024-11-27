@@ -1,16 +1,26 @@
-export function useCurrentOrganization() {
-  const me = useMe();
-  const route = useRoute();
+import type { Organization } from '@datagouv/components'
+import { keyBy } from 'lodash-es'
 
-  const org = computed(() => {
+export async function useOrganizations() {
+  const me = useMe()
+  const route = useRoute()
+
+  const organizations = useState('organizations', () => keyBy(me.value.organizations, org => org.id))
+
+  if (route.params.oid && !Array.isArray(route.params.oid) && me.value.roles?.includes('admin') && !(route.params.oid in organizations.value)) {
+    await useAPI<Organization>(`/api/1/organizations/${route.params.oid}`)
+      .then(({ data: organization }) => {
+        organizations.value[organization.value.id] = organization.value
+      })
+  }
+
+  const currentOrganization = computed(() => {
     if (!route.params.oid || Array.isArray(route.params.oid)) {
       return null
     }
 
-    return me.value.organizations.find((org) => org.id === route.params.oid)
+    return organizations.value[route.params.oid] || null
   })
 
-  return {
-    currentOrganization: org,
-  }
+  return { organizations, currentOrganization }
 }

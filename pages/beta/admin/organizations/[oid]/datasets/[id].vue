@@ -67,7 +67,7 @@ import TabLinks from '~/components/TabLinks.vue'
 const { t } = useI18n()
 
 const route = useRoute()
-const { currentOrganization } = useCurrentOrganization()
+const { currentOrganization } = await useOrganizations()
 const url = computed(() => `/api/1/datasets/${route.params.id}`)
 const { data: dataset } = await useAPI<Dataset>(url, { lazy: true })
 </script>

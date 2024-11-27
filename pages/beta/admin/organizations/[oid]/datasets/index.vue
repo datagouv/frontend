@@ -1,9 +1,12 @@
 <template>
-  <AdminDatasetsPage :organization />
+  <AdminDatasetsPage
+    v-if="organization"
+    :organization
+  />
 </template>
 
 <script setup lang="ts">
 import AdminDatasetsPage from '~/components/Datasets/AdminDatasetsPage.vue'
 
-const { currentOrganization: organization } = useCurrentOrganization()
+const { currentOrganization: organization } = await useOrganizations()
 </script>
