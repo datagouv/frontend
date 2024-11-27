@@ -111,7 +111,6 @@ watchEffect(() => {
 
 watchEffect(() => {
   if (dataset.value && dataset.value.organization) {
-    console.log('setting current org')
     setCurrentOrganization(dataset.value.organization)
   }
 })
