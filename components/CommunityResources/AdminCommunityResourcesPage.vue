@@ -9,12 +9,12 @@
           {{ t('Administration') }}
         </NuxtLinkLocale>
       </li>
-      <li v-if="currentOrganization">
+      <li v-if="organization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
+          :to="`/beta/admin/organizations/${organization.id}/profile`"
         >
-          {{ currentOrganization.name }}
+          {{ organization.name }}
         </NuxtLinkLocale>
       </li>
       <li>
@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination, type CommunityResource } from '@datagouv/components'
+import { Pagination, type CommunityResource, type Organization, type User } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -81,6 +81,10 @@ import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import AdminCommunityResourcesTable from '../AdminTable/AdminCommunityResourcesTable/AdminCommunityResourcesTable.vue'
 import type { CommunityResourceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
+const props = defineProps<{
+  organization?: Organization | null
+  user?: User | null
+}>()
 const { t } = useI18n()
 const config = useRuntimeConfig()
 
@@ -92,9 +96,6 @@ const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${s
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
-const { currentOrganization } = await useOrganizations()
-const me = useMe()
-
 function sort(column: CommunityResourceSortedBy, newDirection: SortDirection) {
   sortedBy.value = column
   direction.value = newDirection
@@ -102,11 +103,11 @@ function sort(column: CommunityResourceSortedBy, newDirection: SortDirection) {
 
 const url = computed(() => {
   const url = new URL(`/api/1/datasets/community_resources/`, config.public.apiBase)
-  if (currentOrganization.value) {
-    url.searchParams.set('organization', currentOrganization.value.id)
+  if (props.organization) {
+    url.searchParams.set('organization', props.organization.id)
   }
-  else {
-    url.searchParams.set('owner', me.value.id)
+  else if (props.user) {
+    url.searchParams.set('owner', props.user.id)
   }
 
   url.searchParams.set('sort', sortDirection.value)
