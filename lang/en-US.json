@@ -750,6 +750,9 @@
   "The dataservice will only be visible to members of your organization.": "The dataservice will only be visible to members of your organization.",
   "The reuse will only be visible to members of your organization.": "The reuse will only be visible to members of your organization.",
   "{n} files": "{n} files | {n} file | {n} files",
+  "Site": "Site",
+  "{n} organizations": "{n} organizations | {n} organization | {n} organizations",
+  "{n} users": "{n} users | {n} user | {n} users",
 
   "": ""
 }
