@@ -226,7 +226,6 @@
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
                   :accordion="writeAGoodDescriptionAccordionId"
-                  @blur="touch('description')"
                 >
                   <InputGroup
                     v-model="form.description"
@@ -234,6 +233,7 @@
                     :has-warning="!!getFirstWarning('description')"
                     :error-text="getFirstWarning('description')"
                     type="markdown"
+                    @change="touch('description')"
                   />
                 </LinkedToAccordion>
                 <LinkedToAccordion

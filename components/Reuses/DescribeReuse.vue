@@ -253,7 +253,6 @@
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="addDescriptionAccordionId"
-            @blur="touch('description')"
           >
             <InputGroup
               v-model="reuseForm.description"
@@ -263,6 +262,7 @@
               :has-error="!!getFirstError('description')"
               :has-warning="!!getFirstWarning('description')"
               :error-text="getFirstError('description')"
+              @change="touch('description')"
             />
           </LinkedToAccordion>
           <LinkedToAccordion
