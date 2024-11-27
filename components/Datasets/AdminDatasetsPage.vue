@@ -142,8 +142,6 @@ const url = computed(() => {
   url.searchParams.set('page_size', pageSize.value.toString())
   url.searchParams.set('page', page.value.toString())
 
-  console.log(url.toString())
-
   return url.toString()
 })
 
