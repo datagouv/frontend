@@ -9,30 +9,32 @@
           {{ t('Administration') }}
         </NuxtLinkLocale>
       </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/datasets`"
-        >
-          {{ t('Datasets') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="dataset">
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ dataset.title }}
-        </a>
-      </li>
+      <template v-if="dataset">
+        <li v-if="dataset.organization">
+          <NuxtLinkLocale
+            class="fr-breadcrumb__link"
+            :to="`/beta/admin/organizations/${dataset.organization.id}/profile`"
+          >
+            {{ dataset.organization.name }}
+          </NuxtLinkLocale>
+        </li>
+        <li v-if="dataset.organization">
+          <NuxtLinkLocale
+            class="fr-breadcrumb__link"
+            :to="`/beta/admin/organizations/${dataset.organization.id}/datasets`"
+          >
+            {{ t('Datasets') }}
+          </NuxtLinkLocale>
+        </li>
+        <li>
+          <a
+            class="fr-breadcrumb__link"
+            aria-current="page"
+          >
+            {{ dataset.title }}
+          </a>
+        </li>
+      </template>
     </Breadcrumb>
 
     <div v-if="dataset">
@@ -67,7 +69,6 @@ import TabLinks from '~/components/TabLinks.vue'
 const { t } = useI18n()
 
 const route = useRoute()
-const { currentOrganization } = await useOrganizations()
 const url = computed(() => `/api/1/datasets/${route.params.id}`)
 const { data: dataset } = await useAPI<Dataset>(url, { lazy: true })
 </script>

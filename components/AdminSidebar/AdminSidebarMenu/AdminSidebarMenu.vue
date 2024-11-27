@@ -33,6 +33,12 @@
             {{ organization.name }}
           </p>
         </template>
+        <template v-else>
+          <RiPlanetLine class="size-6" />
+          <p class="mx-2 fr-col text-ellipsis whitespace-nowrap overflow-hidden">
+            {{ $t('Site') }}
+          </p>
+        </template>
       </DisclosureButton>
       <DisclosurePanel
         v-show="expanded"
@@ -116,6 +122,23 @@
               @click="$emit('click')"
             />
           </template>
+          <template v-else>
+            <AdminSidebarLink
+              :icon="RiDatabase2Line"
+              :label="$t('Datasets')"
+              to="/beta/admin/site/datasets"
+            />
+            <AdminSidebarLink
+              :icon="RiRobot2Line"
+              :label="$t('Dataservices')"
+              to="/beta/admin/site/dataservices"
+            />
+            <AdminSidebarLink
+              :icon="RiLineChartLine"
+              :label="$t('Reuses')"
+              to="/beta/admin/site/reuses"
+            />
+          </template>
         </ul>
       </DisclosurePanel>
     </li>
@@ -125,7 +148,7 @@
 <script setup lang="ts">
 import { Avatar, type Organization, type User } from '@datagouv/components'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { RiAccountCircleLine, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiLineChartLine, RiParentLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
+import { RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 import AdminSidebarLink from '~/components/AdminSidebar/AdminSidebarLink/AdminSidebarLink.vue'
 

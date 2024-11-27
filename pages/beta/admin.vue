@@ -28,10 +28,14 @@
                   :default-open="defaultOpenId === me.id"
                 />
                 <AdminSidebarMenu
-                  v-for="organization in me.organizations"
+                  v-for="organization in organizations"
                   :key="organization.id"
-                  :default-open="defaultOpenId === organization.id"
                   :organization="organization"
+                  :default-open="defaultOpenId === organization.id"
+                />
+                <AdminSidebarMenu
+                  v-if="isSiteAdmin"
+                  :default-open="false"
                 />
               </AccordionGroup>
             </DisclosurePanel>
@@ -97,7 +101,11 @@ useHead({ title: 'Admin' })
 
 // Works only because we are using MongoDB and there is no
 // collision between orgs' IDs and users' IDs.
-const defaultOpenId = ref<null | string>(null)
+
+const { organizations, currentOrganization } = await useOrganizations()
+const defaultOpenId = ref<null | string>(currentOrganization.value?.id || null)
+
+const isSiteAdmin = computed(() => me.value.roles?.includes('admin') || false)
 
 if (route.name === localeRoute('/beta/admin/')?.name) {
   if (me.value.organizations.length > 0) {

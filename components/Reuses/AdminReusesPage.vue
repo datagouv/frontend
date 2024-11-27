@@ -9,12 +9,12 @@
           {{ t('Administration') }}
         </NuxtLinkLocale>
       </li>
-      <li v-if="currentOrganization">
+      <li v-if="organization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
+          :to="`/beta/admin/organizations/${organization.id}/profile`"
         >
-          {{ currentOrganization.name }}
+          {{ organization.name }}
         </NuxtLinkLocale>
       </li>
       <li>
@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination, type Reuse } from '@datagouv/components'
+import { Pagination, type Organization, type Reuse, type User } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -85,6 +85,11 @@ import type { PaginatedArray, ReuseSortedBy, SortDirection } from '~/types/types
 const { t } = useI18n()
 const config = useRuntimeConfig()
 
+const props = defineProps<{
+  organization?: Organization | null
+  user?: User | null
+}>()
+
 const page = ref(1)
 const pageSize = ref(10)
 const sortedBy = ref<ReuseSortedBy>('created')
@@ -93,9 +98,6 @@ const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${s
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
-const { currentOrganization } = useCurrentOrganization()
-const me = useMe()
-
 function sort(column: ReuseSortedBy, newDirection: SortDirection) {
   sortedBy.value = column
   direction.value = newDirection
@@ -103,11 +105,11 @@ function sort(column: ReuseSortedBy, newDirection: SortDirection) {
 
 const url = computed(() => {
   const url = new URL(`/api/1/reuses/`, config.public.apiBase)
-  if (currentOrganization.value) {
-    url.searchParams.set('organization', currentOrganization.value.id)
+  if (props.organization) {
+    url.searchParams.set('organization', props.organization.id)
   }
-  else {
-    url.searchParams.set('owner', me.value.id)
+  else if (props.user) {
+    url.searchParams.set('owner', props.user.id)
   }
 
   url.searchParams.set('sort', sortDirection.value)
