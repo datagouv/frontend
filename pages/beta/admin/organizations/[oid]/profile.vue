@@ -164,7 +164,7 @@ const oid = route.params.oid as string
 const localPath = useLocalePath()
 const form = ref<InstanceType<typeof DescribeOrganizationFrom> | null>(null)
 
-const { currentOrganization } = useCurrentOrganization()
+const { currentOrganization } = await useOrganizations()
 
 const errors = ref([])
 

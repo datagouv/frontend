@@ -9,18 +9,10 @@
           {{ t('Administration') }}
         </NuxtLinkLocale>
       </li>
-      <li v-if="currentOrganization">
+      <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/reuses`"
+          to="/beta/admin/me/reuses"
         >
           {{ t('Reuses') }}
         </NuxtLinkLocale>
@@ -68,8 +60,6 @@ import type { Reuse } from '@datagouv/components'
 import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
-
-const { currentOrganization } = await useOrganizations()
 
 const route = useRoute()
 const url = computed(() => `/api/1/reuses/${route.params.id}`)

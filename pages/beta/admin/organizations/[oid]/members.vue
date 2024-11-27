@@ -293,7 +293,7 @@ const { $api } = useNuxtApp()
 
 const me = useMe()
 
-const { currentOrganization } = useCurrentOrganization()
+const { currentOrganization } = await useOrganizations()
 
 const url = computed(() => {
   if (!currentOrganization.value) {
