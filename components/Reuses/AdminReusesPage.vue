@@ -38,8 +38,12 @@
           {{ t('{n} reuses', pageData.total) }}
         </h2>
       </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <!-- Buttons -->
+      <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
+        <!-- <AdminInput
+          v-model="q"
+          :icon="RiSearchLine"
+          :placeholder="$t('Search')"
+        /> -->
       </div>
     </div>
     <AdminReusesTable
@@ -78,6 +82,7 @@ import { Pagination, type Organization, type Reuse, type User } from '@datagouv/
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+// import { RiSearchLine } from '@remixicon/vue'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import AdminReusesTable from '../AdminTable/AdminReusesTable/AdminReusesTable.vue'
 import type { PaginatedArray, ReuseSortedBy, SortDirection } from '~/types/types'

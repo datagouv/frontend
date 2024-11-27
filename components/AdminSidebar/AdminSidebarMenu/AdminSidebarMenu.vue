@@ -138,6 +138,16 @@
               :label="$t('Reuses')"
               to="/beta/admin/site/reuses"
             />
+            <AdminSidebarLink
+              :icon="RiServerLine"
+              :label="$t('Harvesters')"
+              to="/beta/admin/site/harvesters"
+            />
+            <AdminSidebarLink
+              :icon="RiGitPullRequestLine"
+              :label="$t('Community Resources')"
+              to="/beta/admin/site/community-resources"
+            />
           </template>
         </ul>
       </DisclosurePanel>
