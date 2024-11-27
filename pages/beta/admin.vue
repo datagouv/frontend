@@ -116,12 +116,15 @@ if (route.name === localeRoute('/beta/admin/')?.name) {
   }
 }
 
-onMounted(() => {
-  if (route.params.oid && !Array.isArray(route.params.oid)) {
-    defaultOpenId.value = route.params.oid
+watchEffect(() => {
+  if (currentOrganization.value) {
+    defaultOpenId.value = currentOrganization.value.id
   }
   else if (route.path.includes('/me')) {
     defaultOpenId.value = me.value.id
+  }
+  else {
+    defaultOpenId.value = null
   }
 })
 </script>
