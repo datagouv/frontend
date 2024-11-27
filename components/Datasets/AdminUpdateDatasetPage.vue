@@ -60,6 +60,7 @@
 <script setup lang="ts">
 import type { Dataset, Frequency, License } from '@datagouv/components'
 import { RiDeleteBin6Line } from '@remixicon/vue'
+import { useCurrentOrganization } from '#build/imports'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import type { DatasetForm, EnrichedLicense, SpatialGranularity } from '~/types/types'
 import { toForm, toApi } from '~/utils/datasets'
@@ -72,6 +73,8 @@ const route = useRoute()
 const loading = ref(false)
 
 const localePath = useLocalePath()
+
+const { setCurrentOrganization } = await useOrganizations()
 
 const { toast } = useToast()
 
@@ -103,6 +106,12 @@ const datasetForm = ref<DatasetForm | null>(null)
 watchEffect(() => {
   if (dataset.value && licenses.value && frequencies.value && granularities.value) {
     datasetForm.value = toForm(dataset.value, licenses.value, frequencies.value, [], granularities.value)
+  }
+})
+
+watchEffect(() => {
+  if (dataset.value && dataset.value.organization) {
+    setCurrentOrganization(dataset.value.organization)
   }
 })
 

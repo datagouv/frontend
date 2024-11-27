@@ -193,9 +193,12 @@ const register = inject(key) as AccordionRegister
 
 const { expanded, toggle, unregister } = register()
 
-if (props.defaultOpen) {
-  toggle()
-}
+watchEffect(() => {
+  if (props.defaultOpen) {
+    console.log('Opening')
+    toggle()
+  }
+})
 
 onUnmounted(unregister)
 </script>
