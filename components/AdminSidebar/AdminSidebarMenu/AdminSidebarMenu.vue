@@ -139,6 +139,16 @@
               to="/beta/admin/site/reuses"
             />
             <AdminSidebarLink
+              :icon="RiBuilding2Line"
+              :label="$t('Organizations')"
+              to="/beta/admin/site/organizations"
+            />
+            <AdminSidebarLink
+              :icon="RiGroup3Line"
+              :label="$t('Users')"
+              to="/beta/admin/site/users"
+            />
+            <AdminSidebarLink
               :icon="RiServerLine"
               :label="$t('Harvesters')"
               to="/beta/admin/site/harvesters"
@@ -158,7 +168,7 @@
 <script setup lang="ts">
 import { Avatar, type Organization, type User } from '@datagouv/components'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
+import { RiBuilding2Line, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiGroup3Line, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 import AdminSidebarLink from '~/components/AdminSidebar/AdminSidebarLink/AdminSidebarLink.vue'
 
