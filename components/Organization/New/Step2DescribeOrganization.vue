@@ -282,18 +282,27 @@
             {{ errors[0] }}
           </p>
         </Alert>
-        <div class="fr-grid-row fr-grid-row--right">
+        <div class="fr-grid-row justify-between">
+          <BrandedButton
+            level="secondary"
+            color="neutral"
+            @click="$emit('previous')"
+          >
+            {{ t("Previous") }}
+          </BrandedButton>
           <slot
             name="submitButton"
-            :submit="submit"
+            :loading
+            :submit
           >
-            <button
-              class="fr-btn"
+            <BrandedButton
+              level="primary"
               data-testid="submitButton"
+              :loading
               @click="submit"
             >
               {{ t("Next") }}
-            </button>
+            </BrandedButton>
           </slot>
         </div>
         <slot />
@@ -320,15 +329,18 @@ import Sidemenu from '~/components/Sidemenu/Sidemenu.vue'
 const props = withDefaults(defineProps<{
   organization: NewOrganization | Organization
   errors: Array<string>
+  loading?: boolean
   showLegend?: boolean
   showWell?: boolean
 }>(), {
+  loading: false,
   showLegend: true,
   showWell: true,
 })
 
 const emit = defineEmits<{
-  (event: 'submit', submittedOrganization: typeof props.organization, file: File | null): void
+  previous: []
+  submit: [submittedOrganization: typeof props.organization, file: File | null]
 }>()
 
 const legend = 'description-legend'
