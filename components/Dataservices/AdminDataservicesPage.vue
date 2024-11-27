@@ -38,6 +38,13 @@
           {{ t('{n} dataservices', pageData.total) }}
         </h2>
       </div>
+      <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
+        <AdminInput
+          v-model="q"
+          :icon="RiSearchLine"
+          :placeholder="$t('Search')"
+        />
+      </div>
     </div>
     <AdminDataservicesTable
       v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
@@ -75,7 +82,9 @@ import { Pagination, type Dataservice, type Organization, type User } from '@dat
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RiSearchLine } from '@remixicon/vue'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
+import AdminInput from '../AdminInput.vue'
 import AdminDataservicesTable from '~/components/AdminTable/AdminDataservicesTable/AdminDataservicesTable.vue'
 import type { DataserviceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
