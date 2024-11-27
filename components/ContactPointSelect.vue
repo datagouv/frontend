@@ -10,7 +10,7 @@
         :get-option-id="(option) => 'id' in option ? option.id : 'new'"
         :multiple="false"
         required
-
+        :loading
         :error-text
         :warning-text
       >
@@ -100,7 +100,8 @@ const props = defineProps<{
 }>()
 
 const contactsUrl = computed(() => `/api/1/organizations/${props.organization.id}/contacts`)
-const { data: contacts } = await useAPI<PaginatedArray<ContactPoint>>(contactsUrl, { lazy: true })
+const { data: contacts, status } = await useAPI<PaginatedArray<ContactPoint>>(contactsUrl, { lazy: true })
+const loading = computed(() => status.value === 'pending')
 const contactsWithNewOption = computed<Array<ContactPointInForm>>(() => {
   return [
     ...contacts.value?.data || [],
