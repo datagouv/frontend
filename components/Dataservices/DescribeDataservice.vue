@@ -244,7 +244,6 @@
           <LinkedToAccordion
             class="fr-fieldset__element min-width-0"
             :accordion="addDescriptionAccordionId"
-            @blur="touch('description')"
           >
             <InputGroup
               v-model="form.description"
@@ -254,6 +253,7 @@
               :has-error="!!getFirstError('description')"
               :has-warning="!!getFirstWarning('description')"
               :error-text="getFirstError('description')"
+              @change="touch('description')"
             />
           </LinkedToAccordion>
           <LinkedToAccordion
@@ -422,28 +422,38 @@
               :has-warning="!!getFirstWarning('business_documentation_url')"
               :error-text="getFirstError('business_documentation_url')"
             />
-          </LinkedToAccordion>          
+          </LinkedToAccordion>
           <fieldset
-            class="fr-fieldset__element"
             v-if="type === 'update'"
+            class="fr-fieldset__element"
           >
-            <fieldset class="fr-fieldset" id="checkboxes-hint-el-sm" aria-labelledby="checkboxes-hint-el-sm-legend checkboxes-hint-el-sm-messages">
+            <fieldset
+              id="checkboxes-hint-el-sm"
+              class="fr-fieldset"
+              aria-labelledby="checkboxes-hint-el-sm-legend checkboxes-hint-el-sm-messages"
+            >
               <div class="fr-fieldset__element">
-                  <div class="fr-checkbox-group fr-checkbox-group--sm">
-                      <input 
-                        name="checkboxes-hint-el-sm-1" 
-                        id="checkboxes-hint-el-sm-1" 
-                        type="checkbox" 
-                        aria-describedby="checkboxes-hint-el-sm-1-messages"
-                        v-model="dataserviceForm.private"
-                      >
-                      <label class="fr-label" for="checkboxes-hint-el-sm-1">
-                          {{ t('Switch to private mode') }}
-                          <span class="fr-hint-text">{{ t('The dataservice will only be visible to members of your organization.') }}</span>
-                      </label>
-                      <div class="fr-messages-group" id="checkboxes-hint-el-sm-1-messages" aria-live="assertive">
-                      </div>
-                  </div>
+                <div class="fr-checkbox-group fr-checkbox-group--sm">
+                  <input
+                    id="checkboxes-hint-el-sm-1"
+                    v-model="dataserviceForm.private"
+                    name="checkboxes-hint-el-sm-1"
+                    type="checkbox"
+                    aria-describedby="checkboxes-hint-el-sm-1-messages"
+                  >
+                  <label
+                    class="fr-label"
+                    for="checkboxes-hint-el-sm-1"
+                  >
+                    {{ t('Switch to private mode') }}
+                    <span class="fr-hint-text">{{ t('The dataservice will only be visible to members of your organization.') }}</span>
+                  </label>
+                  <div
+                    id="checkboxes-hint-el-sm-1-messages"
+                    class="fr-messages-group"
+                    aria-live="assertive"
+                  />
+                </div>
               </div>
             </fieldset>
           </fieldset>

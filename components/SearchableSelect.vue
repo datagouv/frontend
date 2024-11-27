@@ -26,6 +26,7 @@
       :multiple
       :by="compareTwoOptions"
       :aria-describedby="ariaDescribedBy"
+      :disabled="loading"
     >
       <div class="relative mt-1">
         <div
@@ -38,7 +39,12 @@
             :placeholder
             @change="query = $event.target.value"
           />
+          <AdminLoader
+            v-if="loading"
+            class="absolute text-lg top-2 right-3 flex items-center justify-end hover:!bg-transparent"
+          />
           <ComboboxButton
+            v-else
             class="absolute inset-y-0 flex items-center justify-end pr-4 hover:!bg-transparent"
             :class="{
               'right-0': open,
@@ -140,6 +146,7 @@ const props = withDefaults(defineProps<{
   explanation?: string
   label: string
   placeholder?: string
+  loading?: boolean
 
   getOptionId?: (option: T) => string | number
   groupBy?: (option: T) => string
@@ -155,6 +162,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   required: false,
   isBlue: false,
+  loading: false,
   displayValue: (_: ModelType): string => '',
   groupBy: (_: T): string => '',
   getOptionId: (option: T): string | number => {

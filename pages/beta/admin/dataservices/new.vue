@@ -48,11 +48,15 @@
     <Step2AddDatasets
       v-if="currentStep === 2"
       v-model="datasets"
+      :loading
+      @previous="moveToStep(1)"
       @next="datasetsNext"
     />
     <Step3CompletePublication
       v-if="currentStep === 3 && newDataservice"
       :dataservice="newDataservice"
+      :loading
+      @previous="moveToStep(2)"
       @next="updateDataservice"
     />
     <div class="h-64" />
@@ -114,6 +118,7 @@ const datasets = useState<Array<Dataset | DatasetSuggest>>(
 )
 
 const newDataservice = useState<Dataservice | null>('new-dataservice', () => null)
+const loading = useState<boolean>('dataservice-loading', () => false)
 
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
@@ -137,34 +142,40 @@ async function datasetsNext() {
 }
 
 async function save() {
-  if (
-    dataserviceForm.value.contact_point
-    && dataserviceForm.value.owned?.organization
-    && !('id' in dataserviceForm.value.contact_point)
-  ) {
-    dataserviceForm.value.contact_point = await $api<ContactPoint>('/api/1/contacts/', {
+  try {
+    loading.value = true
+    if (
+      dataserviceForm.value.contact_point
+      && dataserviceForm.value.owned?.organization
+      && !('id' in dataserviceForm.value.contact_point)
+    ) {
+      dataserviceForm.value.contact_point = await $api<ContactPoint>('/api/1/contacts/', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: dataserviceForm.value.contact_point.name,
+          email: dataserviceForm.value.contact_point.email,
+          contact_form: dataserviceForm.value.contact_point.contact_form,
+          organization: dataserviceForm.value.owned.organization.id,
+        }),
+      })
+    }
+
+    newDataservice.value = await $api<Dataservice>('/api/1/dataservices/', {
       method: 'POST',
-      body: JSON.stringify({
-        name: dataserviceForm.value.contact_point.name,
-        email: dataserviceForm.value.contact_point.email,
-        contact_form: dataserviceForm.value.contact_point.contact_form,
-        organization: dataserviceForm.value.owned.organization.id,
-      }),
+      body: JSON.stringify(toApi(dataserviceForm.value, {
+        datasets: datasets.value,
+        private: true,
+      })),
     })
+
+    await moveToStep(3)
+
+    clearNuxtState(DATASERVICE_FORM_STATE)
+    clearNuxtState(DATASERVICE_DATASETS_STATE)
   }
-
-  newDataservice.value = await $api<Dataservice>('/api/1/dataservices/', {
-    method: 'POST',
-    body: JSON.stringify(toApi(dataserviceForm.value, {
-      datasets: datasets.value,
-      private: true,
-    })),
-  })
-
-  await moveToStep(3)
-
-  clearNuxtState(DATASERVICE_FORM_STATE)
-  clearNuxtState(DATASERVICE_DATASETS_STATE)
+  finally {
+    loading.value = false
+  }
 }
 
 async function updateDataservice(asPrivate: boolean) {
@@ -172,12 +183,18 @@ async function updateDataservice(asPrivate: boolean) {
     return moveToStep(3)
   }
   if (!asPrivate) {
-    await $api<Dataservice>(`/api/1/dataservices/${newDataservice.value.id}/`, {
-      method: 'PATCH',
-      body: JSON.stringify(toApi(toForm(newDataservice.value), {
-        private: false,
-      })),
-    })
+    try {
+      loading.value = true
+      await $api<Dataservice>(`/api/1/dataservices/${newDataservice.value.id}/`, {
+        method: 'PATCH',
+        body: JSON.stringify(toApi(toForm(newDataservice.value), {
+          private: false,
+        })),
+      })
+    }
+    finally {
+      loading.value = false
+    }
   }
 
   await navigateTo(newDataservice.value.self_web_url, { external: true })

@@ -33,18 +33,21 @@
         {{ $t('Give us your feedback on the publishing form') }}
       </a>
       <div class="fr-grid-row fr-grid-row--right">
-        <button
-          class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500 fr-mr-3v"
+        <BrandedButton
+          class="mr-3"
+          level="secondary"
+          color="neutral"
           @click="submit(true)"
         >
           {{ $t("Save as draft") }}
-        </button>
-        <button
-          class="fr-btn"
+        </BrandedButton>
+        <BrandedButton
+          level="primary"
+          :loading
           @click="submit(false)"
         >
           {{ $t("Publish the dataservice") }}
-        </button>
+        </BrandedButton>
       </div>
     </div>
   </div>
@@ -54,10 +57,13 @@
 import { Well, type Dataservice } from '@datagouv/components'
 import DataserviceCard from '~/components/Dataservices/Card/Card.vue'
 
-defineProps<{ dataservice: Dataservice }>()
+defineProps<{
+  dataservice: Dataservice
+  loading: boolean
+}>()
 
 const emit = defineEmits<{
-  (e: 'next', asPrivate: boolean): void
+  next: [asPrivate: boolean]
 }>()
 
 const config = useRuntimeConfig()

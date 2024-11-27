@@ -20,15 +20,22 @@
       </div>
     </Well>
     <DatasetsSelect v-model="datasets" />
-    <div class="fr-grid-row fr-grid-row--right">
-      <button
-        type="button"
-        class="fr-btn"
+    <div class="fr-grid-row justify-between">
+      <BrandedButton
+        level="secondary"
+        color="neutral"
+        @click="$emit('previous')"
+      >
+        {{ t("Previous") }}
+      </BrandedButton>
+      <BrandedButton
         :disabled="!datasets.length"
+        :loading
+        level="primary"
         @click="$emit('next')"
       >
         {{ t("Next") }}
-      </button>
+      </BrandedButton>
     </div>
   </div>
 </template>
@@ -37,8 +44,13 @@
 import { Well, type Dataset } from '@datagouv/components'
 import type { DatasetSuggest } from '~/types/types'
 
+defineProps<{
+  loading: boolean
+}>()
+
 defineEmits<{
-  (e: 'next'): void
+  previous: []
+  next: []
 }>()
 
 const { t } = useI18n()
