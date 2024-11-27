@@ -50,14 +50,14 @@
               <small v-if="organization.acronym">{{ organization.acronym }}</small>
             </a>
           </h4>
-          <!-- <Suspense>
+          <Suspense>
             <AsyncTextClamp
               class="fr-mt-1w fr-mb-2w fr-hidden fr-unhidden-sm overflow-wrap-anywhere"
               :auto-resize="true"
               :text="removeMarkdown(organization.description)"
               :max-lines="2"
             />
-          </Suspense> -->
+          </Suspense>
         </div>
       </div>
     </article>
@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Organization } from '@datagouv/components'
+import { removeMarkdown, Well, type Organization } from '@datagouv/components'
 
 defineProps<{
   organization: Organization
