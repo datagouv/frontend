@@ -445,7 +445,7 @@
                     class="fr-label"
                     for="checkboxes-hint-el-sm-1"
                   >
-                    {{ t('Switch to private mode') }}
+                    {{ t('Switch to draft mode') }}
                     <span class="fr-hint-text">{{ t('The dataservice will only be visible to members of your organization.') }}</span>
                   </label>
                   <div
