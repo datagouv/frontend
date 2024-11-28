@@ -2,18 +2,19 @@
   <EditorTooltip
     ref="toolTip"
     class="!left-3 !right-3 gap-2"
-    @focusout="reset"
+    @blur="reset"
   >
     <input
       ref="linkInput"
       v-model="updatedLink"
       class="flex-1"
+      type="url"
       :placeholder="t('Paste link…')"
       @keydown.enter.stop.prevent="onConfirmEdit"
       @keydown="onCancel"
     >
     <button
-      role="button"
+      type="button"
       class="px-2 py-1 text-sm"
       :class="{ hidden: updatedLink.length === 0 }"
       @click.stop.prevent="onConfirmEdit"

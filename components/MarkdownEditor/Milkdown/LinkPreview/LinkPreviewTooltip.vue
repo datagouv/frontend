@@ -16,17 +16,20 @@
       </a>
     </div>
     <button
-      class="flex-none fr-btn fr-btn--secondary fr-btn--sm fr-icon-pencil-line"
+      class="flex-none fr-btn fr-btn--secondary fr-btn--sm !p-1 !px-2"
+      type="button"
+      :title="$t('Edit link')"
       @click="editLink"
     >
-      {{ t("Edit link") }}
+      <RiPencilLine class="size-4" />
     </button>
     <button
-      class="flex-none fr-btn fr-btn--tertiary fr-btn--sm fr-icon-link-unlink"
+      class="flex-none fr-btn fr-btn--tertiary fr-btn--sm !p-1 !px-2"
+      type="button"
       :title="t('Remove link')"
       @click="deleteLink"
     >
-      {{ t("Remove link") }}
+      <RiLinkUnlink class="size-4" />
     </button>
   </EditorTooltip>
 </template>
@@ -37,7 +40,7 @@ import { useI18n } from 'vue-i18n'
 import { usePluginViewContext } from '@prosemirror-adapter/vue'
 import { useInstance } from '@milkdown/vue'
 import { TextSelection } from '@milkdown/prose/state'
-import { RiLink } from '@remixicon/vue'
+import { RiLink, RiLinkUnlink, RiPencilLine } from '@remixicon/vue'
 import { linkTooltipState } from '~/components/MarkdownEditor/Milkdown/LinkEdit/linkEditTooltipCtx'
 import { removeLink } from '~/components/MarkdownEditor/ProseMirror/handleLink'
 import { makeTooltipProvider } from '~/components/MarkdownEditor/Milkdown/Tooltip/useTooltipProvider'
