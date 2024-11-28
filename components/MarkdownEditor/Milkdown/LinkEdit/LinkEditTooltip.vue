@@ -13,7 +13,7 @@
       @keydown="onCancel"
     >
     <button
-      role="button"
+      type="button"
       class="px-2 py-1 text-sm"
       :class="{ hidden: updatedLink.length === 0 }"
       @click.stop.prevent="onConfirmEdit"

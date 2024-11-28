@@ -45,6 +45,7 @@
     <template #footer="{ close }">
       <div class="fr-btns-group fr-btns-group--right">
         <button
+          type="button"
           class="fr-btn"
           data-testid="add-image-button"
           @click="send(close)"
