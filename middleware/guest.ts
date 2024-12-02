@@ -1,6 +1,6 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware(async (to, _from) => {
   // console.log(`Calling guest middleware ${from.path} -> ${to.path}`)
-  const me = useMaybeMe();
+  const me = useMaybeMe()
 
   if (to.path !== '/en/beta/admin' && me.value) {
     // console.log('-> redirecting to new admin…')
