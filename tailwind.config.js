@@ -32,6 +32,29 @@ export default {
           light: '#e3e3fd',
           tint: '#c1c1fd',
         },
+        secondary: {
+          lightest: '#EEEEEE',
+          dark: '#66666',
+        },
+        datagouv: {
+          lightest: '#E6EEFE',
+          lighter: '#e3e3fd',
+          light: '#c1c1fd',
+          DEFAULT: '#465F9D',
+          dark: '#3558a2',
+        },
+        danger: {
+          lightest: '#FFE9E9',
+          dark: '#CE0500',
+        },
+        warning: {
+          lightest: '#FFE9E6',
+          dark: '#B34000',
+        },
+        success: {
+          lightest: '#ECF7F0',
+          dark: '#27A658',
+        },
       },
       typography: theme => ({
         neutral: {

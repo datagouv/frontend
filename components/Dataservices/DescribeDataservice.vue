@@ -192,6 +192,7 @@
           <div class="fr-fieldset__element">
             <ProducerSelect
               v-model="form.owned"
+              :label="t('Check the identity with which you want to publish')"
               :options="ownedOptions"
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"

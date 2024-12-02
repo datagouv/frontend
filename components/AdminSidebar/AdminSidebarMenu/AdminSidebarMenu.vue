@@ -195,7 +195,6 @@ const { expanded, toggle, unregister } = register()
 
 watchEffect(() => {
   if (props.defaultOpen) {
-    console.log('Opening')
     toggle()
   }
 })

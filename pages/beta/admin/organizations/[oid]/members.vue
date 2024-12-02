@@ -178,7 +178,7 @@
             </p>
           </td>
           <td>
-            <AdminBadge :type="getStatusType(member.role)">
+            <AdminBadge size="xs" :type="getStatusType(member.role)">
               {{ getStatus(member.role) }}
             </AdminBadge>
           </td>
@@ -278,7 +278,7 @@ import { Avatar, formatDate, formatFromNow, useUserAvatar, type Member, type Org
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiMailLine } from '@remixicon/vue'
-import type { AdminBadgeState, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
+import type { AdminBadgeState, AdminBadgeType, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import ModalWithButton from '~/components/Modal/ModalWithButton.vue'
@@ -334,8 +334,8 @@ function getStatus(role: MemberRole): string {
   return roles.value.find(memberRole => memberRole.id === role)?.label ?? role
 }
 
-function getStatusType(role: MemberRole): AdminBadgeState {
-  return role === 'admin' ? 'info' : 'default'
+function getStatusType(role: MemberRole): AdminBadgeType {
+  return role === 'admin' ? 'primary' : 'secondary'
 }
 
 const removeMemberFromOrganization = async (member: Member, close: () => void) => {

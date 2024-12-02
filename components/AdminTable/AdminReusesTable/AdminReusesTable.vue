@@ -89,7 +89,7 @@
           </AdminContentWithTooltip>
         </td>
         <td>
-          <AdminBadge :type="getStatus(reuse).type">
+          <AdminBadge size="xs" :type="getStatus(reuse).type">
             {{ getStatus(reuse).label }}
           </AdminBadge>
         </td>
@@ -120,7 +120,7 @@ import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
 import Tooltip from '../../../components/Tooltip/Tooltip.vue'
-import type { AdminBadgeState, ReuseSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeState, AdminBadgeType, ReuseSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   reuses: Array<Reuse>
@@ -143,11 +143,11 @@ function sorted(column: ReuseSortedBy) {
   return null
 }
 
-function getStatus(reuse: Reuse): { label: string, type: AdminBadgeState } {
+function getStatus(reuse: Reuse): { label: string, type: AdminBadgeType } {
   if (reuse.deleted) {
     return {
       label: t('Deleted'),
-      type: 'error',
+      type: 'danger',
     }
   }
   else if (reuse.archived) {
@@ -159,13 +159,13 @@ function getStatus(reuse: Reuse): { label: string, type: AdminBadgeState } {
   else if (reuse.private) {
     return {
       label: t('Draft'),
-      type: 'default',
+      type: 'secondary',
     }
   }
   else {
     return {
       label: t('Public'),
-      type: 'info',
+      type: 'primary',
     }
   }
 }

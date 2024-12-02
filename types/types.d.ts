@@ -22,6 +22,8 @@ export type AccordionState = DSFRFormDefaultState | AccordionFunctionalState | D
 
 export type AdminBadgeState = DSFRFormDefaultState | FormFunctionalState | DSFRInfoState
 
+export type AdminBadgeType = 'primary' | 'secondary' | 'warning' | 'danger' | 'success'
+
 export type PaginatedArray<T> = {
   data: Array<T>
   next_page: string | null
@@ -271,3 +273,7 @@ export type ContactPoint = {
 
 export type NewContactPoint = Omit<ContactPoint, 'id'>
 export type ContactPointInForm = ContactPoint | NewContactPoint
+
+export type TransferRequest = {
+  id: string
+}

@@ -763,6 +763,10 @@
   "Site": "Site",
   "{n} organizations": "{n} organisations | {n} organisation | {n} organisations",
   "{n} users": "{n} utilisateurs | {n} utilisateur | {n} utilisateurs",
+  "Transfer the dataset": "Transférer le jeu de données",
+  "Transfer": "Transférer",
+  "Search an organization or a user": "Rechercher une organisation ou un utilisateur",
+  "You will no longer have access to manage this dataset.": "Vous n’aurez plus accès à la gestion de ce jeu de données.",
 
   "": ""
 }

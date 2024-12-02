@@ -76,7 +76,7 @@
             </AdminContentWithTooltip>
           </td>
           <td>
-            <AdminBadge :type="getStatus(resource).type">
+            <AdminBadge size="xs" :type="getStatus(resource).type">
               {{ getStatus(resource).label }}
             </AdminBadge>
           </td>
@@ -122,7 +122,7 @@ import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
 import UploadResourceModal from './UploadResourceModal.vue'
 import FileEditModal from './FileEditModal.vue'
-import type { AdminBadgeState, NewDatasetFile, PaginatedArray } from '~/types/types'
+import type { AdminBadgeState, AdminBadgeType, NewDatasetFile, PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 const { toast } = useToast()
@@ -182,18 +182,18 @@ const saveFile = async (index: number, resource: Resource, file: NewDatasetFile)
   toast.success(t('Resource updated!'))
 }
 
-function getStatus(resource: Resource): { label: string, type: AdminBadgeState } {
+function getStatus(resource: Resource): { label: string, type: AdminBadgeType } {
   if (resource.extras['check:available'] === true) {
     return {
       label: t('Available'),
-      type: 'info',
+      type: 'primary',
     }
   }
 
   if (resource.extras['check:available'] === false) {
     return {
       label: t('Unavailable'),
-      type: 'error',
+      type: 'danger',
     }
   }
 

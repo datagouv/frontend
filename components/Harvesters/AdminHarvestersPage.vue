@@ -88,7 +88,7 @@
             </AdminContentWithTooltip>
           </td>
           <td>
-            <AdminBadge :type="getStatus(harvester).type">
+            <AdminBadge size="xs" :type="getStatus(harvester).type">
               {{ getStatus(harvester).label }}
             </AdminBadge>
           </td>
@@ -137,7 +137,7 @@ import { formatDate, Pagination, type Organization } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { AdminBadgeState, DiscussionSortedBy, PaginatedArray, SortDirection } from '~/types/types'
+import type { AdminBadgeState, AdminBadgeType, DiscussionSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
@@ -213,27 +213,27 @@ function getHarvesterDatasets(harvester: HarvesterSource) {
   return jobs.value[harvester.last_job.id].items.filter(item => item.dataset).length
 }
 
-function getStatus(harvester: HarvesterSource): { label: string, type: AdminBadgeState } {
+function getStatus(harvester: HarvesterSource): { label: string, type: AdminBadgeType } {
   switch (harvester.last_job?.status) {
     case 'pending':
       return {
         label: t('Pending'),
-        type: 'default',
+        type: 'secondary',
       }
     case 'initializing':
       return {
         label: t('Initializing'),
-        type: 'info',
+        type: 'primary',
       }
     case 'initialized':
       return {
         label: t('Initialized'),
-        type: 'default',
+        type: 'secondary',
       }
     case 'processing':
       return {
         label: t('Processing'),
-        type: 'info',
+        type: 'primary',
       }
     case 'done':
       return {
@@ -248,12 +248,12 @@ function getStatus(harvester: HarvesterSource): { label: string, type: AdminBadg
     case 'failed':
       return {
         label: t('Failed'),
-        type: 'error',
+        type: 'danger',
       }
     default:
       return {
         label: t('No job yet'),
-        type: 'default',
+        type: 'secondary',
       }
   }
 }
