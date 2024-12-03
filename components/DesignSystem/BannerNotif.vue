@@ -20,14 +20,33 @@
         <LinkToSubject
           type="Dataset"
           :subject="dataset"
-        /> vers votre organization <a
+        />
+        vers votre organization
+        <a
           href="#"
-          class="fr-link"
+          class="link"
         >Ministère de l'intérieur</a>
       </template>
 
       <template #body>
         Je transfère parce que je démissionne. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas nesciunt ex laborum quos quisquam necessitatibus, consequuntur voluptatibus, sed repellendus beatae nobis corrupti, eligendi facere at vitae maxime architecto nostrum dolores.
+      </template>
+
+      <template #buttons>
+        <BrandedButton
+          color="primary"
+          size="xs"
+          :icon="RiCheckLine"
+        >
+          Accepter
+        </BrandedButton>
+        <BrandedButton
+          color="danger"
+          size="xs"
+          :icon="RiCloseLine"
+        >
+          Refuser
+        </BrandedButton>
       </template>
     </BannerNotif>
   </div>
@@ -35,7 +54,7 @@
 
 <script setup lang="ts">
 import type { Dataset, User } from '@datagouv/components'
-import { RiSendPlaneLine } from '@remixicon/vue'
+import { RiCheckLine, RiCloseLine, RiSendPlaneLine } from '@remixicon/vue'
 
 const { data: user } = await useAPI<User>(`/api/1/users/antonin-garrone`)
 const { data: dataset } = await useAPI<Dataset>(`/api/1/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour`)

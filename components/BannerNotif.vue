@@ -24,7 +24,7 @@
               </div>
               <div><slot name="title" /></div>
             </div>
-            <div class="text-sm/6">
+            <div class="!text-sm/6">
               <slot name="subtitle" />
             </div>
           </div>
@@ -38,16 +38,18 @@
           </div>
         </div>
         <div class="text-sm/6 text-gray-medium">
-          {{ date }}
+          {{ formatDate(date, 'LLL') }}
         </div>
       </div>
-      <div>Buttons</div>
+      <div class="flex flex-col space-y-2.5 items-end">
+        <slot name="buttons" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Avatar, type User } from '@datagouv/components'
+import { Avatar, formatDate, type User } from '@datagouv/components'
 import type { Component } from 'vue'
 import AdminBadge from './AdminBadge/AdminBadge.vue'
 

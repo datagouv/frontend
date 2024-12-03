@@ -1,6 +1,6 @@
 <template>
   <a
-    class="fr-link inline-flex items-center space-x-1"
+    class="inline-flex items-baseline !bg-none underline space-x-1 link"
     :href="subject.page"
   >
     <component
