@@ -1,9 +1,12 @@
 <template>
   <component
     :is="as"
-    class="inline-flex items-center space-x-1 rounded-full font-medium border disabled:opacity-75 !bg-none !no-underline"
-    :class="[colors, sizes]"
-    :disabled="disabled || loading"
+    class="inline-flex items-center space-x-1 rounded-full font-medium border !bg-none !no-underline"
+    :class="[colors, sizes, isDisabled ? '!opacity-50' : '']"
+    :disabled="isDisabled"
+    aria-disabled="isDisabled"
+    :role="as === 'a' ? 'link' : ''"
+    :href="isDisabled ? undefined : href"
   >
     <AdminLoader
       v-if="loading"
@@ -42,6 +45,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
   loading?: boolean
   icon?: Component
+  href?: string
 }>(), {
   as: 'button',
   color: 'primary',
@@ -55,11 +59,13 @@ const hasText = computed(() => {
   return hasSlotContent(slots.default)
 })
 
+const isDisabled = computed(() => props.disabled || props.loading)
+
 const colors = computed(() => {
   return {
-    primary: 'text-white bg-datagouv-dark !border-datagouv-dark hover:enabled:!bg-datagouv-hover hover:enabled:!border-datagouv-hover',
-    secondary: 'text-gray-plain bg-white !border-gray-plain hover:enabled:!bg-gray-some',
-    danger: '!text-danger-dark bg-white !border-danger-dark hover:enabled:!bg-gray-some',
+    primary: `text-white bg-datagouv-dark !border-datagouv-dark ${!isDisabled.value ? 'hover:!bg-datagouv-hover hover:!border-datagouv-hover' : ''}`,
+    secondary: `text-gray-plain bg-white !border-gray-plain ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+    danger: `!text-danger-dark bg-white !border-danger-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
   }[props.color]
 })
 
