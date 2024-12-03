@@ -36,8 +36,7 @@
       <div class="fr-grid-row fr-grid-row--right">
         <BrandedButton
           class="mr-3"
-          level="secondary"
-          color="neutral"
+          color="secondary"
           :disabled="loading"
           @click="submit(true)"
         >
@@ -45,6 +44,7 @@
         </BrandedButton>
         <BrandedButton
           :loading
+          color="primary"
           @click="submit(false)"
         >
           {{ $t("Publish the dataset") }}

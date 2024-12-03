@@ -32,6 +32,8 @@ export default {
           medium: '#666666',
           lower: '#eeeeee',
           default: '#e5e5e5',
+          plain: '#3a3a3a',
+          some: '#f6f6f6',
         },
         defaultWarning: '#b32000',
         blue: {
@@ -46,6 +48,7 @@ export default {
           lightest: '#E6EEFE',
           lighter: '#e3e3fd',
           light: '#c1c1fd',
+          hover: '#5982e0',
           DEFAULT: '#465F9D',
           dark: '#3558a2',
         },

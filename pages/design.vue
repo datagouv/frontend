@@ -1,6 +1,6 @@
 <template>
   <DevOnly>
-    <div class="fr-container space-y-8 my-8 bg-gray-200 pb-64">
+    <div class="fr-container space-y-8 my-8 bg-gray-100 pb-64">
       <div>
         <h1 class="!mb-3">
           Colors
@@ -52,6 +52,13 @@
 
       <div>
         <h1 class="!mb-3">
+          BrandedButton
+        </h1>
+
+        <BrandedButton />
+      </div>
+      <div>
+        <h1 class="!mb-3">
           AdminBadge
         </h1>
 
@@ -79,4 +86,5 @@
 import AdminBadge from '~/components/DesignSystem/AdminBadge.vue'
 import BannerAction from '~/components/DesignSystem/BannerAction.vue'
 import BannerNotif from '~/components/DesignSystem/BannerNotif.vue'
+import BrandedButton from '~/components/DesignSystem/BrandedButton.vue'
 </script>

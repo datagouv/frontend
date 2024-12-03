@@ -496,14 +496,13 @@
         >
           <BrandedButton
             v-if="type === 'create'"
-            level="secondary"
-            color="neutral"
+            color="secondary"
             @click="$emit('previous')"
           >
             {{ $t('Previous') }}
           </BrandedButton>
           <BrandedButton
-            level="primary"
+            color="primary"
             @click="submit"
           >
             {{ submitLabel }}

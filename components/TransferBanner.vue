@@ -57,8 +57,6 @@
           <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
             <BrandedButton
               color="primary"
-              level="primary"
-              role="button"
               :disabled="loading"
               :icon="RiSendPlaneLine"
               @click="transfer"
