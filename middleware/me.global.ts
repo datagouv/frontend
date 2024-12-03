@@ -1,4 +1,4 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware(async (_to, _from) => {
   // console.log(`Calling me middleware ${from.path} -> ${to.path}`)
   const me = useMaybeMe()
   if (me.value !== undefined) {
