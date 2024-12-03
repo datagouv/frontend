@@ -1,6 +1,6 @@
 <template>
   <DevOnly>
-    <div class="fr-container space-y-8 my-8">
+    <div class="fr-container space-y-8 my-8 bg-gray-200 pb-64">
       <div>
         <h1 class="!mb-3">
           Colors
@@ -64,6 +64,13 @@
 
         <BannerAction />
       </div>
+      <div>
+        <h1 class="!mb-3">
+          BannerNotif
+        </h1>
+
+        <BannerNotif />
+      </div>
     </div>
   </DevOnly>
 </template>
@@ -71,4 +78,5 @@
 <script setup lang="ts">
 import AdminBadge from '~/components/DesignSystem/AdminBadge.vue'
 import BannerAction from '~/components/DesignSystem/BannerAction.vue'
+import BannerNotif from '~/components/DesignSystem/BannerNotif.vue'
 </script>

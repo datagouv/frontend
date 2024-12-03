@@ -29,7 +29,7 @@ const colors = computed(() => {
     primary: 'text-datagouv bg-datagouv-lightest',
     secondary: 'text-secondary-dark bg-secondary-lightest',
     success: 'text-success-dark bg-success-lightest',
-    warning: 'text-warning-dark bg-warning-lightest',
+    warning: 'text-warning2-dark bg-warning2-lightest',
     danger: 'text-danger-dark bg-danger-lightest',
   }[props.type]
 })

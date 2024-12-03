@@ -27,6 +27,12 @@ export default {
       colors: {
         primary: '#3558a2',
         mentionGrey: '#666', // Copy from --text-mention-grey
+        gray: {
+          title: '#161616',
+          medium: '#666666',
+          lower: '#eeeeee',
+          default: '#e5e5e5',
+        },
         defaultWarning: '#b32000',
         blue: {
           light: '#e3e3fd',
@@ -50,6 +56,10 @@ export default {
         warning: {
           lightest: '#FFE9E6',
           dark: '#B34000',
+        },
+        warning2: {
+          lightest: '#FEECC2',
+          dark: '#716043',
         },
         success: {
           lightest: '#ECF7F0',

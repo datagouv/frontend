@@ -1,11 +1,11 @@
 <template>
   <a
-    class="fr-link inline-flex"
+    class="fr-link inline-flex items-center space-x-1"
     :href="subject.page"
   >
     <component
       :is="icon"
-      class="self-center size-3"
+      class="self-center size-3.5"
     />
     <TextClamp
       :text="subject.title"
