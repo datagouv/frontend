@@ -3,8 +3,8 @@
     type="warning"
     :icon="RiSendPlaneLine"
     class="mb-4"
-    badge="Transfert en attente"
-    :user="transfer.owner"
+    :badge="$t('Pending transfer')"
+    :user="transfer.user || transfer.owner"
     :date="new Date(transfer.created)"
   >
     <template #title>

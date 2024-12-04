@@ -767,6 +767,11 @@
   "Transfer": "Transférer",
   "Search an organization or a user": "Rechercher une organisation ou un utilisateur",
   "You will no longer have access to manage this dataset.": "Vous n’aurez plus accès à la gestion de ce jeu de données.",
+  "Accept": "Accepter",
+  "has requested a transfer": "a demandé un transfert",
+  "to your organization": "vers votre organization",
+  "to": "vers",
+  "Pending transfer": "Transfert en attente",
 
   "": ""
 }
