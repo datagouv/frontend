@@ -24,7 +24,7 @@
 
     <div
       v-if="transfers && transfers.length"
-      class="space-y-8 mb-8"
+      class="space-y-8 mb-8 max-w-6xl"
     >
       <TransferRequest
         v-for="transfer in transfers"

@@ -11,14 +11,14 @@
 
     <div class="flex justify-between space-x-5">
       <div class="space-y-1">
-        <div class="flex items-start space-x-1">
+        <div class="flex flex-wrap items-start space-x-1">
           <Avatar
             :user
             rounded
             :size="24"
           />
           <div>
-            <div class="flex items-baseline space-x-1 text-gray-title text-sm/6">
+            <div class="flex flex-wrap items-baseline space-x-1 text-gray-title text-sm/6">
               <div class="font-bold ">
                 {{ user.first_name }} {{ user.last_name }}
               </div>
@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <div class="flex items-stretch space-x-1">
+        <div class="flex flex-wrap items-stretch space-x-1">
           <div class=" w-6 flex items-center justify-center">
             <div class="h-full w-1 bg-gray-default" />
           </div>

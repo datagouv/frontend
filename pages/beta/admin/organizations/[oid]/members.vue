@@ -110,11 +110,14 @@
         </ModalWithButton>
       </div>
     </div>
-    <template v-if="membershipRequests && membershipRequests.length">
-      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-0">
+    <div
+      v-if="membershipRequests && membershipRequests.length"
+      class="mb-8"
+    >
+      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-5v">
         {{ t("{n} requests", { n: membershipRequests.length }) }}
       </h2>
-      <div class="space-y-12">
+      <div class="space-y-8 max-w-6xl">
         <AdminMembershipRequest
           v-for="request in membershipRequests"
           :key="request.id"
@@ -124,11 +127,10 @@
           @refresh="refreshAll"
         />
       </div>
-    </template>
+    </div>
     <h2
       v-if="organization"
       class="subtitle subtitle--uppercase fr-mb-0"
-      :class="{ 'fr-mt-n3v': membershipRequests && membershipRequests.length, 'fr-mt-5v': !membershipRequests|| !membershipRequests.length }"
     >
       {{ t("{n} members", { n: organization.members.length }) }}
     </h2>
@@ -178,7 +180,10 @@
             </p>
           </td>
           <td>
-            <AdminBadge size="xs" :type="getStatusType(member.role)">
+            <AdminBadge
+              size="xs"
+              :type="getStatusType(member.role)"
+            >
               {{ getStatus(member.role) }}
             </AdminBadge>
           </td>
