@@ -30,6 +30,7 @@
         v-for="transfer in transfers"
         :key="transfer.id"
         :transfer
+        @done="refreshTransfers(); refreshDatasets()"
       />
     </div>
 
@@ -81,7 +82,7 @@ const url = computed(() => {
   return url.toString()
 })
 
-const { data: pageData, status } = await useAPI<Array<Dataset>>(url, { lazy: true })
+const { data: pageData, status, refresh: refreshDatasets } = await useAPI<Array<Dataset>>(url, { lazy: true })
 
 const transfersUrl = computed(() => {
   const url = new URL(`/api/1/transfer/`, config.public.apiBase)
@@ -91,5 +92,5 @@ const transfersUrl = computed(() => {
 
   return url.toString()
 })
-const { data: transfers } = await useAPI<Array<TransferRequest>>(transfersUrl, { lazy: true })
+const { data: transfers, refresh: refreshTransfers } = await useAPI<Array<TransferRequest>>(transfersUrl, { lazy: true })
 </script>

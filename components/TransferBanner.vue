@@ -32,6 +32,7 @@
             v-for="transfer in existingTransfers"
             :key="transfer.id"
             :transfer
+            :show-actions="false"
           />
         </div>
         <div
@@ -66,7 +67,7 @@
               color="primary"
               :disabled="loading"
               :icon="RiSendPlaneLine"
-              @click="transfer"
+              @click="requestTransfer"
             >
               {{ label }}
             </BrandedButton>
@@ -111,7 +112,7 @@ const fetchTransfer = async () => {
   }
 }
 
-const transfer = async () => {
+const requestTransfer = async () => {
   loading.value = true
   try {
     if (!to.value) return
