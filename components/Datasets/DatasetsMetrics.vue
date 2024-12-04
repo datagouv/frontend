@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white border rounded-xxs fr-mb-3w"
+    class="bg-white border rounded-xxs"
     :class="{ 'fr-pb-4v': metricsOpen }"
   >
     <header class="fr-p-3w flex items-center justify-between relative">

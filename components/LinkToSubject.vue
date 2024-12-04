@@ -16,15 +16,16 @@
 </template>
 
 <script setup lang="ts">
-import { RiDatabase2Line } from '@remixicon/vue'
+import { RiDatabase2Line, RiLineChartLine } from '@remixicon/vue'
 
 const props = defineProps<{
-  type: 'Dataset'
+  type: 'Dataset' | 'Reuse'
   subject: { title: string, page: string }
 }>()
 
 const icon = computed(() => {
   if (props.type === 'Dataset') return RiDatabase2Line
+  if (props.type === 'Reuse') return RiLineChartLine
 
   return throwOnNever(props.type, `Unknown subject ${JSON.stringify(props.subject)}`)
 })

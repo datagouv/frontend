@@ -28,7 +28,11 @@
           <AdminLoader class="size-20" />
         </div>
         <div v-else-if="existingTransfers.length">
-          {{ existingTransfers }}
+          <TransferRequest
+            v-for="transfer in existingTransfers"
+            :key="transfer.id"
+            :transfer
+          />
         </div>
         <div
           v-else
@@ -54,7 +58,10 @@
           />
         </div>
         <template #footer>
-          <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+          <div
+            v-if="existingTransfers && !existingTransfers.length"
+            class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left"
+          >
             <BrandedButton
               color="primary"
               :disabled="loading"
@@ -116,7 +123,7 @@ const transfer = async () => {
       recipient = { class: 'User', id: to.value.owner.id }
     }
 
-    await $api('/api/1/transfer', {
+    const transfer = await $api<TransferRequest>('/api/1/transfer', {
       method: 'POST',
       body: JSON.stringify({
         comment: comment.value,
@@ -127,6 +134,8 @@ const transfer = async () => {
         recipient,
       }),
     })
+
+    existingTransfers.value = [transfer]
   }
   finally {
     loading.value = false

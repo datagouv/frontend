@@ -22,6 +22,17 @@
       {{ t("Datasets") }}
     </h1>
 
+    <div
+      v-if="transfers && transfers.length"
+      class="space-y-8 mb-8"
+    >
+      <TransferRequest
+        v-for="transfer in transfers"
+        :key="transfer.id"
+        :transfer
+      />
+    </div>
+
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
@@ -59,9 +70,11 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
+import type { TransferRequest } from '~/types/types'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const me = useMe()
 
 const url = computed(() => {
   const url = new URL(`/api/1/me/datasets/`, config.public.apiBase)
@@ -69,4 +82,14 @@ const url = computed(() => {
 })
 
 const { data: pageData, status } = await useAPI<Array<Dataset>>(url, { lazy: true })
+
+const transfersUrl = computed(() => {
+  const url = new URL(`/api/1/transfer/`, config.public.apiBase)
+  url.searchParams.set('subject_type', 'Dataset')
+  url.searchParams.set('status', 'pending')
+  url.searchParams.set('recipient', me.value.id)
+
+  return url.toString()
+})
+const { data: transfers } = await useAPI<Array<TransferRequest>>(transfersUrl, { lazy: true })
 </script>

@@ -30,8 +30,20 @@
       {{ t("Datasets") }}
     </h1>
 
+    <div
+      v-if="transfers && transfers.length"
+      class="space-y-8 mb-8"
+    >
+      <TransferRequest
+        v-for="transfer in transfers"
+        :key="transfer.id"
+        :transfer
+      />
+    </div>
+
     <DatasetsMetrics
       v-if="organization && pageData && pageData.total > 0"
+      class="mb-8"
       :organization
     />
 
@@ -102,7 +114,7 @@ import { useI18n } from 'vue-i18n'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import DatasetsMetrics from './DatasetsMetrics.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
-import type { DatasetSortedBy, PaginatedArray, SortDirection } from '~/types/types'
+import type { DatasetSortedBy, PaginatedArray, SortDirection, TransferRequest } from '~/types/types'
 
 const props = defineProps<{
   organization?: Organization | null
@@ -124,7 +136,7 @@ function sort(column: DatasetSortedBy, newDirection: SortDirection) {
   direction.value = newDirection
 }
 
-const url = computed(() => {
+const datasetUrl = computed(() => {
   let url
   if (props.organization) {
     url = new URL(`/api/1/organizations/${props.organization.id}/datasets/`, config.public.apiBase)
@@ -145,5 +157,23 @@ const url = computed(() => {
   return url.toString()
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<Dataset>>(url, { lazy: true })
+const { data: pageData, status } = await useAPI<PaginatedArray<Dataset>>(datasetUrl, { lazy: true })
+
+const transfersUrl = computed(() => {
+  const url = new URL(`/api/1/transfer/`, config.public.apiBase)
+  url.searchParams.set('subject_type', 'Dataset')
+  url.searchParams.set('status', 'pending')
+  if (props.organization) {
+    url.searchParams.set('recipient', props.organization.id)
+  }
+  else if (props.user) {
+    url.searchParams.set('recipient', props.user.id)
+  }
+  else {
+    return null
+  }
+
+  return url.toString()
+})
+const { data: transfers } = await useAPI<Array<TransferRequest>>(transfersUrl, { lazy: true })
 </script>
