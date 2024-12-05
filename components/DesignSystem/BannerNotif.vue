@@ -57,5 +57,5 @@ import type { Dataset, User } from '@datagouv/components'
 import { RiCheckLine, RiCloseLine, RiSendPlaneLine } from '@remixicon/vue'
 
 const { data: user } = await useAPI<User>(`/api/1/users/antonin-garrone`)
-const { data: dataset } = await useAPI<Dataset>(`/api/1/datasets/election-presidentielle-des-10-et-24-avril-2022-resultats-definitifs-du-1er-tour`)
+const { data: dataset } = await useAPI<Dataset>(`/api/1/datasets/base-sirene-des-entreprises-et-de-leurs-etablissements-siren-siret`)
 </script>

@@ -65,7 +65,7 @@
           >
             <BrandedButton
               color="primary"
-              :disabled="loading"
+              :loading
               :icon="RiSendPlaneLine"
               @click="requestTransfer"
             >
@@ -101,7 +101,7 @@ const fetchTransfer = async () => {
   if (existingTransfers.value) return
 
   try {
-    existingTransfers.value = await $api<Array<TransferRequest>>('/api/1/transfer', {
+    existingTransfers.value = await $api<Array<TransferRequest>>('/api/1/transfer/', {
       query: {
         subject: props.subject.id,
       },
@@ -124,7 +124,7 @@ const requestTransfer = async () => {
       recipient = { class: 'User', id: to.value.owner.id }
     }
 
-    const transfer = await $api<TransferRequest>('/api/1/transfer', {
+    const transfer = await $api<TransferRequest>('/api/1/transfer/', {
       method: 'POST',
       body: JSON.stringify({
         comment: comment.value,
