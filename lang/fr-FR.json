@@ -775,6 +775,7 @@
   "Transfer dataset": "Transférer le jeu de données",
   "Transfer to {recipient} already requested the {date}": "Transfert vers {recipient} déjà demandé le {date}",
   "by {user}": "par {user}",
+  "Transfer requested. A notification has been sent to the recipient.": "Transfert demandé. Une notification a été envoyé au destinataire.",
 
   "": ""
 }

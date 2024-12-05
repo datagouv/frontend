@@ -66,7 +66,7 @@
             :label="$t('Comment')"
           />
         </div>
-        <template #footer>
+        <template #footer="{ close }">
           <div
             v-if="existingTransfers && !existingTransfers.length"
             class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left"
@@ -75,7 +75,7 @@
               color="primary"
               :loading
               :icon="RiSendPlaneLine"
-              @click="requestTransfer"
+              @click="requestTransfer(close)"
             >
               {{ label }}
             </BrandedButton>
@@ -99,6 +99,8 @@ const props = defineProps<{
 }>()
 
 const { $api } = useNuxtApp()
+const { toast } = useToast()
+const { t } = useI18n()
 
 const loading = ref(false)
 const to = ref<Owned | null>(null)
@@ -120,7 +122,7 @@ const fetchTransfer = async () => {
   }
 }
 
-const requestTransfer = async () => {
+const requestTransfer = async (close) => {
   loading.value = true
   try {
     if (!to.value) return
@@ -145,6 +147,9 @@ const requestTransfer = async () => {
     })
 
     existingTransfers.value = [transfer]
+
+    close()
+    toast.success(t('Transfer requested. A notification has been sent to the recipient.'))
   }
   finally {
     loading.value = false
