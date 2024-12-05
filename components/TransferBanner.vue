@@ -27,13 +27,21 @@
         >
           <AdminLoader class="size-20" />
         </div>
-        <div v-else-if="existingTransfers.length">
-          <TransferRequest
-            v-for="transfer in existingTransfers"
-            :key="transfer.id"
-            :transfer
-            :show-actions="false"
-          />
+        <div
+          v-else-if="existingTransfers.length"
+          class="space-y-2"
+        >
+          <div
+            v-for="existingTransfer in existingTransfers"
+            :key="existingTransfer.id"
+          >
+            {{ $t('Transfer to {recipient} already requested the {date}', {
+              recipient: existingTransfer.recipient.class === 'Organization'
+                ? existingTransfer.recipient.name : `${existingTransfer.recipient.first_name} ${existingTransfer.recipient.last_name}`,
+              date: formatDate(existingTransfer.created),
+            }) }}
+            <span v-if="existingTransfer.user">{{ $t('by {user}', { user: `${existingTransfer.user.first_name} ${existingTransfer.user.last_name}` }) }}</span>
+          </div>
         </div>
         <div
           v-else
@@ -79,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, DatasetV2 } from '@datagouv/components'
+import { formatDate, type Dataset, type DatasetV2 } from '@datagouv/components'
 import type { Owned } from '@datagouv/components/ts'
 import { RiSendPlaneLine } from '@remixicon/vue'
 import type { TransferRequest } from '~/types/types'
@@ -107,7 +115,7 @@ const fetchTransfer = async () => {
       },
     })
   }
-  finally {
+  catch {
     existingTransfers.value = [] // Do not block the feature if fail
   }
 }

@@ -773,6 +773,8 @@
   "to": "vers",
   "Pending transfer": "Transfert en attente",
   "Transfer dataset": "Transférer le jeu de données",
+  "Transfer to {recipient} already requested the {date}": "Transfert vers {recipient} déjà demandé le {date}",
+  "by {user}": "par {user}",
 
   "": ""
 }
