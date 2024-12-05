@@ -29,8 +29,8 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-wrap items-stretch space-x-1">
-          <div class=" w-6 flex items-center justify-center">
+        <div class="flex items-stretch space-x-1">
+          <div class="w-6 flex items-center justify-center">
             <div class="h-full w-1 bg-gray-default" />
           </div>
           <div class="text-xs/5">
