@@ -1,14 +1,11 @@
 <template>
-  <NuxtLinkLocale
-    :to="link"
-    class="fr-btn fr-icon-add-line fr-btn--icon-left"
+  <BrandedButton
+    :href="link"
+    color="primary"
   >
-    <span>{{ t("Publish on") }}</span>
-    <SiteLogo
-      class="ml-1.5 mt-0.5 h-4"
-      white
-    />
-  </NuxtLinkLocale>
+    {{ t("Publish on") }}
+    <SiteLogo />
+  </BrandedButton>
 </template>
 
 <script setup lang="ts">

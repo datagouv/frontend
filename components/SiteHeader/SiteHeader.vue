@@ -132,10 +132,10 @@
                                   class="fr-nav__btn justify-start after:!ml-auto"
                                 >
                                   <RiAddLine class="size-4 mr-1" />
-                                  <div class="mr-1">
+                                  <span>
                                     {{ $t('Publish on') }}
-                                  </div>
-                                  <span class="font-bold">data.gouv</span><span class="fr-text--alt italic">.fr</span>
+                                    <SiteLogo />
+                                  </span>
                                 </DisclosureButton>
                                 <DisclosurePanel
                                   class="fr-menu"
@@ -174,7 +174,7 @@
                 href="/"
                 title="Retourner à l'accueil de data.gouv.fr"
               >
-                <SiteLogo class="h-6" />
+                <SiteLogo class="text-gray-logo text-2xl" />
               </a>
             </div>
           </div>
@@ -343,9 +343,11 @@
                   <PopoverButton
                     class="fr-nav__btn !w-64 inline after:!align-middle"
                   >
-                    <RiAddLine class="inline size-4" />
-                    {{ $t('Publish on') }}
-                    <span class="font-bold">data.gouv</span><span class="fr-text--alt italic">.fr</span>
+                    <RiAddLine class="inline size-4 mr-1" />
+                    <span>
+                      {{ $t('Publish on') }}
+                      <SiteLogo />
+                    </span>
                   </PopoverButton>
                   <PopoverPanel
                     v-slot="{ close }"

@@ -24,6 +24,10 @@ export default {
       aria: {
         'current-page': 'current="page"',
       },
+      fontFamily: {
+        spectral: 'Spectral',
+        gothic: 'URW Gothic',
+      },
       colors: {
         primary: '#3558a2',
         mentionGrey: '#666', // Copy from --text-mention-grey
@@ -34,6 +38,7 @@ export default {
           default: '#e5e5e5',
           plain: '#3a3a3a',
           some: '#f6f6f6',
+          logo: '#373c42',
         },
         defaultWarning: '#b32000',
         blue: {

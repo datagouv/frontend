@@ -1,11 +1,11 @@
 <template>
   <component
-    :is="as"
+    :is="href ? 'a': 'button'"
     class="inline-flex items-center space-x-1 rounded-full font-medium border !bg-none !no-underline"
     :class="[colors, sizes, isDisabled ? '!opacity-50' : '']"
     :disabled="isDisabled"
     aria-disabled="isDisabled"
-    :role="as === 'a' ? 'link' : ''"
+    :role="href ? 'link' : ''"
     :href="isDisabled ? undefined : href"
   >
     <AdminLoader
@@ -38,7 +38,6 @@ import {
 } from 'vue'
 
 const props = withDefaults(defineProps<{
-  as?: 'a' | 'button'
   size?: 'xs' | 'sm'
   color: 'primary' | 'secondary' | 'danger'
   disabled?: boolean
