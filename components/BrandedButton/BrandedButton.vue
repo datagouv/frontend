@@ -11,12 +11,11 @@
     <AdminLoader
       v-if="loading"
       size="16"
-      class="text-sm mr-1"
       :color="color === 'primary' ? 'white' : 'primary'"
     />
     <component
       :is="icon"
-      v-if="icon"
+      v-else-if="icon"
       class="size-4"
     />
     <span
