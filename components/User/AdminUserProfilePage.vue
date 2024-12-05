@@ -35,8 +35,8 @@
         </h2>
         <div class="flex-none">
           <BrandedButton
-            size="sm"
-            level="secondary"
+            size="xs"
+            color="secondary"
             as="a"
             :href="me.page"
             :icon="RiEyeLine"
@@ -82,7 +82,7 @@
       />
       <div class="flex justify-end">
         <BrandedButton
-          size="sm"
+          size="xs"
           :disabled="loading"
           :icon="RiSaveLine"
           @click="updateMe"
@@ -123,9 +123,8 @@
           <div class="fr-col-auto flex gap-4">
             <div class="flex-none">
               <BrandedButton
-                color="neutral"
-                size="sm"
-                level="secondary"
+                color="secondary"
+                size="xs"
                 :disabled="loading"
                 :icon="RiRecycleLine"
                 @click="regenerateApiKey"
@@ -135,9 +134,8 @@
             </div>
             <div class="flex-none">
               <BrandedButton
-                color="red"
-                size="sm"
-                level="secondary"
+                color="danger"
+                size="xs"
                 :disabled="loading"
                 :icon="RiDeleteBin6Line"
                 @click="deleteApiKey"
@@ -169,9 +167,8 @@
           </div>
           <div class="fr-col-auto">
             <BrandedButton
-              color="neutral"
-              size="sm"
-              level="secondary"
+              color="secondary"
+              size="xs"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changeEmailPage}`"
               :icon="RiEditLine"
@@ -202,9 +199,8 @@
           </div>
           <div class="fr-col-auto">
             <BrandedButton
-              color="neutral"
-              size="sm"
-              level="secondary"
+              color="secondary"
+              size="xs"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changePasswordPage}`"
               :icon="RiEditLine"
@@ -232,9 +228,8 @@
           >
             <template #button="{ attrs, listeners }">
               <BrandedButton
-                color="red"
-                size="sm"
-                level="secondary"
+                color="danger"
+                size="xs"
                 :icon="RiDeleteBin6Line"
                 v-bind="attrs"
                 v-on="listeners"
@@ -252,9 +247,7 @@
             <template #footer>
               <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
                 <BrandedButton
-                  color="red"
-                  level="secondary"
-                  role="button"
+                  color="danger"
                   :disabled="loading"
                   @click="deleteUser"
                 >

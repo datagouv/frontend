@@ -24,14 +24,13 @@
 
     <div class="fr-grid-row justify-between">
       <BrandedButton
-        level="secondary"
-        color="neutral"
+        color="secondary"
         @click="$emit('previous')"
       >
         {{ t("Previous") }}
       </BrandedButton>
       <BrandedButton
-        level="primary"
+        color="primary"
         :disabled="!datasets.length"
         :loading
         @click="$emit('next')"

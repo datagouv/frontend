@@ -108,8 +108,7 @@
               <template #button="{ attrs, listeners }">
                 <BrandedButton
                   :disabled="loading"
-                  level="secondary"
-                  color="red"
+                  color="danger"
                   :icon="RiDeleteBin6Line"
                   v-bind="attrs"
                   v-on="listeners"

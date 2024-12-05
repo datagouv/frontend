@@ -159,15 +159,14 @@
         </Alert>
         <div class="fr-grid-row justify-between">
           <BrandedButton
-            level="secondary"
-            color="neutral"
+            color="secondary"
             @click="$emit('previous')"
           >
             {{ $t("Previous") }}
           </BrandedButton>
           <BrandedButton
             :loading
-            level="primary"
+            color="primary"
             @click="submit"
           >
             {{ $t("Next") }}

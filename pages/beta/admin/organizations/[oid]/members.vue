@@ -110,11 +110,14 @@
         </ModalWithButton>
       </div>
     </div>
-    <template v-if="membershipRequests && membershipRequests.length">
-      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-0">
+    <div
+      v-if="membershipRequests && membershipRequests.length"
+      class="mb-8"
+    >
+      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-5v">
         {{ t("{n} requests", { n: membershipRequests.length }) }}
       </h2>
-      <div class="space-y-12">
+      <div class="space-y-8 max-w-6xl">
         <AdminMembershipRequest
           v-for="request in membershipRequests"
           :key="request.id"
@@ -124,11 +127,10 @@
           @refresh="refreshAll"
         />
       </div>
-    </template>
+    </div>
     <h2
       v-if="organization"
       class="subtitle subtitle--uppercase fr-mb-0"
-      :class="{ 'fr-mt-n3v': membershipRequests && membershipRequests.length, 'fr-mt-5v': !membershipRequests|| !membershipRequests.length }"
     >
       {{ t("{n} members", { n: organization.members.length }) }}
     </h2>
@@ -178,7 +180,10 @@
             </p>
           </td>
           <td>
-            <AdminBadge :type="getStatusType(member.role)">
+            <AdminBadge
+              size="xs"
+              :type="getStatusType(member.role)"
+            >
               {{ getStatus(member.role) }}
             </AdminBadge>
           </td>
@@ -278,7 +283,7 @@ import { Avatar, formatDate, formatFromNow, useUserAvatar, type Member, type Org
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiMailLine } from '@remixicon/vue'
-import type { AdminBadgeState, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
+import type { AdminBadgeState, AdminBadgeType, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import ModalWithButton from '~/components/Modal/ModalWithButton.vue'
@@ -334,8 +339,8 @@ function getStatus(role: MemberRole): string {
   return roles.value.find(memberRole => memberRole.id === role)?.label ?? role
 }
 
-function getStatusType(role: MemberRole): AdminBadgeState {
-  return role === 'admin' ? 'info' : 'default'
+function getStatusType(role: MemberRole): AdminBadgeType {
+  return role === 'admin' ? 'primary' : 'secondary'
 }
 
 const removeMemberFromOrganization = async (member: Member, close: () => void) => {

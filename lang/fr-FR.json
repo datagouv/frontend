@@ -763,6 +763,19 @@
   "Site": "Site",
   "{n} organizations": "{n} organisations | {n} organisation | {n} organisations",
   "{n} users": "{n} utilisateurs | {n} utilisateur | {n} utilisateurs",
+  "Transfer the dataset": "Transférer le jeu de données",
+  "Transfer": "Transférer",
+  "Search an organization or a user": "Rechercher une organisation ou un utilisateur",
+  "You will no longer have access to manage this dataset.": "Vous n’aurez plus accès à la gestion de ce jeu de données.",
+  "Accept": "Accepter",
+  "has requested a transfer": "a demandé un transfert",
+  "to your organization": "vers votre organization",
+  "to": "vers",
+  "Pending transfer": "Transfert en attente",
+  "Transfer dataset": "Transférer le jeu de données",
+  "Transfer to {recipient} already requested the {date}": "Transfert vers {recipient} déjà demandé le {date}",
+  "by {user}": "par {user}",
+  "Transfer requested. A notification has been sent to the recipient.": "Transfert demandé. Une notification a été envoyé au destinataire.",
 
   "": ""
 }
