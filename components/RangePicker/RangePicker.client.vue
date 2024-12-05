@@ -22,6 +22,7 @@
       <DatePickerClient
         ref="end"
         v-model="model.end"
+        :clearable="true"
         :lower-limit="model.start"
         :locale="locale"
         @update:model-value="hideSelector"

@@ -45,12 +45,11 @@
         @change="change"
       />
     </div>
-    <ClientOnly v-else-if="type === 'range'">
-      <RangePicker
-        :model-value="modelValue"
-        @change="change"
-      />
-    </ClientOnly>
+    <RangePickerClient
+      v-else-if="type === 'range'"
+      :model-value="modelValue"
+      @change="change"
+    />
     <MarkdownEditor
       v-else-if="type === 'markdown'"
       :id="id"
@@ -99,7 +98,7 @@
 import { computed, type InputTypeHTMLAttribute } from 'vue'
 import DatePickerClient from '../DatePicker.client.vue'
 import MarkdownEditor from '~/components/MarkdownEditor/MarkdownEditor.vue'
-import RangePicker from '~/components/RangePicker/RangePicker.vue'
+import RangePickerClient from '~/components/RangePicker/RangePicker.client.vue'
 import Required from '~/components/Required/Required.vue'
 
 export type InputValue = string | undefined | null
