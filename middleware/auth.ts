@@ -1,6 +1,6 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware(async (to, _from) => {
   // console.log(`Calling auth middleware ${from.path} -> ${to.path}`)
-  const me = useMaybeMe();
+  const me = useMaybeMe()
 
   if (to.path !== '/en/login' && !me.value) {
     // console.log('-> redirecting to login…')
@@ -8,4 +8,3 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return navigateTo(localePath('/login'))
   }
 })
-  

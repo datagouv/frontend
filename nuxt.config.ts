@@ -87,8 +87,13 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: false,
   },
-  // required for nuxt/content
-  ssr: true,
+
+  routeRules: {
+    '/login': { prerender: true },
+    '/register': { prerender: true },
+    // Admin dashboard renders only on server-side
+    '/beta/admin/**': { ssr: true },
+  },
 
   modules: [
     '@nuxt/content',

@@ -180,52 +180,53 @@
           </div>
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
-              <ul
-                v-if="me"
-                class="fr-btns-group"
-              >
-                <li>
-                  <a
-                    :href="me.page"
-                    class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
-                  >
-                    <NuxtImg
-                      :src="useUserAvatar(me, 24)"
-                      width="24"
-                      height="24"
-                      loading="lazy"
-                      alt=""
-                      class="mr-2 rounded-full"
-                    />
-                    {{ me.first_name }} {{ me.last_name }}
-                  </a>
-                </li>
-                <li>
-                  <NuxtLinkLocale
-                    to="/admin/"
-                    :external="true"
-                    class="fr-btn"
-                  >
-                    <RiSettings3Line
-                      size="1rem"
-                      class="fr-mr-1w"
-                    />
-                    {{ $t("Administration") }}
-                  </NuxtLinkLocale>
-                </li>
-                <li>
-                  <a
-                    :href="`${config.public.apiBase}/logout`"
-                    class="fr-btn"
-                  >
-                    <RiLogoutBoxRLine
-                      size="1rem"
-                      class="fr-mr-1w"
-                    />
-                    {{ $t('Logout') }}
-                  </a>
-                </li>
-              </ul>
+              <ClientOnly v-if="me">
+                <ul
+                  class="fr-btns-group"
+                >
+                  <li>
+                    <a
+                      :href="me.page"
+                      class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
+                    >
+                      <NuxtImg
+                        :src="useUserAvatar(me, 24)"
+                        width="24"
+                        height="24"
+                        loading="lazy"
+                        alt=""
+                        class="mr-2 rounded-full"
+                      />
+                      {{ me.first_name }} {{ me.last_name }}
+                    </a>
+                  </li>
+                  <li>
+                    <NuxtLinkLocale
+                      to="/admin/"
+                      :external="true"
+                      class="fr-btn"
+                    >
+                      <RiSettings3Line
+                        size="1rem"
+                        class="fr-mr-1w"
+                      />
+                      {{ $t("Administration") }}
+                    </NuxtLinkLocale>
+                  </li>
+                  <li>
+                    <a
+                      :href="`${config.public.apiBase}/logout`"
+                      class="fr-btn"
+                    >
+                      <RiLogoutBoxRLine
+                        size="1rem"
+                        class="fr-mr-1w"
+                      />
+                      {{ $t('Logout') }}
+                    </a>
+                  </li>
+                </ul>
+              </ClientOnly>
               <ul
                 v-else
                 class="fr-btns-group"
