@@ -752,6 +752,8 @@
   "Site": "Site",
   "{n} organizations": "{n} organizations | {n} organization | {n} organizations",
   "{n} users": "{n} users | {n} user | {n} users",
+  "Transfer to {recipient} already requested the {date}": "Transfer to {recipient} already requested the {date}",
+  "by {user}": "by {user}",
 
   "": ""
 }

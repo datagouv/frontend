@@ -284,8 +284,7 @@
         </Alert>
         <div class="fr-grid-row justify-between">
           <BrandedButton
-            level="secondary"
-            color="neutral"
+            color="secondary"
             @click="$emit('previous')"
           >
             {{ t("Previous") }}
@@ -296,7 +295,7 @@
             :submit
           >
             <BrandedButton
-              level="primary"
+              color="primary"
               data-testid="submitButton"
               :loading
               @click="submit"

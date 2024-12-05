@@ -35,14 +35,13 @@
       <div class="fr-grid-row fr-grid-row--right">
         <BrandedButton
           class="mr-3"
-          level="secondary"
-          color="neutral"
+          color="secondary"
           @click="submit(true)"
         >
           {{ $t("Save as draft") }}
         </BrandedButton>
         <BrandedButton
-          level="primary"
+          color="primary"
           :loading
           @click="submit(false)"
         >

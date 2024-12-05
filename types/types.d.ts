@@ -1,4 +1,4 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, Schema, RegisteredSchema } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, Schema, RegisteredSchema, OwnedWithId } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -21,6 +21,8 @@ export type PublishingFormAccordionState = AccordionFunctionalState | DSFRInfoSt
 export type AccordionState = DSFRFormDefaultState | AccordionFunctionalState | DSFRInfoState
 
 export type AdminBadgeState = DSFRFormDefaultState | FormFunctionalState | DSFRInfoState
+
+export type AdminBadgeType = 'primary' | 'secondary' | 'warning' | 'danger' | 'success'
 
 export type PaginatedArray<T> = {
   data: Array<T>
@@ -271,3 +273,16 @@ export type ContactPoint = {
 
 export type NewContactPoint = Omit<ContactPoint, 'id'>
 export type ContactPointInForm = ContactPoint | NewContactPoint
+
+export type TransferRequest = {
+  id: string
+  user: User | null // TODO add this in API
+  owner: (User & { class: 'User' }) | (Organization & { class: 'Organization' })
+  recipient: (User & { class: 'User' }) | (Organization & { class: 'Organization' })
+  subject: (Dataset & { class: 'Dataset' }) | (Reuse & { class: 'Reuse' })
+  comment: string
+  created: string
+  status: 'pending' | 'accepted' | 'refused'
+  responded: string | null
+  reponse_comment: string | null
+}

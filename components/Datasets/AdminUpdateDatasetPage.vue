@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="space-y-5">
     <DescribeDataset
       v-if="datasetForm"
       v-model="datasetForm"
@@ -7,33 +7,33 @@
       :submit-label="t('Save')"
       @submit="save"
     />
-    <AdminDangerZone
-      class="mt-5"
+
+    <TransferBanner
+      type="Dataset"
+      :subject="dataset"
+      :label="$t('Transfer dataset')"
+    />
+
+    <BannerAction
+      class="w-7/12"
+      type="danger"
+      :title="$t('Delete the dataset')"
     >
-      <div class="fr-col">
-        <p class="fr-m-0 text-neutral-800">
-          {{ $t('Delete the dataset') }}
-        </p>
-        <p class="fr-m-0 fr-text--xs text-red-600">
-          {{ $t("Be careful, this action can't be reverse.") }}
-        </p>
-      </div>
-      <div class="fr-col-auto">
+      {{ $t("Be careful, this action can't be reverse.") }}
+
+      <template #button>
         <ModalWithButton
           :title="$t('Are you sure you want to delete this dataset ?')"
           size="lg"
         >
           <template #button="{ attrs, listeners }">
-            <BrandedButton
-              color="red"
-              size="sm"
-              level="secondary"
+            <BannerActionButton
               :icon="RiDeleteBin6Line"
               v-bind="attrs"
               v-on="listeners"
             >
               {{ $t('Delete') }}
-            </BrandedButton>
+            </BannerActionButton>
           </template>
           <p class="fr-text--bold">
             {{ $t("This action can't be reverse.") }}
@@ -41,9 +41,7 @@
           <template #footer>
             <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
               <BrandedButton
-                color="red"
-                level="secondary"
-                role="button"
+                color="danger"
                 :disabled="loading"
                 @click="deleteDataset"
               >
@@ -52,15 +50,14 @@
             </div>
           </template>
         </ModalWithButton>
-      </div>
-    </AdminDangerZone>
+      </template>
+    </BannerAction>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Dataset, Frequency, License } from '@datagouv/components'
 import { RiDeleteBin6Line } from '@remixicon/vue'
-import { useCurrentOrganization } from '#build/imports'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import type { DatasetForm, EnrichedLicense, SpatialGranularity } from '~/types/types'
 import { toForm, toApi } from '~/utils/datasets'

@@ -32,9 +32,8 @@
         >
           <template #button="{ attrs, listeners }">
             <BrandedButton
-              color="red"
-              size="sm"
-              level="secondary"
+              color="danger"
+              size="xs"
               :icon="RiDeleteBin6Line"
               v-bind="attrs"
               v-on="listeners"
@@ -48,9 +47,7 @@
           <template #footer>
             <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
               <BrandedButton
-                color="red"
-                level="secondary"
-                role="button"
+                color="danger"
                 :disabled="loading"
                 @click="deleteReuse"
               >

@@ -22,8 +22,7 @@
     <DatasetsSelect v-model="datasets" />
     <div class="fr-grid-row justify-between">
       <BrandedButton
-        level="secondary"
-        color="neutral"
+        color="secondary"
         @click="$emit('previous')"
       >
         {{ t("Previous") }}
@@ -31,7 +30,7 @@
       <BrandedButton
         :disabled="!datasets.length"
         :loading
-        level="primary"
+        color="secondary"
         @click="$emit('next')"
       >
         {{ t("Next") }}

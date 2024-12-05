@@ -194,6 +194,7 @@
           <div class="fr-fieldset__element">
             <ProducerSelect
               v-model="form.owned"
+              :label="t('Check the identity with which you want to publish')"
               :required="true"
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"
@@ -495,14 +496,13 @@
         >
           <BrandedButton
             v-if="type === 'create'"
-            level="secondary"
-            color="neutral"
+            color="secondary"
             @click="$emit('previous')"
           >
             {{ $t('Previous') }}
           </BrandedButton>
           <BrandedButton
-            level="primary"
+            color="primary"
             @click="submit"
           >
             {{ submitLabel }}
