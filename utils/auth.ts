@@ -62,7 +62,7 @@ export const loadMe = async (meState: Ref<Me | null | undefined>) => {
       headers,
     })
   }
-  catch (e) {
+  catch {
     meState.value = null
   }
 }
