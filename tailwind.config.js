@@ -66,7 +66,10 @@ export default {
         },
         success: {
           lightest: '#ECF7F0',
+          lighter: '#C3FAD5',
           dark: '#27A658',
+          darker: '#1f8d49', // from DSFR to avoid contrast issue
+          darkest: '#18753c', // from DSFR to avoid contrast issue
         },
       },
       typography: theme => ({
