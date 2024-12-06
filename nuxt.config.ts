@@ -67,7 +67,7 @@ export default defineNuxtConfig({
       changeEmailPage: 'change-email',
       changePasswordPage: 'change',
 
-      readOnlyMode: true,
+      readOnlyMode: false,
 
       sentry: {
         dsn: '',
