@@ -1,5 +1,6 @@
 <template>
   <NuxtLinkLocale
+    v-if="!config.public.readOnlyMode"
     :to="link"
     class="fr-btn fr-icon-add-line fr-btn--icon-left"
   >
@@ -20,6 +21,8 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+
+const config = useRuntimeConfig()
 
 const link = computed(() => {
   switch (props.type) {
