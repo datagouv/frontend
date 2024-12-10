@@ -747,6 +747,7 @@
   "Log in": "Se connecter",
   "Register": "S'enregistrer",
   "Profile updated !": "Profil mis à jour !",
+  "Your profile picture couldn't be updated !": "Votre image de profil n'a pas pu être téléversée !",
   "The field {property} should be of at least {min} characters": "Le champ {property} doit être de {min} caractères minimum",
   "The field {property} should be a valid URL": "Le champ {property} doit être une URL valide",
   "The field {property} should be a valid email": "Le champ {property} doit être une adresse e-mail valide",
@@ -776,6 +777,6 @@
   "Transfer to {recipient} already requested the {date}": "Transfert vers {recipient} déjà demandé le {date}",
   "by {user}": "par {user}",
   "Transfer requested. A notification has been sent to the recipient.": "Transfert demandé. Une notification a été envoyé au destinataire.",
-
+  "Profile picture": "Image de profil",
   "": ""
 }
