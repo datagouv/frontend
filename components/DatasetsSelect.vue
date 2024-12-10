@@ -36,7 +36,7 @@
         <span class="fr-hr-or-text">{{ t('or') }}</span>
       </p>
       <form
-        class="flex items-center space-x-4"
+        class="flex items-end space-x-4"
         @submit.prevent="loadDatasetByLink"
       >
         <InputGroup
@@ -45,15 +45,14 @@
           :placeholder="'https://...'"
           :has-error="!!datasetUrlError"
           :error-text="datasetUrlError"
-          class="w-100"
+          class="w-100 !mb-0"
         />
-        <button
+        <BrandedButton
           type="submit"
-          class="fr-btn"
+          :icon="RiAddLine"
+          size="sm"
           :title="t('Add dataset')"
-        >
-          <RiAddLine />
-        </button>
+        />
       </form>
     </div>
     <div
@@ -72,7 +71,10 @@
         >
           <RiDraggable class="size-8" />
         </button>
-        <CardLg :dataset />
+        <CardLg
+          class="flex-1"
+          :dataset
+        />
         <button
           type="button"
           class="fr-btn fr-btn--tertiary-no-outline shrink-0"
