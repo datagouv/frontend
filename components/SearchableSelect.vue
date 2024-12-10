@@ -83,7 +83,7 @@
               </li>
               <ComboboxOption
                 v-for="option in groupOptions"
-                :key="getOptionId(unref(option))"
+                :key="getOptionId(toValue(option))"
                 v-slot="comboboxSlot"
                 as="template"
                 :value="option"
