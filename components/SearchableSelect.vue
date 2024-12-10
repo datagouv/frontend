@@ -135,6 +135,7 @@ import {
   ComboboxOption,
   TransitionRoot,
 } from '@headlessui/vue'
+import { watchDebounced } from '@vueuse/core';
 
 type ModelType = Multiple extends false ? T : Array<T>
 
@@ -209,7 +210,7 @@ const query = ref('')
 
 const suggestedOptions = ref<Array<T> | null>(null)
 
-watchEffect(async () => {
+watchDebounced(query, async () => {
   if (!props.suggest) return
 
   const savedQuery = query.value
@@ -218,7 +219,7 @@ watchEffect(async () => {
   if (savedQuery === query.value) {
     suggestedOptions.value = options
   }
-})
+}, { debounce: 400, maxWait: 800 })
 
 const filteredOptions = computed<Array<T>>(() => {
   if (props.suggest) {
