@@ -278,6 +278,12 @@ const passwordId = useId()
 
 const loading = ref(false)
 
+watchEffect(() => {
+  if (me.value.about === null) {
+    me.value.about = ''
+  }
+})
+
 async function updateMe() {
   loading.value = true
   try {
