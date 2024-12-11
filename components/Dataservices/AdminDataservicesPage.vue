@@ -47,13 +47,16 @@
       </div>
     </div>
     <AdminDataservicesTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
+      v-if="pageData && pageData.total > 0"
       :dataservices="pageData ? pageData.data : []"
       :loading="status === 'pending'"
       :sort-direction="direction"
       :sorted-by
       @sort="sort"
     />
+    <div v-else-if="status === 'idle' || status === 'pending'">
+      <AdminLoader class="size-10" />
+    </div>
     <div
       v-else
       class="flex flex-col items-center"

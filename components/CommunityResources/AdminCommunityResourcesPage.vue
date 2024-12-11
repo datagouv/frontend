@@ -43,21 +43,24 @@
       </div>
     </div>
     <AdminCommunityResourcesTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
+      v-if="pageData && pageData.total > 0"
       :community-resources="pageData ? pageData.data : []"
       :loading="status === 'pending'"
       :sort-direction="direction"
       :sorted-by
       @sort="sort"
     />
+    <div v-else-if="status === 'idle' || status === 'pending'">
+      <AdminLoader class="size-10" />
+    </div>
     <div
       v-else
       class="flex flex-col items-center"
     >
-      <!-- <nuxt-img
-        src="/illustrations/dataset.svg"
+      <nuxt-img
+        src="/illustrations/schema.svg"
         class="h-20"
-      /> -->
+      />
       <p class="fr-text--bold fr-my-3v">
         {{ t(`You haven't published a community resource yet`) }}
       </p>

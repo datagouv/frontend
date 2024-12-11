@@ -32,7 +32,7 @@
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
-          v-if="status === 'success' && pageData.total"
+          v-if="pageData && pageData.total"
           class="subtitle subtitle--uppercase fr-m-0"
         >
           {{ t('{n} reuses', pageData.total) }}
@@ -47,13 +47,16 @@
       </div>
     </div>
     <AdminReusesTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :reuses="status === 'success' ? pageData.data : []"
+      v-if="pageData && pageData.total > 0"
+      :reuses="pageData ? pageData.data : []"
       :loading="status === 'pending'"
       :sort-direction="direction"
       :sorted-by
       @sort="sort"
     />
+    <div v-else-if="status === 'idle' || status === 'pending'">
+      <AdminLoader class="size-10" />
+    </div>
     <div
       v-else
       class="flex flex-col items-center"

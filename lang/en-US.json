@@ -754,6 +754,6 @@
   "{n} users": "{n} users | {n} user | {n} users",
   "Transfer to {recipient} already requested the {date}": "Transfer to {recipient} already requested the {date}",
   "by {user}": "by {user}",
-
+  "Pending transfer": "Pending transfer",
   "": ""
 }

@@ -43,7 +43,7 @@
       </div>
     </div>
     <AdminTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
+      v-if="pageData && pageData.total > 0"
       :loading="status === 'pending'"
     >
       <thead>
@@ -88,7 +88,10 @@
             </AdminContentWithTooltip>
           </td>
           <td>
-            <AdminBadge size="xs" :type="getStatus(harvester).type">
+            <AdminBadge
+              size="xs"
+              :type="getStatus(harvester).type"
+            >
               {{ getStatus(harvester).label }}
             </AdminBadge>
           </td>
@@ -110,6 +113,9 @@
         </tr>
       </tbody>
     </AdminTable>
+    <div v-else-if="status === 'idle' || status === 'pending'">
+      <AdminLoader class="size-10" />
+    </div>
     <div
       v-else
       class="flex flex-col items-center"

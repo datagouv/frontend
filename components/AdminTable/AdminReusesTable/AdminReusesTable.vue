@@ -89,7 +89,10 @@
           </AdminContentWithTooltip>
         </td>
         <td>
-          <AdminBadge size="xs" :type="getStatus(reuse).type">
+          <AdminBadge
+            size="xs"
+            :type="getStatus(reuse).type"
+          >
             {{ getStatus(reuse).label }}
           </AdminBadge>
         </td>
@@ -120,7 +123,7 @@ import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
 import Tooltip from '../../../components/Tooltip/Tooltip.vue'
-import type { AdminBadgeState, AdminBadgeType, ReuseSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, ReuseSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   reuses: Array<Reuse>
@@ -133,7 +136,6 @@ defineEmits<{
   (event: 'sort', column: ReuseSortedBy, direction: SortDirection): void
 }>()
 
-const config = useRuntimeConfig()
 const { t } = useI18n()
 
 function sorted(column: ReuseSortedBy) {
