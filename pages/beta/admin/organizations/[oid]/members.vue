@@ -135,6 +135,7 @@
       {{ t("{n} members", { n: organization.members.length }) }}
     </h2>
     <AdminTable
+      v-if="organization && organization.members.length > 0"
       class="fr-table--layout-fixed"
       :loading
     >
@@ -275,6 +276,9 @@
         </tr>
       </tbody>
     </AdminTable>
+    <div v-else-if="status === 'idle' || status === 'pending'">
+      <AdminLoader class="size-10" />
+    </div>
   </div>
 </template>
 
@@ -283,7 +287,7 @@ import { Avatar, formatDate, formatFromNow, useUserAvatar, type Member, type Org
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiMailLine } from '@remixicon/vue'
-import type { AdminBadgeState, AdminBadgeType, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
+import type { AdminBadgeType, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import ModalWithButton from '~/components/Modal/ModalWithButton.vue'
