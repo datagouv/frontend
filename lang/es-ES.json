@@ -747,5 +747,8 @@
   "The dataset will only be visible to members of your organization.": "The dataset will only be visible to members of your organization.",
   "The dataservice will only be visible to members of your organization.": "The dataservice will only be visible to members of your organization.",
   "The reuse will only be visible to members of your organization.": "The reuse will only be visible to members of your organization.",
+  "Users": "Users",
+  "You haven't published a harvester yet": "You haven't published a harvester yet",
+  "Create an harvester on": "Create an harvester on",
   "": ""
 }

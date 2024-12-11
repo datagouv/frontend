@@ -776,6 +776,8 @@
   "Transfer to {recipient} already requested the {date}": "Transfert vers {recipient} déjà demandé le {date}",
   "by {user}": "par {user}",
   "Transfer requested. A notification has been sent to the recipient.": "Transfert demandé. Une notification a été envoyé au destinataire.",
-
+  "Users": "Utilisateurs",
+  "You haven't published a harvester yet": "Vous n'avez pas encore publié de moissonneur",
+  "Create an harvester on": "Créer un moissoneur sur",
   "": ""
 }

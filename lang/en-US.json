@@ -754,6 +754,8 @@
   "{n} users": "{n} users | {n} user | {n} users",
   "Transfer to {recipient} already requested the {date}": "Transfer to {recipient} already requested the {date}",
   "by {user}": "by {user}",
-
+  "Users": "Users",
+  "You haven't published a harvester yet": "You haven't published a harvester yet",
+  "Create an harvester on": "Create an harvester on",
   "": ""
 }
