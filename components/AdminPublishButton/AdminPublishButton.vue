@@ -1,9 +1,11 @@
 <template>
   <NuxtLinkLocale
     :to="link"
+    :external="type === 'harvester'"
     class="fr-btn fr-icon-add-line fr-btn--icon-left"
   >
-    <span>{{ t("Publish on") }}</span>
+    <span v-if="type === 'harvester'">{{ t("Create an harvester on") }}</span>
+    <span v-else>{{ t("Publish on") }}</span>
     <SiteLogo
       class="ml-1.5 mt-0.5 h-4"
       white
@@ -26,8 +28,7 @@ const link = computed(() => {
     case 'dataset':
       return '/beta/admin/datasets/new'
     case 'harvester':
-      return ''
-      // return `${admin_root}harvester/new/`;
+      return `/admin/harvester/new/`
     case 'reuse':
       return '/beta/admin/reuses/new'
     case 'dataservice':

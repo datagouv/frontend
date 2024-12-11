@@ -114,13 +114,14 @@
       v-else
       class="flex flex-col items-center"
     >
-      <!-- <nuxt-img
-          src="/illustrations/reuse.svg"
-          class="h-20"
-        /> -->
+      <nuxt-img
+        src="/illustrations/harvester.svg"
+        class="w-24"
+      />
       <p class="fr-text--bold fr-my-3v">
-        {{ t(`There is no harvesters yet`) }}
+        {{ t(`You haven't published a harvester yet`) }}
       </p>
+      <AdminPublishButton type="harvester" />
     </div>
     <Pagination
       v-if="status === 'success' && pageData.total > pageSize"
