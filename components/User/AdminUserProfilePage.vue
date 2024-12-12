@@ -210,18 +210,14 @@
           </div>
         </div>
       </div>
-      <AdminDangerZone
-        class="mt-5"
+      <BannerAction
+        class="mt-5 w-7/12"
+        type="danger"
+        :title="$t('Delete the account')"
       >
-        <div class="fr-col">
-          <p class="fr-m-0 text-neutral-800">
-            {{ $t('Delete your account') }}
-          </p>
-          <p class="fr-m-0 fr-text--xs text-red-600">
-            {{ $t("Be careful, this action can't be reverse.") }}
-          </p>
-        </div>
-        <div class="fr-col-auto">
+        {{ $t("Be careful, this action can't be reverse.") }}
+
+        <template #button>
           <ModalWithButton
             :title="$t('Are you sure you want to delete this organization ?')"
             size="lg"
@@ -256,8 +252,8 @@
               </div>
             </template>
           </ModalWithButton>
-        </div>
-      </AdminDangerZone>
+        </template>
+      </BannerAction>
     </PaddedContainer>
   </div>
 </template>

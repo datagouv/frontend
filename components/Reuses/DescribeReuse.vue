@@ -342,8 +342,9 @@
           </fieldset>
         </fieldset>
         <div class="fr-grid-row fr-grid-row--right">
-          <slot />
+          <slot name="button" />
         </div>
+        <slot />
       </div>
     </form>
   </div>
