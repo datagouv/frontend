@@ -190,7 +190,7 @@
                       class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
                     >
                       <NuxtImg
-                        :src="useUserAvatar(me, 24)"
+                        :src="getUserAvatar(me, 24)"
                         width="24"
                         height="24"
                         loading="lazy"
@@ -202,8 +202,7 @@
                   </li>
                   <li>
                     <NuxtLinkLocale
-                      to="/admin/"
-                      :external="true"
+                      to="/beta/admin/"
                       class="fr-btn"
                     >
                       <RiSettings3Line
@@ -386,7 +385,7 @@
 <script setup lang="ts">
 import { RiAccountCircleLine, RiAddLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiRobot2Line, RiLineChartLine, RiServerLine, RiArticleLine, RiSettings3Line, RiLogoutBoxRLine } from '@remixicon/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import { useUserAvatar } from '@datagouv/components'
+import { getUserAvatar } from '@datagouv/components'
 import { NuxtLinkLocale } from '#components'
 import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'

@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserAvatar, type Organization, type User } from '@datagouv/components'
+import { getUserAvatar, type Organization, type User } from '@datagouv/components'
 import type { Owned } from '~/types/types'
 
 const props = withDefaults(defineProps<{
@@ -53,7 +53,7 @@ const { t } = useI18n()
 const user = useMe()
 const { $api } = useNuxtApp()
 
-const avatar = computed(() => useUserAvatar(user.value, 24))
+const avatar = computed(() => getUserAvatar(user.value, 24))
 
 const ownedOptions = computed<Array<Owned>>(() => {
   return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
