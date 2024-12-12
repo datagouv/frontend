@@ -207,7 +207,7 @@ const editor = useEditor(root =>
             const attrs = typeof prevAttr === 'function' ? prevAttr(state) : (prevAttr ?? {})
             attrs.id = props.id
             attrs['data-testid'] = 'markdown-editor'
-            attrs['class'] = 'min-h-96 w-full'
+            attrs['class'] = 'min-h-24 w-full'
             if (props.ariaLabelledBy) {
               attrs['aria-labelledby'] = props.ariaLabelledBy
             }

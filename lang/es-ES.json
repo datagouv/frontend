@@ -732,6 +732,7 @@
   "E-mail address": "E-mail address",
   "Password": "Password",
   "Profile updated !": "Profile updated !",
+  "Your profile picture couldn't be updated !": "Your profile picture couldn't be updated !",
   "The field {property} should be of at least {min} characters": "The field {property} should be of at least {min} characters",
   "The field {property} should be a valid URL": "The field {property} should be a valid URL",
   "The field {property} should be a valid email": "The field {property} should be a valid email",
@@ -747,5 +748,6 @@
   "The dataset will only be visible to members of your organization.": "The dataset will only be visible to members of your organization.",
   "The dataservice will only be visible to members of your organization.": "The dataservice will only be visible to members of your organization.",
   "The reuse will only be visible to members of your organization.": "The reuse will only be visible to members of your organization.",
+  "Profile picture": "Profile picture",
   "": ""
 }
