@@ -1,5 +1,5 @@
-import * as Sentry from "@sentry/nuxt";
-import dotenv from "dotenv";
+import * as Sentry from '@sentry/nuxt'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -11,4 +11,4 @@ Sentry.init({
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 0.1,
-});
+})
