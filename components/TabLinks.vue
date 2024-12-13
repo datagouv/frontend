@@ -1,15 +1,17 @@
 <template>
-  <nav class="flex px-8 border-b space-x-2 font-bold">
-    <NuxtLinkLocale
-      v-for="link in links"
-      :key="link.label"
-      :to="link.href"
-      class="bloc bg-blue-light hover:!bg-blue-tint px-4 py-2 no-underline border-x border-t !border-transparent -mb-px outline-none !bg-none aria-current-page:bg-white aria-current-page:!border-gray-200 aria-current-page:hover:!bg-white"
-      :aria-current="isCurrent(link.href) ? 'page': false"
-    >
-      {{ link.label }}
-    </NuxtLinkLocale>
-  </nav>
+  <div class="flex justify-start">
+    <nav class="flex space-x-1 font-medium rounded border border-neutral-300">
+      <NuxtLinkLocale
+        v-for="link in links"
+        :key="link.label"
+        :to="link.href"
+        class="block rounded !bg-none !bg-transparent !border border-transparent hover:!bg-white/50 hover:border-neutral-300/50 -m-px px-3 py-1 no-underline outline-none aria-current-page:border aria-current-page:!border-primary aria-current-page:text-primary"
+        :aria-current="isCurrent(link.href) ? 'page': false"
+      >
+        {{ link.label }}
+      </NuxtLinkLocale>
+    </nav>
+  </div>
 </template>
 
 <script setup lang="ts">
