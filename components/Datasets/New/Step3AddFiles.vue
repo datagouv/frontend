@@ -69,7 +69,7 @@
     </Sidemenu>
     <div class="fr-col-12 fr-col-md-7">
       <PaddedContainer>
-        <NewWell
+        <SimpleBanner
           type="primary"
           class="mb-4 flex items-center space-x-5"
         >
@@ -87,7 +87,7 @@
               {{ $t('A dataset can contain multiple types of files (updates, history, documentation, source code, API, link, etc.)') }}
             </p>
           </div>
-        </NewWell>
+        </SimpleBanner>
 
         <fieldset
           class="fr-fieldset min-width-0"

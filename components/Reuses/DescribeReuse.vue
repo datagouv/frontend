@@ -121,7 +121,7 @@
       @submit.prevent="submit"
     >
       <div class="fr-p-3w bg-white">
-        <NewWell
+        <SimpleBanner
           v-if="type === 'create'"
           type="primary"
           class="mb-4 flex items-center space-x-5"
@@ -140,7 +140,7 @@
               {{ t("A reuse is an exemple of public data's usage.") }} {{ t('Publishing a reuse can allow you to gain visibility and start start a dialogue with the dataset producer.') }}
             </p>
           </div>
-        </NewWell>
+        </SimpleBanner>
 
         <fieldset
           v-if="type === 'create'"

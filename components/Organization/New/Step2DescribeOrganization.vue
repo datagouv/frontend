@@ -94,7 +94,7 @@
     </Sidemenu>
     <div class="fr-col-12 fr-col-md-7">
       <PaddedContainer>
-        <NewWell
+        <SimpleBanner
           v-if="showWell"
           type="primary"
           class="mb-4 flex items-center space-x-5"
@@ -113,7 +113,7 @@
               {{ t('An organization is an entity in which many users can collaborate. The datasets published under the organization can be edited by its members.') }}
             </p>
           </div>
-        </NewWell>
+        </SimpleBanner>
 
         <fieldset
           class="fr-fieldset"

@@ -151,7 +151,7 @@
       @submit.prevent="submit"
     >
       <div class="fr-p-3w bg-white">
-        <NewWell
+        <SimpleBanner
           v-if="type === 'create'"
           type="primary"
           class="mb-4 flex items-center space-x-5"
@@ -170,7 +170,7 @@
               {{ t('A dataservice is a computer tool that allows a website or software to communicate with another computer and exchange data.') }}
             </p>
           </div>
-        </NewWell>
+        </SimpleBanner>
 
         <fieldset
           v-if="type === 'create'"

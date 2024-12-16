@@ -153,7 +153,7 @@
     </Sidemenu>
     <div class="fr-col-12 fr-col-lg-7">
       <div class="fr-p-3w bg-white">
-        <NewWell
+        <SimpleBanner
           v-if="type === 'create'"
           type="primary"
           class="mb-4 flex items-center space-x-5"
@@ -172,7 +172,7 @@
               {{ $t('On {site}, a dataset is a set of files.', { site: config.public.title }) }}
             </p>
           </div>
-        </NewWell>
+        </SimpleBanner>
 
         <RequiredExplanation />
         <fieldset
