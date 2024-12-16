@@ -49,7 +49,6 @@
       <AdminDatasetsTable
         v-if="pageData && pageData.length > 0"
         :datasets="pageData ? pageData : []"
-        :loading="false"
       />
     </LoadingBloc>
 

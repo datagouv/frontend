@@ -51,7 +51,6 @@
       <div v-if="pageData && pageData.total > 0">
         <AdminReusesTable
           :reuses="pageData ? pageData.data : []"
-          :loading="false"
           :sort-direction="direction"
           :sorted-by
           @sort="sort"

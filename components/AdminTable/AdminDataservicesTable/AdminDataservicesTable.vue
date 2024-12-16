@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <tr>
         <AdminTableTh
@@ -46,12 +46,18 @@
           </AdminContentWithTooltip>
         </td>
         <td>
-          <AdminBadge size="xs" :type="getStatus(dataservice).type">
+          <AdminBadge
+            size="xs"
+            :type="getStatus(dataservice).type"
+          >
             {{ getStatus(dataservice).label }}
           </AdminBadge>
         </td>
         <td>
-          <AdminBadge size="xs" :type="getAccess(dataservice).type">
+          <AdminBadge
+            size="xs"
+            :type="getAccess(dataservice).type"
+          >
             {{ getAccess(dataservice).label }}
           </AdminBadge>
         </td>
@@ -71,11 +77,10 @@ import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
-import type { AdminBadgeState, AdminBadgeType, DataserviceSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, DataserviceSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   dataservices: Array<Dataservice>
-  loading: boolean
   sortedBy: DataserviceSortedBy
   sortDirection: SortDirection
 }>()

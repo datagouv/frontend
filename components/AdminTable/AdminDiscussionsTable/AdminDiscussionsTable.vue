@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <tr>
         <AdminTableTh
@@ -108,7 +108,6 @@ import { getDiscussionUrl, getSubject, getSubjectTypeIcon, getSubjectTitle } fro
 
 const props = defineProps<{
   discussions: Array<Thread>
-  loading: boolean
   sortDirection: SortDirection
   sortedBy: DiscussionSortedBy
 }>()

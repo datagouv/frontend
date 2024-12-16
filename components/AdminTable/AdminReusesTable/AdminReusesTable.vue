@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <tr>
         <AdminTableTh
@@ -127,7 +127,6 @@ import type { AdminBadgeType, ReuseSortedBy, SortDirection } from '~/types/types
 
 const props = defineProps<{
   reuses: Array<Reuse>
-  loading: boolean
   sortedBy: ReuseSortedBy
   sortDirection: SortDirection
 }>()

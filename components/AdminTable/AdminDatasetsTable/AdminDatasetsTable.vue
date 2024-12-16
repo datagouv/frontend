@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <tr>
         <AdminTableTh
@@ -121,7 +121,10 @@
           </AdminContentWithTooltip>
         </td>
         <td>
-          <AdminBadge size="xs" :type="getStatus(dataset).type">
+          <AdminBadge
+            size="xs"
+            :type="getStatus(dataset).type"
+          >
             {{ getStatus(dataset).label }}
           </AdminBadge>
         </td>
@@ -175,7 +178,7 @@ import AdminContentWithTooltip from '../../AdminContentWithTooltip/AdminContentW
 import AdminTable from '../Table/AdminTable.vue'
 import AdminTableTh from '../Table/AdminTableTh.vue'
 import Tooltip from '../../Tooltip/Tooltip.vue'
-import type { AdminBadgeState, AdminBadgeType, DatasetSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, DatasetSortedBy, SortDirection } from '~/types/types'
 
 const emit = defineEmits<{
   (event: 'sort', column: DatasetSortedBy, direction: SortDirection): void
@@ -183,7 +186,6 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   datasets: Array<Dataset | DatasetV2>
-  loading: boolean
   sortDirection?: SortDirection
   sortedBy?: DatasetSortedBy
 }>()
