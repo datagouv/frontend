@@ -36,8 +36,8 @@
     </Breadcrumb>
 
     <div v-if="dataset">
-      <div class="flex items-center justify-between">
-        <h1 class="fr-h3 fr-mb-5v">
+      <div class="flex items-center justify-between mb-5">
+        <h1 class="fr-h3 !mb-0">
           {{ dataset.title }}
         </h1>
         <a
@@ -49,6 +49,7 @@
       </div>
 
       <TabLinks
+        class="mb-5"
         :links="[
           { href: getDatasetAdminUrl(dataset), label: t('Metadata') },
           { href: `${getDatasetAdminUrl(dataset)}/files`, label: t('Files') },

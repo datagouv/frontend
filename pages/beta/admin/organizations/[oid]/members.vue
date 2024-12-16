@@ -227,41 +227,13 @@
                     />
                   </div>
 
-                  <form
-                    class="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom"
-                    @submit.prevent="updateRole(member, close)"
+                  <BannerAction
+                    class="mt-4"
+                    type="danger"
+                    :title="$t('Remove member from the organization')"
                   >
-                    <div class="fr-col">
-                      <SelectGroup
-                        v-if="roles.length > 0"
-                        v-model="newRole"
-                        :label="t('Role of the member')"
-                        :options="rolesOptions"
-                      />
-                    </div>
-                    <div class="fr-col-auto">
-                      <button
-                        class="fr-btn"
-                        type="submit"
-                        :disabled="loading"
-                      >
-                        {{ t("Validate") }}
-                      </button>
-                    </div>
-                  </form>
-
-                  <AdminDangerZone
-                    class="fr-mt-2w"
-                  >
-                    <div class="fr-col">
-                      <p class="fr-m-0 text-grey-500">
-                        {{ t('Remove member from the organization') }}
-                      </p>
-                      <p class="fr-m-0 fr-text--xs text-default-error">
-                        {{ t("Be careful, this action can't be reverse.") }}
-                      </p>
-                    </div>
-                    <div class="fr-col-auto">
+                    {{ t("Be careful, this action can't be reverse.") }}
+                    <template #button>
                       <button
                         class="fr-btn fr-btn--secondary fr-btn--secondary--error fr-btn--icon-left fr-icon-logout-box-r-line"
                         :disabled="loading"
@@ -269,8 +241,8 @@
                       >
                         {{ t('Remove member') }}
                       </button>
-                    </div>
-                  </AdminDangerZone>
+                    </template>
+                  </BannerAction>
                 </template>
               </ModalWithButton>
             </td>
@@ -290,7 +262,6 @@ import type { AdminBadgeType, MemberRole, PendingMembershipRequest, UserSuggest 
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import ModalWithButton from '~/components/Modal/ModalWithButton.vue'
-import AdminDangerZone from '~/components/AdminDangerZone/AdminDangerZone.vue'
 import SelectGroup from '~/components/Form/SelectGroup/SelectGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
 import AdminMembershipRequest from '~/components/AdminMembershipRequest/AdminMembershipRequest.vue'

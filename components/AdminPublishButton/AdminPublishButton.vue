@@ -1,17 +1,13 @@
 <template>
-  <NuxtLinkLocale
+  <BrandedButton
     v-if="!config.public.readOnlyMode"
-    :to="link"
+    :href="link"
+    color="primary"
     :external="type === 'harvester'"
-    class="fr-btn fr-icon-add-line fr-btn--icon-left"
   >
     <span v-if="type === 'harvester'">{{ t("Create an harvester on") }}</span>
-    <span v-else>{{ t("Publish on") }}</span>
-    <SiteLogo
-      class="ml-1.5 mt-0.5 h-4"
-      white
-    />
-  </NuxtLinkLocale>
+    <span v-else>{{ t("Publish on") }}</span>&nbsp;<SiteLogo />
+  </BrandedButton>
 </template>
 
 <script setup lang="ts">

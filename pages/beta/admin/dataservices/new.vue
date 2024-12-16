@@ -38,12 +38,14 @@
       type="create"
       @submit="dataserviceNext"
     >
-      <button
-        type="submit"
-        class="fr-btn"
-      >
-        {{ $t("Next") }}
-      </button>
+      <template #button>
+        <button
+          type="submit"
+          class="fr-btn"
+        >
+          {{ $t("Next") }}
+        </button>
+      </template>
     </DescribeDataservice>
     <Step2AddDatasets
       v-if="currentStep === 2"
