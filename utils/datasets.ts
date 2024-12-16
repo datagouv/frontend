@@ -76,7 +76,7 @@ export function getResourceFormatIcon(format: string): Component | null {
 }
 
 export function useNewDatasetFileForm(file: MaybeRef<NewDatasetFile>) {
-  const isRemote = computed(() => unref(file).filetype === 'remote')
+  const isRemote = computed(() => toValue(file).filetype === 'remote')
   const { t } = useI18n()
 
   return useForm(file, {

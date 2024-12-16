@@ -21,7 +21,7 @@
       >{{ hintText }}</span>
     </label>
     <Combobox
-      v-slot="{ open }"
+      v-slot="{ open, activeOption }"
       v-model="model"
       :multiple
       :by="compareTwoOptions"
@@ -83,27 +83,32 @@
               </li>
               <ComboboxOption
                 v-for="option in groupOptions"
-                :key="getOptionId(unref(option))"
+                :key="getOptionId(toValue(option))"
                 v-slot="comboboxSlot"
                 as="template"
                 :value="option"
               >
                 <li
-                  class="relative cursor-default select-none py-2 px-4 list-none flex items-center space-x-2"
+                  class="relative cursor-default select-none py-2 pr-4 list-none flex items-center gap-2"
                   :class="{
-                    'bg-primary text-white': comboboxSlot.active,
-                    'text-gray-900': !comboboxSlot.active,
+                    'bg-primary text-white': isActive(activeOption, option),
+                    'text-gray-900': !isActive(activeOption, option),
+                    'pl-2': comboboxSlot.selected,
+                    'pl-6': !comboboxSlot.selected,
                   }"
                 >
                   <div
-                    v-if="multiple"
                     class="flex items-center justify-center aspect-square"
                   >
-                    <span v-if="comboboxSlot.selected">✓</span>
+                    <RiCheckLine
+                      v-if="comboboxSlot.selected"
+                      class="size-4 text-primary"
+                      :class="{ 'text-white': isActive(activeOption, option) }"
+                    />
                   </div>
                   <slot
                     name="option"
-                    v-bind="{ option, active: comboboxSlot.active as boolean }"
+                    v-bind="{ option, active: isActive(activeOption, option) as boolean }"
                   >
                     {{ displayValue(option) }}
                   </slot>
@@ -126,7 +131,7 @@
 
 <script setup lang="ts" generic="T extends string | number | object, Multiple extends true | false">
 import { ref, computed } from 'vue'
-import { RiArrowDownSLine } from '@remixicon/vue'
+import { RiArrowDownSLine, RiCheckLine } from '@remixicon/vue'
 import {
   Combobox,
   ComboboxInput,
@@ -135,6 +140,7 @@ import {
   ComboboxOption,
   TransitionRoot,
 } from '@headlessui/vue'
+import { watchDebounced } from '@vueuse/core';
 
 type ModelType = Multiple extends false ? T : Array<T>
 
@@ -209,7 +215,7 @@ const query = ref('')
 
 const suggestedOptions = ref<Array<T> | null>(null)
 
-watchEffect(async () => {
+watchDebounced(query, async () => {
   if (!props.suggest) return
 
   const savedQuery = query.value
@@ -218,7 +224,7 @@ watchEffect(async () => {
   if (savedQuery === query.value) {
     suggestedOptions.value = options
   }
-})
+}, { debounce: 400, maxWait: 800 })
 
 const filteredOptions = computed<Array<T>>(() => {
   if (props.suggest) {
@@ -255,10 +261,14 @@ const filteredAndGroupedOptions = computed<Record<string, Array<T>>>(() => {
   return groups
 })
 
-const compareTwoOptions = (a: T | null, b: T | null) => {
+function compareTwoOptions(a: T | null, b: T | null) {
   if (a === b) return true
   if (!a || !b) return false
 
   return props.getOptionId(a) === props.getOptionId(b)
+}
+
+function isActive(activeOption: T, currentOption: T) {
+  return activeOption ? props.getOptionId(activeOption) === props.getOptionId(currentOption) : false
 }
 </script>

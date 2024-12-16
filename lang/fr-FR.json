@@ -747,6 +747,7 @@
   "Log in": "Se connecter",
   "Register": "S'enregistrer",
   "Profile updated !": "Profil mis à jour !",
+  "Your profile picture couldn't be updated !": "Votre image de profil n'a pas pu être téléversée !",
   "The field {property} should be of at least {min} characters": "Le champ {property} doit être de {min} caractères minimum",
   "The field {property} should be a valid URL": "Le champ {property} doit être une URL valide",
   "The field {property} should be a valid email": "Le champ {property} doit être une adresse e-mail valide",
@@ -779,5 +780,6 @@
   "Users": "Utilisateurs",
   "You haven't published a harvester yet": "Vous n'avez pas encore publié de moissonneur",
   "Create an harvester on": "Créer un moissoneur sur",
+  "Profile picture": "Image de profil",
   "": ""
 }

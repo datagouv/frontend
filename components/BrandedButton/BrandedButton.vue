@@ -40,7 +40,7 @@ import {
 const props = withDefaults(defineProps<{
   as?: 'a' | 'button'
   size?: 'xs' | 'sm'
-  color: 'primary' | 'secondary' | 'danger'
+  color?: 'primary' | 'secondary' | 'danger'
   disabled?: boolean
   loading?: boolean
   icon?: Component
