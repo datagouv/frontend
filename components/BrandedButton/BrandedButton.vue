@@ -6,7 +6,7 @@
     :disabled="isDisabled"
     aria-disabled="isDisabled"
     :role="href ? 'link' : ''"
-    :href="isDisabled ? undefined : href"
+    :to="isDisabled ? undefined : href"
   >
     <AdminLoader
       v-if="loading"
