@@ -42,19 +42,27 @@
         <!-- Buttons -->
       </div>
     </div>
-    <AdminDiscussionsTable
-      v-if="pageData && pageData.total > 0"
-      :discussions="pageData ? pageData.data : []"
-      :loading="status === 'pending'"
-      :sort-direction="direction"
-      :sorted-by
-      @sort="sort"
-    />
-    <div v-else-if="status === 'idle' || status === 'pending'">
-      <AdminLoader class="size-10" />
-    </div>
+
+    <LoadingBloc :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminDiscussionsTable
+          :discussions="pageData ? pageData.data : []"
+          :loading="false"
+          :sort-direction="direction"
+          :sorted-by
+          @sort="sort"
+        />
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBloc>
+
     <div
-      v-else
+      v-if="pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
@@ -65,13 +73,6 @@
         {{ t(`There is no discussion yet`) }}
       </p>
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 

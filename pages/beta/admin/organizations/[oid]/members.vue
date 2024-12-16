@@ -134,151 +134,150 @@
     >
       {{ t("{n} members", { n: organization.members.length }) }}
     </h2>
-    <AdminTable
-      v-if="organization && organization.members.length > 0"
-      class="fr-table--layout-fixed"
-      :loading
-    >
-      <thead>
-        <tr>
-          <AdminTableTh scope="col">
-            {{ t("Members") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Status") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Member since") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Last connection") }}
-          </AdminTableTh>
-          <AdminTableTh
-            v-if="isOrgAdmin"
-            scope="col"
+
+    <LoadingBloc :status>
+      <AdminTable
+        v-if="organization && organization.members.length > 0"
+        class="fr-table--layout-fixed"
+      >
+        <thead>
+          <tr>
+            <AdminTableTh scope="col">
+              {{ t("Members") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ t("Status") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ t("Member since") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ t("Last connection") }}
+            </AdminTableTh>
+            <AdminTableTh
+              v-if="isOrgAdmin"
+              scope="col"
+            >
+              {{ t("Action") }}
+            </AdminTableTh>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="member in organization?.members || []"
+            :key="member.user.id"
           >
-            {{ t("Action") }}
-          </AdminTableTh>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="member in organization?.members || []"
-          :key="member.user.id"
-        >
-          <td>
-            <p class="fr-text--bold fr-m-0">
-              {{ member.user.first_name }} {{ member.user.last_name }}
-            </p>
-            <p class="fr-m-0 fr-text--xs text-mention-grey f-italic inline-flex items-center">
-              <RiMailLine class="size-3" />
-              <TextClamp
-                class="fr-px-1v"
-                :text="member.user.email"
-                :auto-resize="true"
-                :max-lines="1"
-              />
-            </p>
-          </td>
-          <td>
-            <AdminBadge
-              size="xs"
-              :type="getStatusType(member.role)"
-            >
-              {{ getStatus(member.role) }}
-            </AdminBadge>
-          </td>
-          <td>{{ formatDate(member.since) }}</td>
-          <td>
-            <span v-if="member.user.last_login_at">{{ formatFromNow(member.user.last_login_at) }}</span>
-            <span v-else>{{ t("No connection") }}</span>
-          </td>
-          <td v-if="isOrgAdmin">
-            <ModalWithButton
-              :title="$t('Edit member')"
-              size="lg"
-              @open="newRole = member.role"
-            >
-              <template #button="{ attrs, listeners }">
-                <button
-                  class="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
-                  v-bind="attrs"
-                  v-on="listeners"
-                >
-                  {{ t("Edit") }}
-                </button>
-              </template>
+            <td>
+              <p class="fr-text--bold fr-m-0">
+                {{ member.user.first_name }} {{ member.user.last_name }}
+              </p>
+              <p class="fr-m-0 fr-text--xs text-mention-grey f-italic inline-flex items-center">
+                <RiMailLine class="size-3" />
+                <TextClamp
+                  class="fr-px-1v"
+                  :text="member.user.email"
+                  :auto-resize="true"
+                  :max-lines="1"
+                />
+              </p>
+            </td>
+            <td>
+              <AdminBadge
+                size="xs"
+                :type="getStatusType(member.role)"
+              >
+                {{ getStatus(member.role) }}
+              </AdminBadge>
+            </td>
+            <td>{{ formatDate(member.since) }}</td>
+            <td>
+              <span v-if="member.user.last_login_at">{{ formatFromNow(member.user.last_login_at) }}</span>
+              <span v-else>{{ t("No connection") }}</span>
+            </td>
+            <td v-if="isOrgAdmin">
+              <ModalWithButton
+                :title="$t('Edit member')"
+                size="lg"
+                @open="newRole = member.role"
+              >
+                <template #button="{ attrs, listeners }">
+                  <button
+                    class="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+                    v-bind="attrs"
+                    v-on="listeners"
+                  >
+                    {{ t("Edit") }}
+                  </button>
+                </template>
 
-              <template #default="{ close }">
-                <div class="fr-grid-row fr-grid-row--middle fr-mb-2w">
-                  <Avatar
-                    class="fr-mr-1v"
-                    :user="member.user"
-                    :rounded="true"
-                    :size="24"
-                  />
-                  <p class="fr-text--bold fr-m-0 fr-mr-1v">
-                    {{ member.user.first_name }} {{ member.user.last_name }}
-                  </p>
-                  <AdminEmail
-                    v-if="member.user.email"
-                    :email="member.user.email"
-                  />
-                </div>
-
-                <form
-                  class="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom"
-                  @submit.prevent="updateRole(member, close)"
-                >
-                  <div class="fr-col">
-                    <SelectGroup
-                      v-if="roles.length > 0"
-                      v-model="newRole"
-                      :label="t('Role of the member')"
-                      :options="rolesOptions"
+                <template #default="{ close }">
+                  <div class="fr-grid-row fr-grid-row--middle fr-mb-2w">
+                    <Avatar
+                      class="fr-mr-1v"
+                      :user="member.user"
+                      :rounded="true"
+                      :size="24"
+                    />
+                    <p class="fr-text--bold fr-m-0 fr-mr-1v">
+                      {{ member.user.first_name }} {{ member.user.last_name }}
+                    </p>
+                    <AdminEmail
+                      v-if="member.user.email"
+                      :email="member.user.email"
                     />
                   </div>
-                  <div class="fr-col-auto">
-                    <button
-                      class="fr-btn"
-                      type="submit"
-                      :disabled="loading"
-                    >
-                      {{ t("Validate") }}
-                    </button>
-                  </div>
-                </form>
 
-                <AdminDangerZone
-                  class="fr-mt-2w"
-                >
-                  <div class="fr-col">
-                    <p class="fr-m-0 text-grey-500">
-                      {{ t('Remove member from the organization') }}
-                    </p>
-                    <p class="fr-m-0 fr-text--xs text-default-error">
-                      {{ t("Be careful, this action can't be reverse.") }}
-                    </p>
-                  </div>
-                  <div class="fr-col-auto">
-                    <button
-                      class="fr-btn fr-btn--secondary fr-btn--secondary--error fr-btn--icon-left fr-icon-logout-box-r-line"
-                      :disabled="loading"
-                      @click="removeMemberFromOrganization(member, close)"
-                    >
-                      {{ t('Remove member') }}
-                    </button>
-                  </div>
-                </AdminDangerZone>
-              </template>
-            </ModalWithButton>
-          </td>
-        </tr>
-      </tbody>
-    </AdminTable>
-    <div v-else-if="status === 'idle' || status === 'pending'">
-      <AdminLoader class="size-10" />
-    </div>
+                  <form
+                    class="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom"
+                    @submit.prevent="updateRole(member, close)"
+                  >
+                    <div class="fr-col">
+                      <SelectGroup
+                        v-if="roles.length > 0"
+                        v-model="newRole"
+                        :label="t('Role of the member')"
+                        :options="rolesOptions"
+                      />
+                    </div>
+                    <div class="fr-col-auto">
+                      <button
+                        class="fr-btn"
+                        type="submit"
+                        :disabled="loading"
+                      >
+                        {{ t("Validate") }}
+                      </button>
+                    </div>
+                  </form>
+
+                  <AdminDangerZone
+                    class="fr-mt-2w"
+                  >
+                    <div class="fr-col">
+                      <p class="fr-m-0 text-grey-500">
+                        {{ t('Remove member from the organization') }}
+                      </p>
+                      <p class="fr-m-0 fr-text--xs text-default-error">
+                        {{ t("Be careful, this action can't be reverse.") }}
+                      </p>
+                    </div>
+                    <div class="fr-col-auto">
+                      <button
+                        class="fr-btn fr-btn--secondary fr-btn--secondary--error fr-btn--icon-left fr-icon-logout-box-r-line"
+                        :disabled="loading"
+                        @click="removeMemberFromOrganization(member, close)"
+                      >
+                        {{ t('Remove member') }}
+                      </button>
+                    </div>
+                  </AdminDangerZone>
+                </template>
+              </ModalWithButton>
+            </td>
+          </tr>
+        </tbody>
+      </AdminTable>
+    </LoadingBloc>
   </div>
 </template>
 

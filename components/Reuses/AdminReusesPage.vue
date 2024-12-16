@@ -46,19 +46,27 @@
         /> -->
       </div>
     </div>
-    <AdminReusesTable
-      v-if="pageData && pageData.total > 0"
-      :reuses="pageData ? pageData.data : []"
-      :loading="status === 'pending'"
-      :sort-direction="direction"
-      :sorted-by
-      @sort="sort"
-    />
-    <div v-else-if="status === 'idle' || status === 'pending'">
-      <AdminLoader class="size-10" />
-    </div>
+
+    <LoadingBloc :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminReusesTable
+          :reuses="pageData ? pageData.data : []"
+          :loading="false"
+          :sort-direction="direction"
+          :sorted-by
+          @sort="sort"
+        />
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBloc>
+
     <div
-      v-else
+      v-if="pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
@@ -70,13 +78,6 @@
       </p>
       <AdminPublishButton type="reuse" />
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 

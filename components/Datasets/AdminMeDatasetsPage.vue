@@ -37,23 +37,24 @@
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
-          v-if="status === 'success' && pageData.length"
+          v-if="pageData && pageData.length"
           class="subtitle subtitle--uppercase fr-m-0"
         >
           {{ t('{n} datasets', pageData.length) }}
         </h2>
       </div>
     </div>
-    <AdminDatasetsTable
-      v-if="pageData && pageData.length > 0"
-      :datasets="pageData ? pageData : []"
-      :loading="status === 'pending'"
-    />
-    <div v-else-if="status === 'idle' || status === 'pending'">
-      <AdminLoader class="size-10" />
-    </div>
+
+    <LoadingBloc :status>
+      <AdminDatasetsTable
+        v-if="pageData && pageData.length > 0"
+        :datasets="pageData ? pageData : []"
+        :loading="false"
+      />
+    </LoadingBloc>
+
     <div
-      v-else
+      v-if="pageData && !pageData.length"
       class="flex flex-col items-center"
     >
       <nuxt-img

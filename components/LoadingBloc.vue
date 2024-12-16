@@ -5,9 +5,9 @@
     </div>
     <div
       v-if="loading"
-      class="absolute inset-0 flex justify-center items-center "
+      class="absolute inset-0 flex justify-center items-center min-h-64"
     >
-      <AdminLoader class="size-32" />
+      <AdminLoader class="size-24" />
     </div>
   </div>
 </template>

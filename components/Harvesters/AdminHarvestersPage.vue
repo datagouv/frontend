@@ -32,7 +32,7 @@
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
-          v-if="status === 'success' && pageData.total"
+          v-if="pageData && pageData.total"
           class="subtitle subtitle--uppercase fr-m-0"
         >
           {{ t('{n} harvesters', pageData.total) }}
@@ -42,82 +42,88 @@
         <!-- Buttons -->
       </div>
     </div>
-    <AdminTable
-      v-if="pageData && pageData.total > 0"
-      :loading="status === 'pending'"
-    >
-      <thead>
-        <tr>
-          <AdminTableTh scope="col">
-            {{ t("Name") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Status") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Created at") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Last run") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Datasets") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Dataservices") }}
-          </AdminTableTh>
-        </tr>
-      </thead>
-      <tbody v-if="pageData">
-        <tr
-          v-for="harvester in pageData.data"
-          :key="harvester.id"
-        >
-          <td>
-            <AdminContentWithTooltip>
-              <a
-                class="fr-link fr-reset-link"
-                :href="getHarvesterLinkToAdmin(harvester)"
-              >
-                <TextClamp
-                  :text="harvester.name"
-                  :auto-resize="true"
-                  :max-lines="2"
-                />
-              </a>
-            </AdminContentWithTooltip>
-          </td>
-          <td>
-            <AdminBadge
-              size="xs"
-              :type="getStatus(harvester).type"
+
+    <LoadingBloc :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminTable>
+          <thead>
+            <tr>
+              <AdminTableTh scope="col">
+                {{ t("Name") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Status") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Created at") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Last run") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Datasets") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Dataservices") }}
+              </AdminTableTh>
+            </tr>
+          </thead>
+          <tbody v-if="pageData">
+            <tr
+              v-for="harvester in pageData.data"
+              :key="harvester.id"
             >
-              {{ getStatus(harvester).label }}
-            </AdminBadge>
-          </td>
-          <td>{{ formatDate(harvester.created_at) }}</td>
-          <td>
-            <template v-if="harvester.last_job?.ended">
-              {{ formatDate(harvester.last_job.ended) }}
-            </template>
-            <template v-else>
-              {{ t('Not yet') }}
-            </template>
-          </td>
-          <td>
-            {{ getHarvesterDatasets(harvester) }}
-          </td>
-          <td>
-            {{ getHarvesterDataservices(harvester) }}
-          </td>
-        </tr>
-      </tbody>
-    </AdminTable>
-    <div v-else-if="status === 'idle' || status === 'pending'">
-      <AdminLoader class="size-10" />
-    </div>
+              <td>
+                <AdminContentWithTooltip>
+                  <a
+                    class="fr-link fr-reset-link"
+                    :href="getHarvesterLinkToAdmin(harvester)"
+                  >
+                    <TextClamp
+                      :text="harvester.name"
+                      :auto-resize="true"
+                      :max-lines="2"
+                    />
+                  </a>
+                </AdminContentWithTooltip>
+              </td>
+              <td>
+                <AdminBadge
+                  size="xs"
+                  :type="getStatus(harvester).type"
+                >
+                  {{ getStatus(harvester).label }}
+                </AdminBadge>
+              </td>
+              <td>{{ formatDate(harvester.created_at) }}</td>
+              <td>
+                <template v-if="harvester.last_job?.ended">
+                  {{ formatDate(harvester.last_job.ended) }}
+                </template>
+                <template v-else>
+                  {{ t('Not yet') }}
+                </template>
+              </td>
+              <td>
+                {{ getHarvesterDatasets(harvester) }}
+              </td>
+              <td>
+                {{ getHarvesterDataservices(harvester) }}
+              </td>
+            </tr>
+          </tbody>
+        </AdminTable>
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBloc>
+
     <div
-      v-else
+      v-if="pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
@@ -129,13 +135,6 @@
       </p>
       <AdminPublishButton type="harvester" />
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 
