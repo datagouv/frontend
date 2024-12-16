@@ -32,7 +32,7 @@
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
-          v-if="status === 'success' && pageData.total"
+          v-if="pageData && pageData.total"
           class="subtitle subtitle--uppercase fr-m-0"
         >
           {{ t('{n} reuses', pageData.total) }}
@@ -46,16 +46,26 @@
         /> -->
       </div>
     </div>
-    <AdminReusesTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :reuses="status === 'success' ? pageData.data : []"
-      :loading="status === 'pending'"
-      :sort-direction="direction"
-      :sorted-by
-      @sort="sort"
-    />
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminReusesTable
+          :reuses="pageData ? pageData.data : []"
+          :sort-direction="direction"
+          :sorted-by
+          @sort="sort"
+        />
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+
     <div
-      v-else
+      v-if="pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
@@ -67,13 +77,6 @@
       </p>
       <AdminPublishButton type="reuse" />
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 

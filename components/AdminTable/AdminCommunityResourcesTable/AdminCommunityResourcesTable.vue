@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <AdminTableTh
         :sorted="sorted('title')"
@@ -77,11 +77,10 @@ import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
-import type { AdminBadgeState, AdminBadgeType, CommunityResourceSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, CommunityResourceSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   communityResources: Array<CommunityResource>
-  loading: boolean
   sortedBy: CommunityResourceSortedBy
   sortDirection: SortDirection
 }>()
