@@ -1,7 +1,7 @@
 <template>
   <div class="fr-grid-row">
     <Sidemenu
-      class="fr-col-12 fr-col-md-5"
+      class="fr-col-12 fr-col-lg-5"
       :button-text="$t('Help')"
       :on-right="true"
       :fixed="true"
@@ -151,7 +151,7 @@
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
-    <div class="fr-col-12 fr-col-md-7">
+    <div class="fr-col-12 fr-col-lg-7">
       <div class="fr-p-3w bg-white">
         <Well
           v-if="type === 'create'"
@@ -508,6 +508,7 @@
             {{ submitLabel }}
           </BrandedButton>
         </div>
+        <slot />
       </div>
     </div>
   </div>

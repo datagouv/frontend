@@ -1,57 +1,58 @@
 <template>
-  <div class="space-y-5">
+  <div>
     <DescribeDataset
       v-if="datasetForm"
       v-model="datasetForm"
       type="update"
       :submit-label="t('Save')"
       @submit="save"
-    />
-
-    <TransferBanner
-      type="Dataset"
-      :subject="dataset"
-      :label="$t('Transfer dataset')"
-    />
-
-    <BannerAction
-      class="w-7/12"
-      type="danger"
-      :title="$t('Delete the dataset')"
     >
-      {{ $t("Be careful, this action can't be reverse.") }}
+      <div class="mt-5 space-y-5">
+        <TransferBanner
+          type="Dataset"
+          :subject="dataset"
+          :label="$t('Transfer dataset')"
+        />
 
-      <template #button>
-        <ModalWithButton
-          :title="$t('Are you sure you want to delete this dataset ?')"
-          size="lg"
+        <BannerAction
+          type="danger"
+          :title="$t('Delete the dataset')"
         >
-          <template #button="{ attrs, listeners }">
-            <BannerActionButton
-              :icon="RiDeleteBin6Line"
-              v-bind="attrs"
-              v-on="listeners"
+          {{ $t("Be careful, this action can't be reverse.") }}
+
+          <template #button>
+            <ModalWithButton
+              :title="$t('Are you sure you want to delete this dataset ?')"
+              size="lg"
             >
-              {{ $t('Delete') }}
-            </BannerActionButton>
+              <template #button="{ attrs, listeners }">
+                <BannerActionButton
+                  :icon="RiDeleteBin6Line"
+                  v-bind="attrs"
+                  v-on="listeners"
+                >
+                  {{ $t('Delete') }}
+                </BannerActionButton>
+              </template>
+              <p class="fr-text--bold">
+                {{ $t("This action can't be reverse.") }}
+              </p>
+              <template #footer>
+                <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+                  <BrandedButton
+                    color="danger"
+                    :disabled="loading"
+                    @click="deleteDataset"
+                  >
+                    {{ $t("Delete the dataset") }}
+                  </BrandedButton>
+                </div>
+              </template>
+            </ModalWithButton>
           </template>
-          <p class="fr-text--bold">
-            {{ $t("This action can't be reverse.") }}
-          </p>
-          <template #footer>
-            <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
-              <BrandedButton
-                color="danger"
-                :disabled="loading"
-                @click="deleteDataset"
-              >
-                {{ $t("Delete the dataset") }}
-              </BrandedButton>
-            </div>
-          </template>
-        </ModalWithButton>
-      </template>
-    </BannerAction>
+        </BannerAction>
+      </div>
+    </DescribeDataset>
   </div>
 </template>
 

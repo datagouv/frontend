@@ -1,6 +1,5 @@
 <template>
   <BannerAction
-    class="w-7/12"
     type="primary"
     :title="label"
   >
