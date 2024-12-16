@@ -54,10 +54,10 @@
       v-else
       class="flex flex-col items-center"
     >
-      <!-- <nuxt-img
-        src="/illustrations/dataset.svg"
+      <nuxt-img
+        src="/illustrations/discussion.svg"
         class="h-20"
-      /> -->
+      />
       <p class="fr-text--bold fr-my-3v">
         {{ t(`There is no discussion yet`) }}
       </p>
