@@ -89,7 +89,7 @@
                 :value="option"
               >
                 <li
-                  class="relative cursor-default select-none py-2 pr-4 list-none flex items-center space-x-2"
+                  class="relative cursor-default select-none py-2 pr-4 list-none flex items-center gap-2"
                   :class="{
                     'bg-primary text-white': isActive(activeOption, option),
                     'text-gray-900': !isActive(activeOption, option),
