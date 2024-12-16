@@ -121,30 +121,26 @@
       @submit.prevent="submit"
     >
       <div class="fr-p-3w bg-white">
-        <Well
+        <NewWell
           v-if="type === 'create'"
-          color="blue-cumulus"
-          weight="regular"
-          class="fr-mb-2w"
+          type="primary"
+          class="mb-4 flex items-center space-x-5"
         >
-          <div class="fr-grid-row">
-            <div class="fr-col-auto fr-mr-3v">
-              <NuxtImg
-                src="/illustrations/reuse.svg"
-                loading="lazy"
-                alt=""
-              />
-            </div>
-            <div class="fr-col">
-              <p class="fr-m-0 fr-text--bold">
-                {{ t('What is a reuse?') }}
-              </p>
-              <p class="fr-m-0 fr-text--xs">
-                {{ t("A reuse is an exemple of public data's usage.") }} {{ t('Publishing a reuse can allow you to gain visibility and start start a dialogue with the dataset producer.') }}
-              </p>
-            </div>
+          <NuxtImg
+            src="/illustrations/reuse.svg"
+            loading="lazy"
+            class="size-14 shrink-0"
+            alt=""
+          />
+          <div class="w-full">
+            <p class="font-bold mb-1">
+              {{ t('What is a reuse?') }}
+            </p>
+            <p class="m-0 text-xs/5">
+              {{ t("A reuse is an exemple of public data's usage.") }} {{ t('Publishing a reuse can allow you to gain visibility and start start a dialogue with the dataset producer.') }}
+            </p>
           </div>
-        </Well>
+        </NewWell>
 
         <fieldset
           v-if="type === 'create'"
