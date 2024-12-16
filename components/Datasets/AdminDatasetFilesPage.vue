@@ -22,96 +22,101 @@
       @cancel="removeFirstNewFile"
     />
 
-    <AdminTable :loading>
-      <thead>
-        <tr>
-          <AdminTableTh
-            scope="col"
-          >
-            {{ t('File name') }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Status") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Type") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Format") }}
-          </AdminTableTh>
-          <AdminTableTh
-            scope="col"
-          >
-            {{ t('Created at') }}
-          </AdminTableTh>
-          <AdminTableTh
-            scope="col"
-          >
-            {{ t('Updated at') }}
-          </AdminTableTh>
-          <AdminTableTh
-            scope="col"
-          >
-            {{ t("Action") }}
-          </AdminTableTh>
-        </tr>
-      </thead>
-      <tbody v-if="resourcesPage">
-        <tr
-          v-for="resource, index in resourcesPage.data"
-          :key="resource.id"
-        >
-          <td>
-            <AdminContentWithTooltip>
-              <a
-                class="fr-link fr-reset-link"
-                :href="`/${locale}/admin/dataset/${dataset.id}/resource/${resource.id}`"
-              >
-                <TextClamp
-                  :text="resource.title"
-                  :auto-resize="true"
-                  :max-lines="2"
-                />
-              </a>
-            </AdminContentWithTooltip>
-          </td>
-          <td>
-            <AdminBadge size="xs" :type="getStatus(resource).type">
-              {{ getStatus(resource).label }}
-            </AdminBadge>
-          </td>
-          <td>
-            {{ resource.type }}
-          </td>
-          <td>
-            {{ resource.format }}
-          </td>
-          <td>
-            {{ formatDate(resource.created_at) }}
-          </td>
-          <td>
-            {{ formatDate(resource.last_modified) }}
-          </td>
-          <td>
-            <FileEditModal
-              :model-value="resourceToForm(resource, schemas || [])"
-              button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
-              @update:model-value="() => {}"
-              @submit="(file) => saveFile(index, resource, file)"
+    <LoadingBloc :status>
+      <AdminTable v-if="resourcesPage && resourcesPage.data.length">
+        <thead>
+          <tr>
+            <AdminTableTh
+              scope="col"
             >
-              <template #button />
-            </FileEditModal>
-          </td>
-        </tr>
-      </tbody>
-    </AdminTable>
-    <Pagination
-      v-if="resourcesPage && resourcesPage.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="resourcesPage.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
+              {{ t('File name') }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ t("Status") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ t("Type") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ t("Format") }}
+            </AdminTableTh>
+            <AdminTableTh
+              scope="col"
+            >
+              {{ t('Created at') }}
+            </AdminTableTh>
+            <AdminTableTh
+              scope="col"
+            >
+              {{ t('Updated at') }}
+            </AdminTableTh>
+            <AdminTableTh
+              scope="col"
+            >
+              {{ t("Action") }}
+            </AdminTableTh>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="resource, index in resourcesPage.data"
+            :key="resource.id"
+          >
+            <td>
+              <AdminContentWithTooltip>
+                <a
+                  class="fr-link fr-reset-link"
+                  :href="`/${locale}/admin/dataset/${dataset.id}/resource/${resource.id}`"
+                >
+                  <TextClamp
+                    :text="resource.title"
+                    :auto-resize="true"
+                    :max-lines="2"
+                  />
+                </a>
+              </AdminContentWithTooltip>
+            </td>
+            <td>
+              <AdminBadge
+                size="xs"
+                :type="getStatus(resource).type"
+              >
+                {{ getStatus(resource).label }}
+              </AdminBadge>
+            </td>
+            <td>
+              {{ resource.type }}
+            </td>
+            <td>
+              {{ resource.format }}
+            </td>
+            <td>
+              {{ formatDate(resource.created_at) }}
+            </td>
+            <td>
+              {{ formatDate(resource.last_modified) }}
+            </td>
+            <td>
+              <FileEditModal
+                :model-value="resourceToForm(resource, schemas || [])"
+                button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+                @update:model-value="() => {}"
+                @submit="(file) => saveFile(index, resource, file)"
+              >
+                <template #button />
+              </FileEditModal>
+            </td>
+          </tr>
+        </tbody>
+      </AdminTable>
+      <Pagination
+        v-if="resourcesPage && resourcesPage.total > pageSize"
+        :page="page"
+        :page-size="pageSize"
+        :total-results="resourcesPage.total"
+        @change="(changedPage: number) => page = changedPage"
+      />
+    </LoadingBloc>
   </div>
 </template>
 
@@ -122,7 +127,7 @@ import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
 import UploadResourceModal from './UploadResourceModal.vue'
 import FileEditModal from './FileEditModal.vue'
-import type { AdminBadgeState, AdminBadgeType, NewDatasetFile, PaginatedArray } from '~/types/types'
+import type { AdminBadgeType, NewDatasetFile, PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 const { toast } = useToast()
@@ -132,7 +137,7 @@ const { locale } = useI18n()
 const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
 
 const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
-const { data: dataset } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
+const { data: dataset, status } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
 const resourcesPage = ref<PaginatedArray<Resource> | null>(null)
 const page = ref(1)
 const pageSize = ref(10)
@@ -151,8 +156,6 @@ const refreshResources = async () => {
   resourcesPage.value = await $api<PaginatedArray<Resource>>(resourcesUrl.value)
 }
 watchEffect(async () => await refreshResources())
-
-const loading = ref(false)
 
 const { t } = useI18n()
 
