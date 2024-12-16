@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="href ? 'a': 'button'"
+    :is="href ? NuxtLinkLocale: 'button'"
     class="inline-flex items-center space-x-1 rounded-full font-medium border !bg-none !no-underline"
     :class="[colors, sizes, isDisabled ? '!opacity-50' : '']"
     :disabled="isDisabled"
@@ -36,6 +36,8 @@ import {
   Comment,
   Text,
 } from 'vue'
+
+import { NuxtLinkLocale } from '#components'
 
 const props = withDefaults(defineProps<{
   size?: 'xs' | 'sm'
