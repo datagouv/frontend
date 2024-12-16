@@ -47,7 +47,6 @@
       <div v-if="pageData && pageData.total > 0">
         <AdminCommunityResourcesTable
           :community-resources="pageData ? pageData.data : []"
-          :loading="false"
           :sort-direction="direction"
           :sorted-by
           @sort="sort"
