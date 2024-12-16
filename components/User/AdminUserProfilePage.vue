@@ -211,7 +211,6 @@
         </div>
       </div>
       <BannerAction
-        class="mt-5 w-7/12"
         type="danger"
         :title="$t('Delete the account')"
       >

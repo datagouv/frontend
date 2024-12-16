@@ -16,7 +16,6 @@
         </button>
       </template>
       <BannerAction
-        class="mt-5 w-7/12"
         type="danger"
         :title="$t('Delete the reuse')"
       >

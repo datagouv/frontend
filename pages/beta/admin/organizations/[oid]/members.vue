@@ -249,7 +249,7 @@
                 </form>
 
                 <BannerAction
-                  class="mt-4 w-7/12"
+                  class="mt-4"
                   type="danger"
                   :title="$t('Remove member from the organization')"
                 >
