@@ -41,7 +41,7 @@ import { NuxtLinkLocale } from '#components'
 
 const props = withDefaults(defineProps<{
   size?: 'xs' | 'sm'
-  color: 'primary' | 'secondary' | 'danger'
+  color?: 'primary' | 'secondary' | 'danger'
   disabled?: boolean
   loading?: boolean
   icon?: Component

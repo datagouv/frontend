@@ -1,7 +1,7 @@
 import type { Organization, User } from '@datagouv/components'
 
 export type Me = User & {
-  about: string
+  about: string | null
   active: boolean
   apikey: string | null
   email: string

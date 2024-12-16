@@ -1,6 +1,10 @@
 <template>
-  <div>
+  <div
+    class="group/layout"
+    :data-with-container="true"
+  >
     <SiteHeader />
+    <BannerReadOnly />
     <slot />
   </div>
 </template>

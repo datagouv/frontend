@@ -735,6 +735,7 @@
   "E-mail address": "E-mail address",
   "Password": "Password",
   "Profile updated !": "Profile updated !",
+  "Your profile picture couldn't be updated !": "Your profile picture couldn't be updated !",
   "The field {property} should be of at least {min} characters": "The field {property} should be of at least {min} characters",
   "The field {property} should be a valid URL": "The field {property} should be a valid URL",
   "The field {property} should be a valid email": "The field {property} should be a valid email",
@@ -754,6 +755,9 @@
   "{n} users": "{n} users | {n} user | {n} users",
   "Transfer to {recipient} already requested the {date}": "Transfer to {recipient} already requested the {date}",
   "by {user}": "by {user}",
-
+  "Users": "Users",
+  "You haven't published a harvester yet": "You haven't published a harvester yet",
+  "Create an harvester on": "Create an harvester on",
+  "Profile picture": "Profile picture",
   "": ""
 }

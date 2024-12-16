@@ -7,7 +7,7 @@
     <component
       :is="tag"
       v-show="isActive"
-      class="grid items-center duration-150 mx-2 my-0 rounded-lg pointer-events-auto text-white min-h-12 cursor-pointer py-2 px-8 break-words"
+      class="flex items-center duration-150 mx-2 my-0 rounded-lg pointer-events-auto text-white min-h-12 cursor-pointer py-2 px-4 break-words"
       :class="[`c-toast--${type}`, `c-toast--${position}`]"
       role="alert"
       @mouseover="toggleTimer(true)"
@@ -15,11 +15,13 @@
       @click="click"
     >
       {{ message }}
+      <RiCloseLine class="pl-2 size-7" />
     </component>
   </transition>
 </template>
 
 <script setup lang="ts">
+import { RiCloseLine } from '@remixicon/vue'
 import { ref, computed, onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
 import Positions, { definePosition } from '~/components/Toaster/defaults/positions'
 import type { Position } from '~/components/Toaster/defaults/positions'

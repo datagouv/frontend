@@ -126,7 +126,7 @@
                           <li
                             class="fr-nav__item"
                           >
-                            <ClientOnly>
+                            <ClientOnly v-if="!config.public.readOnlyMode">
                               <Disclosure>
                                 <DisclosureButton
                                   class="fr-nav__btn justify-start after:!ml-auto"
@@ -338,7 +338,7 @@
             <li
               class="fr-nav__item ml-auto sm:!hidden xl:!flex"
             >
-              <ClientOnly>
+              <ClientOnly v-if="!config.public.readOnlyMode">
                 <Popover>
                   <PopoverButton
                     class="fr-nav__btn !w-64 inline after:!align-middle"
