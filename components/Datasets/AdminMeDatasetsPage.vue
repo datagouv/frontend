@@ -45,12 +45,12 @@
       </div>
     </div>
 
-    <LoadingBloc :status>
+    <LoadingBlock :status>
       <AdminDatasetsTable
         v-if="pageData && pageData.length > 0"
         :datasets="pageData ? pageData : []"
       />
-    </LoadingBloc>
+    </LoadingBlock>
 
     <div
       v-if="pageData && !pageData.length"

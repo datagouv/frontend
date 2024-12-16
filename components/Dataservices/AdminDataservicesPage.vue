@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <LoadingBloc :status>
+    <LoadingBlock :status>
       <div v-if="pageData && pageData.total > 0">
         <AdminDataservicesTable
           :dataservices="pageData ? pageData.data : []"
@@ -62,7 +62,7 @@
           @change="(changedPage: number) => page = changedPage"
         />
       </div>
-    </LoadingBloc>
+    </LoadingBlock>
 
     <div
       v-if="pageData && !pageData.total"

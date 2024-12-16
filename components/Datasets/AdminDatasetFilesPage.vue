@@ -22,7 +22,7 @@
       @cancel="removeFirstNewFile"
     />
 
-    <LoadingBloc :status>
+    <LoadingBlock :status>
       <AdminTable v-if="resourcesPage && resourcesPage.data.length">
         <thead>
           <tr>
@@ -116,7 +116,7 @@
         :total-results="resourcesPage.total"
         @change="(changedPage: number) => page = changedPage"
       />
-    </LoadingBloc>
+    </LoadingBlock>
   </div>
 </template>
 

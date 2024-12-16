@@ -135,7 +135,7 @@
       {{ t("{n} members", { n: organization.members.length }) }}
     </h2>
 
-    <LoadingBloc :status>
+    <LoadingBlock :status>
       <AdminTable
         v-if="organization && organization.members.length > 0"
         class="fr-table--layout-fixed"
@@ -249,7 +249,7 @@
           </tr>
         </tbody>
       </AdminTable>
-    </LoadingBloc>
+    </LoadingBlock>
   </div>
 </template>
 
