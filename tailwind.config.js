@@ -28,6 +28,9 @@ export default {
         spectral: 'Spectral',
         gothic: 'URW Gothic',
       },
+      fontSize: {
+        '4.5xl': '2.75rem',
+      },
       colors: {
         primary: '#3558a2',
         mentionGrey: '#666', // Copy from --text-mention-grey
@@ -35,6 +38,7 @@ export default {
           title: '#161616',
           medium: '#666666',
           lower: '#eeeeee',
+          lowest: '#e8eaed',
           default: '#e5e5e5',
           plain: '#3a3a3a',
           some: '#f6f6f6',

@@ -1,7 +1,6 @@
-import type { NuxtApp } from "#app"
+import type { NuxtApp } from '#app'
 
 export default defineNuxtPlugin({
-  dependsOn: ['@nuxtjs/i18n'],
   async setup(nuxtApp) {
     const config = useRuntimeConfig()
     const token = useToken()
@@ -47,14 +46,14 @@ export default defineNuxtPlugin({
           }
           catch (e) {
             console.error(e)
-            message = nuxtApp.$i18n.t('The API returned an unexpected error')
+            message = (nuxtApp.$i18n as NuxtApp['$i18n']).t('The API returned an unexpected error')
           }
-  
+
           toast.error(message)
         },
       })
     }
-  
+
     // Expose to useNuxtApp().$api
     return {
       provide: {
@@ -62,5 +61,5 @@ export default defineNuxtPlugin({
         fileApi: makeApi(false),
       },
     }
-  }
+  },
 })

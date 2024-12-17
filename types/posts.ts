@@ -14,7 +14,7 @@ export type Post = {
   name: string
   owner: User
   page: string
-  published: string
+  published: string | null
   reuses: Array<Pick<Reuse, 'id' | 'image' | 'image_thumbnail' | 'page' | 'title' | 'uri'>>
   slug: string
   tags: Array<string>

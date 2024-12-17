@@ -1,13 +1,20 @@
 <template>
-  <div class="max-w-[38rem] hover:bg-neutral-200">
+  <div class="max-w-[38rem] hover:bg-neutral-200 fr-enlarge-link">
     <div v-if="post.image">
       <img :src="post.image">
     </div>
     <div class="p-4">
       <p class="text-lg mb-2.5 font-bold">
-        {{ post.name }}
+        <NuxtLinkLocale
+          :to="`/posts/${post.slug}/`"
+        >
+          {{ post.name }}
+        </NuxtLinkLocale>
       </p>
-      <p class="mb-0">
+      <p
+        v-if="post.published"
+        class="mb-0 text-gray-medium"
+      >
         {{ $t('Published on {date}', { date: formatDate(post.published) }) }}
       </p>
     </div>

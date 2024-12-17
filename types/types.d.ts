@@ -1,8 +1,13 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, Schema, RegisteredSchema, OwnedWithId } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
 export type SortDirection = 'asc' | 'desc'
+
+export type Sort = {
+  name: string
+  key: string
+}
 
 export type DSFRFormDefaultState = 'default'
 
@@ -41,34 +46,7 @@ export type DataserviceSortedBy = 'title'
 
 export type ReuseSortedBy = 'title' | 'created' | 'datasets' | 'followers' | 'views'
 
-export type DiscussionSortedBy = 'title' | 'created' | 'closed'
-
 export type CommunityResourceSortedBy = 'created_at_internal' | 'last_modified_internal' | 'title'
-
-// DISCUSSIONS
-
-export type Comment = { content: string, posted_by: User, posted_on: string, spam?: Spam }
-
-export type Discussion = Array<Comment>
-
-export type DiscussionSubjectTypes = Dataservice | Dataset | Reuse
-
-export type DiscussionSubject = {
-  class: 'Dataservice' | 'Dataset' | 'Reuse' | 'Post' | 'Topic' | 'Organization'
-  id: string
-}
-
-export type Thread = {
-  id: string
-  discussion: Discussion
-  title: string
-  url: string
-  created: string
-  closed: string
-  closed_by: User
-  spam?: Spam
-  subject: DiscussionSubject
-}
 
 // MEMBERS
 
