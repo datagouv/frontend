@@ -98,13 +98,15 @@
         src="/illustrations/users.svg"
         class="h-20"
       />
-      <p class="fr-text--bold fr-my-3v" v-if="q">
-        {{ t(`No results for "{q}"`, { q }) }}
-      </p>
+      <template v-if="q">
+        <p class="fr-text--bold fr-my-3v" >
+          {{ t(`No results for "{q}"`, { q }) }}
+        </p>
+        <BrandedButton color="primary" @click="q = qDebounced = ''">{{ $t('Reset filters') }}</BrandedButton>
+      </template>
       <p class="fr-text--bold fr-my-3v" v-else>
         {{ t(`No users`) }}
       </p>
-      <BrandedButton color="primary" @click="q = qDebounced = ''">{{ $t('Reset filters') }}</BrandedButton>
     </div>
   </div>
 </template>
