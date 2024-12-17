@@ -47,12 +47,6 @@
     <div>
       {{ post.content }}
     </div>
-    <div>
-      <DiscussionThread
-        :subject-id="post.id"
-        subject-class="Post"
-      />
-    </div>
   </div>
 </template>
 
