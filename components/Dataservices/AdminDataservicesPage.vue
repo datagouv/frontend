@@ -29,12 +29,9 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Dataservices") }}
     </h1>
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <div v-if="pageData && pageData.total" class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
-        <h2
-          v-if="pageData && pageData.total"
-          class="subtitle subtitle--uppercase fr-m-0"
-        >
+        <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} dataservices', pageData.total) }}
         </h2>
       </div>
