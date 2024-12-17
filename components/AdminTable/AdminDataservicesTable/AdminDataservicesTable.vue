@@ -99,7 +99,13 @@ function sorted(column: DataserviceSortedBy) {
 }
 
 function getStatus(dataservice: Dataservice): { label: string, type: AdminBadgeType } {
-  if (dataservice.private) {
+  if (dataservice.deleted_at) {
+    return {
+      label: t('Deleted'),
+      type: 'danger',
+    }
+  }
+  else if (dataservice.private) {
     return {
       label: t('Draft'),
       type: 'secondary',
