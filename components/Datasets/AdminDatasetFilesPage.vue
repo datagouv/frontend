@@ -101,7 +101,7 @@
                 :model-value="resourceToForm(resource, schemas || [])"
                 button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
                 @update:model-value="() => {}"
-                @submit="(file) => saveFile(index, resource, file)"
+                @submit="(file, newFile) => saveFile(index, resource, file, newFile)"
               >
                 <template #button />
               </FileEditModal>
@@ -174,7 +174,7 @@ const saveFirstNewFile = async () => {
   page.value = 1
   refreshResources()
 }
-const saveFile = async (index: number, resource: Resource, file: NewDatasetFile) => {
+const saveFile = async (index: number, resource: Resource, file: NewDatasetFile, newFile: File | null) => {
   const updated = await $api<Resource>(`/api/1/datasets/${dataset.value.id}/resources/${resource.id}/`, {
     method: 'PUT',
     body: JSON.stringify(resourceToApi(file)),

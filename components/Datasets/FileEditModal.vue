@@ -177,6 +177,42 @@
                     :error-text="getFirstError('url')"
                   />
                 </LinkedToAccordion>
+                <div class="fr-fieldset__element">
+                  <div v-if="newFile">
+                    <label
+                    class="fr-label fr-mb-1w"
+                  >
+                    {{ $t('File replaced by') }}
+                  </label>
+                    <FileCard
+                      :modelValue="{
+                        file: newFile,
+                        description: '',
+                        format: guessFormat(newFile),
+                        filesize: newFile.size,
+                        filetype: 'file',
+                        mime: newFile.type,
+                        title: newFile.name,
+                        type: 'main',
+                        state: 'none',
+                      }"
+                      class="fr-mb-3v"
+                      :show-edit-and-warning="false"
+                      @delete="form.file = null"
+                    />
+                  </div>
+                  <UploadGroup
+                    v-else
+                    show-label
+                    :label="$t('Replace file')"
+                    type="drop"
+                    :accept="extensions.join(',')"
+                    :multiple="false"
+                    :hint-text="$t('Max size: 420 Mb. Multiple files allowed.')"
+                    @change="setFiles"
+                  />
+
+                </div>
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
                   :accordion="nameAFileAccordionId"
@@ -326,12 +362,13 @@ const props = withDefaults(defineProps<{
   buttonClasses: 'fr-btn fr-icon-pencil-line fr-icon--sm',
 })
 const emit = defineEmits<{
-  (e: 'submit', file: NewDatasetFile): void
+  (e: 'submit', file: NewDatasetFile, newFile: File | null): void
   (e: 'cancel'): void
 }>()
 
 const file = defineModel<NewDatasetFile>({ required: true })
 const open = ref(false)
+const newFile = ref<File | null>(null);
 
 onMounted(() => {
   if (props.openOnMounted) open.value = true
@@ -343,6 +380,19 @@ const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File titl
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
 const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useNewDatasetFileForm(cloneDeep(file.value))
+
+const setFiles = (files: Array<File>) => {
+  newFile.value = files[0];
+}
+const guessFormat = (file: File) => {
+  const formatFromMime = file.type.includes('/') ? file.type.split('/').pop() || '' : file.type
+  let guessedFormat = extensions.value.includes(formatFromMime) ? formatFromMime : ''
+  if (!guessedFormat) {
+    const formatFromName = file.name.includes('.') ? file.name.split('.').pop() || '' : file.name
+    guessedFormat = extensions.value.includes(formatFromName) ? formatFromName : ''
+  }
+  return guessedFormat
+}
 
 const chooseTheCorrectLinkAccordionId = useId()
 const nameAFileAccordionId = useId()
@@ -359,7 +409,7 @@ const submit = (close: () => void) => {
   if (validate()) {
     file.value = form.value
     close()
-    emit('submit', form.value)
+    emit('submit', form.value, newFile.value)
   }
 }
 const cancel = (close: () => void) => {

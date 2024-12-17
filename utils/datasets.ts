@@ -158,9 +158,65 @@ export function resourceToApi(form: NewDatasetFile): Resource {
   }
 }
 
-export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatasetFile, retry: number) {
-  const { $api, $fileApi, $i18n } = useNuxtApp()
+export async function sendFile(url: string, file: NewDatasetFile): Promise<Resource> {
+  const { $fileApi } = useNuxtApp()
   const config = useRuntimeConfig()
+
+  if (file.filetype === 'remote') {
+    throw new Error("sendFile needs to be called only with local files")
+  }
+
+
+  // If it's a local file, first we need to send the file data as multipart/form-data
+  const uuid = uuidv4()
+  const formData = new FormData()
+  formData.set('uuid', uuid)
+  formData.set('filename', file.file.name)
+  formData.set('file', file.file)
+
+  const chunkSize = config.public.resourceFileUploadChunk
+  if (file.filesize && file.filesize > chunkSize) {
+    const nbChunks = Math.ceil(file.filesize / chunkSize)
+    let chunkStart = 0
+    const promises = []
+
+    for (let i = 0; i < nbChunks; i++) {
+      const chunk = file.file.slice(chunkStart, chunkStart + chunkSize, file.file.type)
+      const chunkData = new FormData()
+      chunkData.set('uuid', uuid)
+      chunkData.set('filename', file.file.name)
+      chunkData.set('file', chunk)
+      chunkData.set('partindex', i.toString())
+      chunkData.set('partbyteoffset', chunkStart.toString())
+      chunkData.set('totalparts', nbChunks.toString())
+      chunkData.set('chunksize', chunk.size.toString())
+
+      const promise = $fileApi<{
+        error: string | null
+        message: string
+        success:
+        boolean
+      }>(url, {
+        method: 'POST',
+        body: chunkData,
+      })
+      promises.push(promise)
+      chunkStart += chunkSize
+    }
+
+    await Promise.all(promises)
+    formData.delete('file') // Remove the file, it has already be sent in chunks
+    formData.set('totalparts', nbChunks.toString())
+  }
+
+  return await $fileApi<Resource>(url, {
+    method: 'POST',
+    body: formData,
+  })
+}
+
+export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatasetFile, retry: number) {
+  const { $api, $i18n } = useNuxtApp()
 
   try {
     // If this is a remote file, it's easy just send all the information to the server.
@@ -171,52 +227,7 @@ export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatas
       })
     }
 
-    // If it's a local file, first we need to send the file data as multipart/form-data
-    const uuid = uuidv4()
-    const formData = new FormData()
-    formData.set('uuid', uuid)
-    formData.set('filename', file.file.name)
-    formData.set('file', file.file)
-
-    const chunkSize = config.public.resourceFileUploadChunk
-    if (file.filesize && file.filesize > chunkSize) {
-      const nbChunks = Math.ceil(file.filesize / chunkSize)
-      let chunkStart = 0
-      const promises = []
-
-      for (let i = 0; i < nbChunks; i++) {
-        const chunk = file.file.slice(chunkStart, chunkStart + chunkSize, file.file.type)
-        const chunkData = new FormData()
-        chunkData.set('uuid', uuid)
-        chunkData.set('filename', file.file.name)
-        chunkData.set('file', chunk)
-        chunkData.set('partindex', i.toString())
-        chunkData.set('partbyteoffset', chunkStart.toString())
-        chunkData.set('totalparts', nbChunks.toString())
-        chunkData.set('chunksize', chunk.size.toString())
-
-        const promise = $fileApi<{
-          error: string | null
-          message: string
-          success:
-          boolean
-        }>(`/api/1/datasets/${newDataset.id}/upload/`, {
-          method: 'POST',
-          body: chunkData,
-        })
-        promises.push(promise)
-        chunkStart += chunkSize
-      }
-
-      await Promise.all(promises)
-      formData.delete('file') // Remove the file, it has already be sent in chunks
-      formData.set('totalparts', nbChunks.toString())
-    }
-
-    const newResource = await $fileApi<Resource>(`/api/1/datasets/${newDataset.id}/upload/`, {
-      method: 'POST',
-      body: formData,
-    })
+    const newResource = await sendFile(`/api/1/datasets/${newDataset.id}/upload/`, file)
 
     // Then we need to update the new resource with all the metadata
     const updatedNewResource = await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/${newResource.id}/`, {
