@@ -5,8 +5,10 @@ export function getDataserviceAdminUrl(dataservice: Dataservice): string {
   if (dataservice.owner) {
     return `/beta/admin/me/dataservices/${dataservice.id}`
   }
-  else {
+  else if (dataservice.organization) {
     return `/beta/admin/organizations/${dataservice.organization.id}/dataservices/${dataservice.id}`
+  } else {
+    return ''
   }
 }
 
