@@ -2,14 +2,14 @@
   <div class="fr-grid-row bg-gray-100 flex-1">
     <div class="fr-col-12 fr-col-md-4 fr-col-lg-3 fr-col-xl-2">
       <nav
-        class="fr-sidemenu !p-0 md:h-full"
+        class="fr-sidemenu !mx-0 !p-0 md:h-full"
         :aria-label="t('Administration menu')"
       >
         <ClientOnly>
           <Disclosure
             :default-open="true"
             as="div"
-            class="fr-sidemenu__inner !p-2 md:!p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
+            class="fr-sidemenu__inner !py-2 !px-0 md:!p-0 !bg-white !shadow-[1px_0_0_0_var(--border-default-grey)] md:h-full"
           >
             <DisclosureButton
               class="fr-sidemenu__btn after:!mr-0"
@@ -43,7 +43,7 @@
         </ClientOnly>
       </nav>
     </div>
-    <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full fr-px-5w pb-64">
+    <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full !px-4 sm:!px-10 pb-64">
       <Well
         color="blue-cumulus"
         weight="regular"
