@@ -124,7 +124,7 @@ function getStatus(post: Post): { label: string, type: AdminBadgeType } {
   if (post.published) {
     return {
       label: t('Published the {date}', { date: formatDate(post.published) }),
-      type: 'success',
+      type: 'primary',
     }
   }
   else {
