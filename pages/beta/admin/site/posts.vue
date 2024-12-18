@@ -119,7 +119,7 @@ const { data: pageData, status } = await useAPI<PaginatedArray<Post>>('/api/1/po
 function getStatus(post: Post): { label: string, type: AdminBadgeType } {
   if (post.published) {
     return {
-      label: t('Published {date}', { date: formatDate(post.published) }),
+      label: t('Published the {date}', { date: formatDate(post.published) }),
       type: 'success',
     }
   }
