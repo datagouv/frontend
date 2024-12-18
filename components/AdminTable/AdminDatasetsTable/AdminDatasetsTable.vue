@@ -9,10 +9,11 @@
         >
           {{ t('Title of the dataset') }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh class="w-20" scope="col">
           {{ t("Status") }}
         </AdminTableTh>
         <AdminTableTh
+          class="w-36"
           :sorted="sorted('created')"
           scope="col"
           @sort="(direction: SortDirection) => updateSort('created', direction)"
@@ -20,19 +21,20 @@
           {{ t('Created at') }}
         </AdminTableTh>
         <AdminTableTh
+          class="w-36"
           :sorted="sorted('last_update')"
           scope="col"
           @sort="(direction: SortDirection) => updateSort('last_update', direction)"
         >
           {{ t('Updated at') }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh class="w-16" scope="col">
           {{ t('Files') }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh class="w-36" scope="col">
           {{ t('Score') }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh class="w-16" scope="col">
           <Tooltip>
             <span
               class="fr-icon--sm fr-icon-chat-3-line"
@@ -44,6 +46,7 @@
           </Tooltip>
         </AdminTableTh>
         <AdminTableTh
+          class="w-16"
           :sorted="sorted('views')"
           scope="col"
           @sort="(direction: SortDirection) => updateSort('views', direction)"
@@ -58,7 +61,7 @@
             </template>
           </Tooltip>
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh class="w-16" scope="col">
           <Tooltip>
             <span
               class="fr-icon--sm fr-icon-download-line"
@@ -70,6 +73,7 @@
           </Tooltip>
         </AdminTableTh>
         <AdminTableTh
+          class="w-16"
           :sorted="sorted('reuses')"
           scope="col"
           @sort="(direction: SortDirection) => updateSort('reuses', direction)"
@@ -85,6 +89,7 @@
           </Tooltip>
         </AdminTableTh>
         <AdminTableTh
+          class="w-16"
           :sorted="sorted('followers')"
           scope="col"
           @sort="(direction: SortDirection) => updateSort('followers', direction)"

@@ -1,10 +1,10 @@
 <template>
-  <th class="fr-text--bold">
-    <slot v-if="!sortable"></slot>
-    <div class="fr-grid-row fr-grid-row--middle justify-between" v-else>
-      <slot></slot>
+  <th class="font-bold">
+    <div class="flex items-center justify-between whitespace-nowrap">
+      <slot />
       <button
-        class="fr-ml-1w fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
+        v-if="sortable"
+        class="shrink-0 fr-ml-1w fr-btn fr-btn--sm fr-btn--tertiary-no-outline"
         :class="{
           'fr-icon-arrow-down-line': !sorted || sorted === 'asc',
           'fr-icon-arrow-up-line': sorted === 'desc',
