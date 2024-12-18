@@ -286,3 +286,14 @@ export type TransferRequest = {
   responded: string | null
   reponse_comment: string | null
 }
+
+export type Post = {
+  id: string;
+  name: string;
+  published: string | null;
+  last_modified: string;
+  created_at: string;
+  page: string;
+  content: string;
+  headline: string;
+}

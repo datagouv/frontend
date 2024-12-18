@@ -158,6 +158,11 @@
               :label="$t('Community Resources')"
               to="/beta/admin/site/community-resources"
             />
+            <AdminSidebarLink
+              :icon="RiArticleLine"
+              :label="$t('Posts')"
+              to="/beta/admin/site/posts"
+            />
           </template>
         </ul>
       </DisclosurePanel>
@@ -168,7 +173,7 @@
 <script setup lang="ts">
 import { Avatar, type Organization, type User } from '@datagouv/components'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { RiBuilding2Line, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiGroup3Line, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
+import { RiArticleLine, RiBuilding2Line, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiGroup3Line, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 import AdminSidebarLink from '~/components/AdminSidebar/AdminSidebarLink/AdminSidebarLink.vue'
 
