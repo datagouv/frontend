@@ -117,22 +117,17 @@ function sort(column: DataserviceSortedBy, newDirection: SortDirection) {
   direction.value = newDirection
 }
 
-const url = computed(() => {
-  const url = new URL(`/api/1/dataservices/`, config.public.apiBase)
-  if (props.organization) {
-    url.searchParams.set('organization', props.organization.id)
-  }
-  else if (props.user) {
-    url.searchParams.set('owner', props.user.id)
-  }
+const params = computed(() => {
+  return {
+    organization: props.organization?.id,
+    owner: props.user?.id,
 
-  url.searchParams.set('sort', sortDirection.value)
-  url.searchParams.set('q', qDebounced.value)
-  url.searchParams.set('page_size', pageSize.value.toString())
-  url.searchParams.set('page', page.value.toString())
-
-  return url.toString()
+    sort: sortDirection.value,
+    q: qDebounced.value,
+    page_size: pageSize.value,
+    page: page.value,
+  }
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<Dataservice>>(url, { lazy: true })
+const { data: pageData, status } = await useAPI<PaginatedArray<Dataservice>>('/api/1/dataservices/', { lazy: true, query: params })
 </script>
