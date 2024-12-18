@@ -781,5 +781,8 @@
   "You haven't published a harvester yet": "Vous n'avez pas encore publié de moissonneur",
   "Create an harvester on": "Créer un moissoneur sur",
   "Profile picture": "Image de profil",
+  "No results for \"{q}\"": "Pas de résultats pour « {q} »",
+  "No users": "Pas d'utilisateurs",
+  "No organizations": "Pas d'organizations",
   "": ""
 }

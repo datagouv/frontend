@@ -760,5 +760,8 @@
   "Create an harvester on": "Create an harvester on",
   "Profile picture": "Profile picture",
   "Pending transfer": "Pending transfer",
+  "No results for \"{q}\"": "No results for \"{q}\"",
+  "No users": "No users",
+  "No organizations": "No organizations",
   "": ""
 }
