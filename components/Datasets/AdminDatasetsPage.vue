@@ -84,17 +84,25 @@
     </LoadingBlock>
 
     <div
-      v-if="pageData && !pageData.total"
+      v-if="status != 'pending' && pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
         src="/illustrations/dataset.svg"
         class="h-20"
       />
-      <p class="fr-text--bold fr-my-3v">
-        {{ t(`You haven't published a dataset yet`) }}
-      </p>
-      <AdminPublishButton type="dataset" />
+      <template v-if="q">
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`No results for "{q}"`, { q }) }}
+        </p>
+        <BrandedButton color="primary" @click="q = qDebounced = ''">{{ $t('Reset filters') }}</BrandedButton>
+      </template>
+      <template v-else>
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`You haven't published a dataset yet`) }}
+        </p>
+        <AdminPublishButton type="dataset" />
+      </template>
     </div>
   </div>
 </template>
