@@ -1,5 +1,3 @@
-import { unified } from 'unified'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import behead from 'remark-behead'
 import remarkBreaks from 'remark-breaks'
 import rehypeHighlight from 'rehype-highlight'
@@ -10,6 +8,9 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeSlug from 'rehype-slug'
 import rehypeStringify from 'rehype-stringify'
+import { unified } from 'unified'
+import { RiLinksLine } from '@remixicon/vue'
+import { render } from 'vue'
 
 const prose = 'prose prose-neutral max-w-none prose-strong:text-gray-plain'
 const proseTable = 'prose-table:bg-neutral-200 prose-table:!overflow-visible first-of-type:prose-tr:!bg-neutral-200 first-of-type:prose-tr:border-b-2 first-of-type:prose-tr:border-black odd:prose-tr:bg-neutral-300 *:prose-th:m-0 *:prose-td:m-0 prose-th:p-4 prose-td:p-4'
@@ -21,6 +22,12 @@ const proseOthers = 'prose-blockquote:border-neutral-800 prose-a:no-underline pr
 export const markdownClasses = [prose, proseTable, proseHeading, proseList, proseCode, proseOthers].join(' ')
 
 export function formatMarkdown(md: string, minDepth = 3) {
+  let el: HTMLElement | string = ''
+  if (document) {
+    el = document.createElement('span')
+    render(h(RiLinksLine), el)
+  }
+
   return unified()
     // somehow this type is working when `minDepth` is required but not when it has a default value
     .use(behead, { minDepth })
@@ -39,7 +46,6 @@ export function formatMarkdown(md: string, minDepth = 3) {
     // Improve code highlighting
     .use(rehypeHighlight)
     .use(rehypeSlug)
-    .use(rehypeAutolinkHeadings)
     .use(rehypeSanitize)
     // Serialize syntax tree to HTML
     .use(rehypeStringify)
