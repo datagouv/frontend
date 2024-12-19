@@ -11,6 +11,11 @@ import '@gouvfr/dsfr/dist/dsfr.css'
 import '@gouvfr/dsfr/dist/utility/utility.css'
 import '@datagouv/components/dist/style.css'
 import '~/assets/css/overrides.css'
+import { setupI18nWithExistingInstance } from '@datagouv/components'
+
+const app = useNuxtApp()
+
+setupI18nWithExistingInstance({ global: app.$i18n })
 
 useHead({
   titleTemplate: (titleChunk) => {
