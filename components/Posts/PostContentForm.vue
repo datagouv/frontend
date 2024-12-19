@@ -1,0 +1,64 @@
+<template>
+  <div class="fr-p-3w bg-white">
+    <InputGroup
+      v-model="form.content"
+      type="markdown"
+      :label="$t('Content')"
+      :required="true"
+      :has-error="!!getFirstError('content')"
+      :has-warning="!!getFirstWarning('content')"
+      :error-text="getFirstError('content')"
+      @blur="touch('content')"
+    />
+    <div
+      class="fr-grid-row"
+      :class="{ 'fr-grid-row--right': type === 'update', 'justify-between': type === 'create' }"
+    >
+      <BrandedButton
+        v-if="type === 'create'"
+        color="secondary"
+        @click="$emit('previous')"
+      >
+        {{ $t('Previous') }}
+      </BrandedButton>
+      <BrandedButton
+        color="primary"
+        @click="submit"
+      >
+        {{ submitLabel }}
+      </BrandedButton>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Post, PostForm } from '~/types/posts'
+
+const props = defineProps<{
+  submitLabel: string
+  post: Post
+  type: 'create' | 'update'
+}>()
+const emit = defineEmits<{
+  previous: []
+  submit: [PostForm]
+}>()
+
+const { t } = useI18n()
+
+const { form, touch, getFirstError, getFirstWarning, validate } = useForm({
+  content: props.post.content,
+}, {
+  content: [required()],
+}, {
+})
+
+function submit() {
+  if (validate()) {
+    emit('submit', form.value)
+  }
+};
+const setFiles = (files: Array<File>) => {
+  form.value.image = files[0]
+}
+</script>

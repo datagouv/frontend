@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DescribePost
+    <PostContentForm
       v-if="post"
       :post
       type="update"
@@ -8,17 +8,16 @@
       @submit="save"
     >
       // test
-    </DescribePost>
+    </PostContentForm>
   </div>
 </template>
 
 <script setup lang="ts">
-import DescribePost from './DescribePost.vue'
+import PostContentForm from '~/components/Posts/PostContentForm.vue'
 import type { Post, PostForm } from '~/types/posts'
-import { toApi } from '~/utils/posts'
 
 const { t } = useI18n()
-const { $api, $fileApi } = useNuxtApp()
+const { $api } = useNuxtApp()
 const { toast } = useToast()
 
 const route = useRoute()
@@ -33,17 +32,10 @@ const save = async (form: PostForm) => {
 
     await $api(`/api/1/posts/${post.value.id}/`, {
       method: 'PUT',
-      body: JSON.stringify(toApi(form)),
+      body: JSON.stringify({
+        content: form.content,
+      }),
     })
-
-    if (form.image && typeof form.image !== 'string') {
-      const formData = new FormData()
-      formData.set('file', form.image)
-      await $fileApi(`/api/1/posts/${post.value.id}/image/`, {
-        method: 'POST',
-        body: formData,
-      })
-    }
 
     toast.success(t('Post updated!'))
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
