@@ -21,7 +21,10 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Posts") }}
     </h1>
-    <div v-if="pageData && pageData.total" class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
         <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} posts', pageData.total) }}
@@ -49,8 +52,7 @@
               <AdminTableTh scope="col">
                 {{ t("Updated at") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
-              </AdminTableTh>
+              <AdminTableTh scope="col" />
             </tr>
           </thead>
           <tbody v-if="pageData">
@@ -59,7 +61,11 @@
               :key="post.id"
             >
               <td>
-                <a v-if="post.published" :href="post.page" class="link">{{ post.name }}</a>
+                <a
+                  v-if="post.published"
+                  :href="post.page"
+                  class="link"
+                >{{ post.name }}</a>
                 <span v-else>{{ post.name }}</span>
               </td>
               <td>
@@ -72,7 +78,7 @@
               </td>
               <td>{{ formatDate(post.created_at) }}</td>
               <td>{{ formatDate(post.last_modified) }}</td>
-              <td></td>
+              <td />
             </tr>
           </tbody>
         </AdminTable>
@@ -92,7 +98,6 @@ import { formatDate, Pagination, type User } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RiMailLine } from '@remixicon/vue'
 import type { AdminBadgeType, DiscussionSortedBy, PaginatedArray, Post, SortDirection } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
@@ -111,6 +116,11 @@ const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 const params = computed(() => {
   return {
     with_drafts: true,
+
+    sort: sortDirection.value,
+    q: qDebounced.value,
+    page_size: pageSize.value,
+    page: page.value,
   }
 })
 
@@ -119,8 +129,8 @@ const { data: pageData, status } = await useAPI<PaginatedArray<Post>>('/api/1/po
 function getStatus(post: Post): { label: string, type: AdminBadgeType } {
   if (post.published) {
     return {
-      label: t('Published {date}', { date: formatDate(post.published) }),
-      type: 'success',
+      label: t('Published the {date}', { date: formatDate(post.published) }),
+      type: 'primary',
     }
   }
   else {

@@ -784,7 +784,8 @@
   "No results for \"{q}\"": "Pas de résultats pour « {q} »",
   "No users": "Pas d'utilisateurs",
   "No organizations": "Pas d'organizations",
-  "Published on {date}": "Publié le {date}",
+  "{n} posts": "{n} articles | {n} article | {n} articles",
+  "Published the {date}": "Publié le {date}",
   "Posts": "Articles",
   "": ""
 }

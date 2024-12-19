@@ -763,7 +763,8 @@
   "No results for \"{q}\"": "No results for \"{q}\"",
   "No users": "No users",
   "No organizations": "No organizations",
-  "Published on {date}": "Published on {date}",
+  "{n} posts": "{n} posts | {n} post | {n} posts",
+  "Published the {date}": "Published the {date}",
   "Posts": "Posts",
   "": ""
 }
