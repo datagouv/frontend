@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-  <div class="container mb-12">
+  <div class="container mb-24">
     <Breadcrumb>
       <li>
         <NuxtLinkLocale
