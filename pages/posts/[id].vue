@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="container mb-12">
     <Breadcrumb>
@@ -45,8 +46,14 @@
       class="w-full h-auto"
     >
     <MarkdownViewer
+      v-if="post.body_type === 'markdown'"
       :content="post.content"
       :min-heading="2"
+    />
+    <div
+      v-else
+      :class="markdownClasses"
+      v-html="post.content"
     />
   </div>
 </template>
