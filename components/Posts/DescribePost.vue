@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 import cloneDeep from 'lodash-es/cloneDeep'
-import type { Post } from '~/types/types'
+import type { Post, PostForm } from '~/types/posts'
 
 const props = defineProps<{
   submitLabel: string
@@ -109,7 +109,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{
   previous: []
-  submit: []
+  submit: [PostForm]
 }>()
 
 const { t } = useI18n()
