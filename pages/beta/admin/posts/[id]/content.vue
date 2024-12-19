@@ -6,9 +6,7 @@
       type="update"
       :submit-label="t('Save')"
       @submit="save"
-    >
-      // test
-    </PostContentForm>
+    />
   </div>
 </template>
 

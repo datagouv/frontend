@@ -99,8 +99,8 @@
 </template>
 
 <script setup lang="ts">
-import cloneDeep from 'lodash-es/cloneDeep'
 import type { Post, PostForm } from '~/types/posts'
+import { toForm } from '~/utils/posts'
 
 const props = defineProps<{
   submitLabel: string
@@ -114,11 +114,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const { form, touch, getFirstError, getFirstWarning, validate } = useForm({
-  ...cloneDeep(props.post),
-  tags: props.post.tags.map(text => ({ text })),
-  image: props.post.image as string | File,
-}, {
+const { form, touch, getFirstError, getFirstWarning, validate } = useForm(toForm(props.post), {
   name: [required()],
   headline: [required()],
   image: [required()],
