@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="container">
     <Breadcrumb>
@@ -44,15 +45,14 @@
       :src="post.image"
       class="w-full h-auto"
     >
-    <div>
-      {{ post.content }}
-    </div>
+    <div v-html="formatMarkdown(post.content, 2)" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { formatDate } from '@datagouv/components'
 import type { Post } from '~/types/posts'
+import { formatMarkdown } from '~/utils/markdown'
 
 const route = useRoute()
 const me = useMaybeMe()
