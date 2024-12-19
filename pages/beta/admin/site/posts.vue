@@ -21,7 +21,10 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Posts") }}
     </h1>
-    <div v-if="pageData && pageData.total" class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
         <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} posts', pageData.total) }}
@@ -49,8 +52,7 @@
               <AdminTableTh scope="col">
                 {{ t("Updated at") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
-              </AdminTableTh>
+              <AdminTableTh scope="col" />
             </tr>
           </thead>
           <tbody v-if="pageData">
@@ -59,7 +61,11 @@
               :key="post.id"
             >
               <td>
-                <a v-if="post.published" :href="post.page" class="link">{{ post.name }}</a>
+                <a
+                  v-if="post.published"
+                  :href="post.page"
+                  class="link"
+                >{{ post.name }}</a>
                 <span v-else>{{ post.name }}</span>
               </td>
               <td>
@@ -72,7 +78,7 @@
               </td>
               <td>{{ formatDate(post.created_at) }}</td>
               <td>{{ formatDate(post.last_modified) }}</td>
-              <td></td>
+              <td />
             </tr>
           </tbody>
         </AdminTable>
