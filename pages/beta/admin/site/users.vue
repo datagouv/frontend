@@ -21,7 +21,10 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Users") }}
     </h1>
-    <div v-if="pageData && pageData.total" class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
         <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} users', pageData.total) }}
@@ -30,12 +33,12 @@
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
         <AdminInput
           v-model="q"
+          type="search"
           :icon="RiSearchLine"
           :placeholder="$t('Search')"
         />
       </div>
     </div>
-
 
     <LoadingBlock :status>
       <div v-if="pageData && pageData.total">
@@ -99,12 +102,20 @@
         class="h-20"
       />
       <template v-if="q">
-        <p class="fr-text--bold fr-my-3v" >
+        <p class="fr-text--bold fr-my-3v">
           {{ t(`No results for "{q}"`, { q }) }}
         </p>
-        <BrandedButton color="primary" @click="q = qDebounced = ''">{{ $t('Reset filters') }}</BrandedButton>
+        <BrandedButton
+          color="primary"
+          @click="q = qDebounced = ''"
+        >
+          {{ $t('Reset filters') }}
+        </BrandedButton>
       </template>
-      <p class="fr-text--bold fr-my-3v" v-else>
+      <p
+        v-else
+        class="fr-text--bold fr-my-3v"
+      >
         {{ t(`No users`) }}
       </p>
     </div>

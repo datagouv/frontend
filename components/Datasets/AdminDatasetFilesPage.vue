@@ -2,7 +2,7 @@
   <div class="bg-white fr-p-3w">
     <div class="flex justify-between items-center">
       <h2
-        v-if="resourcesPage && resourcesPage.total"
+        v-if="resourcesPage"
         class="subtitle subtitle--uppercase fr-m-0"
       >
         {{ t('{n} files', resourcesPage.total) }}

@@ -30,7 +30,12 @@
       {{ t("Datasets") }}
     </h1>
 
-    <TransferRequestList v-if="props.organization || props.user" type="Dataset" :recipient="props.organization || props.user" @done="refresh"  />
+    <TransferRequestList
+      v-if="props.organization || props.user"
+      type="Dataset"
+      :recipient="props.organization || props.user"
+      @done="refresh"
+    />
 
     <DatasetsMetrics
       v-if="organization && pageData && pageData.total > 0"
@@ -38,12 +43,12 @@
       :organization
     />
 
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
-        <h2
-          v-if="pageData && pageData.total"
-          class="subtitle subtitle--uppercase fr-m-0"
-        >
+        <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} datasets', pageData.total) }}
         </h2>
       </div>
@@ -51,13 +56,14 @@
         <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
           <AdminInput
             v-model="q"
+            type="search"
             :icon="RiSearchLine"
             :placeholder="$t('Search')"
           />
         </div>
-        <div v-if="organization && pageData && pageData.total">
+        <div v-if="organization">
           <a
-            :href="`/organizations/${organization.id}/datasets.csv`"
+            :href="pageData.total ? `/organizations/${organization.id}/datasets.csv` : undefined"
             class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left"
           >
             {{ t('Download catalog') }}
@@ -95,7 +101,12 @@
         <p class="fr-text--bold fr-my-3v">
           {{ t(`No results for "{q}"`, { q }) }}
         </p>
-        <BrandedButton color="primary" @click="q = qDebounced = ''">{{ $t('Reset filters') }}</BrandedButton>
+        <BrandedButton
+          color="primary"
+          @click="q = qDebounced = ''"
+        >
+          {{ $t('Reset filters') }}
+        </BrandedButton>
       </template>
       <template v-else>
         <p class="fr-text--bold fr-my-3v">
@@ -114,10 +125,10 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiSearchLine } from '@remixicon/vue'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
+import TransferRequestList from '../TransferRequestList.vue'
 import DatasetsMetrics from './DatasetsMetrics.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
-import type { DatasetSortedBy, PaginatedArray, SortDirection, TransferRequest } from '~/types/types'
-import TransferRequestList from '../TransferRequestList.vue'
+import type { DatasetSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   organization?: Organization | null
@@ -151,5 +162,4 @@ const params = computed(() => {
 })
 
 const { data: pageData, status, refresh } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets/', { lazy: true, query: params })
-
 </script>
