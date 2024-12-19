@@ -414,7 +414,7 @@ const menu = [
     { label: t('How to use data?'), link: '/pages/onboarding/reutilisateurs/', external: true },
     { label: t('{site} guides', { site: config.public.title }), link: config.public.guidesUrl, external: true },
   ], external: true },
-  { label: t('News'), link: '/posts/', external: true },
+  { label: t('News'), link: '/posts/' },
   { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
 ]
 
