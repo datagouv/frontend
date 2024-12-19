@@ -98,7 +98,6 @@ import { formatDate, Pagination, type User } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RiMailLine } from '@remixicon/vue'
 import type { AdminBadgeType, DiscussionSortedBy, PaginatedArray, Post, SortDirection } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
@@ -117,6 +116,11 @@ const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 const params = computed(() => {
   return {
     with_drafts: true,
+
+    sort: sortDirection.value,
+    q: qDebounced.value,
+    page_size: pageSize.value,
+    page: page.value,
   }
 })
 
@@ -126,7 +130,7 @@ function getStatus(post: Post): { label: string, type: AdminBadgeType } {
   if (post.published) {
     return {
       label: t('Published the {date}', { date: formatDate(post.published) }),
-      type: 'success',
+      type: 'primary',
     }
   }
   else {
