@@ -266,12 +266,15 @@ export type TransferRequest = {
 }
 
 export type Post = {
-  id: string;
-  name: string;
-  published: string | null;
-  last_modified: string;
-  created_at: string;
-  page: string;
-  content: string;
-  headline: string;
+  id: string
+  name: string
+  published: string | null
+  last_modified: string
+  created_at: string
+  page: string
+  content: string
+  headline: string
+  image: string
+  body_type: string
+  tags: Array<string>
 }
