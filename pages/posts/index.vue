@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="container mt-16">
-      <div class="grid grid-cols-3 gap-5">
+      <div class="grid md:grid-cols-3 gap-5">
         <PostCard
           v-for="post in posts.data"
           :key="post.id"
