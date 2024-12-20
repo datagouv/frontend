@@ -1,23 +1,23 @@
 <template>
   <footer role="contentinfo">
-    <div class="fr-follow">
+    <div class="bg-white py-6 md:py-8 border-t border-t-gray-default">
       <div class="fr-container">
-        <div class="fr-grid-row">
-          <div class="fr-col-12 fr-col-md-8 flex">
-            <div class="fr-col-auto fr-mr-5v">
+        <div class="flex divide-x divide-gray-default">
+          <div class="w-full md:pr-[8%] md:w-2/3 flex">
+            <div class="flex-none flex items-center fr-mr-5v">
               <NuxtImg
-                src="/img/newsletter.svg"
+                src="/img/newspaper.svg"
                 loading="lazy"
                 width="71"
                 height="55"
               />
             </div>
-            <div class="fr-follow__newsletter fr-col">
+            <div class="fr-follow__newsletter !flex-1">
               <div>
-                <p class="fr-h4">
+                <p class="font-extrabold text-2xl text-gray-title leading-8 mb-1">
                   {{ $t("Subscribe to our newsletter") }}
                 </p>
-                <p class="fr-text--lg fr-text--alt f-italic">
+                <p class="mb-4">
                   {{
                     $t("To stay up to date about {site} and open data news, subscribe to our newsletter and follow our events.",
                        { site: config.public.title })
@@ -26,7 +26,7 @@
               </div>
               <div>
                 <NuxtLinkLocale
-                  class="fr-btn fr-mr-2w fr-my-1w"
+                  class="fr-btn mr-4"
                   :title="$t('Subscribe to our newsletter')"
                   :to="config.public.newsletterSubscriptionUrl"
                   :external="true"
@@ -34,7 +34,7 @@
                   {{ $t("Subscribe") }}
                 </NuxtLinkLocale>
                 <NuxtLinkLocale
-                  class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+                  class="fr-btn fr-btn--secondary"
                   :title="$t('Subscribe to our newsletter')"
                   to="/pages/webinaires/"
                   :external="true"
@@ -44,16 +44,16 @@
               </div>
             </div>
           </div>
-          <div class="fr-col-12 fr-col-md-4">
+          <div class="w-full md:pl-[8%] md:w-1/3">
             <div class="fr-follow__social">
-              <p class="fr-h5">
+              <p class="font-extrabold text-2xl leading-8 text-gray-title">
                 {{ $t("Follow us") }}
                 <br> {{ $t("on social media") }}
               </p>
-              <ul class="fr-links-group">
+              <ul class="flex justify-between list-none m-0 p-0 *:p-0">
                 <li>
                   <a
-                    class="fr-link"
+                    class="fr-link !inline-flex after:!content-none"
                     :title="$t('Twitter - new tab')"
                     href="https://twitter.com/datagouvfr"
                     target="_blank"
@@ -63,17 +63,17 @@
                 </li>
                 <li>
                   <a
-                    class="fr-link"
+                    class="fr-link !inline-flex after:!content-none"
                     :title="$t('Linkedin - new tab')"
                     href="https://www.linkedin.com/company/data-gouv-fr/"
                     target="_blank"
                   >
-                    <RiLinkedinLine />
+                    <RiLinkedinBoxLine />
                   </a>
                 </li>
                 <li>
                   <a
-                    class="fr-link"
+                    class="fr-link !inline-flex after:!content-none"
                     :title="$t('Mastodon - new tab')"
                     href="https://social.numerique.gouv.fr/@datagouvfr"
                     target="_blank"
@@ -83,7 +83,7 @@
                 </li>
                 <li>
                   <a
-                    class="fr-link"
+                    class="fr-link !inline-flex after:!content-none"
                     :title="$t('Github - new tab')"
                     href="https://github.com/datagouv/data.gouv.fr"
                     target="_blank"
@@ -93,7 +93,7 @@
                 </li>
                 <li>
                   <NuxtLinkLocale
-                    class="fr-link"
+                    class="fr-link !inline-flex after:!content-none"
                     :title="$t('RSS - new tab')"
                     to="datasets/recent.atom"
                     :external="true"
@@ -110,7 +110,7 @@
     </div>
     <div
       id="footer"
-      class="fr-footer"
+      class="fr-footer !shadow-none border-t-2 border-t-gray-title"
     >
       <div class="fr-footer__top">
         <div class="fr-container">
@@ -292,7 +292,12 @@
           <div class="fr-footer__bottom-copy">
             <p>
               {{ $t("Unless otherwise stated, all content of this site is availabe under") }}
-              <a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md#licence-ouverte-20open-licence-20">Open Licence 2.0</a>
+              <a
+                href="https://github.com/etalab/licence-ouverte/blob/master/LO.md#licence-ouverte-20open-licence-20"
+                target="_blank"
+              >
+                Open Licence 2.0
+              </a>
             </p>
           </div>
         </div>
@@ -302,7 +307,7 @@
 </template>
 
 <script setup lang="ts">
-import { RiGithubLine, RiLinkedinLine, RiMastodonLine, RiRssLine, RiTwitterXLine } from '@remixicon/vue'
+import { RiGithubLine, RiLinkedinBoxLine, RiMastodonLine, RiRssLine, RiTwitterXLine } from '@remixicon/vue'
 
 const config = useRuntimeConfig()
 
