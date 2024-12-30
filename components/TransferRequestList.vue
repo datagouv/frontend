@@ -17,7 +17,7 @@ import type { Organization, User } from '@datagouv/components'
 import type { TransferRequest } from '~/types/types'
 
 const props = defineProps<{
-  type: 'Dataset' | 'Dataservice'
+  type: 'Dataset' | 'Dataservice' | 'Reuse'
   recipient: User | Organization
 }>()
 defineEmits<{
