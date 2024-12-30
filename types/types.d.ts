@@ -137,6 +137,7 @@ export type DatasetForm = {
 export type NewDatasetForApi = {
   title: string
   private?: boolean
+  archived?: string | null
   acronym?: string
   description: string
   organization?: string
@@ -266,12 +267,12 @@ export type TransferRequest = {
 }
 
 export type Post = {
-  id: string;
-  name: string;
-  published: string | null;
-  last_modified: string;
-  created_at: string;
-  page: string;
-  content: string;
-  headline: string;
+  id: string
+  name: string
+  published: string | null
+  last_modified: string
+  created_at: string
+  page: string
+  content: string
+  headline: string
 }
