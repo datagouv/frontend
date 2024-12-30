@@ -787,5 +787,17 @@
   "{n} posts": "{n} articles | {n} article | {n} articles",
   "Published the {date}": "Publié le {date}",
   "Posts": "Articles",
+  "Unarchive the dataservice": "Désarchiver cette API",
+  "Archive the dataservice": "Archiver cette API",
+  "An archived dataservice is no longer indexed but still accessible for users with the direct link.": "Une API archivée n'est plus indexée mais reste accessible aux utilisateurs avec un lien direct.",
+  "Unarchive": "Désarchiver",
+  "Archive": "Archiver",
+  "Dataservice unarchived!": "API désarchivée!",
+  "Dataservice archived!": "API archivée!",
+  "Unarchive the dataset": "Désarchiver le jeu de données",
+  "Archive the dataset": "Archiver le jeu de données",
+  "An archived dataset is no longer indexed but still accessible for users with the direct link.": "Un jeu de données archivé n'est plus indexé mais reste accessible aux utilisateurs avec un lien direct.",
+  "Dataset unarchived!": "Jeu de données désarchivé!",
+  "Dataset archived!": "Jeu de données archivé!",
   "": ""
 }

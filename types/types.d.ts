@@ -203,6 +203,7 @@ export type NewDataserviceForApi = {
   organization?: string
   owner?: string
   title: string
+  archived_at?: string | null
   private?: boolean
   acronym?: string
   description: string

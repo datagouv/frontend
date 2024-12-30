@@ -15,52 +15,69 @@
           {{ t("Save") }}
         </button>
       </template>
-      <BannerAction
-        class="mt-5"
-        type="danger"
-        :title="$t('Delete the dataservice')"
-      >
-        {{ $t("Be careful, this action can't be reverse.") }}
-        <template #button>
-          <ModalWithButton
-            :title="$t('Are you sure you want to delete this dataservice ?')"
-            size="lg"
-          >
-            <template #button="{ attrs, listeners }">
-              <BrandedButton
-                color="danger"
-                size="xs"
-                :icon="RiDeleteBin6Line"
-                v-bind="attrs"
-                v-on="listeners"
-              >
-                {{ $t('Delete') }}
-              </BrandedButton>
-            </template>
-            <p class="fr-text--bold">
-              {{ $t("This action can't be reverse.") }}
-            </p>
-            <template #footer>
-              <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+      <div class="mt-5 space-y-5">
+        <BannerAction
+          type="warning"
+          :title="dataservice.archived_at ? $t('Unarchive the dataservice') : $t('Archive the dataservice')"
+        >
+          {{ $t("An archived dataservice is no longer indexed but still accessible for users with the direct link.") }}
+
+          <template #button>
+            <BannerActionButton
+              :icon="RiArchiveLine"
+              type="button"
+              @click="archiveDataservice"
+            >
+              {{ dataservice.archived_at ? $t('Unarchive') : $t('Archive') }}
+            </BannerActionButton>
+          </template>
+        </BannerAction>
+        <BannerAction
+          type="danger"
+          :title="$t('Delete the dataservice')"
+        >
+          {{ $t("Be careful, this action can't be reverse.") }}
+          <template #button>
+            <ModalWithButton
+              :title="$t('Are you sure you want to delete this dataservice ?')"
+              size="lg"
+            >
+              <template #button="{ attrs, listeners }">
                 <BrandedButton
                   color="danger"
-                  :disabled="loading"
-                  @click="deleteDataservice"
+                  size="xs"
+                  :icon="RiDeleteBin6Line"
+                  v-bind="attrs"
+                  v-on="listeners"
                 >
-                  {{ $t("Delete the dataservice") }}
+                  {{ $t('Delete') }}
                 </BrandedButton>
-              </div>
-            </template>
-          </ModalWithButton>
-        </template>
-      </BannerAction>
+              </template>
+              <p class="fr-text--bold">
+                {{ $t("This action can't be reverse.") }}
+              </p>
+              <template #footer>
+                <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+                  <BrandedButton
+                    color="danger"
+                    :disabled="loading"
+                    @click="deleteDataservice"
+                  >
+                    {{ $t("Delete the dataservice") }}
+                  </BrandedButton>
+                </div>
+              </template>
+            </ModalWithButton>
+          </template>
+        </BannerAction>
+      </div>
     </DescribeDataservice>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Dataservice } from '@datagouv/components'
-import { RiDeleteBin6Line } from '@remixicon/vue'
+import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
 import type { ContactPoint, DataserviceForm } from '~/types/types'
 import { toForm, toApi } from '~/utils/dataservices'
@@ -75,13 +92,13 @@ const loading = ref(false)
 const localePath = useLocalePath()
 
 const url = computed(() => `/api/1/dataservices/${route.params.id}`)
-const { data: dataservice } = await useAPI<Dataservice>(url, { lazy: true })
+const { data: dataservice, refresh } = await useAPI<Dataservice>(url, { lazy: true })
 const dataserviceForm = ref<DataserviceForm | null>(null)
 watchEffect(() => {
   dataserviceForm.value = toForm(dataservice.value)
 })
 
-const save = async () => {
+async function save() {
   if (!dataserviceForm.value) throw new Error('No dataservice form')
 
   try {
@@ -109,6 +126,28 @@ const save = async () => {
 
     toast.success(t('Dataservice updated!'))
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+async function archiveDataservice() {
+  if (!dataserviceForm.value) throw new Error('No dataservice form')
+
+  try {
+    loading.value = true
+    await $api(`/api/1/dataservices/${dataservice.value.id}/`, {
+      method: 'PATCH',
+      body: JSON.stringify(toApi(dataserviceForm.value, { archived_at: dataservice.value.archived_at ? null : new Date().toDateString() })),
+    })
+    refresh()
+    if (dataservice.value.archived_at) {
+      toast.success(t('Dataservice unarchived!'))
+    }
+    else {
+      toast.success(t('Dataservice archived!'))
+    }
   }
   finally {
     loading.value = false
