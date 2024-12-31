@@ -52,7 +52,9 @@
               <AdminTableTh scope="col">
                 {{ t("Updated at") }}
               </AdminTableTh>
-              <AdminTableTh scope="col" />
+              <AdminTableTh scope="col">
+                {{ t("Action") }}
+              </AdminTableTh>
             </tr>
           </thead>
           <tbody v-if="pageData">
@@ -78,7 +80,14 @@
               </td>
               <td>{{ formatDate(post.created_at) }}</td>
               <td>{{ formatDate(post.last_modified) }}</td>
-              <td />
+              <td>
+                <NuxtLinkLocale
+                  class="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+                  :to="`/beta/admin/posts/${post.id}`"
+                >
+                  {{ t("Edit") }}
+                </NuxtLinkLocale>
+              </td>
             </tr>
           </tbody>
         </AdminTable>
