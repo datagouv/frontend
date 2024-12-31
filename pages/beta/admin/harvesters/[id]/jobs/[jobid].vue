@@ -50,100 +50,129 @@
         </div>
       </div>
 
-      <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
-        <div class="fr-col">
-          <h2
-            class="subtitle subtitle--uppercase fr-m-0"
+      <div
+        v-if="job.errors.length"
+        class="mb-4"
+      >
+        <h2 class="subtitle subtitle--uppercase !mb-2.5">
+          {{ $t('Errors') }}
+        </h2>
+
+        <div class="bg-white p-2">
+          <div
+            v-for="(error, index) in job.errors"
+            :key="index"
+            class="space-y-1"
           >
-            {{ $t('{n} items', job.items.length) }}
-          </h2>
-        </div>
-        <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <!-- Buttons -->
+            <div>
+              <AdminBadge
+                type="danger"
+                size="sm"
+              >
+                {{ $t('Error') }}
+              </AdminBadge>
+              {{ error.message }}
+            </div>
+            <div
+              v-if="error.details"
+              class="text-mention-grey bg-gray-some p-2 text-xs/4"
+            >
+              {{ error.details }}
+            </div>
+          </div>
         </div>
       </div>
-      <AdminTable v-if="job.items.length">
-        <thead>
-          <tr>
-            <AdminTableTh scope="col">
-              {{ $t("ID") }}
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              {{ $t("Status") }}
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              {{ $t("Link") }}
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              <Tooltip class="ml-auto">
-                <RiAlertLine class="size-3.5" />
-                <template #tooltip>
-                  {{ $t('Logs') }}
-                </template>
-              </Tooltip>
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              <Tooltip class="ml-auto">
-                <RiCloseLine class="size-3.5" />
-                <template #tooltip>
-                  {{ $t('Errors') }}
-                </template>
-              </Tooltip>
-            </AdminTableTh>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="item in job.items"
-            :key="item.remote_id"
-          >
-            <td>
-              {{ item.remote_id }}
-            </td>
-            <td>
-              <AdminBadge
-                size="xs"
-                :type="getStatus(item).type"
-              >
-                {{ getStatus(item).label }}
-              </AdminBadge>
-            </td>
-            <td>
-              <LinkToSubject
-                v-if="item.dataset"
-                type="Dataset"
-                :subject="item.dataset"
-              />
-              <LinkToSubject
-                v-if="item.dataservice"
-                type="Dataservice"
-                :subject="item.dataservice"
-              />
-            </td>
-            <td class="font-mono !text-right">
-              <span v-if="!item.logs.length">{{ item.logs.length }}</span>
-              <button
-                v-else
-                type="button"
-                @click="openItemErrors(item)"
-              >
-                {{ item.logs.length }}
-              </button>
-            </td>
-            <td class="font-mono !text-right">
-              <!-- Not sure we can have multiple errors in this array… -->
-              <span v-if="!item.errors.length">{{ item.errors.length }}</span>
-              <button
-                v-else
-                type="button"
-                @click="openItemErrors(item)"
-              >
-                {{ item.errors.length }}
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </AdminTable>
+
+      <div>
+        <h2 class="subtitle subtitle--uppercase !mb-2.5">
+          {{ $t('{n} items', job.items.length) }}
+        </h2>
+        <AdminTable
+          v-if="job.items.length"
+          class="!pt-0"
+        >
+          <thead>
+            <tr>
+              <AdminTableTh scope="col">
+                {{ $t("ID") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Status") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Link") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                <Tooltip class="ml-auto">
+                  <RiAlertLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Logs') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                <Tooltip class="ml-auto">
+                  <RiCloseLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Errors') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="item in job.items"
+              :key="item.remote_id"
+            >
+              <td>
+                {{ item.remote_id }}
+              </td>
+              <td>
+                <AdminBadge
+                  size="xs"
+                  :type="getStatus(item).type"
+                >
+                  {{ getStatus(item).label }}
+                </AdminBadge>
+              </td>
+              <td>
+                <LinkToSubject
+                  v-if="item.dataset"
+                  type="Dataset"
+                  :subject="item.dataset"
+                />
+                <LinkToSubject
+                  v-if="item.dataservice"
+                  type="Dataservice"
+                  :subject="item.dataservice"
+                />
+              </td>
+              <td class="font-mono !text-right">
+                <span v-if="!item.logs.length">{{ item.logs.length }}</span>
+                <button
+                  v-else
+                  type="button"
+                  @click="openItemErrors(item)"
+                >
+                  {{ item.logs.length }}
+                </button>
+              </td>
+              <td class="font-mono !text-right">
+                <!-- Not sure we can have multiple errors in this array… -->
+                <span v-if="!item.errors.length">{{ item.errors.length }}</span>
+                <button
+                  v-else
+                  type="button"
+                  @click="openItemErrors(item)"
+                >
+                  {{ item.errors.length }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </AdminTable>
+      </div>
     </div>
 
     <Modal
