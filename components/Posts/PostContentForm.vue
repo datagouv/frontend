@@ -44,8 +44,6 @@ const emit = defineEmits<{
   submit: [PostForm]
 }>()
 
-const { t } = useI18n()
-
 const { form, touch, getFirstError, getFirstWarning, validate } = useForm({
   content: props.post.content,
 }, {
@@ -58,7 +56,4 @@ function submit() {
     emit('submit', form.value)
   }
 };
-const setFiles = (files: Array<File>) => {
-  form.value.image = files[0]
-}
 </script>

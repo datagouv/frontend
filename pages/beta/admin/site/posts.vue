@@ -52,7 +52,9 @@
               <AdminTableTh scope="col">
                 {{ t("Updated at") }}
               </AdminTableTh>
-              <AdminTableTh scope="col" />
+              <AdminTableTh scope="col">
+                {{ t("Action") }}
+              </AdminTableTh>
             </tr>
           </thead>
           <tbody v-if="pageData">
