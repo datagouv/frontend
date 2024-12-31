@@ -35,7 +35,7 @@
       v-if="post.published"
       class="text-xs mb-0"
     >
-      {{ $t('Published on {date}', { date: formatDate(post.published) }) }}
+      {{ $t('Published the {date}', { date: formatDate(post.published) }) }}
     </p>
     <p class="mt-4 mb-6">
       {{ post.headline }}

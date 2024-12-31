@@ -766,5 +766,17 @@
   "{n} posts": "{n} posts | {n} post | {n} posts",
   "Published the {date}": "Published the {date}",
   "Posts": "Posts",
+  "Unarchive the dataservice": "Unarchive the dataservice",
+  "Archive the dataservice": "Archive the dataservice",
+  "An archived dataservice is no longer indexed but still accessible for users with the direct link.": "An archived dataservice is no longer indexed but still accessible for users with the direct link.",
+  "Unarchive": "Unarchive",
+  "Archive": "Archive",
+  "Dataservice unarchived!": "Dataservice unarchived!",
+  "Dataservice archived!": "Dataservice archived!",
+  "Unarchive the dataset": "Unarchive the dataset",
+  "Archive the dataset": "Archive the dataset",
+  "An archived dataset is no longer indexed but still accessible for users with the direct link.": "An archived dataset is no longer indexed but still accessible for users with the direct link.",
+  "Dataset unarchived!": "Dataset unarchived!",
+  "Dataset archived!": "Dataset archived!",
   "": ""
 }

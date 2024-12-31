@@ -69,7 +69,7 @@
                     <div class="flex items-center space-x-2">
                       <NuxtImg
                         class="rounded-full border border-default-grey size-5"
-                        :src="useUserAvatar(user, 24)"
+                        :src="getUserAvatar(user, 24)"
                         loading="lazy"
                         alt=""
                       />
@@ -254,7 +254,7 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, formatDate, formatFromNow, useUserAvatar, type Member, type Organization } from '@datagouv/components'
+import { Avatar, formatDate, formatFromNow, getUserAvatar, type Member, type Organization } from '@datagouv/components'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiMailLine } from '@remixicon/vue'

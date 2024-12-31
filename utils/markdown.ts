@@ -1,3 +1,5 @@
+import { RiLinksLine } from '@remixicon/vue'
+import type hast from 'hast'
 import behead from 'remark-behead'
 import remarkBreaks from 'remark-breaks'
 import rehypeHighlight from 'rehype-highlight'
@@ -8,8 +10,9 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeSlug from 'rehype-slug'
 import rehypeStringify from 'rehype-stringify'
-import { unified } from 'unified'
-import { RiLinksLine } from '@remixicon/vue'
+import { unified, type Processor, type Transformer } from 'unified'
+import type { Node } from 'unist'
+import { visit } from 'unist-util-visit'
 import { render } from 'vue'
 
 const prose = 'prose prose-neutral max-w-none prose-strong:text-gray-plain'
@@ -20,6 +23,26 @@ const proseCode = 'prose-pre:font-mono prose-pre:bg-neutral-200 prose-pre:text-n
 const proseOthers = 'prose-blockquote:border-neutral-800 prose-a:no-underline prose-a:text-gray-plain prose-a:font-[number:inherit] prose-li:p-0 *:prose-li:m-0'
 
 export const markdownClasses = [prose, proseTable, proseHeading, proseList, proseCode, proseOthers].join(' ')
+
+// Copied from https://github.com/potato4d/rehype-plugin-image-native-lazy-loading/blob/v1.2.0/src/index.ts
+function lazyLoadPlugin(this: Processor): Transformer {
+  function visitor(el: hast.Element) {
+    if (el.tagName !== 'img') {
+      return
+    }
+    el.properties = {
+      ...(el.properties || {}),
+      loading: 'lazy',
+    }
+  }
+
+  function transformer(htmlAST: Node): Node {
+    visit(htmlAST, 'element', visitor)
+    return htmlAST
+  }
+
+  return transformer
+}
 
 export function formatMarkdown(md: string, minDepth = 3) {
   let el: HTMLElement | string = ''
@@ -49,6 +72,7 @@ export function formatMarkdown(md: string, minDepth = 3) {
     .use(rehypeSanitize)
     // Serialize syntax tree to HTML
     .use(rehypeStringify)
+    .use(lazyLoadPlugin)
     // And finally, process the input
     .processSync(md)
 }

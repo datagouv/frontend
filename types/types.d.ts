@@ -137,6 +137,7 @@ export type DatasetForm = {
 export type NewDatasetForApi = {
   title: string
   private?: boolean
+  archived?: string | null
   acronym?: string
   description: string
   organization?: string
@@ -202,6 +203,7 @@ export type NewDataserviceForApi = {
   organization?: string
   owner?: string
   title: string
+  archived_at?: string | null
   private?: boolean
   acronym?: string
   description: string
@@ -268,15 +270,4 @@ export type TransferRequest = {
   status: 'pending' | 'accepted' | 'refused'
   responded: string | null
   reponse_comment: string | null
-}
-
-export type Post = {
-  id: string
-  name: string
-  published: string | null
-  last_modified: string
-  created_at: string
-  page: string
-  content: string
-  headline: string
 }

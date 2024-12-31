@@ -22,6 +22,22 @@
           :label="$t('Transfer dataservice')"
         />
         <BannerAction
+          type="warning"
+          :title="dataservice.archived_at ? $t('Unarchive the dataservice') : $t('Archive the dataservice')"
+        >
+          {{ $t("An archived dataservice is no longer indexed but still accessible for users with the direct link.") }}
+
+          <template #button>
+            <BannerActionButton
+              :icon="RiArchiveLine"
+              type="button"
+              @click="archiveDataservice"
+            >
+              {{ dataservice.archived_at ? $t('Unarchive') : $t('Archive') }}
+            </BannerActionButton>
+          </template>
+        </BannerAction>
+        <BannerAction
           type="danger"
           :title="$t('Delete the dataservice')"
         >
@@ -66,7 +82,7 @@
 
 <script setup lang="ts">
 import type { Dataservice } from '@datagouv/components'
-import { RiDeleteBin6Line } from '@remixicon/vue'
+import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
 import type { ContactPoint, DataserviceForm, LinkToSubject } from '~/types/types'
 import { toForm, toApi } from '~/utils/dataservices'
@@ -81,7 +97,7 @@ const loading = ref(false)
 const localePath = useLocalePath()
 
 const url = computed(() => `/api/1/dataservices/${route.params.id}`)
-const { data: dataservice } = await useAPI<Dataservice>(url, { lazy: true })
+const { data: dataservice, refresh } = await useAPI<Dataservice>(url, { lazy: true })
 const dataserviceSubject = computed<Dataservice & LinkToSubject>(() => {
   return {
     ...dataservice.value,
@@ -93,7 +109,7 @@ watchEffect(() => {
   dataserviceForm.value = toForm(dataservice.value)
 })
 
-const save = async () => {
+async function save() {
   if (!dataserviceForm.value) throw new Error('No dataservice form')
 
   try {
@@ -121,6 +137,28 @@ const save = async () => {
 
     toast.success(t('Dataservice updated!'))
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+async function archiveDataservice() {
+  if (!dataserviceForm.value) throw new Error('No dataservice form')
+
+  try {
+    loading.value = true
+    await $api(`/api/1/dataservices/${dataservice.value.id}/`, {
+      method: 'PATCH',
+      body: JSON.stringify(toApi(dataserviceForm.value, { archived_at: dataservice.value.archived_at ? null : new Date().toISOString() })),
+    })
+    refresh()
+    if (dataservice.value.archived_at) {
+      toast.success(t('Dataservice unarchived!'))
+    }
+    else {
+      toast.success(t('Dataservice archived!'))
+    }
   }
   finally {
     loading.value = false

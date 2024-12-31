@@ -20,3 +20,8 @@ export type Post = {
   tags: Array<string>
   url: string
 }
+
+export type PostForm = Omit<Post, 'image' | 'tags' | 'datasets' | 'reuses'> & {
+  image: string | File | null
+  tags: Array<{ text: string }>
+}
