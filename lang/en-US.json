@@ -766,5 +766,13 @@
   "{n} posts": "{n} posts | {n} post | {n} posts",
   "Published the {date}": "Published the {date}",
   "Posts": "Posts",
+  "{n} jobs": "{n} jobs | {n} job | {n} jobs",
+  "Job ID": "Job ID",
+  "Started at": "Started at",
+  "Ended at": "Ended at",
+  "Run": "Run",
+  "Schedule:": "Schedule:",
+  "URL:": "URL:",
+  "Implementation:": "Implementation:",
   "": ""
 }

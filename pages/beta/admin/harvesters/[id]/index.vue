@@ -1,82 +1,98 @@
 <template>
-  <LoadingBlock :status>
-    <div v-if="pageData && pageData.total > 0">
-      <AdminTable>
-        <thead>
-          <tr>
-            <AdminTableTh scope="col">
-              {{ $t("Job ID") }}
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              {{ $t("Status") }}
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              {{ $t("Started at") }}
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              {{ $t("Ended at") }}
-            </AdminTableTh>
-            <AdminTableTh
-              scope="col"
-              class="w-16"
-            >
-              <Tooltip class="ml-auto">
-                <RiDatabase2Line class="size-3.5" />
-                <template #tooltip>
-                  {{ $t('Datasets') }}
-                </template>
-              </Tooltip>
-            </AdminTableTh>
-            <AdminTableTh
-              scope="col"
-              class="w-16"
-            >
-              <Tooltip class="ml-auto">
-                <RiRobot2Line class="size-3.5" />
-                <template #tooltip>
-                  {{ $t('Dataservices') }}
-                </template>
-              </Tooltip>
-            </AdminTableTh>
-          </tr>
-        </thead>
-        <tbody v-if="pageData">
-          <tr
-            v-for="job in pageData.data"
-            :key="job.id"
-          >
-            <td>
-              <AdminContentWithTooltip>
-                <NuxtLinkLocale
-                  class="fr-link fr-reset-link"
-                  :href="getHarvesterAdminUrl(harvester)"
-                >
-                  {{ job.id }}
-                </NuxtLinkLocale>
-              </AdminContentWithTooltip>
-            </td>
-            <td>
-              <JobBadge :job />
-            </td>
-            <td>{{ job.started ? formatDate(job.started, 'LLL') : formatDate(job.created, 'LLL') }}</td>
-            <td>{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</td>
-            <td class="!text-right font-mono">
-              {{ job.items.filter((i) => i.dataset).length }}
-            </td>
-            <td class="!text-right font-mono">
-              {{ job.items.filter((i) => i.dataservice).length }}
-            </td>
-          </tr>
-        </tbody>
-      </AdminTable>
-      <Pagination
-        :page="page"
-        :page-size="pageSize"
-        :total-results="pageData.total"
-        @change="(changedPage: number) => page = changedPage"
-      />
+  <div>
+    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+      <div class="fr-col">
+        <h2
+          v-if="pageData && pageData.total"
+          class="subtitle subtitle--uppercase fr-m-0"
+        >
+          {{ $t('{n} jobs', pageData.total) }}
+        </h2>
+      </div>
+      <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
+        <!-- Buttons -->
+      </div>
     </div>
-  </LoadingBlock>
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminTable>
+          <thead>
+            <tr>
+              <AdminTableTh scope="col">
+                {{ $t("Job ID") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Status") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Started at") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Ended at") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-16"
+              >
+                <Tooltip class="ml-auto">
+                  <RiDatabase2Line class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Datasets') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-16"
+              >
+                <Tooltip class="ml-auto">
+                  <RiRobot2Line class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Dataservices') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+            </tr>
+          </thead>
+          <tbody v-if="pageData">
+            <tr
+              v-for="job in pageData.data"
+              :key="job.id"
+            >
+              <td>
+                <AdminContentWithTooltip>
+                  <NuxtLinkLocale
+                    class="fr-link fr-reset-link"
+                    :href="getHarvesterAdminUrl(harvester)"
+                  >
+                    {{ job.id }}
+                  </NuxtLinkLocale>
+                </AdminContentWithTooltip>
+              </td>
+              <td>
+                <JobBadge :job />
+              </td>
+              <td>{{ job.started ? formatDate(job.started, 'LLL') : formatDate(job.created, 'LLL') }}</td>
+              <td>{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.dataset).length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.dataservice).length }}
+              </td>
+            </tr>
+          </tbody>
+        </AdminTable>
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+  </div>
 </template>
 
 <script setup lang="ts">

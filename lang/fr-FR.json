@@ -787,5 +787,13 @@
   "{n} posts": "{n} articles | {n} article | {n} articles",
   "Published the {date}": "Publié le {date}",
   "Posts": "Articles",
+  "{n} jobs": "{n} jobs | {n} job | {n} jobs",
+  "Job ID": "Job ID",
+  "Started at": "Débuté le",
+  "Ended at": "Terminé le",
+  "Run": "Exécuter",
+  "Schedule:": "Planning:",
+  "URL:": "URL:",
+  "Implementation:": "Implémentation:",
   "": ""
 }
