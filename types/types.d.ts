@@ -137,6 +137,7 @@ export type DatasetForm = {
 export type NewDatasetForApi = {
   title: string
   private?: boolean
+  archived?: string | null
   acronym?: string
   description: string
   organization?: string
@@ -202,6 +203,7 @@ export type NewDataserviceForApi = {
   organization?: string
   owner?: string
   title: string
+  archived_at?: string | null
   private?: boolean
   acronym?: string
   description: string
