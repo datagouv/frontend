@@ -75,7 +75,20 @@
               {{ $t("Link") }}
             </AdminTableTh>
             <AdminTableTh scope="col">
-              <RiAlertLine class="size-3.5" />
+              <Tooltip class="ml-auto">
+                <RiAlertLine class="size-3.5" />
+                <template #tooltip>
+                  {{ $t('Logs') }}
+                </template>
+              </Tooltip>
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              <Tooltip class="ml-auto">
+                <RiCloseLine class="size-3.5" />
+                <template #tooltip>
+                  {{ $t('Errors') }}
+                </template>
+              </Tooltip>
             </AdminTableTh>
           </tr>
         </thead>
@@ -107,7 +120,17 @@
                 :subject="item.dataservice"
               />
             </td>
-            <td class="font-mono text-right">
+            <td class="font-mono !text-right">
+              <span v-if="!item.logs.length">{{ item.logs.length }}</span>
+              <button
+                v-else
+                type="button"
+                @click="openItemErrors(item)"
+              >
+                {{ item.logs.length }}
+              </button>
+            </td>
+            <td class="font-mono !text-right">
               <!-- Not sure we can have multiple errors in this array… -->
               <span v-if="!item.errors.length">{{ item.errors.length }}</span>
               <button
@@ -124,17 +147,17 @@
     </div>
 
     <Modal
-      :title="t('Errors')"
+      :title="t('Errors & Logs')"
       :opened="showItemErrors"
       size="lg"
       @close="showItemErrors = false"
     >
-      <div
-        v-for="(error, index) in itemErrors"
-        :key="index"
-        class="space-y-4"
-      >
-        <div class="space-y-4">
+      <div class="space-y-4">
+        <div
+          v-for="(error, index) in itemInModal?.errors || []"
+          :key="index"
+          class="space-y-1"
+        >
           <div>
             <AdminBadge
               type="danger"
@@ -151,6 +174,20 @@
             {{ error.details }}
           </div>
         </div>
+
+        <div
+          v-for="(log, index) in itemInModal?.logs || []"
+          :key="index"
+          class="space-y-1"
+        >
+          <AdminBadge
+            type="warning"
+            size="sm"
+          >
+            {{ $t('Log') }} {{ log.level }}
+          </AdminBadge>
+          {{ log.message }}
+        </div>
       </div>
     </Modal>
   </div>
@@ -162,7 +199,7 @@ import { RiAlertLine, RiArchiveLine, RiCalendarEventLine, RiCheckboxCircleLine, 
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import JobBadge from '~/components/Harvesters/JobBadge.vue'
-import type { HarvesterJob, HarvestError, HarvestItem } from '~/types/harvesters'
+import type { HarvesterJob, HarvestItem } from '~/types/harvesters'
 import type { AdminBadgeType } from '~/types/types'
 
 const { t } = useI18n()
@@ -183,9 +220,9 @@ function getStatus(item: HarvestItem): { label: string, type: AdminBadgeType } {
 }
 
 const showItemErrors = ref(false)
-const itemErrors = ref<Array<HarvestError>>([])
+const itemInModal = ref<HarvestItem | null>(null)
 const openItemErrors = (item: HarvestItem) => {
   showItemErrors.value = true
-  itemErrors.value = item.errors
+  itemInModal.value = item
 }
 </script>
