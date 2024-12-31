@@ -1,0 +1,191 @@
+<template>
+  <div>
+    <div
+      v-if="job"
+      class="mb-5"
+    >
+      <div class="flex items-center justify-between mb-3">
+        <h1 class="fr-h3 !mb-0">
+          {{ job.id }}
+        </h1>
+      </div>
+
+      <div class="text-sm text-mentionGrey space-y-1.5 mb-5">
+        <div class="space-x-1">
+          <RiCalendarEventLine class="inline size-3" />
+          <span>{{ $t('Started at:') }}</span>
+          <span class="font-mono">{{ formatDate(job.started || job.created, 'LLL') }}</span>
+        </div>
+        <div class="space-x-1">
+          <RiCalendarEventLine class="inline size-3" />
+          <span>{{ $t('Ended at:') }}</span>
+          <span class="font-mono">{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</span>
+        </div>
+        <div class="space-x-1">
+          <RiCheckboxCircleLine class="inline size-3" />
+          <span>{{ $t('Status:') }}</span>
+          <JobBadge :job />
+        </div>
+        <div class="space-x-1">
+          <RiInformationLine class="inline size-3" />
+          <span>{{ $t('Items:') }}</span>
+          <span class="space-x-2">
+            <span class="space-x-0.5">
+              <RiCheckLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'done').length }}</span>
+            </span>
+            <span class="space-x-0.5">
+              <RiEyeOffLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'skipped').length }}</span>
+            </span>
+            <span class="space-x-0.5">
+              <RiArchiveLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'archived').length }}</span>
+            </span>
+            <span class="space-x-0.5">
+              <RiCloseLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'failed').length }}</span>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+        <div class="fr-col">
+          <h2
+            class="subtitle subtitle--uppercase fr-m-0"
+          >
+            {{ $t('{n} items', job.items.length) }}
+          </h2>
+        </div>
+        <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
+        <!-- Buttons -->
+        </div>
+      </div>
+      <AdminTable v-if="job.items.length">
+        <thead>
+          <tr>
+            <AdminTableTh scope="col">
+              {{ $t("ID") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ $t("Status") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ $t("Link") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              <RiAlertLine class="size-3.5" />
+            </AdminTableTh>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="item in job.items"
+            :key="item.remote_id"
+          >
+            <td>
+              {{ item.remote_id }}
+            </td>
+            <td>
+              <AdminBadge
+                size="xs"
+                :type="getStatus(item).type"
+              >
+                {{ getStatus(item).label }}
+              </AdminBadge>
+            </td>
+            <td>
+              <LinkToSubject
+                v-if="item.dataset"
+                type="Dataset"
+                :subject="item.dataset"
+              />
+              <LinkToSubject
+                v-if="item.dataservice"
+                type="Dataservice"
+                :subject="item.dataservice"
+              />
+            </td>
+            <td class="font-mono text-right">
+              <!-- Not sure we can have multiple errors in this array… -->
+              <span v-if="!item.errors.length">{{ item.errors.length }}</span>
+              <button
+                v-else
+                type="button"
+                @click="openItemErrors(item)"
+              >
+                {{ item.errors.length }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </AdminTable>
+    </div>
+
+    <Modal
+      :title="t('Errors')"
+      :opened="showItemErrors"
+      size="lg"
+      @close="showItemErrors = false"
+    >
+      <div
+        v-for="(error, index) in itemErrors"
+        :key="index"
+        class="space-y-4"
+      >
+        <div class="space-y-4">
+          <div>
+            <AdminBadge
+              type="danger"
+              size="sm"
+            >
+              {{ $t('Error') }}
+            </AdminBadge>
+            {{ error.message }}
+          </div>
+          <div
+            v-if="error.details"
+            class="text-mention-grey bg-gray-some p-2 text-xs/4"
+          >
+            {{ error.details }}
+          </div>
+        </div>
+      </div>
+    </Modal>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { formatDate } from '@datagouv/components'
+import { RiAlertLine, RiArchiveLine, RiCalendarEventLine, RiCheckboxCircleLine, RiCheckLine, RiCloseLine, RiEyeOffLine, RiInformationLine } from '@remixicon/vue'
+import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
+import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
+import JobBadge from '~/components/Harvesters/JobBadge.vue'
+import type { HarvesterJob, HarvestError, HarvestItem } from '~/types/harvesters'
+import type { AdminBadgeType } from '~/types/types'
+
+const { t } = useI18n()
+
+const route = useRoute()
+const url = computed(() => `/api/1/harvest/job/${route.params.jobid}/`)
+const { data: job } = await useAPI<HarvesterJob>(url, { lazy: true })
+
+function getStatus(item: HarvestItem): { label: string, type: AdminBadgeType } {
+  return {
+    pending: { label: t('Pending'), type: 'secondary' as AdminBadgeType },
+    started: { label: t('Started'), type: 'primary' as AdminBadgeType },
+    done: { label: t('Done'), type: 'success' as AdminBadgeType },
+    failed: { label: t('Failed'), type: 'danger' as AdminBadgeType },
+    skipped: { label: t('Skipped'), type: 'secondary' as AdminBadgeType },
+    archived: { label: t('Archived'), type: 'secondary' as AdminBadgeType },
+  }[item.status]
+}
+
+const showItemErrors = ref(false)
+const itemErrors = ref<Array<HarvestError>>([])
+const openItemErrors = (item: HarvestItem) => {
+  showItemErrors.value = true
+  itemErrors.value = item.errors
+}
+</script>

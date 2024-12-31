@@ -108,7 +108,7 @@
                 <AdminContentWithTooltip>
                   <NuxtLinkLocale
                     class="fr-link fr-reset-link"
-                    :href="getHarvesterAdminUrl(harvester)"
+                    :href="getHarvesterJobAdminUrl(harvester, job)"
                   >
                     {{ job.id }}
                   </NuxtLinkLocale>
