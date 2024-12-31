@@ -795,5 +795,9 @@
   "Schedule:": "Planning :",
   "URL:": "URL :",
   "Implementation:": "Implémentation :",
+  "Done items": "Éléments finis",
+  "Skipped items": "Éléments ignorés",
+  "Archived items": "Éléments archivés",
+  "Failed items": "Éléments en échec",
   "": ""
 }

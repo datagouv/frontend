@@ -22,7 +22,7 @@ export type HarvestItem = {
   remote_id: string
   dataset: Dataset | null
   dataservice: Dataservice | null
-  status: string
+  status: 'pending' | 'started' | 'done' | 'failed' | 'skipped' | 'archived'
   created: string
   started: string | null
   ended: string | null

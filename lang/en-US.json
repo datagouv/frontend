@@ -774,5 +774,9 @@
   "Schedule:": "Schedule:",
   "URL:": "URL:",
   "Implementation:": "Implementation:",
+  "Done items": "Done items",
+  "Skipped items": "Skipped items",
+  "Archived items": "Archived items",
+  "Failed items": "Failed items",
   "": ""
 }

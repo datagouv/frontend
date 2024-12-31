@@ -33,7 +33,7 @@
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
-                class="w-16"
+                class="w-12"
               >
                 <Tooltip class="ml-auto">
                   <RiDatabase2Line class="size-3.5" />
@@ -44,12 +44,56 @@
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
-                class="w-16"
+                class="w-12"
               >
                 <Tooltip class="ml-auto">
                   <RiRobot2Line class="size-3.5" />
                   <template #tooltip>
                     {{ $t('Dataservices') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiCheckLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Done items') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiEyeOffLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Skipped items') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiArchiveLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Archived items') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiCloseLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Failed items') }}
                   </template>
                 </Tooltip>
               </AdminTableTh>
@@ -81,6 +125,18 @@
               <td class="!text-right font-mono">
                 {{ job.items.filter((i) => i.dataservice).length }}
               </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'done').length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'skipped').length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'archived').length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'failed').length }}
+              </td>
             </tr>
           </tbody>
         </AdminTable>
@@ -97,7 +153,7 @@
 
 <script setup lang="ts">
 import { formatDate, Pagination } from '@datagouv/components'
-import { RiDatabase2Line, RiRobot2Line } from '@remixicon/vue'
+import { RiArchiveLine, RiCheckLine, RiCloseLine, RiDatabase2Line, RiEyeOffLine, RiRobot2Line } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import JobBadge from '~/components/Harvesters/JobBadge.vue'
