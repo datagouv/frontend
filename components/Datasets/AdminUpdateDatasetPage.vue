@@ -171,7 +171,7 @@ async function archiveDataset() {
   try {
     await $api(`/api/1/datasets/${dataset.value.id}/`, {
       method: 'PUT',
-      body: JSON.stringify(toApi(datasetForm.value, { archived: dataset.value.archived ? null : new Date().toDateString() })),
+      body: JSON.stringify(toApi(datasetForm.value, { archived: dataset.value.archived ? null : new Date().toISOString() })),
     })
     refresh()
     if (dataset.value.archived) {

@@ -139,7 +139,7 @@ async function archiveDataservice() {
     loading.value = true
     await $api(`/api/1/dataservices/${dataservice.value.id}/`, {
       method: 'PATCH',
-      body: JSON.stringify(toApi(dataserviceForm.value, { archived_at: dataservice.value.archived_at ? null : new Date().toDateString() })),
+      body: JSON.stringify(toApi(dataserviceForm.value, { archived_at: dataservice.value.archived_at ? null : new Date().toISOString() })),
     })
     refresh()
     if (dataservice.value.archived_at) {
