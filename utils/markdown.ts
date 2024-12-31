@@ -24,6 +24,7 @@ const proseOthers = 'prose-blockquote:border-neutral-800 prose-a:no-underline pr
 
 export const markdownClasses = [prose, proseTable, proseHeading, proseList, proseCode, proseOthers].join(' ')
 
+// Copied from https://github.com/potato4d/rehype-plugin-image-native-lazy-loading/blob/v1.2.0/src/index.ts
 function lazyLoadPlugin(this: Processor): Transformer {
   function visitor(el: hast.Element) {
     if (el.tagName !== 'img') {
