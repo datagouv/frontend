@@ -6,5 +6,6 @@
     <SiteHeader />
     <BannerReadOnly />
     <slot />
+    <SiteFooter />
   </div>
 </template>
