@@ -113,6 +113,7 @@ async function fetchTransfer() {
     existingTransfers.value = await $api<Array<TransferRequest>>('/api/1/transfer/', {
       query: {
         subject: props.subject.id,
+        status: 'pending',
       },
     })
   }
