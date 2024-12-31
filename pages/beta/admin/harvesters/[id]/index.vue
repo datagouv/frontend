@@ -1,0 +1,179 @@
+<template>
+  <div>
+    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+      <div class="fr-col">
+        <h2
+          v-if="pageData && pageData.total"
+          class="subtitle subtitle--uppercase fr-m-0"
+        >
+          {{ $t('{n} jobs', pageData.total) }}
+        </h2>
+      </div>
+      <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
+        <!-- Buttons -->
+      </div>
+    </div>
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminTable>
+          <thead>
+            <tr>
+              <AdminTableTh scope="col">
+                {{ $t("Job ID") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Status") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Started at") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ $t("Ended at") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiDatabase2Line class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Datasets') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiRobot2Line class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Dataservices') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiCheckLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Done items') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiEyeOffLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Skipped items') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiArchiveLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Archived items') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-12"
+              >
+                <Tooltip class="ml-auto">
+                  <RiCloseLine class="size-3.5" />
+                  <template #tooltip>
+                    {{ $t('Failed items') }}
+                  </template>
+                </Tooltip>
+              </AdminTableTh>
+            </tr>
+          </thead>
+          <tbody v-if="pageData">
+            <tr
+              v-for="job in pageData.data"
+              :key="job.id"
+            >
+              <td>
+                <AdminContentWithTooltip>
+                  <NuxtLinkLocale
+                    class="fr-link fr-reset-link"
+                    :href="getHarvesterAdminUrl(harvester)"
+                  >
+                    {{ job.id }}
+                  </NuxtLinkLocale>
+                </AdminContentWithTooltip>
+              </td>
+              <td>
+                <JobBadge :job />
+              </td>
+              <td>{{ job.started ? formatDate(job.started, 'LLL') : formatDate(job.created, 'LLL') }}</td>
+              <td>{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.dataset).length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.dataservice).length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'done').length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'skipped').length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'archived').length }}
+              </td>
+              <td class="!text-right font-mono">
+                {{ job.items.filter((i) => i.status === 'failed').length }}
+              </td>
+            </tr>
+          </tbody>
+        </AdminTable>
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { formatDate, Pagination } from '@datagouv/components'
+import { RiArchiveLine, RiCheckLine, RiCloseLine, RiDatabase2Line, RiEyeOffLine, RiRobot2Line } from '@remixicon/vue'
+import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
+import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
+import JobBadge from '~/components/Harvesters/JobBadge.vue'
+import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
+import type { PaginatedArray } from '~/types/types'
+
+const page = ref(1)
+const pageSize = ref(10)
+
+const route = useRoute()
+const sourceUrl = computed(() => `/api/1/harvest/source/${route.params.id}`)
+const { data: harvester } = await useAPI<HarvesterSource>(sourceUrl, { lazy: true })
+
+const jobsUrl = computed(() => `/api/1/harvest/source/${route.params.id}/jobs`)
+const jobsParams = computed(() => {
+  return {
+    page: page.value,
+    page_size: pageSize.value,
+  }
+})
+
+const { data: pageData, status } = await useAPI<PaginatedArray<HarvesterJob>>(jobsUrl, { lazy: true, query: jobsParams })
+</script>
