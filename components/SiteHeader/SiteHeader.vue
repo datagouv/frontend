@@ -74,6 +74,77 @@
                   </template>
                   <template #default>
                     <div class="fr-container">
+                      <div class="fr-header__menu-links">
+                        <ul
+                          v-if="me"
+                          class="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left"
+                        >
+                          <li>
+                            <a
+                              :href="me.page"
+                              class="fr-btn fr-icon-svg fr-icon--sm flex !justify-start !mb-0"
+                            >
+                              <NuxtImg
+                                :src="getUserAvatar(me, 24)"
+                                width="24"
+                                height="24"
+                                loading="lazy"
+                                alt=""
+                                class="mr-2 rounded-full"
+                              />
+                              {{ me.first_name }} {{ me.last_name }}
+                            </a>
+                          </li>
+                          <li>
+                            <NuxtLinkLocale
+                              to="/admin/"
+                              :external="true"
+                              class="fr-btn !justify-start !text-sm !p-3 !mb-0"
+                            >
+                              <RiSettings3Line
+                                size="1rem"
+                                class="fr-mr-1w"
+                              />
+                              {{ $t("Administration") }}
+                            </NuxtLinkLocale>
+                          </li>
+                          <li>
+                            <a
+                              :href="`${config.public.apiBase}/logout`"
+                              class="fr-btn !justify-start !text-sm !p-3 !mb-0"
+                            >
+                              <RiLogoutBoxRLine
+                                size="1rem"
+                                class="fr-mr-1w"
+                              />
+                              {{ $t('Logout') }}
+                            </a>
+                          </li>
+                        </ul>
+                        <ul
+                          v-else
+                          class="fr-btns-group"
+                        >
+                          <li>
+                            <NuxtLinkLocale
+                              class="fr-btn items-center !justify-start !p-3 !mb-0 !text-sm"
+                              to="/login"
+                            >
+                              <RiLockLine class="inline mr-2 size-4" />
+                              {{ $t("Log in") }}
+                            </NuxtLinkLocale>
+                          </li>
+                          <li>
+                            <NuxtLinkLocale
+                              class="fr-btn !justify-start !p-3 !mb-0 !text-sm"
+                              to="/register"
+                            >
+                              <RiAccountCircleLine class="inline mr-2 size-4" />
+                              {{ $t("Register") }}
+                            </NuxtLinkLocale>
+                          </li>
+                        </ul>
+                      </div>
                       <nav
                         class="fr-nav"
                         role="navigation"
@@ -190,7 +261,7 @@
                       class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
                     >
                       <NuxtImg
-                        :src="useUserAvatar(me, 24)"
+                        :src="getUserAvatar(me, 24)"
                         width="24"
                         height="24"
                         loading="lazy"
@@ -388,7 +459,7 @@
 <script setup lang="ts">
 import { RiAccountCircleLine, RiAddLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiRobot2Line, RiLineChartLine, RiServerLine, RiArticleLine, RiSettings3Line, RiLogoutBoxRLine } from '@remixicon/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import { useUserAvatar } from '@datagouv/components'
+import { getUserAvatar } from '@datagouv/components'
 import { NuxtLinkLocale } from '#components'
 import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'
