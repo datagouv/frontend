@@ -19,7 +19,7 @@ const { $api } = useNuxtApp()
 const { toast } = useToast()
 
 const route = useRoute()
-const url = computed(() => `/api/1/posts/${route.params.id}`)
+const url = computed(() => `/api/1/posts/${route.params.id}/`)
 const { data: post, refresh } = await useAPI<Post>(url, { lazy: true })
 
 const loading = ref(false)
