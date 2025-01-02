@@ -16,6 +16,11 @@
         </button>
       </template>
       <div class="mt-5 space-y-5">
+        <TransferBanner
+          type="Dataservice"
+          :subject="dataserviceSubject"
+          :label="$t('Transfer dataservice')"
+        />
         <BannerAction
           type="warning"
           :title="dataservice.archived_at ? $t('Unarchive the dataservice') : $t('Archive the dataservice')"
@@ -79,7 +84,7 @@
 import type { Dataservice } from '@datagouv/components'
 import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
-import type { ContactPoint, DataserviceForm } from '~/types/types'
+import type { ContactPoint, DataserviceForm, LinkToSubject } from '~/types/types'
 import { toForm, toApi } from '~/utils/dataservices'
 
 const { t } = useI18n()
@@ -93,6 +98,12 @@ const localePath = useLocalePath()
 
 const url = computed(() => `/api/1/dataservices/${route.params.id}`)
 const { data: dataservice, refresh } = await useAPI<Dataservice>(url, { lazy: true })
+const dataserviceSubject = computed<Dataservice & LinkToSubject>(() => {
+  return {
+    ...dataservice.value,
+    page: dataservice.value.self_web_url,
+  }
+})
 const dataserviceForm = ref<DataserviceForm | null>(null)
 watchEffect(() => {
   dataserviceForm.value = toForm(dataservice.value)
