@@ -142,7 +142,7 @@ watchEffect(async () => {
   if (!harvester.value) return
   if (!route.params.jobid) return
 
-  job.value = await $api(`/api/1/harvest/job/${route.params.jobid}`)
+  job.value = await $api(`/api/1/harvest/job/${route.params.jobid}/`)
 })
 
 const loading = ref(false)
