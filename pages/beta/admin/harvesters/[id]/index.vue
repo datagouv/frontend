@@ -108,7 +108,7 @@
                 <AdminContentWithTooltip>
                   <NuxtLinkLocale
                     class="fr-link fr-reset-link"
-                    :href="getHarvesterAdminUrl(harvester)"
+                    :href="getHarvesterJobAdminUrl(harvester, job)"
                   >
                     {{ job.id }}
                   </NuxtLinkLocale>
@@ -148,6 +148,19 @@
         />
       </div>
     </LoadingBlock>
+
+    <div
+      v-if="status != 'pending' && pageData && !pageData.total"
+      class="flex flex-col items-center"
+    >
+      <nuxt-img
+        src="/illustrations/harvester.svg"
+        class="h-20"
+      />
+      <p class="fr-text--bold fr-my-3v">
+        {{ $t(`No job yet.`) }}
+      </p>
+    </div>
   </div>
 </template>
 

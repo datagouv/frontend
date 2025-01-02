@@ -770,6 +770,9 @@
   "Job ID": "Job ID",
   "Started at": "Started at",
   "Ended at": "Ended at",
+  "Started at:": "Started at:",
+  "Ended at:": "Ended at:",
+  "Items:": "Items:",
   "Run": "Run",
   "Schedule:": "Schedule:",
   "URL:": "URL:",
@@ -790,5 +793,6 @@
   "An archived dataset is no longer indexed but still accessible for users with the direct link.": "An archived dataset is no longer indexed but still accessible for users with the direct link.",
   "Dataset unarchived!": "Dataset unarchived!",
   "Dataset archived!": "Dataset archived!",
+  "{n} items": "{n} items | {n} item | {n} items",
   "": ""
 }

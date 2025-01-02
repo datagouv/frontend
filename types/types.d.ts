@@ -256,8 +256,7 @@ export type ContactPointInForm = ContactPoint | NewContactPoint
 
 export type LinkToSubject = {
   title: string
-  page: string
-}
+} & ({ page: string, self_web_url?: undefined } | { self_web_url: string, page?: undefined })
 
 export type TransferRequest = {
   id: string

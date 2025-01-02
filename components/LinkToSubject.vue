@@ -1,7 +1,7 @@
 <template>
   <a
     class="inline-flex items-baseline !bg-none underline space-x-1 link"
-    :href="subject.page"
+    :href="subject.page || subject.self_web_url"
   >
     <component
       :is="icon"

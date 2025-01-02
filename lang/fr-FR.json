@@ -791,6 +791,9 @@
   "Job ID": "Job ID",
   "Started at": "Débuté le",
   "Ended at": "Terminé le",
+  "Started at:": "Débuté le :",
+  "Ended at:": "Terminé le :",
+  "Items:": "Éléments :",
   "Run": "Exécuter",
   "Schedule:": "Planning :",
   "URL:": "URL :",
@@ -811,5 +814,6 @@
   "An archived dataset is no longer indexed but still accessible for users with the direct link.": "Un jeu de données archivé n'est plus indexé mais reste accessible aux utilisateurs avec un lien direct.",
   "Dataset unarchived!": "Jeu de données désarchivé!",
   "Dataset archived!": "Jeu de données archivé!",
+  "{n} items": "{n} éléments | {n} élément | {n} éléments",
   "": ""
 }

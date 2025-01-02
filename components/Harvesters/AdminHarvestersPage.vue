@@ -89,7 +89,14 @@
               </td>
               <td>
                 <AdminBadge
-                  v-if="harvester.validation.state === 'refused'"
+                  v-if="!harvester.active"
+                  size="xs"
+                  type="danger"
+                >
+                  {{ $t('Inactive') }}
+                </AdminBadge>
+                <AdminBadge
+                  v-else-if="harvester.validation.state === 'refused'"
                   size="xs"
                   type="danger"
                 >
