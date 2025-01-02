@@ -254,12 +254,17 @@ export type ContactPoint = {
 export type NewContactPoint = Omit<ContactPoint, 'id'>
 export type ContactPointInForm = ContactPoint | NewContactPoint
 
+export type LinkToSubject = {
+  title: string
+  page: string
+}
+
 export type TransferRequest = {
   id: string
   user: User | null // TODO add this in API
   owner: (User & { class: 'User' }) | (Organization & { class: 'Organization' })
   recipient: (User & { class: 'User' }) | (Organization & { class: 'Organization' })
-  subject: (Dataset & { class: 'Dataset' }) | (Reuse & { class: 'Reuse' })
+  subject: (Dataset & { class: 'Dataset' }) | (Reuse & { class: 'Reuse' }) | (LinkToSubject & Dataservice & { class: 'Dataservice' })
   comment: string
   created: string
   status: 'pending' | 'accepted' | 'refused'

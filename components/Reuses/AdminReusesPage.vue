@@ -29,6 +29,12 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Reuses") }}
     </h1>
+    <TransferRequestList
+      v-if="props.organization || props.user"
+      type="Reuse"
+      :recipient="props.organization || props.user"
+      @done="refresh"
+    />
     <div
       v-if="pageData"
       class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
@@ -138,5 +144,5 @@ const params = computed(() => {
   }
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<Reuse>>('/api/1/reuses/', { lazy: true, query: params })
+const { data: pageData, status, refresh } = await useAPI<PaginatedArray<Reuse>>('/api/1/reuses/', { lazy: true, query: params })
 </script>

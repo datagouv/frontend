@@ -29,6 +29,12 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Dataservices") }}
     </h1>
+    <TransferRequestList
+      v-if="props.organization || props.user"
+      type="Dataservice"
+      :recipient="props.organization || props.user"
+      @done="refresh"
+    />
     <div
       v-if="pageData"
       class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
@@ -106,7 +112,6 @@ import AdminDataservicesTable from '~/components/AdminTable/AdminDataservicesTab
 import type { DataserviceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
 const { t } = useI18n()
-const config = useRuntimeConfig()
 
 const page = ref(1)
 const pageSize = ref(10)
@@ -138,5 +143,5 @@ const params = computed(() => {
   }
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<Dataservice>>('/api/1/dataservices/', { lazy: true, query: params })
+const { data: pageData, status, refresh } = await useAPI<PaginatedArray<Dataservice>>('/api/1/dataservices/', { lazy: true, query: params })
 </script>
