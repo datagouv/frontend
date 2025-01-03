@@ -51,19 +51,34 @@
               <AdminTableTh scope="col">
                 {{ t("Name") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-56"
+              >
                 {{ t("Status") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-32"
+              >
                 {{ t("Created at") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-32"
+              >
                 {{ t("Last run") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-24"
+              >
                 {{ t("Datasets") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-24"
+              >
                 {{ t("Dataservices") }}
               </AdminTableTh>
             </tr>

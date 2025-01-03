@@ -9,10 +9,16 @@
         >
           {{ t("Discussion") }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh
+          scope="col"
+          class="w-44"
+        >
           {{ t("Number of comments") }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh
+          scope="col"
+          class="min-w-56"
+        >
           {{ t("Last comment") }}
         </AdminTableTh>
         <AdminTableTh
@@ -24,7 +30,7 @@
         </AdminTableTh>
         <AdminTableTh
           scope="col"
-          class="w-1/4"
+          class="w-1/5"
         >
           {{ t("Link to the discussion") }}
         </AdminTableTh>
