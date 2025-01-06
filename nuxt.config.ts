@@ -74,6 +74,12 @@ export default defineNuxtConfig({
       sentry: {
         dsn: '',
       },
+
+      // URL of your matomo host.
+      matomo_host: undefined,
+
+      // Matomo ID of your site. Check the Matomo backend for it
+      matomo_site_id: 1,
     },
   },
 
