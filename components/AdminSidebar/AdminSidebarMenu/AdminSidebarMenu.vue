@@ -2,13 +2,13 @@
   <Disclosure>
     <li
       class="fr-sidemenu__item"
-      :class="{ 'fr-sidemenu__item--active': expanded }"
+      :class="{ 'fr-sidemenu__item--active': isOpen(id) }"
     >
       <DisclosureButton
         class="fr-sidemenu__btn"
-        :aria-current="expanded"
-        :aria-expanded="expanded"
-        @click="toggle"
+        :aria-current="isOpen(id)"
+        :aria-expanded="isOpen(id)"
+        @click="toggle(id)"
       >
         <template v-if="user">
           <Avatar
@@ -41,7 +41,7 @@
         </template>
       </DisclosureButton>
       <DisclosurePanel
-        v-show="expanded"
+        v-show="isOpen(id)"
         static
       >
         <ul class="fr-sidemenu__list !mx-2 !my-3">
@@ -194,17 +194,16 @@ defineEmits<{
   click: []
 }>()
 
-const register = inject(key) as AccordionRegister
-
-const { expanded, toggle, unregister } = register()
+const id = useId()
+const { isOpen, toggle, unregister } = inject(key) as AccordionRegister
 
 watchEffect(() => {
   if (props.defaultOpen) {
-    toggle()
+    toggle(id)
   }
 })
 
-onUnmounted(unregister)
+onUnmounted(() => unregister(id))
 </script>
 
 <style scoped>

@@ -2,7 +2,6 @@
   <Disclosure
     as="div"
     class="fr-accordion"
-    data-type="accordion"
   >
     <h3 class="fr-accordion__title !mb-0">
       <DisclosureButton
@@ -27,57 +26,46 @@
       static
     >
       <slot />
+
+      <Well
+        v-if="getFirstWarning(formKey)"
+        class="fr-mt-1w"
+        color="orange-terre-battue"
+      >
+        {{ getFirstWarning(formKey) }}
+      </Well>
     </DisclosurePanel>
   </Disclosure>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { computed } from 'vue'
-import { RiCheckLine, RiCloseLine, RiErrorWarningLine, RiInformationLine, RiSubtractLine } from '@remixicon/vue'
+import { RiCloseLine, RiErrorWarningLine, RiSubtractLine } from '@remixicon/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import type { AccordionState } from '~/types/form'
+import { Well } from '@datagouv/components'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 
-const props = withDefaults(defineProps<{
-  id: string | undefined
+defineProps<{
   title: string
-  state?: AccordionState
-}>(), {
-  state: 'default',
-})
+}>()
 
-const { isOpen, toggle, unregister } = inject(key) as AccordionRegister
+const accordionId = inject<string>('accordionId', undefined as never)
+const formKey = inject<KeysOfUnion<T>>('formKey', undefined as never)
+const { getFirstError, getFirstWarning } = inject<FormInfo<T>>('formInfo', undefined as never)
 
-const accordionId = props.id || useId()
+const { toggle, isOpen, unregister } = inject(key) as AccordionRegister
+
 const icon = computed(() => {
-  switch (props.state) {
-    case 'error':
-      return RiCloseLine
-    case 'info':
-      return RiInformationLine
-    case 'success':
-      return RiCheckLine
-    case 'warning':
-      return RiErrorWarningLine
-    case 'disabled':
-    default:
-      return RiSubtractLine
-  }
+  if (getFirstError(formKey)) return RiCloseLine
+  if (getFirstWarning(formKey)) return RiErrorWarningLine
+
+  return RiSubtractLine
 })
 const iconColor = computed(() => {
-  switch (props.state) {
-    case 'error':
-      return 'text-red-700'
-    case 'info':
-      return 'text-neutral-900'
-    case 'success':
-      return 'text-green-700'
-    case 'warning':
-      return 'text-amber-700'
-    case 'disabled':
-    default:
-      return 'text-neutral-500'
-  }
+  if (getFirstError(formKey)) return 'text-red-700'
+  if (getFirstWarning(formKey)) return 'text-amber-700'
+
+  return 'text-neutral-500'
 })
 onUnmounted(() => unregister(accordionId))
 </script>

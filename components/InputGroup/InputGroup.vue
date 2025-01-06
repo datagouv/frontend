@@ -95,7 +95,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { computed, type InputTypeHTMLAttribute } from 'vue'
 import DatePickerClient from '../DatePicker.client.vue'
 import MarkdownEditor from '~/components/MarkdownEditor/MarkdownEditor.vue'
@@ -148,6 +148,14 @@ const id = useId()
 
 const nuxtApp = useNuxtApp()
 
+const formInfo = inject<FormInfo<T>>('formInfo')
+const formKey = inject<KeysOfUnion<T>>('formKey')
+
+const hasError = computed(() => (formKey && formInfo) ? formInfo.getFirstError(formKey) : props.hasError)
+const hasWarning = computed(() => (formKey && formInfo) ? formInfo.getFirstWarning(formKey) : props.hasWarning)
+
+const errorText = computed(() => (formKey && formInfo) ? formInfo.getFirstError(formKey) : props.errorText)
+
 const errorTextId = useId()
 const validTextId = useId()
 const ariaDescribedBy = computed(() => {
@@ -155,7 +163,7 @@ const ariaDescribedBy = computed(() => {
   if (props.isValid) {
     describedBy += validTextId
   }
-  else if (props.hasError) {
+  else if (hasError.value) {
     describedBy += errorTextId
   }
   return describedBy
@@ -164,8 +172,8 @@ const ariaDescribedBy = computed(() => {
 const inputGroupClass = computed(() => {
   return {
     'fr-input-group--disabled': props.disabled,
-    'fr-input-group--error': props.hasError,
-    'fr-input-group--warning': !props.hasError && props.hasWarning,
+    'fr-input-group--error': hasError.value,
+    'fr-input-group--warning': !hasError.value && hasWarning.value,
     'fr-input-group--valid': props.isValid,
   }
 })

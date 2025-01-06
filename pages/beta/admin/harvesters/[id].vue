@@ -116,7 +116,7 @@
         class="mb-5"
         :links="[
           { href: getHarvesterAdminUrl(harvester), label: t('Jobs') },
-          // { href: `${getharvesterAdminUrl(harvester)}/files`, label: t('Files') },
+          { href: `${getHarvesterAdminUrl(harvester)}/configuration`, label: t('Configuration') },
         ]"
       />
     </div>
