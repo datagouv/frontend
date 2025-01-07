@@ -8,7 +8,7 @@
     >
       <ComboboxInput
         class="w-full border-none bg-gray-lower rounded-tl py-2 px-4 text-base text-gray-plain focus:outline-offset-2 focus:outline-2 focus:outline-blue-outline shadow-[inset_0_-2px_0_0] shadow-datagouv placeholder:italic placeholder:text-gray-medium"
-        :display-value="(person) => ''"
+        :display-value="() => ''"
         :placeholder="$t('Search')"
         @change="query = $event.target.value"
       />
@@ -25,10 +25,11 @@
       leave="transition ease-in duration-100"
       leave-from="opacity-100"
       leave-to="opacity-0"
+      class="absolute z-10 w-full"
       @after-leave="query = ''"
     >
       <ComboboxOptions
-        class="text-left absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg focus:outline-none sm:text-sm"
+        class="text-left mt-1 max-h-60 overflow-auto rounded-md bg-white text-base shadow-lg focus:outline-none sm:text-sm"
       >
         <ComboboxOption
           v-for="item in menu"
@@ -40,7 +41,7 @@
             class="relative cursor-default select-none px-4 hover:bg-gray-some *:last:border-0"
             :class="{ 'text-datagouv': active }"
           >
-            <NuxtLinkLocale
+            <NuxtLink
               :to="item.to"
               :external="item.external"
               class="flex items-center space-x-2 border-b py-3"
@@ -77,7 +78,7 @@
               <div aria-hidden="true">
                 <RiArrowRightSLine class="h-4 w-4" />
               </div>
-            </NuxtLinkLocale>
+            </NuxtLink>
           </li>
         </ComboboxOption>
       </ComboboxOptions>
@@ -99,7 +100,7 @@ const menu = computed(() => {
       type: t('datasets'),
       to: localePath({
         path: '/datasets/',
-        params: { q: query.value.trim() },
+        query: { q: query.value.trim() },
       }),
       external: true,
     },
@@ -107,8 +108,8 @@ const menu = computed(() => {
       icon: RiRobot2Line,
       type: t('dataservies'),
       to: localePath({
-        path: '/dataservies/',
-        params: { q: query.value.trim() },
+        path: '/dataservices/',
+        query: { q: query.value.trim() },
       }),
       external: true,
     },
@@ -117,7 +118,7 @@ const menu = computed(() => {
       type: t('reuses'),
       to: localePath({
         path: '/reuses/',
-        params: { q: query.value.trim() },
+        query: { q: query.value.trim() },
       }),
       external: true,
     },
@@ -126,7 +127,7 @@ const menu = computed(() => {
       type: t('organizations'),
       to: localePath({
         path: '/organizations/',
-        params: { q: query.value.trim() },
+        query: { q: query.value.trim() },
       }),
       external: true,
     },

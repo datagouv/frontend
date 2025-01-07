@@ -6,7 +6,7 @@
     <div class="fr-header__body">
       <div
         class="fr-container"
-        :class="{ '!max-w-none !overflow-hidden': fluid }"
+        :class="{ '!max-w-none': fluid }"
       >
         <div class="fr-header__body-row">
           <div class="fr-header__brand fr-enlarge-link">
