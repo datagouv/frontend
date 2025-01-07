@@ -1,5 +1,9 @@
 <template>
-  <DescribeHarvester v-model="harvesterForm" />
+  <DescribeHarvester
+    v-if="harvesterForm"
+    v-model="harvesterForm"
+    type="update"
+  />
 </template>
 
 <script setup lang="ts">

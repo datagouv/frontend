@@ -4,6 +4,7 @@
     :class="inputGroupClass"
   >
     <label
+      v-if="label"
       class="fr-label"
       :for="id"
     >

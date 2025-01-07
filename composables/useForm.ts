@@ -1,5 +1,3 @@
-import { url as vuelidateUrl, email as vuelidateEmail } from '@vuelidate/validators'
-
 export type ValidationFunction<T> = (value: T, key: string, t: (key: string, values?: Record<string, unknown>) => string) => string | null
 
 export type KeysOfUnion<T> = T extends T ? keyof T : never

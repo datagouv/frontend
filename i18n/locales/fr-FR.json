@@ -815,5 +815,6 @@
   "Dataset unarchived!": "Jeu de données désarchivé!",
   "Dataset archived!": "Jeu de données archivé!",
   "{n} items": "{n} éléments | {n} élément | {n} éléments",
+  "Configure {label}": "Configurer {label}",
   "": ""
 }

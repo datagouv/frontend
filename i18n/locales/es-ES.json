@@ -787,5 +787,6 @@
   "Dataset unarchived!": "Dataset unarchived!",
   "Dataset archived!": "Dataset archived!",
   "{n} items": "{n} items | {n} item | {n} items",
+  "Configure {label}": "Configure {label}",
   "": ""
 }

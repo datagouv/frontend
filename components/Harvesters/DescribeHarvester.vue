@@ -19,7 +19,7 @@
           {{ $t('What is a dataset?') }}
         </p>
         <p class="m-0 text-xs/5">
-          {{ $t('On {site}, a dataset is a set of files.', { site: config.public.title }) }}
+          {{ $t('On {site}, a dataset is a set of files.', { site: runtimeConfig.public.title }) }}
         </p>
       </div>
     </SimpleBanner>
@@ -42,33 +42,27 @@
       <FieldsetElement form-key="name">
         <InputGroup
           v-model="form.name"
-          :label="$t('Dataset name')"
+          :label="$t('Name')"
         />
 
         <template #accordion>
-          <HelpAccordion :title="$t('Naming your dataset')">
+          <HelpAccordion :title="$t('Naming your harvester')">
             <p class="fr-m-0">
-              {{ $t("The title of your dataset should be as precise and specific as possible.") }} <br>
-              {{ $t("It should also correspond to the vocabulary used by users.") }} <br>
-              {{ $t("They often search for data in a search engine.") }}
+              {{ $t("Choose a title that allows you to understand how the data is used rather than the name of the site or application ('Search engine for company agreements' rather than 'Accords-entreprise.fr' for example).") }} <br>
             </p>
           </HelpAccordion>
         </template>
       </FieldsetElement>
       <FieldsetElement form-key="description">
-        <InputGroupInFieldset
+        <InputGroup
           v-model="form.description"
           type="markdown"
           :label="$t('Description')"
         />
 
         <template #accordion>
-          <HelpAccordion :title="$t('Describe your dataset')">
-            <p class="fr-m-0">
-              {{ $t("The title of your dataset should be as precise and specific as possible.") }} <br>
-              {{ $t("It should also correspond to the vocabulary used by users.") }} <br>
-              {{ $t("They often search for data in a search engine.") }}
-            </p>
+          <HelpAccordion :title="$t('Describe your harvester')">
+            <p class="fr-m-0" />
           </HelpAccordion>
         </template>
       </FieldsetElement>
@@ -80,12 +74,8 @@
         />
 
         <template #accordion>
-          <HelpAccordion :title="$t('Describe your dataset')">
-            <p class="fr-m-0">
-              {{ $t("The title of your dataset should be as precise and specific as possible.") }} <br>
-              {{ $t("It should also correspond to the vocabulary used by users.") }} <br>
-              {{ $t("They often search for data in a search engine.") }}
-            </p>
+          <HelpAccordion :title="$t('Select the correct URL')">
+            <p class="fr-m-0" />
           </HelpAccordion>
         </template>
       </FieldsetElement>
@@ -98,53 +88,127 @@
           :options="backendOptions"
         />
         <template #accordion>
-          <HelpAccordion :title="$t('Describe your dataset')">
-            <p class="fr-m-0">
-              {{ $t("The title of your dataset should be as precise and specific as possible.") }} <br>
-              {{ $t("It should also correspond to the vocabulary used by users.") }} <br>
-              {{ $t("They often search for data in a search engine.") }}
-            </p>
+          <HelpAccordion :title="$t('Select the implementation type')">
+            <p class="fr-m-0" />
           </HelpAccordion>
         </template>
       </FieldsetElement>
 
-      <FieldsetElement form-key="config">
-        <SelectGroup
-          v-model="form.backend"
-          :label="t('Type')"
-          :options="backendOptions"
-        />
+      <FieldsetElement
+        v-if="backendInfo && backendInfo.filters.length"
+        form-key="filters"
+      >
+        <label class="fr-label">
+          {{ $t('Filters') }}
+        </label>
+
+        <div class="space-y-2">
+          <div
+            v-for="(filter, index) in form.filters"
+            :key="index"
+            class="flex items-center space-x-2.5"
+          >
+            <SelectGroup
+              v-model="form.filters[index].type"
+              class="!mb-0"
+              label=""
+              :options="[{ value: 'include', label: $t('Include') }, { value: 'exclude', label: $t('Exclude') }]"
+            />
+            <SelectGroup
+              v-model="form.filters[index].key"
+              class="!mb-0"
+              label=""
+              :options="backendInfo.filters.map((filter) => ({ value: filter.key, label: filter.label }))"
+            />
+            <InputGroup
+              v-model="form.filters[index].value"
+              class="!mb-0 w-full"
+              label=""
+            />
+            <BrandedButton
+              :icon="RiDeleteBinLine"
+              size="xs"
+              color="secondary"
+              @click="form.filters.splice(index, 1)"
+            >
+              {{ $t('Remove') }}
+            </BrandedButton>
+          </div>
+          <button
+            class="flex items-center space-x-1 text-datagouv-dark"
+            @click="form.filters.push({ type: 'include', key: backendInfo.filters[0].key, value: '' })"
+          >
+            <RiAddLine class="size-4" />
+            <span>{{ $t('Add filter') }}</span>
+          </button>
+        </div>
         <template #accordion>
-          <HelpAccordion :title="$t('Describe your dataset')">
-            <p class="fr-m-0">
-              {{ $t("The title of your dataset should be as precise and specific as possible.") }} <br>
-              {{ $t("It should also correspond to the vocabulary used by users.") }} <br>
-              {{ $t("They often search for data in a search engine.") }}
-            </p>
+          <HelpAccordion :title="$t('Add filters')">
+            <p class="fr-m-0" />
+          </HelpAccordion>
+        </template>
+      </FieldsetElement>
+
+      <FieldsetElement
+        v-if="backendInfo && backendInfo.extra_configs.length"
+        form-key="configs"
+      >
+        <label class="fr-label">
+          {{ $t('Configuration variables') }}
+        </label>
+
+        <div class="space-y-2">
+          <div
+            v-for="(config, index) in form.configs"
+            :key="index"
+            class="flex items-center space-x-2.5"
+          >
+            <label
+              for=""
+              class="fr-label whitespace-nowrap"
+            >
+              {{ getConfigLabel(config.key) }}
+            </label>
+            <InputGroup
+              v-model="form.configs[index].value"
+              class="!mb-0 w-full"
+              label=""
+            />
+            <BrandedButton
+              :icon="RiDeleteBinLine"
+              size="xs"
+              color="secondary"
+              @click="form.configs.splice(index, 1)"
+            >
+              {{ $t('Remove') }}
+            </BrandedButton>
+          </div>
+
+          <div class="flex items-center space-x-10">
+            <button
+              v-for="config in getMissingConfigs()"
+              :key="config.key"
+              class="flex items-center space-x-1 text-datagouv-dark"
+              @click="form.configs.push({ key: config.key, value: '' })"
+            >
+              <RiAddLine class="size-4" />
+              <span>{{ $t('Configure {label}', { label: config.label }) }}</span>
+            </button>
+          </div>
+        </div>
+        <template #accordion>
+          <HelpAccordion :title="$t('Add filters')">
+            <p class="fr-m-0" />
           </HelpAccordion>
         </template>
       </FieldsetElement>
     </FormFieldset>
 
-    <div>
-      {{ JSON.stringify(backendInfo) }}
-    </div>
-
-    <div>
-      {{ JSON.stringify(form) }}
-    </div>
-
     <div
       class="fr-grid-row"
       :class="{ 'fr-grid-row--right': type === 'update', 'justify-between': type === 'create' }"
     >
-      <BrandedButton
-        v-if="type === 'create'"
-        color="secondary"
-        @click="$emit('previous')"
-      >
-        {{ $t('Previous') }}
-      </BrandedButton>
+      <div />
       <BrandedButton
         type="submit"
         color="primary"
@@ -157,22 +221,32 @@
 </template>
 
 <script setup lang="ts">
+import { RiAddLine, RiDeleteBinLine } from '@remixicon/vue'
 import HelpAccordion from '../Form/HelpAccordion.vue'
 import FieldsetElement from '../Form/FieldsetElement.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
+import InputGroup from '../InputGroup/InputGroup.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import type { HarvestBackend, HarvesterForm } from '~/types/harvesters'
 
-const model = defineModel<HarvesterForm>({ required: true })
+const props = defineProps<{
+  type: 'create' | 'update'
+}>()
+const emit = defineEmits<{
+  (event: 'submit'): void
+}>()
 
+const model = defineModel<HarvesterForm>({ required: true })
+const runtimeConfig = useRuntimeConfig()
 const { t } = useI18n()
-const config = useRuntimeConfig()
+
+onMounted(() => {
+  if (props.type === 'update') validate()
+})
 
 const { data: backends } = await useAPI<Array<HarvestBackend>>('/api/1/harvest/backends', { lazy: true })
 
-const type = 'create' as 'create' | 'update'
-
-const { form, getFirstError, getFirstWarning, formInfo } = useForm(model, {
+const { form, getFirstError, getFirstWarning, formInfo, validate } = useForm(model, {
   name: [required()],
 }, {
   description: [minLength(500)],
@@ -191,5 +265,21 @@ const backendInfo = computed(() => {
   return backends.value.find(backend => backend.id === form.value.backend)
 })
 
-const submit = () => {}
+function getConfigLabel(key: string): string {
+  if (!backendInfo.value) return key
+  return backendInfo.value.extra_configs.find(config => config.key === key)?.label || key
+}
+
+function getMissingConfigs(): HarvestBackend['extra_configs'] {
+  if (!backendInfo.value) return []
+  return backendInfo.value.extra_configs.filter((config) => {
+    return !form.value.configs.find(existingConfig => existingConfig.key === config.key)
+  })
+}
+
+function submit() {
+  if (validate()) {
+    emit('submit')
+  }
+};
 </script>

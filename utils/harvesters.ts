@@ -15,8 +15,8 @@ export function toForm(harvester: HarvesterSource): HarvesterForm {
     description: harvester.description || '',
     url: harvester.url,
     backend: harvester.backend,
-    filters: harvester.config.filters as Array<HarvestSourceFilter>,
-    configs: harvester.config.extra_configs as Array<HarvestSourceConfig>,
+    filters: harvester.config.filters as Array<HarvestSourceFilter> || [],
+    configs: harvester.config.extra_configs as Array<HarvestSourceConfig> || [],
   }
 }
 
