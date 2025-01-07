@@ -1,7 +1,7 @@
 <template>
   <FormWithAccordions
     :form-info
-    @submit="submit"
+    @submit.prevent="submit"
   >
     <SimpleBanner
       v-if="type === 'create'"
@@ -26,7 +26,10 @@
 
     <RequiredExplanation />
 
-    <FormFieldset :legend="$t('Producer')">
+    <FormFieldset
+      v-if="type === 'create'"
+      :legend="$t('Producer')"
+    >
       <FieldsetElement form-key="owned">
         <ProducerSelect
           v-model="form.owned"
@@ -204,17 +207,8 @@
       </FieldsetElement>
     </FormFieldset>
 
-    <div
-      class="fr-grid-row"
-      :class="{ 'fr-grid-row--right': type === 'update', 'justify-between': type === 'create' }"
-    >
-      <div />
-      <BrandedButton
-        type="submit"
-        color="primary"
-      >
-        {{ $t('Test') }}
-      </BrandedButton>
+    <div class="fr-grid-row fr-grid-row--right">
+      <slot name="button" />
     </div>
     <slot />
   </FormWithAccordions>
@@ -278,7 +272,9 @@ function getMissingConfigs(): HarvestBackend['extra_configs'] {
 }
 
 function submit() {
+  console.log('here')
   if (validate()) {
+    console.log('there')
     emit('submit')
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="fr-grid-row">
+  <form class="fr-grid-row">
     <Sidemenu
       class="fr-col-12 fr-col-lg-5"
       :button-text="$t('Help')"
@@ -24,7 +24,7 @@
         <slot />
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup lang="ts" generic="T">

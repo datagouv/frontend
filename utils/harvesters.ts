@@ -20,6 +20,17 @@ export function toForm(harvester: HarvesterSource): HarvesterForm {
   }
 }
 
-// export function toApi(form: DataserviceForm, overrides: { archived_at?: string | null, datasets?: Array<Dataset | DatasetSuggest>, private?: boolean } = {}): NewDataserviceForApi {
-//   return {}
-// }
+export function toApi(form: HarvesterForm): HarvesterSource {
+  return {
+    organization: form.owned?.organization?.id,
+    owner: form.owned?.owner?.id,
+    name: form.name,
+    description: form.description,
+    url: form.url,
+    backend: form.backend,
+    config: {
+      filters: form.filters,
+      extra_configs: form.configs,
+    },
+  }
+}
