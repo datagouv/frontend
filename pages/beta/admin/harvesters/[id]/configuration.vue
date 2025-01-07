@@ -48,6 +48,18 @@ const save = async () => {
       body: JSON.stringify(toApi(harvesterForm.value)),
     })
 
+    if (harvester.value.schedule !== harvesterForm.value.schedule) {
+      if (harvesterForm.value.schedule) {
+        await $api(`/api/1/harvest/source/${harvester.value.id}/schedule`, {
+          method: 'POST',
+          body: JSON.stringify(harvesterForm.value.schedule),
+        })
+      }
+      else {
+        await $api(`/api/1/harvest/source/${harvester.value.id}/schedule`, { method: 'DELETE' })
+      }
+    }
+
     toast.success(t('Harvester updated!'))
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }

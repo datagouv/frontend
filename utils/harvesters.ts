@@ -17,6 +17,7 @@ export function toForm(harvester: HarvesterSource): HarvesterForm {
     backend: harvester.backend,
     filters: harvester.config.filters as Array<HarvestSourceFilter> || [],
     configs: harvester.config.extra_configs as Array<HarvestSourceConfig> || [],
+    schedule: harvester.schedule,
   }
 }
 

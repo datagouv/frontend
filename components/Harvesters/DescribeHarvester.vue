@@ -46,6 +46,7 @@
         <InputGroup
           v-model="form.name"
           :label="$t('Name')"
+          :required="true"
         />
 
         <template #accordion>
@@ -74,6 +75,7 @@
           v-model="form.url"
           type="url"
           :label="$t('URL')"
+          :required="true"
         />
 
         <template #accordion>
@@ -206,6 +208,17 @@
         </template>
       </FieldsetElement>
     </FormFieldset>
+    <FormFieldset
+      v-if="isGlobalAdmin"
+      :legend="$t('Advanced')"
+    >
+      <FieldsetElement form-key="schedule">
+        <InputGroup
+          v-model="form.schedule"
+          :label="$t('Schedule')"
+        />
+      </FieldsetElement>
+    </FormFieldset>
 
     <div class="fr-grid-row fr-grid-row--right">
       <slot name="button" />
@@ -234,6 +247,8 @@ const model = defineModel<HarvesterForm>({ required: true })
 const runtimeConfig = useRuntimeConfig()
 const { t } = useI18n()
 
+const me = useMe()
+
 onMounted(() => {
   if (props.type === 'update') validate()
 })
@@ -242,6 +257,7 @@ const { data: backends } = await useAPI<Array<HarvestBackend>>('/api/1/harvest/b
 
 const { form, getFirstError, getFirstWarning, formInfo, validate } = useForm(model, {
   name: [required()],
+  url: [required()],
 }, {
   description: [minLength(500)],
 })
@@ -253,6 +269,8 @@ const backendOptions = computed(() => {
     label: backend.label,
   }))
 })
+
+const isGlobalAdmin = computed(() => isAdmin(me.value))
 
 const backendInfo = computed(() => {
   if (!backends.value) return null

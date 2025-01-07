@@ -69,6 +69,7 @@ export type HarvesterForm = {
   backend: string
   filters: Array<HarvestSourceFilter>
   configs: Array<HarvestSourceConfig>
+  schedule: string
 }
 
 export type HarvestSourceFilter = {
