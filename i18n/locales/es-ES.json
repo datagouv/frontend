@@ -788,5 +788,7 @@
   "Dataset archived!": "Dataset archived!",
   "{n} items": "{n} items | {n} item | {n} items",
   "Configure {label}": "Configure {label}",
+  "Start typing to search in {type}": "Start typing to search in {type}",
+  "Search “{query}” in {type}": "Search “{query}” in {type}",
   "": ""
 }

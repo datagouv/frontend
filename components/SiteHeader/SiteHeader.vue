@@ -6,7 +6,7 @@
     <div class="fr-header__body">
       <div
         class="fr-container"
-        :class="{ '!max-w-none !overflow-hidden': fluid }"
+        :class="{ '!max-w-none': fluid }"
       >
         <div class="fr-header__body-row">
           <div class="fr-header__brand fr-enlarge-link">
@@ -325,26 +325,8 @@
             <div
               class="fr-header__search"
             >
-              <div class="fr-container hidden lg:block fr-container-lg--fluid">
-                <div
-                  class="fr-search-bar"
-                  role="search"
-                >
-                  <label
-                    class="fr-label"
-                    :for="searchInputId"
-                  > {{ $t('Search') }} </label> <input
-                    :id="searchInputId"
-                    class="fr-input"
-                    :placeholder="$t('Search')"
-                    type="search"
-                  > <button
-                    class="fr-btn"
-                    :title="$t('Search')"
-                  >
-                    {{ $t('Search') }}
-                  </button>
-                </div>
+              <div class="!hidden lg:!block">
+                <MenuSearch />
               </div>
             </div>
           </div>
