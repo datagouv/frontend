@@ -16,7 +16,7 @@
 
       <div
         :id="accordionsId"
-        class="flex flex-col-reverse"
+        class="flex flex-col"
       />
     </Sidemenu>
     <div class="fr-col-12 fr-col-lg-7">

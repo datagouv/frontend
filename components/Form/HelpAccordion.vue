@@ -28,11 +28,11 @@
       <slot />
 
       <Well
-        v-if="getFirstWarning(formKey)"
+        v-if="warning"
         class="fr-mt-1w"
         color="orange-terre-battue"
       >
-        {{ getFirstWarning(formKey) }}
+        {{ warning }}
       </Well>
     </DisclosurePanel>
   </Disclosure>
@@ -53,7 +53,9 @@ const accordionId = inject<string>('accordionId', undefined as never)
 const formKey = inject<KeysOfUnion<T>>('formKey', undefined as never)
 const { getFirstError, getFirstWarning } = inject<FormInfo<T>>('formInfo', undefined as never)
 
-const { toggle, isOpen, unregister } = inject(key) as AccordionRegister
+const { toggle, isOpen } = inject(key) as AccordionRegister
+
+const warning = computed(() => getFirstWarning(formKey))
 
 const icon = computed(() => {
   if (getFirstError(formKey)) return RiCloseLine
@@ -67,5 +69,4 @@ const iconColor = computed(() => {
 
   return 'text-neutral-500'
 })
-onUnmounted(() => unregister(accordionId))
 </script>

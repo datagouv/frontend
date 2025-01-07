@@ -6,12 +6,14 @@
   >
     <slot />
 
-    <Teleport
-      :to="`#${accordionsId}`"
-      defer
-    >
-      <slot name="accordion" />
-    </Teleport>
+    <ClientOnly>
+      <Teleport
+        :to="`#${accordionsId}`"
+        defer
+      >
+        <slot name="accordion" />
+      </Teleport>
+    </ClientOnly>
   </div>
 </template>
 
