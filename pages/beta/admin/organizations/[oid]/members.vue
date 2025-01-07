@@ -145,17 +145,27 @@
             <AdminTableTh scope="col">
               {{ t("Members") }}
             </AdminTableTh>
-            <AdminTableTh scope="col">
+            <AdminTableTh
+              scope="col"
+              class="w-36"
+            >
               {{ t("Status") }}
             </AdminTableTh>
-            <AdminTableTh scope="col">
+            <AdminTableTh
+              scope="col"
+              class="w-28"
+            >
               {{ t("Member since") }}
             </AdminTableTh>
-            <AdminTableTh scope="col">
+            <AdminTableTh
+              scope="col"
+              class="w-40"
+            >
               {{ t("Last connection") }}
             </AdminTableTh>
             <AdminTableTh
               v-if="isOrgAdmin"
+              class="w-16"
               scope="col"
             >
               {{ t("Action") }}

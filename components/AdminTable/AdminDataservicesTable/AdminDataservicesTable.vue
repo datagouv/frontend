@@ -9,10 +9,10 @@
         >
           {{ t("Dataservice title") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Status") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Access") }}
         </AdminTableTh>
         <AdminTableTh>
