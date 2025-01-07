@@ -12,6 +12,7 @@
   >
     <component
       :is="icon"
+      v-if="icon"
       class="size-3"
     />
     <span>
@@ -24,6 +25,6 @@
 import type { Component } from 'vue'
 
 defineProps<{
-  icon: Component
+  icon?: Component
 }>()
 </script>

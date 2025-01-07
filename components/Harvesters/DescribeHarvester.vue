@@ -148,7 +148,7 @@
           </button>
         </div>
         <template #accordion>
-          <HelpAccordion :title="$t('Add filters')">
+          <HelpAccordion :title="$t('Add config variables')">
             <p class="fr-m-0" />
           </HelpAccordion>
         </template>
