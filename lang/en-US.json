@@ -794,5 +794,7 @@
   "Dataset unarchived!": "Dataset unarchived!",
   "Dataset archived!": "Dataset archived!",
   "{n} items": "{n} items | {n} item | {n} items",
+  "Start typing to search in {type}": "Start typing to search in {type}",
+  "Search “{query}” in {type}": "Search “{query}” in {type}",
   "": ""
 }

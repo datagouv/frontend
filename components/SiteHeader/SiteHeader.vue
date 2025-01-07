@@ -325,26 +325,8 @@
             <div
               class="fr-header__search"
             >
-              <div class="fr-container hidden lg:block fr-container-lg--fluid">
-                <div
-                  class="fr-search-bar"
-                  role="search"
-                >
-                  <label
-                    class="fr-label"
-                    :for="searchInputId"
-                  > {{ $t('Search') }} </label> <input
-                    :id="searchInputId"
-                    class="fr-input"
-                    :placeholder="$t('Search')"
-                    type="search"
-                  > <button
-                    class="fr-btn"
-                    :title="$t('Search')"
-                  >
-                    {{ $t('Search') }}
-                  </button>
-                </div>
+              <div class="!hidden lg:!block">
+                <MenuSearch />
               </div>
             </div>
           </div>

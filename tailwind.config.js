@@ -48,6 +48,7 @@ export default {
         blue: {
           light: '#e3e3fd',
           tint: '#c1c1fd',
+          outline: '#0a76f6',
         },
         secondary: {
           lightest: '#EEEEEE',

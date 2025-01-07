@@ -815,5 +815,7 @@
   "Dataset unarchived!": "Jeu de données désarchivé!",
   "Dataset archived!": "Jeu de données archivé!",
   "{n} items": "{n} éléments | {n} élément | {n} éléments",
+  "Start typing to search in {type}": "Commencer à taper pour rechercher parmi les {type}",
+  "Search “{query}” in {type}": "Rechercher « {query} » dans les {type}",
   "": ""
 }
