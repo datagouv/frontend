@@ -15,9 +15,16 @@ import { setupI18nWithExistingInstance } from '@datagouv/components'
 
 const app = useNuxtApp()
 
+const i18nHead = useLocaleHead()
+
 setupI18nWithExistingInstance({ global: app.$i18n })
 
-useHead({
+useHeadSafe({
+  htmlAttrs: {
+    lang: i18nHead.value.htmlAttrs!.lang,
+  },
+  link: [...(i18nHead.value.link || [])],
+  meta: [...(i18nHead.value.meta || [])],
   titleTemplate: (titleChunk) => {
     return titleChunk ? `${titleChunk} - data.gouv.fr` : 'data.gouv.fr'
   },

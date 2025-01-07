@@ -74,6 +74,12 @@ export default defineNuxtConfig({
       sentry: {
         dsn: '',
       },
+
+      // URL of your matomo host.
+      matomo_host: undefined,
+
+      // Matomo ID of your site. Check the Matomo backend for it
+      matomo_site_id: 1,
     },
   },
 
@@ -120,21 +126,24 @@ export default defineNuxtConfig({
     locales: [
       {
         code: 'en',
+        language: 'en',
         file: 'en-US.json',
       },
       {
         code: 'es',
+        language: 'es',
         file: 'es-ES.json',
       },
       {
         code: 'fr',
+        language: 'fr',
         file: 'fr-FR.json',
       },
     ],
     lazy: true,
-    langDir: 'lang',
     defaultLocale: 'en',
     strategy: 'prefix',
+    trailingSlash: true,
   },
   image: {
     screens: {

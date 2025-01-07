@@ -8,13 +8,14 @@
       >
         {{ t("Resource title") }}
       </AdminTableTh>
-      <AdminTableTh>
+      <AdminTableTh class="w-44">
         {{ t("Status") }}
       </AdminTableTh>
-      <AdminTableTh>
+      <AdminTableTh class="w-14">
         {{ t("Format") }}
       </AdminTableTh>
       <AdminTableTh
+        class="w-32"
         :sorted="sorted('created_at_internal')"
         scope="col"
         @sort="(direction: SortDirection) => $emit('sort', 'created_at_internal', direction)"
@@ -22,6 +23,7 @@
         {{ t("Created at") }}
       </AdminTableTh>
       <AdminTableTh
+        class="w-32"
         :sorted="sorted('last_modified_internal')"
         scope="col"
         @sort="(direction: SortDirection) => $emit('sort', 'last_modified_internal', direction)"
