@@ -195,11 +195,11 @@ defineEmits<{
 }>()
 
 const id = useId()
-const { isOpen, toggle, unregister } = inject(key) as AccordionRegister
+const { isOpen, open, toggle, unregister } = inject(key) as AccordionRegister
 
-watchEffect(() => {
+onMounted(() => {
   if (props.defaultOpen) {
-    toggle(id)
+    open(id)
   }
 })
 
