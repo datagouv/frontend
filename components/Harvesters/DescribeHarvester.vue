@@ -290,9 +290,7 @@ function getMissingConfigs(): HarvestBackend['extra_configs'] {
 }
 
 function submit() {
-  console.log('here')
   if (validate()) {
-    console.log('there')
     emit('submit')
   }
 };
