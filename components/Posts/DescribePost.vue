@@ -70,7 +70,7 @@
         >
           <NuxtImg
             :src="imagePreview"
-            class="border mx-auto max-h-40 aspect-square"
+            class="border mx-auto max-h-40 aspect-video"
             loading="lazy"
             alt=""
           />
@@ -99,12 +99,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Post, PostForm } from '~/types/posts'
-import { toForm } from '~/utils/posts'
+import type { PostForm } from '~/types/posts'
 
 const props = defineProps<{
   submitLabel: string
-  post: Post
+  post: PostForm
   type: 'create' | 'update'
 }>()
 const emit = defineEmits<{
@@ -114,7 +113,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n()
 
-const { form, touch, getFirstError, getFirstWarning, validate } = useForm(toForm(props.post), {
+const { form, touch, getFirstError, getFirstWarning, validate } = useForm(props.post, {
   name: [required()],
   headline: [required()],
   image: [required()],

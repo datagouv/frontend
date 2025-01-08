@@ -21,7 +21,9 @@ export type Post = {
   url: string
 }
 
-export type PostForm = Omit<Post, 'image' | 'tags' | 'datasets' | 'reuses'> & {
+export type NewPostForApi = Omit<Post, 'id' | 'last_modified' | 'created_at' | 'datasets' | 'reuses' | 'page' | 'slug' | 'url'>
+
+export type PostForm = Omit<NewPostForApi, 'image' | 'tags' | 'datasets' | 'reuses'> & {
   image: string | File | null
   tags: Array<{ text: string }>
 }
