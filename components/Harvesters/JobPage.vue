@@ -43,7 +43,6 @@
             <span>{{ job.items.filter((i) => i.status === 'failed').length }}</span>
           </span>
         </span>
-        <span v-if="preview">{{ $t('(previews limit the number of items returned)') }}</span>
       </div>
     </div>
 
@@ -81,9 +80,15 @@
     </div>
 
     <div>
-      <h2 class="subtitle subtitle--uppercase !mb-2.5">
-        {{ $t('{n} items', job.items.length) }}
-      </h2>
+      <div>
+        <h2 class="inline subtitle subtitle--uppercase !mb-2.5">
+          {{ $t('{n} items', job.items.length) }}
+        </h2>
+        <span
+          v-if="preview && job.items.length >= config.public.harvesterPreviewMaxItems"
+          class="ml-3 text-gray-medium"
+        >{{ $t('Only the first {n} items are displayed in the preview.', config.public.harvesterPreviewMaxItems) }}</span>
+      </div>
       <AdminTable
         v-if="job.items.length"
         class="!pt-0"
@@ -214,6 +219,7 @@ import JobBadge from '~/components/Harvesters/JobBadge.vue'
 import type { HarvesterJob, HarvestItem } from '~/types/harvesters'
 import type { AdminBadgeType } from '~/types/types'
 
+const config = useRuntimeConfig()
 const { t } = useI18n()
 
 withDefaults(defineProps<{
