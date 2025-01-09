@@ -73,7 +73,7 @@ const color = computed<ColorType>(() => {
 const hasText = computed(() => {
   return hasSlotContent(slots.default)
 })
-const bannerActionType = inject(bannerActionTypeKey)
+const bannerActionType = inject(bannerActionTypeKey, null)
 
 const isDisabled = computed(() => props.disabled || props.loading)
 
