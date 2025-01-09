@@ -313,6 +313,12 @@ function getMissingConfigs(): HarvestBackend['extra_configs'] {
   })
 }
 
+watchEffect(() => {
+  // On config change, remove previous configs or filters not existing anymore. (the backend fail if we send some unknown filters or config)
+  form.value.configs = form.value.configs.filter(({ key }) => !backendInfo.value || backendInfo.value.extra_configs.find(config => config.key === key))
+  form.value.filters = form.value.filters.filter(({ key }) => !backendInfo.value || backendInfo.value.filters.find(filter => filter.key === key))
+})
+
 function submit() {
   if (validate()) {
     emit('submit')
