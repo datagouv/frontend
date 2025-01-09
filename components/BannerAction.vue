@@ -25,9 +25,15 @@
   </div>
 </template>
 
+<script lang="ts">
+export const bannerActionTypeKey = Symbol() as InjectionKey<'primary' | 'danger' | 'warning'>
+</script>
+
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   type: 'primary' | 'danger' | 'warning'
   title: string
 }>()
+
+provide(bannerActionTypeKey, props.type)
 </script>

@@ -42,6 +42,7 @@
         <BrandedButton
           color="primary"
           :href="config.public.harvesterRequestValidationUrl"
+          :icon="RiExternalLinkLine"
         >
           {{ $t("Request validation") }}
         </BrandedButton>
@@ -52,6 +53,7 @@
 
 <script setup lang="ts">
 import { Well } from '@datagouv/components'
+import { RiExternalLinkLine } from '@remixicon/vue'
 import type { HarvesterSource } from '~/types/harvesters'
 
 defineProps<{

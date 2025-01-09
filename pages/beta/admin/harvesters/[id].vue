@@ -112,6 +112,24 @@
         </div>
 
         <BannerAction
+          v-if="harvester.validation.state === 'pending'"
+          class="mt-3"
+          type="primary"
+          :title="$t('Your harvester is created, it\s waiting the validation from the administration team.')"
+        >
+          {{ $t("Please notify us via the contact form below if you want this harvester validated. You\'ll be notify when approved (or refused)") }}
+
+          <template #button>
+            <BrandedButton
+              :href="config.public.harvesterRequestValidationUrl"
+              :icon="RiExternalLinkLine"
+            >
+              {{ $t("Request validation") }}
+            </BrandedButton>
+          </template>
+        </BannerAction>
+
+        <BannerAction
           v-if="isGlobalAdmin && harvester.validation.state === 'pending'"
           class="mt-3"
           type="primary"
@@ -125,12 +143,12 @@
               size="lg"
             >
               <template #button="{ attrs, listeners }">
-                <BannerActionButton
+                <BrandedButton
                   v-bind="attrs"
                   v-on="listeners"
                 >
-                  {{ $t('Validate or refuse') }}
-                </BannerActionButton>
+                  {{ $t('Validate or refuse…') }}
+                </BrandedButton>
               </template>
 
               <div>
@@ -179,10 +197,12 @@
 </template>
 
 <script setup lang="ts">
-import { RiCalendarEventLine, RiCheckboxCircleLine, RiLink, RiPlayLargeLine, RiToolsLine } from '@remixicon/vue'
+import { RiCalendarEventLine, RiCheckboxCircleLine, RiExternalLinkLine, RiLink, RiPlayLargeLine, RiToolsLine } from '@remixicon/vue'
+import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 import TabLinks from '~/components/TabLinks.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
 
+const config = useRuntimeConfig()
 const { t } = useI18n()
 const { $api } = useNuxtApp()
 const { toast } = useToast()
