@@ -269,7 +269,6 @@ const emit = defineEmits<{
 }>()
 
 const model = defineModel<HarvesterForm>({ required: true })
-const runtimeConfig = useRuntimeConfig()
 const { t } = useI18n()
 
 const me = useMe()
@@ -278,7 +277,7 @@ onMounted(() => {
   if (props.type === 'update') validate()
 })
 
-const { data: backends, pending, refresh } = await useAPI<Array<HarvestBackend>>('/api/1/harvest/backends', { lazy: true })
+const { data: backends } = await useAPI<Array<HarvestBackend>>('/api/1/harvest/backends', { lazy: true })
 
 const { form, getFirstError, getFirstWarning, formInfo, validate } = useForm(model, {
   name: [required()],
