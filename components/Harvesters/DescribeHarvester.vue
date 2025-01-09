@@ -133,6 +133,7 @@
             <BrandedButton
               :icon="RiDeleteBinLine"
               size="xs"
+              type="button"
               color="secondary"
               @click="form.filters.splice(index, 1)"
             >
@@ -141,6 +142,7 @@
           </div>
           <button
             class="flex items-center space-x-1 text-datagouv-dark"
+            type="button"
             @click="form.filters.push({ type: 'include', key: backendInfo.filters[0].key, value: '' })"
           >
             <RiAddLine class="size-4" />
@@ -158,15 +160,10 @@
         v-if="backendInfo && backendInfo.extra_configs.length"
         form-key="configs"
       >
-        <label class="fr-label">
-          {{ $t('Configuration variables') }}
-        </label>
-
         <div class="space-y-2">
           <div
             v-for="(config, index) in form.configs"
             :key="index"
-            class="flex items-center space-x-2.5"
           >
             <label
               for=""
@@ -174,19 +171,25 @@
             >
               {{ getConfigLabel(config.key) }}
             </label>
-            <InputGroup
-              v-model="form.configs[index].value"
-              class="!mb-0 w-full"
-              label=""
-            />
-            <BrandedButton
-              :icon="RiDeleteBinLine"
-              size="xs"
-              color="secondary"
-              @click="form.configs.splice(index, 1)"
-            >
-              {{ $t('Remove') }}
-            </BrandedButton>
+            <div>
+              {{ config }}
+            </div>
+            <div class="flex items-center space-x-2.5">
+              <InputGroup
+                v-model="form.configs[index].value"
+                class="!mb-0 w-full"
+                label=""
+              />
+              <BrandedButton
+                :icon="RiDeleteBinLine"
+                size="xs"
+                color="secondary"
+                type="button"
+                @click="form.configs.splice(index, 1)"
+              >
+                {{ $t('Remove') }}
+              </BrandedButton>
+            </div>
           </div>
 
           <div class="flex items-center space-x-10">
@@ -209,7 +212,7 @@
       </FieldsetElement>
     </FormFieldset>
     <FormFieldset
-      v-if="isGlobalAdmin"
+      v-if="isGlobalAdmin && type != 'create'"
       :legend="$t('Advanced')"
     >
       <FieldsetElement form-key="schedule">

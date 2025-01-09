@@ -6,20 +6,54 @@
     @submit="save"
   >
     <template #button>
-      <button
-        type="submit"
-        class="fr-btn"
-        :disabled="loading"
-      >
-        {{ $t("Save") }}
-      </button>
+      <div class="flex items-center space-x-4">
+        <ModalWithButton
+          :title="$t('Preview')"
+          size="fullscreen"
+          @open="preview"
+          @close="previewJob = null"
+        >
+          <template #button="{ attrs, listeners }">
+            <BrandedButton
+              color="secondary"
+              v-bind="attrs"
+              v-on="listeners"
+            >
+              {{ $t('Preview') }}
+            </BrandedButton>
+          </template>
+          <div
+            v-if="!previewJob"
+            class="flex items-center justify-center"
+          >
+            <AdminLoader class="size-20" />
+          </div>
+          <div
+            v-else-if="previewJob"
+            class="space-y-2"
+          >
+            <JobPage
+              :job="previewJob"
+              preview
+            />
+          </div>
+        </ModalWithButton>
+        <BrandedButton
+          type="submit"
+          :loading
+        >
+          {{ $t("Save") }}
+        </BrandedButton>
+      </div>
     </template>
   </DescribeHarvester>
 </template>
 
 <script setup lang="ts">
+import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 import DescribeHarvester from '~/components/Harvesters/DescribeHarvester.vue'
-import type { HarvesterForm, HarvesterSource } from '~/types/harvesters'
+import JobPage from '~/components/Harvesters/JobPage.vue'
+import type { HarvesterForm, HarvesterJob, HarvesterSource } from '~/types/harvesters'
 import { toForm, toApi } from '~/utils/harvesters'
 
 const route = useRoute()
@@ -66,5 +100,15 @@ const save = async () => {
   finally {
     loading.value = false
   }
+}
+
+const previewJob = ref<HarvesterJob | null>(null)
+const preview = async () => {
+  if (!harvesterForm.value) throw new Error('No harvester form')
+
+  previewJob.value = await $api<HarvesterJob>('/api/1/harvest/source/preview', {
+    method: 'POST',
+    body: toApi(harvesterForm.value),
+  })
 }
 </script>

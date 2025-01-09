@@ -104,15 +104,7 @@
               <Tooltip class="ml-auto">
                 <RiAlertLine class="size-3.5" />
                 <template #tooltip>
-                  {{ $t('Logs') }}
-                </template>
-              </Tooltip>
-            </AdminTableTh>
-            <AdminTableTh scope="col">
-              <Tooltip class="ml-auto">
-                <RiCloseLine class="size-3.5" />
-                <template #tooltip>
-                  {{ $t('Errors') }}
+                  {{ $t('Errors & Logs') }}
                 </template>
               </Tooltip>
             </AdminTableTh>
@@ -152,24 +144,13 @@
               </div>
             </td>
             <td class="font-mono !text-right">
-              <span v-if="!item.logs.length">{{ item.logs.length }}</span>
+              <span v-if="!(item.logs.length + item.errors.length)">{{ item.logs.length + item.errors.length }}</span>
               <button
                 v-else
                 type="button"
                 @click="openItemErrors(item)"
               >
-                {{ item.logs.length }}
-              </button>
-            </td>
-            <td class="font-mono !text-right">
-              <!-- Not sure we can have multiple errors in this array… -->
-              <span v-if="!item.errors.length">{{ item.errors.length }}</span>
-              <button
-                v-else
-                type="button"
-                @click="openItemErrors(item)"
-              >
-                {{ item.errors.length }}
+                {{ item.logs.length + item.errors.length }}
               </button>
             </td>
           </tr>
