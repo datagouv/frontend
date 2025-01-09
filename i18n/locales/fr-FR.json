@@ -816,6 +816,8 @@
   "Dataset archived!": "Jeu de données archivé!",
   "{n} items": "{n} éléments | {n} élément | {n} éléments",
   "Configure {label}": "Configurer {label}",
+  "What is the harvesting?": "Qu’est-ce que le moissonnage ?",
+  "Harvesting is a mechanism for collecting metadata from a remote catalog and storing it on another platform to provide a second point of access to the data.": "Le moissonnage est un mécanisme permettant de collecter les métadonnées sur un catalogue distant et de les stocker sur une autre plateforme afin de proposer un second point d’accès aux données.",
   "Harvester validation": "Validation du moissonneur",
   "Status:": "Statut :",
   "Waiting validation": "En attente de validation",

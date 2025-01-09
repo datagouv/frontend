@@ -9,17 +9,17 @@
       class="mb-4 flex items-center space-x-5"
     >
       <NuxtImg
-        src="/illustrations/edit.svg"
+        src="/illustrations/truck.svg"
         loading="lazy"
         class="size-14 shrink-0"
         alt=""
       />
       <div class="w-full">
         <p class="font-bold mb-1">
-          {{ $t('What is a dataset?') }}
+          {{ $t('What is the harvesting?') }}
         </p>
         <p class="m-0 text-xs/5">
-          {{ $t('On {site}, a dataset is a set of files.', { site: runtimeConfig.public.title }) }}
+          {{ $t('Harvesting is a mechanism for collecting metadata from a remote catalog and storing it on another platform to provide a second point of access to the data.') }}
         </p>
       </div>
     </SimpleBanner>
