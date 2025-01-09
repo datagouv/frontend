@@ -7,6 +7,7 @@
     aria-disabled="isDisabled"
     :role="href ? 'link' : ''"
     :to="isDisabled ? undefined : href"
+    :target="newTab ? '_blank' : undefined"
   >
     <AdminLoader
       v-if="loading"
@@ -41,14 +42,17 @@ import { NuxtLinkLocale } from '#components'
 
 type ColorType = 'primary' | 'primary-soft' | 'secondary' | 'warning' | 'danger'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   size?: 'xs' | 'sm'
   color?: ColorType
   disabled?: boolean
   loading?: boolean
   icon?: Component
   href?: string
-}>()
+  newTab?: boolean
+}>(), {
+  newTab: false,
+})
 
 const slots = useSlots()
 

@@ -122,7 +122,7 @@
           <template #button>
             <BrandedButton
               :href="config.public.harvesterRequestValidationUrl"
-              :icon="RiExternalLinkLine"
+              new-tab
             >
               {{ $t("Request validation") }}
             </BrandedButton>
