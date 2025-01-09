@@ -80,8 +80,8 @@
     </div>
 
     <div>
-      <div>
-        <h2 class="inline subtitle subtitle--uppercase !mb-2.5">
+      <div class="mb-2.5">
+        <h2 class="inline subtitle subtitle--uppercase !mb-0">
           {{ $t('{n} items', job.items.length) }}
         </h2>
         <span
