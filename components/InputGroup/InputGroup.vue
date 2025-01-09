@@ -4,7 +4,7 @@
     :class="inputGroupClass"
   >
     <label
-      v-if="label"
+      v-if="!hideLabel"
       class="fr-label"
       :for="id"
     >
@@ -21,6 +21,7 @@
       class="fr-input"
       :class="{ 'fr-input--error': hasError, 'fr-input--warning': !hasError && hasWarning, 'fr-input--valid': isValid }"
       :aria-describedby="ariaDescribedBy"
+      :aria-label="hideLabel ? label : undefined"
       :autocomplete
       :disabled
       :type
@@ -122,6 +123,7 @@ const props = withDefaults(defineProps<{
   hintText?: string
   isValid?: boolean
   label: string
+  hideLabel?: boolean
   modelValue?: string | Date | { start: string | null, end: string | null }
   placeholder?: string
   required?: boolean
@@ -143,6 +145,7 @@ const props = withDefaults(defineProps<{
   spellcheck: undefined,
   type: 'text',
   validText: '',
+  hideLabel: false,
 })
 
 const id = useId()

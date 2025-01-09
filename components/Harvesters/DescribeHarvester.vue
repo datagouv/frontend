@@ -116,19 +116,22 @@
             <SelectGroup
               v-model="form.filters[index].type"
               class="!mb-0"
-              label=""
+              :label="$t('Filter type')"
+              hide-label
               :options="[{ value: 'include', label: $t('Include') }, { value: 'exclude', label: $t('Exclude') }]"
             />
             <SelectGroup
               v-model="form.filters[index].key"
               class="!mb-0"
-              label=""
+              :label="$t('Filter key')"
+              hide-label
               :options="backendInfo.filters.map((filter) => ({ value: filter.key, label: filter.label }))"
             />
             <InputGroup
               v-model="form.filters[index].value"
               class="!mb-0 w-full"
-              label=""
+              :label="$t('Filter value')"
+              hide-label
             />
             <BrandedButton
               :icon="RiDeleteBinLine"
@@ -175,7 +178,8 @@
               <InputGroup
                 v-model="form.configs[index].value"
                 class="!mb-0 w-full"
-                label=""
+                :label="$t('Config type')"
+                hide-label
               />
               <BrandedButton
                 :icon="RiDeleteBinLine"
