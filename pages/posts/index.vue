@@ -28,12 +28,13 @@
         </h1>
       </div>
     </div>
-    <div class="container mt-16">
-      <div class="grid md:grid-cols-3 gap-5">
+    <div class="container mt-16 space-y-16 mb-16">
+      <div class="grid md:grid-cols-6 gap-5">
         <PostCard
-          v-for="post in posts.data"
+          v-for="(post, index) in posts.data"
           :key="post.id"
           :post
+          :class="index < 2 ? 'col-span-3' : 'col-span-2'"
         />
       </div>
       <Pagination
