@@ -171,9 +171,6 @@
             >
               {{ getConfigLabel(config.key) }}
             </label>
-            <div>
-              {{ config }}
-            </div>
             <div class="flex items-center space-x-2.5">
               <InputGroup
                 v-model="form.configs[index].value"
