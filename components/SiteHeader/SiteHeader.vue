@@ -357,6 +357,7 @@
                 :to="link.link"
                 target="_self"
                 :external="link.external"
+                :aria-current="routesInPath.includes(localePath(link.link))"
               >
                 {{ link.label }}
               </NuxtLinkLocale>
@@ -452,7 +453,10 @@ defineProps<{
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const localePath = useLocalePath()
 const me = useMaybeMe()
+const currentRoute = useRoute()
+const router = useRouter()
 
 const searchInputId = useId()
 
@@ -470,6 +474,8 @@ const menu = [
   { label: t('News'), link: '/posts/' },
   { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
 ]
+
+const routesInPath = router.getRoutes().map(route => route.path).filter(path => currentRoute.path.startsWith(path))
 
 const publishMenu = [
   { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
