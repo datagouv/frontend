@@ -41,6 +41,7 @@
         :page="posts.page"
         :page-size="posts.page_size"
         :total-results="posts.total"
+        @change="(changedPage: number) => page = changedPage"
       />
     </div>
   </div>
@@ -51,8 +52,12 @@ import { Pagination } from '@datagouv/components'
 import type { Post } from '~/types/posts'
 import type { PaginatedArray } from '~/types/types'
 
+const route = useRoute()
+const page = ref(route.query.page ?? 1)
+
 const { data: posts } = await useAPI<PaginatedArray<Post>>('api/1/posts', { params:
   {
+    page,
     page_size: 15,
   },
 })
