@@ -21,7 +21,7 @@
         ref="floating"
         role="tooltip"
         aria-hidden="true"
-        class="drop-shadow bg-white p-2 z-10 mt-2"
+        class="drop-shadow bg-white p-2 z-10 mt-2 whitespace-nowrap"
         :style="floatingStyles"
       >
         <slot name="tooltip" />
