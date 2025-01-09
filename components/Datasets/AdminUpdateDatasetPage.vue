@@ -20,13 +20,13 @@
           {{ $t("An archived dataset is no longer indexed but still accessible for users with the direct link.") }}
 
           <template #button>
-            <BannerActionButton
+            <BrandedButton
               :icon="RiArchiveLine"
               type="button"
               @click="archiveDataset"
             >
               {{ dataset.archived ? $t('Unarchive') : $t('Archive') }}
-            </BannerActionButton>
+            </BrandedButton>
           </template>
         </BannerAction>
         <BannerAction
@@ -41,13 +41,13 @@
               size="lg"
             >
               <template #button="{ attrs, listeners }">
-                <BannerActionButton
+                <BrandedButton
                   :icon="RiDeleteBin6Line"
                   v-bind="attrs"
                   v-on="listeners"
                 >
                   {{ $t('Delete') }}
-                </BannerActionButton>
+                </BrandedButton>
               </template>
               <p class="fr-text--bold">
                 {{ $t("This action can't be reverse.") }}
@@ -74,6 +74,7 @@
 <script setup lang="ts">
 import type { Dataset, Frequency, License } from '@datagouv/components'
 import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
+import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import type { DatasetForm, EnrichedLicense, SpatialGranularity } from '~/types/types'
 import { toForm, toApi } from '~/utils/datasets'

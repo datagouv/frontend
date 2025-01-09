@@ -4,6 +4,7 @@
     :class="selectGroupClass"
   >
     <label
+      v-if="!hideLabel"
       class="fr-label"
       :for="id"
     >
@@ -20,6 +21,7 @@
       class="fr-select"
       :class="{ 'fr-select--error': hasError, 'fr-select--valid': isValid }"
       :aria-describedby="ariaDescribedBy"
+      :aria-label="hideLabel ? label : undefined"
       :required="required"
       :disabled="disabled"
     >
@@ -79,6 +81,7 @@ export type SelectGroupProps = {
   hintText?: string
   isValid?: boolean
   label: string
+  hideLabel?: boolean
   options: Array<Option>
   required?: boolean
   validText?: string
@@ -95,6 +98,7 @@ const props = withDefaults(defineProps<SelectGroupProps>(), {
   modelValue: undefined,
   required: false,
   validText: '',
+  hideLabel: false,
 })
 
 const id = useId()

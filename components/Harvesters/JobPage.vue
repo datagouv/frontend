@@ -1,0 +1,243 @@
+<template>
+  <div>
+    <div class="flex items-center justify-between mb-3">
+      <h1 class="fr-h3 !mb-0">
+        {{ job.id }}
+      </h1>
+    </div>
+
+    <div class="text-sm text-mentionGrey space-y-1.5 mb-5">
+      <div class="space-x-1">
+        <RiCalendarEventLine class="inline size-3" />
+        <span>{{ $t('Started at:') }}</span>
+        <span class="font-mono">{{ formatDate(job.started || job.created, 'LLL') }}</span>
+      </div>
+      <div class="space-x-1">
+        <RiCalendarEventLine class="inline size-3" />
+        <span>{{ $t('Ended at:') }}</span>
+        <span class="font-mono">{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</span>
+      </div>
+      <div class="space-x-1">
+        <RiCheckboxCircleLine class="inline size-3" />
+        <span>{{ $t('Status:') }}</span>
+        <JobBadge :job />
+      </div>
+      <div class="space-x-1">
+        <RiInformationLine class="inline size-3" />
+        <span>{{ $t('Items:') }}</span>
+        <span class="space-x-2">
+          <span class="space-x-0.5">
+            <RiCheckLine class="inline size-3.5" />
+            <span>{{ job.items.filter((i) => i.status === 'done').length }}</span>
+          </span>
+          <span class="space-x-0.5">
+            <RiEyeOffLine class="inline size-3.5" />
+            <span>{{ job.items.filter((i) => i.status === 'skipped').length }}</span>
+          </span>
+          <span class="space-x-0.5">
+            <RiArchiveLine class="inline size-3.5" />
+            <span>{{ job.items.filter((i) => i.status === 'archived').length }}</span>
+          </span>
+          <span class="space-x-0.5">
+            <RiCloseLine class="inline size-3.5" />
+            <span>{{ job.items.filter((i) => i.status === 'failed').length }}</span>
+          </span>
+        </span>
+        <span v-if="preview">{{ $t('(previews limit the number of items returned)') }}</span>
+      </div>
+    </div>
+
+    <div
+      v-if="job.errors.length"
+      class="mb-4"
+    >
+      <h2 class="subtitle subtitle--uppercase !mb-2.5">
+        {{ $t('Errors') }}
+      </h2>
+
+      <div class="bg-white p-2">
+        <div
+          v-for="(error, index) in job.errors"
+          :key="index"
+          class="space-y-1"
+        >
+          <div>
+            <AdminBadge
+              type="danger"
+              size="sm"
+            >
+              {{ $t('Error') }}
+            </AdminBadge>
+            {{ error.message }}
+          </div>
+          <div
+            v-if="error.details"
+            class="text-mention-grey bg-gray-some p-2 text-xs/4"
+          >
+            {{ error.details }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="subtitle subtitle--uppercase !mb-2.5">
+        {{ $t('{n} items', job.items.length) }}
+      </h2>
+      <AdminTable
+        v-if="job.items.length"
+        class="!pt-0"
+      >
+        <thead>
+          <tr>
+            <AdminTableTh scope="col">
+              {{ $t("ID") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              {{ $t("Status") }}
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              <span v-if="preview">{{ $t("Name") }}</span>
+              <span v-else>{{ $t("Link") }}</span>
+            </AdminTableTh>
+            <AdminTableTh scope="col">
+              <Tooltip class="ml-auto">
+                <RiAlertLine class="size-3.5" />
+                <template #tooltip>
+                  {{ $t('Errors & Logs') }}
+                </template>
+              </Tooltip>
+            </AdminTableTh>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="item in job.items"
+            :key="item.remote_id"
+          >
+            <td>
+              {{ item.remote_id }}
+            </td>
+            <td>
+              <AdminBadge
+                size="xs"
+                :type="getStatus(item).type"
+              >
+                {{ getStatus(item).label }}
+              </AdminBadge>
+            </td>
+            <td>
+              <div v-if="preview">
+                {{ item.dataset?.title || item.dataservice?.title }}
+              </div>
+              <div v-else>
+                <LinkToSubject
+                  v-if="item.dataset"
+                  type="Dataset"
+                  :subject="item.dataset"
+                />
+                <LinkToSubject
+                  v-if="item.dataservice"
+                  type="Dataservice"
+                  :subject="item.dataservice"
+                />
+              </div>
+            </td>
+            <td class="font-mono !text-right">
+              <span v-if="!(item.logs.length + item.errors.length)">{{ item.logs.length + item.errors.length }}</span>
+              <button
+                v-else
+                type="button"
+                @click="openItemErrors(item)"
+              >
+                {{ item.logs.length + item.errors.length }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </AdminTable>
+    </div>
+
+    <Modal
+      :title="t('Errors & Logs')"
+      :opened="showItemErrors"
+      size="lg"
+      @close="showItemErrors = false"
+    >
+      <div class="space-y-4">
+        <div
+          v-for="(error, index) in itemInModal?.errors || []"
+          :key="index"
+          class="space-y-1"
+        >
+          <div>
+            <AdminBadge
+              type="danger"
+              size="sm"
+            >
+              {{ $t('Error') }}
+            </AdminBadge>
+            {{ error.message }}
+          </div>
+          <div
+            v-if="error.details"
+            class="text-mention-grey bg-gray-some p-2 text-xs/4"
+          >
+            {{ error.details }}
+          </div>
+        </div>
+
+        <div
+          v-for="(log, index) in itemInModal?.logs || []"
+          :key="index"
+          class="space-y-1"
+        >
+          <AdminBadge
+            type="warning"
+            size="sm"
+          >
+            {{ $t('Log') }} {{ log.level }}
+          </AdminBadge>
+          {{ log.message }}
+        </div>
+      </div>
+    </Modal>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { formatDate } from '@datagouv/components'
+import { RiAlertLine, RiArchiveLine, RiCalendarEventLine, RiCheckboxCircleLine, RiCheckLine, RiCloseLine, RiEyeOffLine, RiInformationLine } from '@remixicon/vue'
+import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
+import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
+import JobBadge from '~/components/Harvesters/JobBadge.vue'
+import type { HarvesterJob, HarvestItem } from '~/types/harvesters'
+import type { AdminBadgeType } from '~/types/types'
+
+const { t } = useI18n()
+
+withDefaults(defineProps<{
+  job: HarvesterJob
+  preview?: boolean
+}>(), {
+  preview: false,
+})
+
+function getStatus(item: HarvestItem): { label: string, type: AdminBadgeType } {
+  return {
+    pending: { label: t('Pending'), type: 'secondary' as AdminBadgeType },
+    started: { label: t('Started'), type: 'primary' as AdminBadgeType },
+    done: { label: t('Done'), type: 'success' as AdminBadgeType },
+    failed: { label: t('Failed'), type: 'danger' as AdminBadgeType },
+    skipped: { label: t('Skipped'), type: 'secondary' as AdminBadgeType },
+    archived: { label: t('Archived'), type: 'secondary' as AdminBadgeType },
+  }[item.status]
+}
+
+const showItemErrors = ref(false)
+const itemInModal = ref<HarvestItem | null>(null)
+const openItemErrors = (item: HarvestItem) => {
+  showItemErrors.value = true
+  itemInModal.value = item
+}
+</script>
