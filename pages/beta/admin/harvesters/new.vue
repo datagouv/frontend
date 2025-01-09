@@ -96,6 +96,8 @@ const harvesterForm = useState(
       filters: [],
       configs: [],
       schedule: '',
+      autoarchive: true,
+      active: true,
     } as HarvesterForm),
 )
 

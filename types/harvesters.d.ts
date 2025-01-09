@@ -70,6 +70,8 @@ export type HarvesterForm = {
   filters: Array<HarvestSourceFilter>
   configs: Array<HarvestSourceConfig>
   schedule: string
+  autoarchive: boolean
+  active: boolean
 }
 
 export type HarvestSourceFilter = {

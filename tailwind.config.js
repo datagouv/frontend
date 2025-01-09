@@ -59,6 +59,7 @@ export default {
           lighter: '#e3e3fd',
           light: '#c1c1fd',
           hover: '#5982e0',
+          defaultLight: '#46699D',
           DEFAULT: '#465F9D',
           dark: '#3558a2',
         },
