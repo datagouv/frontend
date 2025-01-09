@@ -115,9 +115,9 @@
           v-if="harvester.validation.state === 'pending'"
           class="mt-3"
           type="primary"
-          :title="$t('Your harvester is created, it\s waiting the validation from the administration team.')"
+          :title="$t('Your harvester is created, it\'s waiting the validation from the administration team.')"
         >
-          {{ $t("Please notify us via the contact form below if you want this harvester validated. You\'ll be notify when approved (or refused)") }}
+          {{ $t("Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)") }}
 
           <template #button>
             <BrandedButton

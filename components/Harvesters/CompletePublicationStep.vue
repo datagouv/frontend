@@ -15,10 +15,10 @@
         </div>
         <div class="fr-col">
           <p class="fr-m-0 fr-text--bold">
-            {{ $t('Your harvester is created, it\s waiting the validation from the administration team.') }}
+            {{ $t("Your harvester is created, it's waiting the validation from the administration team.") }}
           </p>
           <p class="fr-m-0 fr-text--xs">
-            {{ $t('Please notify us via the contact form below if you want this harvester validated. You\'ll be notify when approved (or refused)') }}
+            {{ $t("Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)") }}
           </p>
         </div>
       </div>
