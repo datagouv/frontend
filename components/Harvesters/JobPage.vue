@@ -26,22 +26,42 @@
         <RiInformationLine class="inline size-3" />
         <span>{{ $t('Items:') }}</span>
         <span class="space-x-2">
-          <span class="space-x-0.5">
-            <RiCheckLine class="inline size-3.5" />
-            <span>{{ job.items.filter((i) => i.status === 'done').length }}</span>
-          </span>
-          <span class="space-x-0.5">
-            <RiEyeOffLine class="inline size-3.5" />
-            <span>{{ job.items.filter((i) => i.status === 'skipped').length }}</span>
-          </span>
-          <span class="space-x-0.5">
-            <RiArchiveLine class="inline size-3.5" />
-            <span>{{ job.items.filter((i) => i.status === 'archived').length }}</span>
-          </span>
-          <span class="space-x-0.5">
-            <RiCloseLine class="inline size-3.5" />
-            <span>{{ job.items.filter((i) => i.status === 'failed').length }}</span>
-          </span>
+          <Tooltip class="inline">
+            <span class="space-x-0.5 text-sm">
+              <RiCheckLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'done').length }}</span>
+            </span>
+            <template #tooltip>
+              {{ $t('Done items') }}
+            </template>
+          </Tooltip>
+          <Tooltip class="inline">
+            <span class="space-x-0.5 text-sm">
+              <RiEyeOffLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'skipped').length }}</span>
+            </span>
+            <template #tooltip>
+              {{ $t('Skipped items') }}
+            </template>
+          </Tooltip>
+          <Tooltip class="inline">
+            <span class="space-x-0.5 text-sm">
+              <RiArchiveLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'archived').length }}</span>
+            </span>
+            <template #tooltip>
+              {{ $t('Archived items') }}
+            </template>
+          </Tooltip>
+          <Tooltip class="inline">
+            <span class="space-x-0.5 text-sm">
+              <RiCloseLine class="inline size-3.5" />
+              <span>{{ job.items.filter((i) => i.status === 'failed').length }}</span>
+            </span>
+            <template #tooltip>
+              {{ $t('Failed items') }}
+            </template>
+          </Tooltip>
         </span>
         <span v-if="preview">{{ $t('(previews limit the number of items returned)') }}</span>
       </div>
