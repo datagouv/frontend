@@ -211,6 +211,26 @@
           </HelpAccordion>
         </template>
       </FieldsetElement>
+      <div class="w-full flex flex-col sm:flex-row">
+        <FieldsetElement
+          form-key="active"
+          class="w-full"
+        >
+          <ToggleSwitch
+            v-model="form.active"
+            :label="t('Enabled')"
+          />
+        </FieldsetElement>
+        <FieldsetElement
+          form-key="autoarchive"
+          class="w-full"
+        >
+          <ToggleSwitch
+            v-model="form.autoarchive"
+            :label="t('Auto-archive')"
+          />
+        </FieldsetElement>
+      </div>
     </FormFieldset>
     <FormFieldset
       v-if="isGlobalAdmin && type != 'create'"
@@ -237,6 +257,7 @@ import HelpAccordion from '../Form/HelpAccordion.vue'
 import FieldsetElement from '../Form/FieldsetElement.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import InputGroup from '../InputGroup/InputGroup.vue'
+import ToggleSwitch from '../Form/ToggleSwitch.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import type { HarvestBackend, HarvesterForm } from '~/types/harvesters'
 
@@ -257,7 +278,7 @@ onMounted(() => {
   if (props.type === 'update') validate()
 })
 
-const { data: backends } = await useAPI<Array<HarvestBackend>>('/api/1/harvest/backends', { lazy: true })
+const { data: backends, pending, refresh } = await useAPI<Array<HarvestBackend>>('/api/1/harvest/backends', { lazy: true })
 
 const { form, getFirstError, getFirstWarning, formInfo, validate } = useForm(model, {
   name: [required()],

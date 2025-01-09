@@ -18,6 +18,8 @@ export function toForm(harvester: HarvesterSource): HarvesterForm {
     filters: harvester.config.filters as Array<HarvestSourceFilter> || [],
     configs: harvester.config.extra_configs as Array<HarvestSourceConfig> || [],
     schedule: harvester.schedule,
+    autoarchive: harvester.autoarchive,
+    active: harvester.active,
   }
 }
 
@@ -29,6 +31,8 @@ export function toApi(form: HarvesterForm): HarvesterSource {
     description: form.description,
     url: form.url,
     backend: form.backend,
+    autoarchive: form.autoarchive,
+    active: form.active,
     config: {
       filters: form.filters,
       extra_configs: form.configs,
