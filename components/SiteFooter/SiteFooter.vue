@@ -17,7 +17,7 @@
                 <p class="font-extrabold text-2xl text-gray-title leading-8 mb-1">
                   {{ $t("Subscribe to our newsletter") }}
                 </p>
-                <p class="mb-4">
+                <p class="mb-4 text-lg">
                   {{
                     $t("To stay up to date about {site} and open data news, subscribe to our newsletter and follow our events.",
                        { site: config.public.title })
@@ -116,7 +116,7 @@
         <div class="fr-container">
           <div class="fr-grid-row fr-grid-row--start fr-grid-row--gutters">
             <div class="fr-col-12 fr-col-sm-3">
-              <h3 class="fr-footer__top-cat">
+              <h3 class="fr-footer__top-cat !text-xs !leading-5 !mb-3">
                 {{ $t('Open Data') }}
               </h3>
               <ul class="fr-footer__top-list">
@@ -132,7 +132,7 @@
               </ul>
             </div>
             <div class="fr-col-12 fr-col-sm-3">
-              <h3 class="fr-footer__top-cat">
+              <h3 class="fr-footer__top-cat !text-xs !leading-5 !mb-3">
                 {{ $t('Platform') }}
               </h3>
               <ul class="fr-footer__top-list">
@@ -148,7 +148,7 @@
               </ul>
             </div>
             <div class="fr-col-12 fr-col-sm-3">
-              <h3 class="fr-footer__top-cat">
+              <h3 class="fr-footer__top-cat !text-xs !leading-5 !mb-3">
                 {{ $t('Resources') }}
               </h3>
               <ul class="fr-footer__top-list">
@@ -164,7 +164,7 @@
               </ul>
             </div>
             <div class="fr-col-12 fr-col-sm-3">
-              <h3 class="fr-footer__top-cat">
+              <h3 class="fr-footer__top-cat !text-xs !leading-5 !mb-3">
                 {{ $t('Development') }}
               </h3>
               <ul class="fr-footer__top-list">
