@@ -4,7 +4,7 @@
     class="inline-flex items-center space-x-1 rounded-full font-medium border !bg-none !no-underline"
     :class="[colors, sizes, isDisabled ? '!opacity-50' : '']"
     :disabled="isDisabled"
-    aria-disabled="isDisabled"
+    :aria-disabled="isDisabled"
     :role="href ? 'link' : ''"
     :to="isDisabled ? undefined : href"
     :target="newTab ? '_blank' : undefined"
