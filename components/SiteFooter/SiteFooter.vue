@@ -17,7 +17,7 @@
                 <p class="font-extrabold text-2xl text-gray-title leading-8 mb-1">
                   {{ $t("Subscribe to our newsletter") }}
                 </p>
-                <p class="mb-4 text-lg">
+                <p class="mb-4">
                   {{
                     $t("To stay up to date about {site} and open data news, subscribe to our newsletter and follow our events.",
                        { site: config.public.title })
@@ -45,7 +45,7 @@
             </div>
           </div>
           <div class="w-full md:pl-[8%] md:w-1/3">
-            <div class="flex flex-col items-start justify-center h-full">
+            <div class="flex flex-col items-start justify-between h-full">
               <p class="font-extrabold text-2xl leading-8 text-gray-title">
                 {{ $t("Follow us") }}
                 <br> {{ $t("on social media") }}
@@ -53,7 +53,7 @@
               <ul class="flex justify-between list-none m-0 p-0 *:p-0 -ml-4">
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Twitter - new tab')"
                     href="https://twitter.com/datagouvfr"
                     target="_blank"
@@ -63,7 +63,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Linkedin - new tab')"
                     href="https://www.linkedin.com/company/data-gouv-fr/"
                     target="_blank"
@@ -73,7 +73,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Mastodon - new tab')"
                     href="https://social.numerique.gouv.fr/@datagouvfr"
                     target="_blank"
@@ -83,7 +83,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Github - new tab')"
                     href="https://github.com/datagouv/data.gouv.fr"
                     target="_blank"
@@ -93,7 +93,7 @@
                 </li>
                 <li>
                   <NuxtLinkLocale
-                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('RSS - new tab')"
                     to="datasets/recent.atom"
                     :external="true"
