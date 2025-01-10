@@ -2,7 +2,7 @@
   <div>
     <PostContentForm
       v-if="post"
-      :post
+      :post="postForm"
       type="update"
       :submit-label="t('Save')"
       @submit="save"
@@ -12,7 +12,8 @@
 
 <script setup lang="ts">
 import PostContentForm from '~/components/Posts/PostContentForm.vue'
-import type { Post, PostForm } from '~/types/posts'
+import type { Post } from '~/types/posts'
+import { toForm } from '~/utils/posts'
 
 const { t } = useI18n()
 const { $api } = useNuxtApp()
@@ -21,10 +22,11 @@ const { toast } = useToast()
 const route = useRoute()
 const url = computed(() => `/api/1/posts/${route.params.id}/`)
 const { data: post, refresh } = await useAPI<Post>(url, { lazy: true })
+const postForm = computed(() => toForm(post.value))
 
 const loading = ref(false)
 
-const save = async (form: PostForm) => {
+const save = async (form: { content: string }) => {
   try {
     loading.value = true
 

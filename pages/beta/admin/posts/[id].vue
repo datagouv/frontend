@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import TabLinks from '~/components/TabLinks.vue'
-import type { Post } from '~/types/types'
+import type { Post } from '~/types/posts'
 
 const { t } = useI18n()
 

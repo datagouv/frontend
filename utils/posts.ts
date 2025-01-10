@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash-es/cloneDeep'
-import type { Post, PostForm } from '~/types/posts'
+import type { NewPostForApi, Post, PostForm } from '~/types/posts'
 
 export function toForm(post: Post): PostForm {
   return {
@@ -9,7 +9,7 @@ export function toForm(post: Post): PostForm {
   }
 }
 
-export function toApi(form: PostForm): Post {
+export function toApi(form: PostForm): NewPostForApi {
   return {
     ...form,
     tags: form.tags.map(({ text }) => text),

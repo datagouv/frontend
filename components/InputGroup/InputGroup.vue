@@ -152,8 +152,8 @@ const id = useId()
 
 const nuxtApp = useNuxtApp()
 
-const formInfo = inject<FormInfo<T>>('formInfo')
-const formKey = inject<KeysOfUnion<T>>('formKey')
+const formInfo = inject<FormInfo<T> | null>('formInfo', null)
+const formKey = inject<KeysOfUnion<T> | null>('formKey', null)
 
 const hasError = computed(() => (formKey && formInfo) ? formInfo.getFirstError(formKey) : props.hasError)
 const hasWarning = computed(() => (formKey && formInfo) ? formInfo.getFirstWarning(formKey) : props.hasWarning)

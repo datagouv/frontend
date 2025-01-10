@@ -2,7 +2,7 @@
   <div>
     <DescribePost
       v-if="post"
-      :post
+      :post="postForm"
       type="update"
       :submit-label="t('Save')"
       @submit="save"
@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import DescribePost from '~/components/Posts/DescribePost.vue'
 import type { Post, PostForm } from '~/types/posts'
-import { toApi } from '~/utils/posts'
+import { toApi, toForm } from '~/utils/posts'
 
 const { t } = useI18n()
 const { $api, $fileApi } = useNuxtApp()
@@ -22,6 +22,7 @@ const { toast } = useToast()
 const route = useRoute()
 const url = computed(() => `/api/1/posts/${route.params.id}/`)
 const { data: post, refresh } = await useAPI<Post>(url, { lazy: true })
+const postForm = computed(() => toForm(post.value))
 
 const loading = ref(false)
 
