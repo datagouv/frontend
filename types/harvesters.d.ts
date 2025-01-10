@@ -60,3 +60,34 @@ export type HarvesterSource = Owned & {
   deleted: string | null
   schedule: string
 }
+
+export type HarvesterForm = {
+  owned: Owned | null
+  name: string
+  description: string
+  url: string
+  backend: string
+  filters: Array<HarvestSourceFilter>
+  configs: Array<HarvestSourceConfig>
+  schedule: string
+  autoarchive: boolean
+  active: boolean
+}
+
+export type HarvestSourceFilter = {
+  key: string
+  type: 'include' | 'exclude'
+  value: string
+}
+export type HarvestSourceConfig = {
+  key: string
+  value: string
+}
+
+export type HarvestBackend = {
+  id: string
+  label: string
+  filters: Array<{ label: string, key: string, type: string, description: string }>
+  features: Array<{ label: string, key: string, default: string, description: string }>
+  extra_configs: Array<{ label: string, key: string, default: string, description: string }>
+}

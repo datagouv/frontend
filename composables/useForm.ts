@@ -1,5 +1,3 @@
-import { url as vuelidateUrl, email as vuelidateEmail } from '@vuelidate/validators'
-
 export type ValidationFunction<T> = (value: T, key: string, t: (key: string, values?: Record<string, unknown>) => string) => string | null
 
 export type KeysOfUnion<T> = T extends T ? keyof T : never
@@ -10,6 +8,8 @@ export type ValidationsRules<Type> = {
 export type ValidationsMessages<Type> = {
   [Property in KeysOfUnion<Type>]?: Array<string>;
 }
+
+export type FormInfo<T> = ReturnType<typeof useForm<T>>['formInfo']
 
 export function useForm<T>(initialValues: MaybeRef<T>, errorsRules: ValidationsRules<T> = {}, warningsRules: ValidationsRules<T> = {}) {
   const { t } = useI18n()
@@ -65,7 +65,8 @@ export function useForm<T>(initialValues: MaybeRef<T>, errorsRules: ValidationsR
     return true
   }
 
-  return { form, errors, warnings, touch, getFirstError, getFirstWarning, validate, removeErrorsAndWarnings, warningsAsList, errorsAsList }
+  const formInfo = { errors, warnings, touch, getFirstError, getFirstWarning, validate, removeErrorsAndWarnings, warningsAsList, errorsAsList }
+  return { form, formInfo, ...formInfo }
 }
 
 export function required<T>(message: string | null = null): ValidationFunction<T> {

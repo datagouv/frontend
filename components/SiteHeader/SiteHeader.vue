@@ -475,9 +475,9 @@ const publishMenu = [
   { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
   { label: t('A dataservice'), icon: RiRobot2Line, link: '/beta/admin/dataservices/new/' },
   { label: t('A reuse'), icon: RiLineChartLine, link: '/beta/admin/reuses/new/' },
-  { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
+  { label: t('A harverster'), icon: RiServerLine, link: '/beta/admin/harvesters/new/' },
   { label: t('An organization'), icon: RiGovernmentLine, link: '/beta/admin/organizations/new/' },
-  { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
+  { label: t('A post'), icon: RiArticleLine, link: '/beta/admin/posts/new/', show: isAdmin(me.value ?? null) },
 ]
 
 const filteredPublishMenu = computed(() => publishMenu.filter(item => !('show' in item) || item.show))

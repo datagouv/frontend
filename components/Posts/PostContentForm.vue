@@ -32,16 +32,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Post, PostForm } from '~/types/posts'
+import type { PostForm } from '~/types/posts'
 
 const props = defineProps<{
   submitLabel: string
-  post: Post
+  post: PostForm
   type: 'create' | 'update'
 }>()
 const emit = defineEmits<{
   previous: []
-  submit: [PostForm]
+  submit: [{ content: string }]
 }>()
 
 const { form, touch, getFirstError, getFirstWarning, validate } = useForm({

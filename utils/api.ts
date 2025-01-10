@@ -4,7 +4,7 @@ import type { UseFetchOptions } from 'nuxt/app'
   Example : const { data: datasets } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets')
 */
 export function useAPI<T, U = T>(
-  url: any,
+  url: MaybeRefOrGetter<string>,
   options?: UseFetchOptions<T, U>,
 ) {
   return useFetch(url, {
@@ -21,4 +21,9 @@ export function useAPI<T, U = T>(
       // miss-use of this function (calling it with other methods)
       return { ...response, data: response.data as Ref<T> }
     })
+}
+
+export function getUserBasedKey(route: string) {
+  const me = useMaybeMe()
+  return `${me.value ? me.value.id : 'guest'}-${route}`
 }

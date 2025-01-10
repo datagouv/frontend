@@ -16,23 +16,30 @@ withDefaults(defineProps<{
   as: 'div',
 })
 
-const opened = ref<symbol | null>(null)
+const opened = ref<string | null>(null)
 
-provide(key, () => {
-  const id = Symbol()
+provide(key, {
+  isOpen(id: string) {
+    return opened.value === id
+  },
 
-  return {
-    expanded: computed(() => opened.value === id),
+  open(id: string) {
+    opened.value = id
+  },
 
-    toggle() {
+  toggle(id: string) {
+    if (opened.value === id) {
+      opened.value = null
+    }
+    else {
       opened.value = id
-    },
+    }
+  },
 
-    unregister() {
-      if (opened.value === id) {
-        opened.value = null
-      }
-    },
-  }
+  unregister(id: string) {
+    if (opened.value === id) {
+      opened.value = null
+    }
+  },
 })
 </script>
