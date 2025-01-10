@@ -872,5 +872,14 @@
   "Open-source engine: udata": "Moteur open source : udata",
   "data.gouv.fr extension: front-end": "Extension de data.gouv.fr : front-end",
   "data.gouv.fr front-end": "front-end de data.gouv.fr",
+  "See the post page": "Voir la page de l'article",
+  "Content": "Contenu",
+  "Post title": "Titre de l'article",
+  "Headline": "Entête",
+  "Content type": "Type de contenu",
+  "HTML": "HTML",
+  "Markdown": "Markdown",
+  "Cover": "Couverture",
+  "Max size: 4 Mb. Accepted formats: JPEG, JPG and PNG.": "Taille maximale: 4 Mo. Formats acceptés: JPEG, JPG et PNG.",
   "": ""
 }
