@@ -10,9 +10,9 @@
       Attention cette action est irréversible
 
       <template #button>
-        <BannerActionButton :icon="RiSendPlaneLine">
+        <BrandedButton :icon="RiSendPlaneLine">
           Transférer
-        </BannerActionButton>
+        </BrandedButton>
       </template>
     </BannerAction>
   </div>

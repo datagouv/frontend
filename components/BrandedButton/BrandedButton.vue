@@ -4,9 +4,10 @@
     class="inline-flex items-center space-x-1 rounded-full font-medium border !bg-none !no-underline"
     :class="[colors, sizes, isDisabled ? '!opacity-50' : '']"
     :disabled="isDisabled"
-    aria-disabled="isDisabled"
+    :aria-disabled="isDisabled"
     :role="href ? 'link' : ''"
     :to="isDisabled ? undefined : href"
+    :target="newTab ? '_blank' : undefined"
   >
     <AdminLoader
       v-if="loading"
@@ -31,49 +32,70 @@ import type {
   Slot,
   VNode,
 } from 'vue'
-
 import {
   Comment,
   Text,
 } from 'vue'
+import { bannerActionTypeKey } from '~/components/BannerAction.vue'
 
 import { NuxtLinkLocale } from '#components'
 
+type ColorType = 'primary' | 'primary-soft' | 'secondary' | 'warning' | 'danger'
+
 const props = withDefaults(defineProps<{
   size?: 'xs' | 'sm'
-  color?: 'primary' | 'secondary' | 'danger'
+  color?: ColorType
   disabled?: boolean
   loading?: boolean
   icon?: Component
   href?: string
+  newTab?: boolean
 }>(), {
-  as: 'button',
-  color: 'primary',
-  size: 'sm',
-  level: 'primary',
+  newTab: false,
 })
 
 const slots = useSlots()
 
+const size = computed(() => {
+  if (props.size) return props.size
+  if (bannerActionType) return 'xs'
+  return 'sm'
+})
+
+const color = computed<ColorType>(() => {
+  if (props.color) return props.color
+  if (bannerActionType) {
+    return {
+      primary: 'primary-soft' as ColorType,
+      warning: 'warning' as ColorType,
+      danger: 'danger' as ColorType,
+    }[bannerActionType]
+  }
+  return 'primary'
+})
+
 const hasText = computed(() => {
   return hasSlotContent(slots.default)
 })
+const bannerActionType = inject(bannerActionTypeKey, null)
 
 const isDisabled = computed(() => props.disabled || props.loading)
 
 const colors = computed(() => {
   return {
-    primary: `text-white bg-datagouv-dark !border-datagouv-dark ${!isDisabled.value ? 'hover:!bg-datagouv-hover hover:!border-datagouv-hover' : ''}`,
-    secondary: `text-gray-plain bg-white !border-gray-plain ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
-    danger: `!text-danger-dark bg-white !border-danger-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
-  }[props.color]
+    'primary': `text-white bg-datagouv-dark !border-datagouv-dark ${!isDisabled.value ? 'hover:!bg-datagouv-hover hover:!border-datagouv-hover' : ''}`,
+    'primary-soft': `text-datagouv-dark bg-white !border-datagouv-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+    'secondary': `text-gray-plain bg-white !border-gray-plain ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+    'warning': `text-warning-dark bg-white !border-warning-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+    'danger': `!text-danger-dark bg-white !border-danger-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+  }[color.value]
 })
 
 const sizes = computed(() => {
   return {
     sm: `text-sm leading-none ${hasText.value ? 'px-4 py-3' : 'p-2.5'}`,
     xs: `text-xs leading-[0.875rem] ${hasText.value ? 'px-4 py-2' : 'p-2'}`,
-  }[props.size]
+  }[size.value]
 })
 
 function hasSlotContent(slot: Slot | undefined, slotProps = {}): boolean {

@@ -1,33 +1,41 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="container mb-24">
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :external="true"
-          to="/"
-        >
-          {{ $t('Home') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/posts"
-        >
-          {{ $t('Posts') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ post.name }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <div class="flex items-center">
+      <Breadcrumb class="flex-1">
+        <li>
+          <NuxtLinkLocale
+            class="fr-breadcrumb__link"
+            :external="true"
+            to="/"
+          >
+            {{ $t('Home') }}
+          </NuxtLinkLocale>
+        </li>
+        <li>
+          <NuxtLinkLocale
+            class="fr-breadcrumb__link"
+            to="/posts"
+          >
+            {{ $t('Posts') }}
+          </NuxtLinkLocale>
+        </li>
+        <li>
+          <a
+            class="fr-breadcrumb__link"
+            aria-current="page"
+          >
+            {{ post.name }}
+          </a>
+        </li>
+      </Breadcrumb>
+      <div v-if="isAdmin(me)">
+        <EditButton
+          :id="post.id"
+          type="posts"
+        />
+      </div>
+    </div>
     <h1 class="text-4.5xl font-extrabold !mb-0">
       {{ post.name }}
     </h1>
@@ -60,12 +68,13 @@
 
 <script setup lang="ts">
 import { formatDate } from '@datagouv/components'
+import EditButton from '~/components/BrandedButton/EditButton.vue'
 import type { Post } from '~/types/posts'
 
 const route = useRoute()
 const me = useMaybeMe()
-
-const { data: post } = await useAPI<Post>(`/api/1/posts/${route.params.id}/`, {
-  key: `${me.value ? me.value.id : 'guest'}-posts-${route.params.id}`,
+const url = computed(() => `/api/1/posts/${route.params.id}/`)
+const { data: post } = await useAPI<Post>(url, {
+  key: getUserBasedKey(url.value),
 })
 </script>

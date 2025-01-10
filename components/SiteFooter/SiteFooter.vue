@@ -347,7 +347,7 @@ const resourcesLinks: Array<Link> = [
 ]
 
 const footerLinks: Array<Link> = [
-  { label: t('Licences'), link: '/pages/legal/licences' },
+  { label: t('Licenses'), link: '/pages/legal/licences' },
   { label: t('Terms of use'), link: '/pages/legal/cgu' },
   { label: t('Tracking and privacy'), link: '/pages/gouvfr.suivi' },
   { label: t('Legal notice'), link: '/pages/legal/legal-notice' },

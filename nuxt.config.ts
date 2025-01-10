@@ -39,6 +39,8 @@ export default defineNuxtConfig({
       publishingDatasetFeedbackUrl: 'https://tally.so/r/nGo0yO',
       publishingDataserviceFeedbackUrl: 'https://tally.so/r/w2J7lL',
       publishingReuseFeedbackUrl: 'https://tally.so/r/mV98y6',
+      publishingHarvesterFeedbackUrl: 'https://tally.so/r/3NMLOQ',
+      harvesterRequestValidationUrl: 'https://support.data.gouv.fr/help/datagouv/moissonnage#support-tree',
 
       newsletterSubscriptionUrl: 'https://f.info.data.gouv.fr/f/lp/infolettre-data-gouv-fr-landing-page/lk3q01y6',
 

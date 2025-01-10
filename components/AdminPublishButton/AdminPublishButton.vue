@@ -27,7 +27,7 @@ const link = computed(() => {
     case 'dataset':
       return '/beta/admin/datasets/new'
     case 'harvester':
-      return `/admin/harvester/new/`
+      return `/beta/admin/harvesters/new/`
     case 'reuse':
       return '/beta/admin/reuses/new'
     case 'dataservice':

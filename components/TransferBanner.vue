@@ -12,13 +12,13 @@
         @open="fetchTransfer"
       >
         <template #button="{ attrs, listeners }">
-          <BannerActionButton
+          <BrandedButton
             :icon="RiSendPlaneLine"
             v-bind="attrs"
             v-on="listeners"
           >
             {{ $t('Transfer') }}
-          </BannerActionButton>
+          </BrandedButton>
         </template>
         <div
           v-if="!existingTransfers"
@@ -89,6 +89,7 @@
 import { formatDate, type Dataservice, type Dataset, type DatasetV2, type Reuse } from '@datagouv/components'
 import type { Owned } from '@datagouv/components/ts'
 import { RiSendPlaneLine } from '@remixicon/vue'
+import BrandedButton from './BrandedButton/BrandedButton.vue'
 import type { LinkToSubject, TransferRequest } from '~/types/types'
 
 const props = defineProps<{

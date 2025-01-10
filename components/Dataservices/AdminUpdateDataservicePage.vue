@@ -28,13 +28,13 @@
           {{ $t("An archived dataservice is no longer indexed but still accessible for users with the direct link.") }}
 
           <template #button>
-            <BannerActionButton
+            <BrandedButton
               :icon="RiArchiveLine"
               type="button"
               @click="archiveDataservice"
             >
               {{ dataservice.archived_at ? $t('Unarchive') : $t('Archive') }}
-            </BannerActionButton>
+            </BrandedButton>
           </template>
         </BannerAction>
         <BannerAction
@@ -83,6 +83,7 @@
 <script setup lang="ts">
 import type { Dataservice } from '@datagouv/components'
 import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
+import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
 import type { ContactPoint, DataserviceForm, LinkToSubject } from '~/types/types'
 import { toForm, toApi } from '~/utils/dataservices'
