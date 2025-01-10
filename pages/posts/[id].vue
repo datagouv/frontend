@@ -31,7 +31,7 @@
       </Breadcrumb>
       <div v-if="isAdmin(me)">
         <EditButton
-          :id="(route.params.id as string)"
+          :id="post.id"
           type="posts"
         />
       </div>
