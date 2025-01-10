@@ -45,25 +45,25 @@
             </div>
           </div>
           <div class="w-full md:pl-[8%] md:w-1/3">
-            <div class="fr-follow__social">
+            <div class="flex flex-col items-start justify-center h-full">
               <p class="font-extrabold text-2xl leading-8 text-gray-title">
                 {{ $t("Follow us") }}
                 <br> {{ $t("on social media") }}
               </p>
-              <ul class="flex justify-between list-none m-0 p-0 *:p-0">
+              <ul class="flex justify-between list-none m-0 p-0 *:p-0 -ml-4">
                 <li>
                   <a
-                    class="fr-link !inline-flex after:!content-none"
+                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Twitter - new tab')"
                     href="https://twitter.com/datagouvfr"
                     target="_blank"
                   >
-                    <RiTwitterXLine />
+                    <RiTwitterLine />
                   </a>
                 </li>
                 <li>
                   <a
-                    class="fr-link !inline-flex after:!content-none"
+                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Linkedin - new tab')"
                     href="https://www.linkedin.com/company/data-gouv-fr/"
                     target="_blank"
@@ -73,7 +73,7 @@
                 </li>
                 <li>
                   <a
-                    class="fr-link !inline-flex after:!content-none"
+                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Mastodon - new tab')"
                     href="https://social.numerique.gouv.fr/@datagouvfr"
                     target="_blank"
@@ -83,7 +83,7 @@
                 </li>
                 <li>
                   <a
-                    class="fr-link !inline-flex after:!content-none"
+                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('Github - new tab')"
                     href="https://github.com/datagouv/data.gouv.fr"
                     target="_blank"
@@ -93,7 +93,7 @@
                 </li>
                 <li>
                   <NuxtLinkLocale
-                    class="fr-link !inline-flex after:!content-none"
+                    class="link !inline-flex after:!content-none mx-2 mb-4 !p-2 min-h-10 mh-10 mw-10 !no-underline"
                     :title="$t('RSS - new tab')"
                     to="datasets/recent.atom"
                     :external="true"
@@ -213,7 +213,7 @@
               href="/"
               :title="$t('Go back to website home - data.gouv.fr - République Française')"
             >
-              <SiteLogo />
+              <SiteLogo class="text-gray-logo text-xl tracking-wide" />
             </a>
           </div>
           <div class="fr-footer__content">
@@ -307,7 +307,7 @@
 </template>
 
 <script setup lang="ts">
-import { RiGithubLine, RiLinkedinBoxLine, RiMastodonLine, RiRssLine, RiTwitterXLine } from '@remixicon/vue'
+import { RiGithubLine, RiLinkedinBoxLine, RiMastodonLine, RiRssLine, RiTwitterLine } from '@remixicon/vue'
 
 const config = useRuntimeConfig()
 
