@@ -34,7 +34,7 @@
           v-for="(post, index) in posts.data"
           :key="post.id"
           :post
-          :class="index < 2 ? 'col-span-3' : 'col-span-2'"
+          :class="page === 1 && index < 2 ? 'col-span-3' : 'col-span-2'"
         />
       </div>
       <Pagination
@@ -54,11 +54,23 @@ import type { PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 const page = ref(route.query.page ?? 1)
+const pageSize = computed(() => page.value === 1 ? 14 : 15)
+
+watch(page, async () => {
+  await navigateTo({
+    ...route,
+    query: {
+      ...route.query,
+      page: page.value,
+    },
+  })
+  document.children[0].scrollIntoView({ behavior: 'smooth', block: 'start' })
+})
 
 const { data: posts } = await useAPI<PaginatedArray<Post>>('api/1/posts', { params:
   {
     page,
-    page_size: 15,
+    page_size: pageSize,
   },
 })
 </script>
