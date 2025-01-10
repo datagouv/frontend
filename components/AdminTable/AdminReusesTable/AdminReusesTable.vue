@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <tr>
         <AdminTableTh
@@ -26,7 +26,10 @@
         >
           {{ t("Datasets") }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh
+          scope="col"
+          class="w-16"
+        >
           <Tooltip>
             <span
               class="fr-icon--sm fr-icon-chat-3-line"
@@ -38,6 +41,7 @@
           </Tooltip>
         </AdminTableTh>
         <AdminTableTh
+          class="w-16"
           :sorted="sorted('views')"
           scope="col"
           @sort="(direction: SortDirection) => $emit('sort', 'views', direction)"
@@ -53,6 +57,7 @@
           </Tooltip>
         </AdminTableTh>
         <AdminTableTh
+          class="w-16"
           :sorted="sorted('followers')"
           scope="col"
           @sort="(direction: SortDirection) => $emit('sort', 'followers', direction)"
@@ -89,7 +94,10 @@
           </AdminContentWithTooltip>
         </td>
         <td>
-          <AdminBadge size="xs" :type="getStatus(reuse).type">
+          <AdminBadge
+            size="xs"
+            :type="getStatus(reuse).type"
+          >
             {{ getStatus(reuse).label }}
           </AdminBadge>
         </td>
@@ -120,11 +128,10 @@ import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
 import Tooltip from '../../../components/Tooltip/Tooltip.vue'
-import type { AdminBadgeState, AdminBadgeType, ReuseSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, ReuseSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   reuses: Array<Reuse>
-  loading: boolean
   sortedBy: ReuseSortedBy
   sortDirection: SortDirection
 }>()
@@ -133,7 +140,6 @@ defineEmits<{
   (event: 'sort', column: ReuseSortedBy, direction: SortDirection): void
 }>()
 
-const config = useRuntimeConfig()
 const { t } = useI18n()
 
 function sorted(column: ReuseSortedBy) {

@@ -1,7 +1,7 @@
 <template>
   <div class="fr-grid-row">
     <Sidemenu
-      class="fr-col-12 fr-col-md-5"
+      class="fr-col-12 fr-col-lg-5"
       :button-text="$t('Help')"
       :on-right="true"
       :fixed="true"
@@ -151,32 +151,29 @@
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
-    <div class="fr-col-12 fr-col-md-7">
+    <div class="fr-col-12 fr-col-lg-7">
       <div class="fr-p-3w bg-white">
-        <Well
+        <SimpleBanner
           v-if="type === 'create'"
-          color="blue-cumulus"
-          weight="regular"
-          class="mb-4"
+          type="primary"
+          class="mb-4 flex items-center space-x-5"
         >
-          <div class="fr-grid-row">
-            <div class="fr-col-auto mr-3">
-              <NuxtImg
-                src="/illustrations/edit.svg"
-                loading="lazy"
-                alt=""
-              />
-            </div>
-            <div class="fr-col">
-              <p class="m-0 font-bold">
-                {{ $t('What is a dataset?') }}
-              </p>
-              <p class="m-0 text-xs">
-                {{ $t('On {site}, a dataset is a set of files.', { site: config.public.title }) }}
-              </p>
-            </div>
+          <NuxtImg
+            src="/illustrations/edit.svg"
+            loading="lazy"
+            class="size-14 shrink-0"
+            alt=""
+          />
+          <div class="w-full">
+            <p class="font-bold mb-1">
+              {{ $t('What is a dataset?') }}
+            </p>
+            <p class="m-0 text-xs/5">
+              {{ $t('On {site}, a dataset is a set of files.', { site: config.public.title }) }}
+            </p>
           </div>
-        </Well>
+        </SimpleBanner>
+
         <RequiredExplanation />
         <fieldset
           v-if="type === 'create'"
@@ -508,6 +505,7 @@
             {{ submitLabel }}
           </BrandedButton>
         </div>
+        <slot />
       </div>
     </div>
   </div>

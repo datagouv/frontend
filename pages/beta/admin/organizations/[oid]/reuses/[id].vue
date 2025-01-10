@@ -36,8 +36,8 @@
     </Breadcrumb>
 
     <div v-if="reuse">
-      <div class="flex items-center justify-between">
-        <h1 class="fr-h3 fr-mb-5v">
+      <div class="flex items-center justify-between mb-5">
+        <h1 class="fr-h3 !mb-0">
           {{ reuse.title }}
         </h1>
         <a
@@ -49,6 +49,7 @@
       </div>
 
       <TabLinks
+        class="mb-5"
         :links="[
           { href: getReuseAdminUrl(reuse), label: t('Metadata') },
           { href: `${getReuseAdminUrl(reuse)}/datasets`, label: t('Datasets') },

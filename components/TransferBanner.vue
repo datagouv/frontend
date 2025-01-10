@@ -1,6 +1,5 @@
 <template>
   <BannerAction
-    class="w-7/12"
     type="primary"
     :title="label"
   >
@@ -13,13 +12,13 @@
         @open="fetchTransfer"
       >
         <template #button="{ attrs, listeners }">
-          <BannerActionButton
+          <BrandedButton
             :icon="RiSendPlaneLine"
             v-bind="attrs"
             v-on="listeners"
           >
             {{ $t('Transfer') }}
-          </BannerActionButton>
+          </BrandedButton>
         </template>
         <div
           v-if="!existingTransfers"
@@ -87,14 +86,15 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, type Dataset, type DatasetV2 } from '@datagouv/components'
+import { formatDate, type Dataservice, type Dataset, type DatasetV2, type Reuse } from '@datagouv/components'
 import type { Owned } from '@datagouv/components/ts'
 import { RiSendPlaneLine } from '@remixicon/vue'
-import type { TransferRequest } from '~/types/types'
+import BrandedButton from './BrandedButton/BrandedButton.vue'
+import type { LinkToSubject, TransferRequest } from '~/types/types'
 
 const props = defineProps<{
-  type: 'Dataset'
-  subject: Dataset | DatasetV2
+  type: 'Dataservice' | 'Dataset' | 'Reuse'
+  subject: (LinkToSubject & Dataservice) | Dataset | DatasetV2 | Reuse
   label: string
 }>()
 
@@ -107,13 +107,14 @@ const to = ref<Owned | null>(null)
 const comment = ref('')
 const existingTransfers = ref<Array<TransferRequest> | null>(null)
 
-const fetchTransfer = async () => {
+async function fetchTransfer() {
   if (existingTransfers.value) return
 
   try {
     existingTransfers.value = await $api<Array<TransferRequest>>('/api/1/transfer/', {
       query: {
         subject: props.subject.id,
+        status: 'pending',
       },
     })
   }
@@ -122,7 +123,7 @@ const fetchTransfer = async () => {
   }
 }
 
-const requestTransfer = async (close) => {
+async function requestTransfer(close: () => void) {
   loading.value = true
   try {
     if (!to.value) return

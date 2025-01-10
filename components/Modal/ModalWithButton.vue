@@ -48,7 +48,7 @@ withDefaults(defineProps<{
   size: 'md',
 })
 const emits = defineEmits<{
-  (e: 'open'): void
+  (e: 'open' | 'close'): void
 }>()
 const isOpen = defineModel<boolean>()
 
@@ -59,5 +59,6 @@ const open = () => {
 
 const close = () => {
   isOpen.value = false
+  emits('close')
 }
 </script>

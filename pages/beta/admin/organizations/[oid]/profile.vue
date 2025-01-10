@@ -89,18 +89,13 @@
         </button>
       </template>
       <template #default>
-        <AdminDangerZone
-          class="fr-mt-6w"
+        <BannerAction
+          class="mt-12"
+          type="danger"
+          :title="$t('Delete the organization')"
         >
-          <div class="fr-col">
-            <p class="fr-m-0 text-neutral-800">
-              {{ t('Delete the organization') }}
-            </p>
-            <p class="fr-m-0 fr-text--xs text-default-error">
-              {{ t("Be careful, this action can't be reverse.") }}
-            </p>
-          </div>
-          <div class="fr-col-auto">
+          {{ t("Be careful, this action can't be reverse.") }}
+          <template #button>
             <ModalWithButton
               :title="t('Are you sure you want to delete this organization ?')"
               size="lg"
@@ -136,8 +131,8 @@
                 </div>
               </template>
             </ModalWithButton>
-          </div>
-        </AdminDangerZone>
+          </template>
+        </BannerAction>
       </template>
     </DescribeOrganizationFrom>
   </div>
@@ -148,7 +143,6 @@ import { Placeholder, useOrganizationCertified, type NewOrganization, type Organ
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiDeleteBin6Line } from '@remixicon/vue'
-import AdminDangerZone from '~/components/AdminDangerZone/AdminDangerZone.vue'
 import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import PaddedContainer from '~/components/PaddedContainer/PaddedContainer.vue'

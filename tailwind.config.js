@@ -24,6 +24,13 @@ export default {
       aria: {
         'current-page': 'current="page"',
       },
+      fontFamily: {
+        spectral: 'Spectral',
+        gothic: 'URW Gothic',
+      },
+      fontSize: {
+        '4.5xl': '2.75rem',
+      },
       colors: {
         primary: '#3558a2',
         mentionGrey: '#666', // Copy from --text-mention-grey
@@ -31,14 +38,17 @@ export default {
           title: '#161616',
           medium: '#666666',
           lower: '#eeeeee',
+          lowest: '#e8eaed',
           default: '#e5e5e5',
           plain: '#3a3a3a',
           some: '#f6f6f6',
+          logo: '#373c42',
         },
         defaultWarning: '#b32000',
         blue: {
           light: '#e3e3fd',
           tint: '#c1c1fd',
+          outline: '#0a76f6',
         },
         secondary: {
           lightest: '#EEEEEE',
@@ -49,6 +59,7 @@ export default {
           lighter: '#e3e3fd',
           light: '#c1c1fd',
           hover: '#5982e0',
+          defaultLight: '#46699D',
           DEFAULT: '#465F9D',
           dark: '#3558a2',
         },

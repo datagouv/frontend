@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <tr>
         <AdminTableTh
@@ -9,10 +9,10 @@
         >
           {{ t("Dataservice title") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Status") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Access") }}
         </AdminTableTh>
         <AdminTableTh>
@@ -46,12 +46,18 @@
           </AdminContentWithTooltip>
         </td>
         <td>
-          <AdminBadge size="xs" :type="getStatus(dataservice).type">
+          <AdminBadge
+            size="xs"
+            :type="getStatus(dataservice).type"
+          >
             {{ getStatus(dataservice).label }}
           </AdminBadge>
         </td>
         <td>
-          <AdminBadge size="xs" :type="getAccess(dataservice).type">
+          <AdminBadge
+            size="xs"
+            :type="getAccess(dataservice).type"
+          >
             {{ getAccess(dataservice).label }}
           </AdminBadge>
         </td>
@@ -71,11 +77,10 @@ import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
-import type { AdminBadgeState, AdminBadgeType, DataserviceSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, DataserviceSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   dataservices: Array<Dataservice>
-  loading: boolean
   sortedBy: DataserviceSortedBy
   sortDirection: SortDirection
 }>()
@@ -94,7 +99,13 @@ function sorted(column: DataserviceSortedBy) {
 }
 
 function getStatus(dataservice: Dataservice): { label: string, type: AdminBadgeType } {
-  if (dataservice.private) {
+  if (dataservice.deleted_at) {
+    return {
+      label: t('Deleted'),
+      type: 'danger',
+    }
+  }
+  else if (dataservice.private) {
     return {
       label: t('Draft'),
       type: 'secondary',

@@ -7,9 +7,9 @@
     <h3 class="fr-accordion__title !mb-0">
       <DisclosureButton
         class="fr-accordion__btn !text-neutral-900"
-        :aria-expanded="expanded"
+        :aria-expanded="isOpen(accordionId)"
         :aria-controls="accordionId"
-        @click="toggle"
+        @click="toggle(accordionId)"
       >
         <component
           :is="icon"
@@ -21,7 +21,7 @@
       </DisclosureButton>
     </h3>
     <DisclosurePanel
-      v-show="expanded"
+      v-show="isOpen(accordionId)"
       :id="accordionId"
       class="px-4 pt-4 pb-6"
       static
@@ -46,9 +46,7 @@ const props = withDefaults(defineProps<{
   state: 'default',
 })
 
-const register = inject(key) as AccordionRegister
-
-const { expanded, toggle, unregister } = register()
+const { isOpen, toggle, unregister } = inject(key) as AccordionRegister
 
 const accordionId = props.id || useId()
 const icon = computed(() => {
@@ -81,5 +79,5 @@ const iconColor = computed(() => {
       return 'text-neutral-500'
   }
 })
-onUnmounted(unregister)
+onUnmounted(() => unregister(accordionId))
 </script>

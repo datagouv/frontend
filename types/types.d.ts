@@ -1,8 +1,13 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, Schema, RegisteredSchema, OwnedWithId } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
 export type SortDirection = 'asc' | 'desc'
+
+export type Sort = {
+  name: string
+  key: string
+}
 
 export type DSFRFormDefaultState = 'default'
 
@@ -41,34 +46,7 @@ export type DataserviceSortedBy = 'title'
 
 export type ReuseSortedBy = 'title' | 'created' | 'datasets' | 'followers' | 'views'
 
-export type DiscussionSortedBy = 'title' | 'created' | 'closed'
-
 export type CommunityResourceSortedBy = 'created_at_internal' | 'last_modified_internal' | 'title'
-
-// DISCUSSIONS
-
-export type Comment = { content: string, posted_by: User, posted_on: string, spam?: Spam }
-
-export type Discussion = Array<Comment>
-
-export type DiscussionSubjectTypes = Dataservice | Dataset | Reuse
-
-export type DiscussionSubject = {
-  class: 'Dataservice' | 'Dataset' | 'Reuse' | 'Post' | 'Topic' | 'Organization'
-  id: string
-}
-
-export type Thread = {
-  id: string
-  discussion: Discussion
-  title: string
-  url: string
-  created: string
-  closed: string
-  closed_by: User
-  spam?: Spam
-  subject: DiscussionSubject
-}
 
 // MEMBERS
 
@@ -159,6 +137,7 @@ export type DatasetForm = {
 export type NewDatasetForApi = {
   title: string
   private?: boolean
+  archived?: string | null
   acronym?: string
   description: string
   organization?: string
@@ -224,6 +203,7 @@ export type NewDataserviceForApi = {
   organization?: string
   owner?: string
   title: string
+  archived_at?: string | null
   private?: boolean
   acronym?: string
   description: string
@@ -274,12 +254,16 @@ export type ContactPoint = {
 export type NewContactPoint = Omit<ContactPoint, 'id'>
 export type ContactPointInForm = ContactPoint | NewContactPoint
 
+export type LinkToSubject = {
+  title: string
+} & ({ page: string, self_web_url?: undefined } | { self_web_url: string, page?: undefined })
+
 export type TransferRequest = {
   id: string
   user: User | null // TODO add this in API
   owner: (User & { class: 'User' }) | (Organization & { class: 'Organization' })
   recipient: (User & { class: 'User' }) | (Organization & { class: 'Organization' })
-  subject: (Dataset & { class: 'Dataset' }) | (Reuse & { class: 'Reuse' })
+  subject: (Dataset & { class: 'Dataset' }) | (Reuse & { class: 'Reuse' }) | (LinkToSubject & Dataservice & { class: 'Dataservice' })
   comment: string
   created: string
   status: 'pending' | 'accepted' | 'refused'

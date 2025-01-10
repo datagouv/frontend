@@ -38,12 +38,14 @@
       type="create"
       @submit="reuseNext"
     >
-      <button
-        type="submit"
-        class="fr-btn"
-      >
-        {{ $t("Next") }}
-      </button>
+      <template #button>
+        <button
+          type="submit"
+          class="fr-btn"
+        >
+          {{ $t("Next") }}
+        </button>
+      </template>
     </DescribeReuse>
 
     <Step2AddDatasets

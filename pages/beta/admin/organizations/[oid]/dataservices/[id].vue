@@ -36,8 +36,8 @@
     </Breadcrumb>
 
     <div v-if="dataservice">
-      <div class="flex items-center justify-between">
-        <h1 class="fr-h3 fr-mb-5v">
+      <div class="flex items-center justify-between mb-5">
+        <h1 class="fr-h3 !mb-0">
           {{ dataservice.title }}
         </h1>
         <a
@@ -49,6 +49,7 @@
       </div>
 
       <TabLinks
+        class="mb-5"
         :links="[
           { href: getDataserviceAdminUrl(dataservice), label: t('Metadata') },
           { href: `${getDataserviceAdminUrl(dataservice)}/datasets`, label: t('Datasets') },

@@ -30,17 +30,12 @@
       {{ t("Datasets") }}
     </h1>
 
-    <div
-      v-if="transfers && transfers.length"
-      class="space-y-8 mb-8 max-w-6xl"
-    >
-      <TransferRequest
-        v-for="transfer in transfers"
-        :key="transfer.id"
-        :transfer
-        @done="refreshTransfers(); refreshDatasets()"
-      />
-    </div>
+    <TransferRequestList
+      v-if="props.organization || props.user"
+      type="Dataset"
+      :recipient="props.organization || props.user"
+      @done="refresh"
+    />
 
     <DatasetsMetrics
       v-if="organization && pageData && pageData.total > 0"
@@ -48,26 +43,27 @@
       :organization
     />
 
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
-        <h2
-          v-if="status === 'success' && pageData.total"
-          class="subtitle subtitle--uppercase fr-m-0"
-        >
+        <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} datasets', pageData.total) }}
         </h2>
       </div>
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
         <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
-          <!-- <AdminInput
+          <AdminInput
             v-model="q"
+            type="search"
             :icon="RiSearchLine"
             :placeholder="$t('Search')"
-          /> -->
+          />
         </div>
-        <div v-if="status === 'success' && organization && pageData.total">
+        <div v-if="organization">
           <a
-            :href="`/organizations/${organization.id}/datasets.csv`"
+            :href="pageData.total ? `/organizations/${organization.id}/datasets.csv` : undefined"
             class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left"
           >
             {{ t('Download catalog') }}
@@ -75,34 +71,50 @@
         </div>
       </div>
     </div>
-    <AdminDatasetsTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :datasets="pageData ? pageData.data : []"
-      :loading="status === 'pending'"
-      :sort-direction="direction"
-      :sorted-by
-      @sort="sort"
-    />
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminDatasetsTable
+          :datasets="pageData ? pageData.data : []"
+          :sort-direction="direction"
+          :sorted-by
+          @sort="sort"
+        />
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+
     <div
-      v-else
+      v-if="status != 'pending' && pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
         src="/illustrations/dataset.svg"
         class="h-20"
       />
-      <p class="fr-text--bold fr-my-3v">
-        {{ t(`You haven't published a dataset yet`) }}
-      </p>
-      <AdminPublishButton type="dataset" />
+      <template v-if="q">
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`No results for "{q}"`, { q }) }}
+        </p>
+        <BrandedButton
+          color="primary"
+          @click="q = qDebounced = ''"
+        >
+          {{ $t('Reset filters') }}
+        </BrandedButton>
+      </template>
+      <template v-else>
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`You haven't published a dataset yet`) }}
+        </p>
+        <AdminPublishButton type="dataset" />
+      </template>
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 
@@ -111,18 +123,18 @@ import { Pagination, type Dataset, type Organization, type User } from '@datagou
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-// import { RiSearchLine } from '@remixicon/vue'
+import { RiSearchLine } from '@remixicon/vue'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
+import TransferRequestList from '../TransferRequestList.vue'
 import DatasetsMetrics from './DatasetsMetrics.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
-import type { DatasetSortedBy, PaginatedArray, SortDirection, TransferRequest } from '~/types/types'
+import type { DatasetSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   organization?: Organization | null
   user?: User | null
 }>()
 const { t } = useI18n()
-const config = useRuntimeConfig()
 
 const page = ref(1)
 const pageSize = ref(10)
@@ -137,44 +149,17 @@ function sort(column: DatasetSortedBy, newDirection: SortDirection) {
   direction.value = newDirection
 }
 
-const datasetUrl = computed(() => {
-  let url
-  if (props.organization) {
-    url = new URL(`/api/1/organizations/${props.organization.id}/datasets/`, config.public.apiBase)
-  }
-  else if (props.user) {
-    url = new URL(`/api/1/datasets/`, config.public.apiBase)
-    url.searchParams.set('owner', props.user.id)
-  }
-  else {
-    url = new URL(`/api/1/datasets/`, config.public.apiBase)
-  }
+const params = computed(() => {
+  return {
+    organization: props.organization?.id,
+    owner: props.user?.id,
 
-  url.searchParams.set('sort', sortDirection.value)
-  url.searchParams.set('q', qDebounced.value)
-  url.searchParams.set('page_size', pageSize.value.toString())
-  url.searchParams.set('page', page.value.toString())
-
-  return url.toString()
+    sort: sortDirection.value,
+    q: qDebounced.value,
+    page_size: pageSize.value,
+    page: page.value,
+  }
 })
 
-const { data: pageData, status, refresh: refreshDatasets } = await useAPI<PaginatedArray<Dataset>>(datasetUrl, { lazy: true })
-
-const transfersUrl = computed(() => {
-  const url = new URL(`/api/1/transfer/`, config.public.apiBase)
-  url.searchParams.set('subject_type', 'Dataset')
-  url.searchParams.set('status', 'pending')
-  if (props.organization) {
-    url.searchParams.set('recipient', props.organization.id)
-  }
-  else if (props.user) {
-    url.searchParams.set('recipient', props.user.id)
-  }
-  else {
-    return null
-  }
-
-  return url.toString()
-})
-const { data: transfers, refresh: refreshTransfers } = await useAPI<Array<TransferRequest>>(transfersUrl, { lazy: true })
+const { data: pageData, status, refresh } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets/', { lazy: true, query: params })
 </script>

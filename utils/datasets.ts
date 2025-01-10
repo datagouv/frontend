@@ -2,7 +2,6 @@ import type { Dataset, DatasetV2, Frequency, License, RegisteredSchema, Resource
 import type { FetchError } from 'ofetch'
 import type { Component } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import { useNuxt } from 'nuxt/kit'
 import Archive from '~/components/Icons/Archive.vue'
 import Code from '~/components/Icons/Code.vue'
 import Documentation from '~/components/Icons/Documentation.vue'
@@ -76,7 +75,7 @@ export function getResourceFormatIcon(format: string): Component | null {
 }
 
 export function useNewDatasetFileForm(file: MaybeRef<NewDatasetFile>) {
-  const isRemote = computed(() => unref(file).filetype === 'remote')
+  const isRemote = computed(() => toValue(file).filetype === 'remote')
   const { t } = useI18n()
 
   return useForm(file, {
@@ -117,12 +116,13 @@ export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: 
   }
 }
 
-export function toApi(form: DatasetForm, overrides: { private?: boolean } = {}): NewDatasetForApi {
+export function toApi(form: DatasetForm, overrides: { private?: boolean, archived?: string | null } = {}): NewDatasetForApi {
   return {
     organization: form.owned?.organization?.id,
     owner: form.owned?.owner?.id,
     title: form.title,
     private: overrides.private,
+    archived: overrides.archived,
     description: form.description,
     acronym: form.acronym,
     tags: form.tags.map(t => t.text),

@@ -1,7 +1,7 @@
 import type { Dataservice, Dataset, Reuse } from '@datagouv/components'
 import { RiArticleLine, RiDatabase2Line, RiLineChartLine, RiTerminalLine } from '@remixicon/vue'
 import type { $Fetch } from 'ofetch'
-import type { DiscussionSubject, DiscussionSubjectTypes } from '~/types/types'
+import type { DiscussionSubject, DiscussionSubjectTypes } from '~/types/discussions'
 
 export async function getSubject(api: $Fetch, subject: DiscussionSubject): Promise<DiscussionSubjectTypes | null> {
   switch (subject.class) {
@@ -24,7 +24,7 @@ export function getSubjectTitle(subject: DiscussionSubjectTypes) {
     return subject.title
   }
 
-  return throwOnNever(subject, `Unknown type ${subject}`)
+  return throwOnNever(subject as never, `Unknown type ${subject}`)
 };
 
 export function getSubjectPage(subject: DiscussionSubjectTypes) {

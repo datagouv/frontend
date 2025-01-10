@@ -5,8 +5,11 @@ export function getDataserviceAdminUrl(dataservice: Dataservice): string {
   if (dataservice.owner) {
     return `/beta/admin/me/dataservices/${dataservice.id}`
   }
-  else {
+  else if (dataservice.organization) {
     return `/beta/admin/organizations/${dataservice.organization.id}/dataservices/${dataservice.id}`
+  }
+  else {
+    return ''
   }
 }
 
@@ -29,7 +32,7 @@ export function toForm(dataservice: Dataservice): DataserviceForm {
   }
 }
 
-export function toApi(form: DataserviceForm, overrides: { datasets?: Array<Dataset | DatasetSuggest>, private?: boolean } = {}): NewDataserviceForApi {
+export function toApi(form: DataserviceForm, overrides: { archived_at?: string | null, datasets?: Array<Dataset | DatasetSuggest>, private?: boolean } = {}): NewDataserviceForApi {
   return {
     organization: form.owned?.organization?.id,
     owner: form.owned?.owner?.id,
@@ -37,6 +40,7 @@ export function toApi(form: DataserviceForm, overrides: { datasets?: Array<Datas
     description: form.description,
     acronym: form.acronym,
     private: overrides.private,
+    archived_at: overrides.archived_at,
     datasets: overrides.datasets ? overrides.datasets.map(({ id }) => id) : undefined,
     contact_point: form.contact_point && 'id' in form.contact_point ? form.contact_point.id : undefined,
     is_restricted: form.is_restricted,
