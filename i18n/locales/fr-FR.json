@@ -829,6 +829,8 @@
   "Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)": "Merci de nous informer via le formulaire de contact suivant si vous souhaitez que nous validions votre moissonneur. Vous serez notifié à l’approbation (ou au refus).",
   "Request validation": "Demander la validation",
   "Validate or refuse…": "Validate or refuse…",
+  "Delete the harvester": "Supprimer le moissonneur",
+  "Are you sure you want to delete this harvester?": "Êtes-vous sûrs de vouloir supprimer ce moissonneur ?",
   "Jobs": "Jobs",
   "Configuration": "Configuration",
   "No job yet.": "Pas encore de job.",

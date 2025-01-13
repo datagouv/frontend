@@ -55,7 +55,7 @@
       {{ $t("Be careful, this action can't be reverse.") }}
       <template #button>
         <ModalWithButton
-          :title="$t('Are you sure you want to delete this harvester ?')"
+          :title="$t('Are you sure you want to delete this harvester?')"
           size="lg"
         >
           <template #button="{ attrs, listeners }">

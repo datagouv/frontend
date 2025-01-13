@@ -808,6 +808,8 @@
   "Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)": "Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)",
   "Request validation": "Request validation",
   "Validate or refuse…": "Validate or refuse…",
+  "Delete the harvester": "Delete the harvester",
+  "Are you sure you want to delete this harvester?": "Are you sure you want to delete this harvester?",
   "Jobs": "Jobs",
   "Configuration": "Configuration",
   "No job yet.": "No job yet.",
