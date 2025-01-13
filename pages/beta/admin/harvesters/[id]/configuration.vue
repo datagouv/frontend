@@ -46,10 +46,51 @@
         </BrandedButton>
       </div>
     </template>
+
+    <BannerAction
+      class="mt-5"
+      type="danger"
+      :title="$t('Delete the harvester')"
+    >
+      {{ $t("Be careful, this action can't be reverse.") }}
+      <template #button>
+        <ModalWithButton
+          :title="$t('Are you sure you want to delete this harvester ?')"
+          size="lg"
+        >
+          <template #button="{ attrs, listeners }">
+            <BrandedButton
+              color="danger"
+              size="xs"
+              :icon="RiDeleteBin6Line"
+              v-bind="attrs"
+              v-on="listeners"
+            >
+              {{ $t('Delete') }}
+            </BrandedButton>
+          </template>
+          <p class="fr-text--bold">
+            {{ $t("This action can't be reverse.") }}
+          </p>
+          <template #footer>
+            <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+              <BrandedButton
+                color="danger"
+                :disabled="loading"
+                @click="deleteHarvester"
+              >
+                {{ $t("Delete the harvester") }}
+              </BrandedButton>
+            </div>
+          </template>
+        </ModalWithButton>
+      </template>
+    </BannerAction>
   </DescribeHarvester>
 </template>
 
 <script setup lang="ts">
+import { RiDeleteBin6Line } from '@remixicon/vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 import DescribeHarvester from '~/components/Harvesters/DescribeHarvester.vue'
 import JobPage from '~/components/Harvesters/JobPage.vue'
@@ -110,5 +151,25 @@ const preview = async () => {
     method: 'POST',
     body: toApi(harvesterForm.value),
   })
+}
+
+const localePath = useLocalePath()
+const deleteHarvester = async () => {
+  loading.value = true
+  try {
+    await $api(`/api/1/harvest/source/${harvester.value.id}`, {
+      method: 'DELETE',
+    })
+
+    if (harvester.value.organization) {
+      await navigateTo(localePath(`/beta/admin/organizations/${harvester.value.organization.id}/harvesters`), { replace: true })
+    }
+    else {
+      await navigateTo(localePath(`/beta/admin/user/me`), { replace: true })
+    }
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
