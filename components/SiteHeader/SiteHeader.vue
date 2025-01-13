@@ -245,7 +245,7 @@
                 href="/"
                 title="Retourner à l'accueil de data.gouv.fr"
               >
-                <SiteLogo class="text-gray-logo text-2xl" />
+                <SiteLogo class="text-gray-logo text-xl tracking-wide" />
               </a>
             </div>
           </div>
