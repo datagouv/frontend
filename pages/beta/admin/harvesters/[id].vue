@@ -62,7 +62,7 @@
             {{ harvester.name }}
           </h1>
           <BrandedButton
-            v-if="harvester.validation.state === 'accepted'"
+            v-if="harvester.validation.state === 'accepted' && harvester.active"
             :icon="RiPlayLargeLine"
             size="xs"
             :loading
