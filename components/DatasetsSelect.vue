@@ -11,6 +11,37 @@
         {{ t("Associated datasets") }}
       </h2>
     </legend>
+    <div
+      ref="sortableRoot"
+      class="w-100 mb-8"
+    >
+      <div
+        v-for="(dataset, index) in selectedDatasets"
+        :key="dataset.id"
+        class="flex items-center space-x-2"
+      >
+        <button
+          type="button"
+          class="fr-btn fr-btn--tertiary-no-outline shrink-0"
+          :title="t('Drag to move this content')"
+        >
+          <RiDraggable class="size-8" />
+        </button>
+        <CardLg
+          class="flex-1"
+          :dataset
+        />
+        <button
+          type="button"
+          class="fr-btn fr-btn--tertiary-no-outline shrink-0"
+          :title="t('Remove the dataset')"
+          @click="removeDataset(index)"
+        >
+          <RiDeleteBinLine class="size-8" />
+        </button>
+      </div>
+    </div>
+
     <div class="fr-fieldset__element">
       <SearchableSelect
         v-model="selectedDatasetsSuggest"
@@ -54,36 +85,6 @@
           :title="t('Add dataset')"
         />
       </form>
-    </div>
-    <div
-      ref="sortableRoot"
-      class="w-100"
-    >
-      <div
-        v-for="(dataset, index) in selectedDatasets"
-        :key="dataset.id"
-        class="flex items-center space-x-2"
-      >
-        <button
-          type="button"
-          class="fr-btn fr-btn--tertiary-no-outline shrink-0"
-          :title="t('Drag to move this content')"
-        >
-          <RiDraggable class="size-8" />
-        </button>
-        <CardLg
-          class="flex-1"
-          :dataset
-        />
-        <button
-          type="button"
-          class="fr-btn fr-btn--tertiary-no-outline shrink-0"
-          :title="t('Remove the dataset')"
-          @click="removeDataset(index)"
-        >
-          <RiDeleteBinLine class="size-8" />
-        </button>
-      </div>
     </div>
   </fieldset>
 </template>
