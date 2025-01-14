@@ -30,7 +30,7 @@
             class="fr-text--xs fr-m-0 dash-before"
           >
             {{ file.format.trim()?.toLowerCase() }}
-            <template v-if="'filesize' in file">
+            <template v-if="'filesize' in file && file.filesize">
               ({{ formatFilesize(file.filesize) }})
             </template>
           </p>
