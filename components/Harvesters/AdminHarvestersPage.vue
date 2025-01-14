@@ -109,45 +109,7 @@
                 </AdminContentWithTooltip>
               </td>
               <td>
-                <AdminBadge
-                  v-if="harvester.deleted"
-                  size="xs"
-                  type="danger"
-                >
-                  {{ $t('Deleted') }}
-                </AdminBadge>
-                <AdminBadge
-                  v-else-if="!harvester.active"
-                  size="xs"
-                  type="danger"
-                >
-                  {{ $t('Inactive') }}
-                </AdminBadge>
-                <AdminBadge
-                  v-else-if="harvester.validation.state === 'refused'"
-                  size="xs"
-                  type="danger"
-                >
-                  {{ $t('Refused') }}
-                </AdminBadge>
-                <AdminBadge
-                  v-else-if="harvester.validation.state === 'pending'"
-                  size="xs"
-                  type="warning"
-                >
-                  {{ $t('Waiting validation') }}
-                </AdminBadge>
-                <JobBadge
-                  v-else-if="harvester.last_job"
-                  :job="harvester.last_job"
-                />
-                <AdminBadge
-                  v-else
-                  size="xs"
-                  type="secondary"
-                >
-                  {{ $t('No job yet') }}
-                </AdminBadge>
+                <HarvesterBadge :harvester />
               </td>
               <td>{{ harvester.backend }}</td>
               <td>{{ formatDate(harvester.created_at) }}</td>
@@ -199,6 +161,7 @@ import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import JobBadge from './JobBadge.vue'
+import HarvesterBadge from './HarvesterBadge.vue'
 import type { PaginatedArray } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
