@@ -124,6 +124,8 @@
   "See metadata": "Voir les métadonnées",
   "Data structure": "Structure des données",
   "Metadata": "Métadonnées",
+  "Metadata:": "Métadonnées :",
+  "Informations:": "Informations :",
   "Data schema": "Schéma de données",
   "This file is following a schema: ": "Ce fichier suit un schéma : ",
   "schema:": "schéma :",

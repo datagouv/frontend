@@ -124,6 +124,8 @@
   "See metadata": "See metadata",
   "Data structure": "Data structure",
   "Metadata": "Metadata",
+  "Metadata:": "Metadata:",
+  "Informations:": "Informations:",
   "Data schema": "Data schema",
   "This file is following a schema: ": "This file is following a schema: ",
   "schema:": "schema:",
