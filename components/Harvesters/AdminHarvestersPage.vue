@@ -104,7 +104,14 @@
               </td>
               <td>
                 <AdminBadge
-                  v-if="!harvester.active"
+                  v-if="harvester.deleted"
+                  size="xs"
+                  type="danger"
+                >
+                  {{ $t('Deleted') }}
+                </AdminBadge>
+                <AdminBadge
+                  v-else-if="!harvester.active"
                   size="xs"
                   type="danger"
                 >
