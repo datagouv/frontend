@@ -162,6 +162,7 @@
                               :to="link.link"
                               target="_self"
                               :external="link.external"
+                              :aria-current="getAriaCurrent(localePath(link.link))"
                             >
                               {{ link.label }}
                             </NuxtLinkLocale>
@@ -357,7 +358,7 @@
                 :to="link.link"
                 target="_self"
                 :external="link.external"
-                :aria-current="routesInPath.includes(localePath(link.link))"
+                :aria-current="getAriaCurrent(localePath(link.link))"
               >
                 {{ link.label }}
               </NuxtLinkLocale>
@@ -487,4 +488,11 @@ const publishMenu = [
 ]
 
 const filteredPublishMenu = computed(() => publishMenu.filter(item => !('show' in item) || item.show))
+
+function getAriaCurrent(link: string) {
+  if (currentRoute.path === link) {
+    return 'page'
+  }
+  return routesInPath.includes(localePath(link))
+}
 </script>
