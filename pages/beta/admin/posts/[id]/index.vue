@@ -6,11 +6,35 @@
       type="update"
       :submit-label="t('Save')"
       @submit="save"
-    />
+    >
+      <div class="mt-5 space-y-5">
+        <BannerAction
+          type="warning"
+          :title="post.published ? $t('Unpublish the post') : $t('Publish the post')"
+        >
+          <template v-if="post.published">
+            {{ $t('The post will be hidden.') }}
+          </template>
+          <template v-else>
+            {{ $t("Please note that the post will be visible to everyone once published.") }}
+          </template>
+
+          <template #button>
+            <BrandedButton
+              type="button"
+              @click="publishPost"
+            >
+              {{ post.published ? $t('Unpublish') : $t('Publish') }}
+            </BrandedButton>
+          </template>
+        </BannerAction>
+      </div>
+    </DescribePost>
   </div>
 </template>
 
 <script setup lang="ts">
+import BannerAction from '~/components/BannerAction.vue'
 import DescribePost from '~/components/Posts/DescribePost.vue'
 import type { Post, PostForm } from '~/types/posts'
 import { toApi, toForm } from '~/utils/posts'
@@ -51,5 +75,14 @@ const save = async (form: PostForm) => {
   finally {
     loading.value = false
   }
+}
+
+const publishPost = async () => {
+  if (!post.value) return
+
+  await $api(`/api/1/posts/${post.value.id}/publish`, {
+    method: post.value.published ? 'DELETE' : 'POST',
+  })
+  await refresh()
 }
 </script>

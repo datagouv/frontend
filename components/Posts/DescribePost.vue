@@ -98,6 +98,7 @@
         {{ submitLabel }}
       </BrandedButton>
     </div>
+    <slot />
   </div>
 </template>
 
