@@ -99,6 +99,16 @@
           </Well>
         </Accordion>
         <Accordion
+          v-if="form.owned?.organization"
+          :id="contactPointAccordionId"
+          :title="$t('Define a point of contact')"
+          :state="accordionState('contact_point')"
+        >
+          <p class="fr-m-0">
+            {{ $t("Specify a contact point, such as an email or a link to a form, so users can reach you in case of issues or for questions.") }}
+          </p>
+        </Accordion>
+        <Accordion
           :id="chooseFrequencyAccordionId"
           :title="$t('Choose the update frequency')"
           :state="accordionState('frequency')"
@@ -314,6 +324,30 @@
                 </div>
               </template>
             </SearchableSelect>
+          </LinkedToAccordion>
+        </fieldset>
+        <fieldset
+          v-if="form.owned?.organization"
+          class="fr-fieldset"
+          aria-labelledby="description-legend"
+        >
+          <legend
+            id="description-legend"
+            class="fr-fieldset__legend"
+          >
+            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+              {{ t("Access Point") }}
+            </h2>
+          </legend>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="contactPointAccordionId"
+            @blur="touch('contact_point')"
+          >
+            <ContactPointSelect
+              v-model="form.contact_point"
+              :organization="form.owned?.organization"
+            />
           </LinkedToAccordion>
         </fieldset>
         <fieldset
@@ -540,6 +574,7 @@ const addAcronymAccordionId = useId()
 const writeAGoodDescriptionAccordionId = useId()
 const useTagsAccordionId = useId()
 const selectLicenseAccordionId = useId()
+const contactPointAccordionId = useId()
 const chooseFrequencyAccordionId = useId()
 const addTemporalCoverageAccordionId = useId()
 const addSpatialInformationAccordionId = useId()
