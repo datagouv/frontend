@@ -245,13 +245,13 @@
                   >
                     {{ t("Be careful, this action can't be reverse.") }}
                     <template #button>
-                      <button
-                        class="fr-btn fr-btn--secondary fr-btn--secondary--error fr-btn--icon-left fr-icon-logout-box-r-line"
-                        :disabled="loading"
+                      <BrandedButton
+                        :loading
+                        :icon="RiLogoutBoxRLine"
                         @click="removeMemberFromOrganization(member, close)"
                       >
                         {{ t('Remove member') }}
-                      </button>
+                      </BrandedButton>
                     </template>
                   </BannerAction>
                 </template>
@@ -268,7 +268,7 @@
 import { Avatar, formatDate, formatFromNow, getUserAvatar, type Member, type Organization } from '@datagouv/components'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RiAddLine, RiMailLine } from '@remixicon/vue'
+import { RiAddLine, RiLogoutBoxRLine, RiMailLine } from '@remixicon/vue'
 import type { AdminBadgeType, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
