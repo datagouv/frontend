@@ -59,6 +59,12 @@
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
+                class="w-56"
+              >
+                {{ t("Implementation") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
                 class="w-32"
               >
                 {{ t("Created at") }}
@@ -143,6 +149,7 @@
                   {{ $t('No job yet') }}
                 </AdminBadge>
               </td>
+              <td>{{ harvester.backend }}</td>
               <td>{{ formatDate(harvester.created_at) }}</td>
               <td>
                 <template v-if="harvester.last_job?.ended">
