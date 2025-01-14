@@ -63,18 +63,11 @@
             :key="resource.id"
           >
             <td>
-              <AdminContentWithTooltip>
-                <a
-                  class="fr-link fr-reset-link"
-                  :href="`/${locale}/admin/dataset/${dataset.id}/resource/${resource.id}`"
-                >
-                  <TextClamp
-                    :text="resource.title"
-                    :auto-resize="true"
-                    :max-lines="2"
-                  />
-                </a>
-              </AdminContentWithTooltip>
+              <TextClamp
+                :text="resource.title"
+                :auto-resize="true"
+                :max-lines="2"
+              />
             </td>
             <td>
               <AdminBadge
