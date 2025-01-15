@@ -52,7 +52,7 @@
         <template #accordion>
           <HelpAccordion :title="$t('Naming your harvester')">
             <p class="fr-m-0">
-              {{ $t("Choose a title that allows you to understand how the data is used rather than the name of the site or application ('Search engine for company agreements' rather than 'Accords-entreprise.fr' for example).") }} <br>
+              {{ $t("Give a name to your harvester. This is an internal reference that helps you keep track if you create multiple harvesters. The name of your harvester will not be public.") }} <br>
             </p>
           </HelpAccordion>
         </template>
@@ -66,7 +66,9 @@
 
         <template #accordion>
           <HelpAccordion :title="$t('Describe your harvester')">
-            <p class="fr-m-0" />
+            <p class="fr-m-0">
+              {{ $t("Add details in the description field for internal use. The description is optional.") }}
+            </p>
           </HelpAccordion>
         </template>
       </FieldsetElement>
@@ -80,7 +82,9 @@
 
         <template #accordion>
           <HelpAccordion :title="$t('Select the correct URL')">
-            <p class="fr-m-0" />
+            <p class="fr-m-0">
+              {{ $t("Enter the URL of the portal to be harvested here. This is usually the URL of the homepage of your open data portal. The URL allows the harvester to browse and retrieve all your datasets.") }}
+            </p>
           </HelpAccordion>
         </template>
       </FieldsetElement>
@@ -91,10 +95,13 @@
           v-model="form.backend"
           :label="t('Type')"
           :options="backendOptions"
+          required
         />
         <template #accordion>
           <HelpAccordion :title="$t('Select the implementation type')">
-            <p class="fr-m-0" />
+            <p class="fr-m-0">
+              {{ $t("Choose the metadata format (e.g., DCAT, CKAN, etc.). This field is mandatory. Check the documentation for details.") }}
+            </p>
           </HelpAccordion>
         </template>
       </FieldsetElement>
@@ -153,8 +160,10 @@
           </button>
         </div>
         <template #accordion>
-          <HelpAccordion :title="$t('Add config variables')">
-            <p class="fr-m-0" />
+          <HelpAccordion :title="$t('Add filters')">
+            <p class="fr-m-0">
+              {{ $t("Filtering allows you to include or exclude a subset of datasets from harvesting. Only datasets that meet all conditions will be processed.") }}
+            </p>
           </HelpAccordion>
         </template>
       </FieldsetElement>
@@ -206,8 +215,10 @@
           </div>
         </div>
         <template #accordion>
-          <HelpAccordion :title="$t('Add filters')">
-            <p class="fr-m-0" />
+          <HelpAccordion :title="$t('Add configuration variables')">
+            <p class="fr-m-0">
+              {{ $t("Add an additional configuration variable to your harvester. This is an optional configuration.") }}
+            </p>
           </HelpAccordion>
         </template>
       </FieldsetElement>
@@ -282,6 +293,7 @@ const { data: backends } = await useAPI<Array<HarvestBackend>>('/api/1/harvest/b
 const { form, getFirstError, getFirstWarning, formInfo, validate } = useForm(model, {
   name: [required()],
   url: [required()],
+  backend: [required()],
 }, {
   description: [minLength(500)],
 })
