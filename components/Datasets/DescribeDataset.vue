@@ -1,7 +1,7 @@
 <template>
   <div class="fr-grid-row">
     <Sidemenu
-      class="fr-col-12 fr-col-md-5"
+      class="fr-col-12 fr-col-lg-5"
       :button-text="$t('Help')"
       :on-right="true"
       :fixed="true"
@@ -99,6 +99,16 @@
           </Well>
         </Accordion>
         <Accordion
+          v-if="form.owned?.organization"
+          :id="contactPointAccordionId"
+          :title="$t('Define a point of contact')"
+          :state="accordionState('contact_point')"
+        >
+          <p class="fr-m-0">
+            {{ $t("Specify a contact point, such as an email or a link to a form, so users can reach you in case of issues or for questions.") }}
+          </p>
+        </Accordion>
+        <Accordion
           :id="chooseFrequencyAccordionId"
           :title="$t('Choose the update frequency')"
           :state="accordionState('frequency')"
@@ -151,32 +161,29 @@
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
-    <div class="fr-col-12 fr-col-md-7">
+    <div class="fr-col-12 fr-col-lg-7">
       <div class="fr-p-3w bg-white">
-        <Well
+        <SimpleBanner
           v-if="type === 'create'"
-          color="blue-cumulus"
-          weight="regular"
-          class="mb-4"
+          type="primary"
+          class="mb-4 flex items-center space-x-5"
         >
-          <div class="fr-grid-row">
-            <div class="fr-col-auto mr-3">
-              <NuxtImg
-                src="/illustrations/edit.svg"
-                loading="lazy"
-                alt=""
-              />
-            </div>
-            <div class="fr-col">
-              <p class="m-0 font-bold">
-                {{ $t('What is a dataset?') }}
-              </p>
-              <p class="m-0 text-xs">
-                {{ $t('On {site}, a dataset is a set of files.', { site: config.public.title }) }}
-              </p>
-            </div>
+          <NuxtImg
+            src="/illustrations/edit.svg"
+            loading="lazy"
+            class="size-14 shrink-0"
+            alt=""
+          />
+          <div class="w-full">
+            <p class="font-bold mb-1">
+              {{ $t('What is a dataset?') }}
+            </p>
+            <p class="m-0 text-xs/5">
+              {{ $t('On {site}, a dataset is a set of files.', { site: config.public.title }) }}
+            </p>
           </div>
-        </Well>
+        </SimpleBanner>
+
         <RequiredExplanation />
         <fieldset
           v-if="type === 'create'"
@@ -194,6 +201,7 @@
           <div class="fr-fieldset__element">
             <ProducerSelect
               v-model="form.owned"
+              :label="t('Check the identity with which you want to publish')"
               :required="true"
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"
@@ -316,6 +324,30 @@
                 </div>
               </template>
             </SearchableSelect>
+          </LinkedToAccordion>
+        </fieldset>
+        <fieldset
+          v-if="form.owned?.organization"
+          class="fr-fieldset"
+          aria-labelledby="description-legend"
+        >
+          <legend
+            id="description-legend"
+            class="fr-fieldset__legend"
+          >
+            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+              {{ t("Contact Point") }}
+            </h2>
+          </legend>
+          <LinkedToAccordion
+            class="fr-fieldset__element"
+            :accordion="contactPointAccordionId"
+            @blur="touch('contact_point')"
+          >
+            <ContactPointSelect
+              v-model="form.contact_point"
+              :organization="form.owned?.organization"
+            />
           </LinkedToAccordion>
         </fieldset>
         <fieldset
@@ -495,19 +527,19 @@
         >
           <BrandedButton
             v-if="type === 'create'"
-            level="secondary"
-            color="neutral"
+            color="secondary"
             @click="$emit('previous')"
           >
             {{ $t('Previous') }}
           </BrandedButton>
           <BrandedButton
-            level="primary"
+            color="primary"
             @click="submit"
           >
             {{ submitLabel }}
           </BrandedButton>
         </div>
+        <slot />
       </div>
     </div>
   </div>
@@ -542,6 +574,7 @@ const addAcronymAccordionId = useId()
 const writeAGoodDescriptionAccordionId = useId()
 const useTagsAccordionId = useId()
 const selectLicenseAccordionId = useId()
+const contactPointAccordionId = useId()
 const chooseFrequencyAccordionId = useId()
 const addTemporalCoverageAccordionId = useId()
 const addSpatialInformationAccordionId = useId()

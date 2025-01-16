@@ -94,30 +94,27 @@
     </Sidemenu>
     <div class="fr-col-12 fr-col-md-7">
       <PaddedContainer>
-        <Well
+        <SimpleBanner
           v-if="showWell"
-          color="blue-cumulus"
-          weight="regular"
-          class="fr-mb-2w"
+          type="primary"
+          class="mb-4 flex items-center space-x-5"
         >
-          <div class="fr-grid-row">
-            <div class="fr-col-auto fr-mr-3v">
-              <NuxtImg
-                src="/illustrations/organization.svg"
-                loading="lazy"
-                alt=""
-              />
-            </div>
-            <div class="fr-col">
-              <p class="fr-m-0 fr-text--bold">
-                {{ t('What is an organization?') }}
-              </p>
-              <p class="fr-m-0 fr-text--xs">
-                {{ t('An organization is an entity in which many users can collaborate. The datasets published under the organization can be edited by its members.') }}
-              </p>
-            </div>
+          <NuxtImg
+            src="/illustrations/organization.svg"
+            loading="lazy"
+            class="size-14 shrink-0"
+            alt=""
+          />
+          <div class="w-full">
+            <p class="font-bold mb-1">
+              {{ t('What is an organization?') }}
+            </p>
+            <p class="m-0 text-xs/5">
+              {{ t('An organization is an entity in which many users can collaborate. The datasets published under the organization can be edited by its members.') }}
+            </p>
           </div>
-        </Well>
+        </SimpleBanner>
+
         <fieldset
           class="fr-fieldset"
           :aria-labelledby="legend"
@@ -284,8 +281,7 @@
         </Alert>
         <div class="fr-grid-row justify-between">
           <BrandedButton
-            level="secondary"
-            color="neutral"
+            color="secondary"
             @click="$emit('previous')"
           >
             {{ t("Previous") }}
@@ -296,7 +292,7 @@
             :submit
           >
             <BrandedButton
-              level="primary"
+              color="primary"
               data-testid="submitButton"
               :loading
               @click="submit"

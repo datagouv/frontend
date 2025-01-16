@@ -90,14 +90,7 @@
     </div>
     <div class="p-1">
       <Milkdown
-        class="prose prose-neutral max-w-none prose-h1:text-xl prose-h1:leading-6 prose-h1:font-extrabold"
-        :class="[
-          proseTable,
-          proseHeading,
-          proseList,
-          proseCode,
-          proseOthers,
-        ]"
+        :class="markdownClasses"
       />
     </div>
   </div>
@@ -185,12 +178,6 @@ const gfmPlugins = [
   tableSelectorPlugin(widgetViewFactory),
 ].flat()
 
-const proseTable = 'prose-table:bg-neutral-200 prose-table:!overflow-visible first-of-type:prose-tr:!bg-neutral-200 first-of-type:prose-tr:border-b-2 first-of-type:prose-tr:border-black odd:prose-tr:bg-neutral-300 *:prose-th:m-0 *:prose-td:m-0 prose-th:p-4 prose-td:p-4'
-const proseHeading = 'prose-h1:text-xl prose-h1:leading-6 prose-h2:text-base prose-h3:text-sm prose-h3:leading-6 prose-headings:font-extrabold'
-const proseList = 'prose-ul:list-disc'
-const proseCode = 'prose-pre:font-mono prose-pre:bg-neutral-200 prose-pre:text-neutral-600'
-const proseOthers = 'prose-blockquote:border-neutral-800 prose-a:no-underline prose-li:p-0 *:prose-li:m-0'
-
 const editor = useEditor(root =>
   Editor.make()
     .config((ctx) => {
@@ -207,7 +194,7 @@ const editor = useEditor(root =>
             const attrs = typeof prevAttr === 'function' ? prevAttr(state) : (prevAttr ?? {})
             attrs.id = props.id
             attrs['data-testid'] = 'markdown-editor'
-            attrs['class'] = 'min-h-96 w-full'
+            attrs['class'] = 'min-h-24 w-full'
             if (props.ariaLabelledBy) {
               attrs['aria-labelledby'] = props.ariaLabelledBy
             }

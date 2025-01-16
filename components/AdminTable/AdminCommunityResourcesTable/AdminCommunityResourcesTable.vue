@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <AdminTableTh
         :sorted="sorted('title')"
@@ -8,13 +8,14 @@
       >
         {{ t("Resource title") }}
       </AdminTableTh>
-      <AdminTableTh>
+      <AdminTableTh class="w-44">
         {{ t("Status") }}
       </AdminTableTh>
-      <AdminTableTh>
+      <AdminTableTh class="w-14">
         {{ t("Format") }}
       </AdminTableTh>
       <AdminTableTh
+        class="w-32"
         :sorted="sorted('created_at_internal')"
         scope="col"
         @sort="(direction: SortDirection) => $emit('sort', 'created_at_internal', direction)"
@@ -22,6 +23,7 @@
         {{ t("Created at") }}
       </AdminTableTh>
       <AdminTableTh
+        class="w-32"
         :sorted="sorted('last_modified_internal')"
         scope="col"
         @sort="(direction: SortDirection) => $emit('sort', 'last_modified_internal', direction)"
@@ -45,22 +47,17 @@
             </a>
           </AdminContentWithTooltip>
           <p v-if="communityResource.dataset">
-            <a
-              class="fr-link inline-flex"
-              :href="communityResource.dataset.page"
-            >
-              <RiDatabase2Line class="self-center size-3" />
-              <TextClamp
-                class="overflow-wrap-anywhere"
-                :text="communityResource.dataset.title"
-                :auto-resize="true"
-                :max-lines="1"
-              />
-            </a>
+            <LinkToSubject
+              type="Dataset"
+              :subject="communityResource.dataset"
+            />
           </p>
         </td>
         <td>
-          <AdminBadge :type="getStatus(communityResource).type">
+          <AdminBadge
+            size="xs"
+            :type="getStatus(communityResource).type"
+          >
             {{ getStatus(communityResource).label }}
           </AdminBadge>
         </td>
@@ -78,16 +75,14 @@
 import { formatDate } from '@datagouv/components'
 import type { CommunityResource } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
-import { RiDatabase2Line } from '@remixicon/vue'
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
-import type { AdminBadgeState, CommunityResourceSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, CommunityResourceSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   communityResources: Array<CommunityResource>
-  loading: boolean
   sortedBy: CommunityResourceSortedBy
   sortDirection: SortDirection
 }>()
@@ -110,24 +105,24 @@ function getCommunityResourceLinkToAdmin(communityResource: CommunityResource) {
   return `${config.public.apiBase}/en/admin/dataset/${communityResource.dataset.id}/community-resource/${communityResource.id}/`
 }
 
-function getStatus(communityResource: CommunityResource): { label: string, type: AdminBadgeState } {
+function getStatus(communityResource: CommunityResource): { label: string, type: AdminBadgeType } {
   const checked = communityResource.extras && 'check:available' in communityResource.extras
   if (checked && communityResource.extras['check:available'] === false) {
     return {
       label: t('Unavailable'),
-      type: 'error',
+      type: 'danger',
     }
   }
   else if (checked) {
     return {
       label: t('Available'),
-      type: 'info',
+      type: 'primary',
     }
   }
   else {
     return {
       label: t('Not checked yet'),
-      type: 'default',
+      type: 'secondary',
     }
   }
 }

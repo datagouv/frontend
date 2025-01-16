@@ -9,7 +9,7 @@
     <input
       v-bind="$attrs"
       v-model="model"
-      type="text"
+      :type
       class="border !border-gray-700 rounded-full pl-10 pr-4 py-1 placeholder-gray-800 text-sm"
     >
   </div>
@@ -21,8 +21,11 @@ import type { Component } from 'vue'
 defineOptions({
   inheritAttrs: false,
 })
-defineProps<{
+withDefaults(defineProps<{
   icon: Component
-}>()
+  type?: string
+}>(), {
+  type: 'text',
+})
 const model = defineModel<string>()
 </script>

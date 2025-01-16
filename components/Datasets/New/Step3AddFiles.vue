@@ -69,29 +69,26 @@
     </Sidemenu>
     <div class="fr-col-12 fr-col-md-7">
       <PaddedContainer>
-        <Well
-          color="blue-cumulus"
-          weight="regular"
-          class="fr-mb-2w"
+        <SimpleBanner
+          type="primary"
+          class="mb-4 flex items-center space-x-5"
         >
-          <div class="fr-grid-row">
-            <div class="fr-col-auto fr-mr-3v">
-              <NuxtImg
-                src="/illustrations/edit.svg"
-                loading="lazy"
-                alt=""
-              />
-            </div>
-            <div class="fr-col">
-              <p class="fr-m-0 fr-text--bold">
-                {{ $t('What is a file?') }}
-              </p>
-              <p class="fr-m-0 fr-text--xs">
-                {{ $t('A dataset can contain multiple types of files (updates, history, documentation, source code, API, link, etc.)') }}
-              </p>
-            </div>
+          <NuxtImg
+            src="/illustrations/edit.svg"
+            loading="lazy"
+            class="size-14 shrink-0"
+            alt=""
+          />
+          <div class="w-full">
+            <p class="font-bold mb-1">
+              {{ $t('What is a file?') }}
+            </p>
+            <p class="m-0 text-xs/5">
+              {{ $t('A dataset can contain multiple types of files (updates, history, documentation, source code, API, link, etc.)') }}
+            </p>
           </div>
-        </Well>
+        </SimpleBanner>
+
         <fieldset
           class="fr-fieldset min-width-0"
           aria-labelledby="description-legend"
@@ -159,15 +156,14 @@
         </Alert>
         <div class="fr-grid-row justify-between">
           <BrandedButton
-            level="secondary"
-            color="neutral"
+            color="secondary"
             @click="$emit('previous')"
           >
             {{ $t("Previous") }}
           </BrandedButton>
           <BrandedButton
             :loading
-            level="primary"
+            color="primary"
             @click="submit"
           >
             {{ $t("Next") }}

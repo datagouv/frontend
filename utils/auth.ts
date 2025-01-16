@@ -1,7 +1,7 @@
 import type { Organization, User } from '@datagouv/components'
 
 export type Me = User & {
-  about: string
+  about: string | null
   active: boolean
   apikey: string | null
   email: string
@@ -28,7 +28,7 @@ export const useToken = () => {
   return useCookie('token')
 }
 
-export function isAdmin(me: Me | null): boolean {
+export function isAdmin(me: Me | null | undefined): boolean {
   if (!me) return false
 
   return me.roles ? me.roles.includes('admin') : false

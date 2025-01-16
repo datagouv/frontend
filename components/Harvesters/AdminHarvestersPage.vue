@@ -32,7 +32,7 @@
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
-          v-if="status === 'success' && pageData.total"
+          v-if="pageData && pageData.total"
           class="subtitle subtitle--uppercase fr-m-0"
         >
           {{ t('{n} harvesters', pageData.total) }}
@@ -42,93 +42,147 @@
         <!-- Buttons -->
       </div>
     </div>
-    <AdminTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :loading="status === 'pending'"
-    >
-      <thead>
-        <tr>
-          <AdminTableTh scope="col">
-            {{ t("Name") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Status") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Created at") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Last run") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Datasets") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Dataservices") }}
-          </AdminTableTh>
-        </tr>
-      </thead>
-      <tbody v-if="pageData">
-        <tr
-          v-for="harvester in pageData.data"
-          :key="harvester.id"
-        >
-          <td>
-            <AdminContentWithTooltip>
-              <a
-                class="fr-link fr-reset-link"
-                :href="getHarvesterLinkToAdmin(harvester)"
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminTable>
+          <thead>
+            <tr>
+              <AdminTableTh scope="col">
+                {{ t("Name") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-56"
               >
-                <TextClamp
-                  :text="harvester.name"
-                  :auto-resize="true"
-                  :max-lines="2"
+                {{ t("Status") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-32"
+              >
+                {{ t("Created at") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-32"
+              >
+                {{ t("Last run") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-24"
+              >
+                {{ t("Datasets") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-24"
+              >
+                {{ t("Dataservices") }}
+              </AdminTableTh>
+            </tr>
+          </thead>
+          <tbody v-if="pageData">
+            <tr
+              v-for="harvester in pageData.data"
+              :key="harvester.id"
+            >
+              <td>
+                <AdminContentWithTooltip>
+                  <NuxtLinkLocale
+                    class="fr-link fr-reset-link"
+                    :href="getHarvesterAdminUrl(harvester)"
+                  >
+                    <TextClamp
+                      :text="harvester.name"
+                      :auto-resize="true"
+                      :max-lines="2"
+                    />
+                  </NuxtLinkLocale>
+                </AdminContentWithTooltip>
+              </td>
+              <td>
+                <AdminBadge
+                  v-if="harvester.deleted"
+                  size="xs"
+                  type="danger"
+                >
+                  {{ $t('Deleted') }}
+                </AdminBadge>
+                <AdminBadge
+                  v-else-if="!harvester.active"
+                  size="xs"
+                  type="danger"
+                >
+                  {{ $t('Inactive') }}
+                </AdminBadge>
+                <AdminBadge
+                  v-else-if="harvester.validation.state === 'refused'"
+                  size="xs"
+                  type="danger"
+                >
+                  {{ $t('Refused') }}
+                </AdminBadge>
+                <AdminBadge
+                  v-else-if="harvester.validation.state === 'pending'"
+                  size="xs"
+                  type="warning"
+                >
+                  {{ $t('Waiting validation') }}
+                </AdminBadge>
+                <JobBadge
+                  v-else-if="harvester.last_job"
+                  :job="harvester.last_job"
                 />
-              </a>
-            </AdminContentWithTooltip>
-          </td>
-          <td>
-            <AdminBadge :type="getStatus(harvester).type">
-              {{ getStatus(harvester).label }}
-            </AdminBadge>
-          </td>
-          <td>{{ formatDate(harvester.created_at) }}</td>
-          <td>
-            <template v-if="harvester.last_job?.ended">
-              {{ formatDate(harvester.last_job.ended) }}
-            </template>
-            <template v-else>
-              {{ t('Not yet') }}
-            </template>
-          </td>
-          <td>
-            {{ getHarvesterDatasets(harvester) }}
-          </td>
-          <td>
-            {{ getHarvesterDataservices(harvester) }}
-          </td>
-        </tr>
-      </tbody>
-    </AdminTable>
+                <AdminBadge
+                  v-else
+                  size="xs"
+                  type="secondary"
+                >
+                  {{ $t('No job yet') }}
+                </AdminBadge>
+              </td>
+              <td>{{ formatDate(harvester.created_at) }}</td>
+              <td>
+                <template v-if="harvester.last_job?.ended">
+                  {{ formatDate(harvester.last_job.ended) }}
+                </template>
+                <template v-else>
+                  {{ t('Not yet') }}
+                </template>
+              </td>
+              <td>
+                {{ getHarvesterDatasets(harvester) }}
+              </td>
+              <td>
+                {{ getHarvesterDataservices(harvester) }}
+              </td>
+            </tr>
+          </tbody>
+        </AdminTable>
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+
     <div
-      v-else
+      v-if="pageData && !pageData.total"
       class="flex flex-col items-center"
     >
-      <!-- <nuxt-img
-          src="/illustrations/reuse.svg"
-          class="h-20"
-        /> -->
+      <nuxt-img
+        src="/illustrations/harvester.svg"
+        class="w-24"
+      />
       <p class="fr-text--bold fr-my-3v">
-        {{ t(`There is no harvesters yet`) }}
+        {{ t(`You haven't published a harvester yet`) }}
       </p>
+      <AdminPublishButton type="harvester" />
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 
@@ -137,11 +191,13 @@ import { formatDate, Pagination, type Organization } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { AdminBadgeState, DiscussionSortedBy, PaginatedArray, SortDirection } from '~/types/types'
+import JobBadge from './JobBadge.vue'
+import type { PaginatedArray } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
+import { getHarvesterAdminUrl } from '~/utils/harvesters'
 
 const props = defineProps<{
   organization?: Organization | null
@@ -152,9 +208,6 @@ const { $api } = useNuxtApp()
 
 const page = ref(1)
 const pageSize = ref(10)
-const sortedBy = ref<DiscussionSortedBy>('created')
-const direction = ref<SortDirection>('desc')
-const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
@@ -166,7 +219,6 @@ const url = computed(() => {
   }
 
   url.searchParams.set('deleted', 'true')
-  url.searchParams.set('sort', sortDirection.value)
   url.searchParams.set('q', qDebounced.value)
   url.searchParams.set('page_size', pageSize.value.toString())
   url.searchParams.set('page', page.value.toString())
@@ -188,16 +240,14 @@ watchEffect(async () => {
 
     jobsPromises.value[source.last_job.id] = $api<HarvesterJob>(`/api/1/harvest/job/${source.last_job.id}/`)
       .then((job) => {
-        jobs.value[source.last_job.id] = job // Working because there is no conflicts between IDs from different types
+        if (source.last_job) {
+          jobs.value[source.last_job.id] = job // Working because there is no conflicts between IDs from different types
+        }
       })
   }
 
   await Promise.all(Object.values(jobsPromises.value))
 })
-
-function getHarvesterLinkToAdmin(harvester: HarvesterSource) {
-  return `${config.public.apiBase}/en/admin/harvester/${harvester.id}/`
-}
 
 function getHarvesterDataservices(harvester: HarvesterSource) {
   if (!harvester.last_job || !jobs.value[harvester.last_job.id]) {
@@ -211,50 +261,5 @@ function getHarvesterDatasets(harvester: HarvesterSource) {
     return 0
   }
   return jobs.value[harvester.last_job.id].items.filter(item => item.dataset).length
-}
-
-function getStatus(harvester: HarvesterSource): { label: string, type: AdminBadgeState } {
-  switch (harvester.last_job?.status) {
-    case 'pending':
-      return {
-        label: t('Pending'),
-        type: 'default',
-      }
-    case 'initializing':
-      return {
-        label: t('Initializing'),
-        type: 'info',
-      }
-    case 'initialized':
-      return {
-        label: t('Initialized'),
-        type: 'default',
-      }
-    case 'processing':
-      return {
-        label: t('Processing'),
-        type: 'info',
-      }
-    case 'done':
-      return {
-        label: t('Done'),
-        type: 'success',
-      }
-    case 'done-errors':
-      return {
-        label: t('Done with errors'),
-        type: 'warning',
-      }
-    case 'failed':
-      return {
-        label: t('Failed'),
-        type: 'error',
-      }
-    default:
-      return {
-        label: t('No job yet'),
-        type: 'default',
-      }
-  }
 }
 </script>

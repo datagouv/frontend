@@ -32,7 +32,7 @@
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
       <div class="fr-col">
         <h2
-          v-if="status === 'success' && pageData.total"
+          v-if="pageData && pageData.total"
           class="subtitle subtitle--uppercase fr-m-0"
         >
           {{ t('{n} community resources', pageData.total) }}
@@ -42,33 +42,36 @@
         <!-- Buttons -->
       </div>
     </div>
-    <AdminCommunityResourcesTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :community-resources="pageData ? pageData.data : []"
-      :loading="status === 'pending'"
-      :sort-direction="direction"
-      :sorted-by
-      @sort="sort"
-    />
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminCommunityResourcesTable
+          :community-resources="pageData ? pageData.data : []"
+          :sort-direction="direction"
+          :sorted-by
+          @sort="sort"
+        />
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+
     <div
-      v-else
+      v-if="pageData && !pageData.total"
       class="flex flex-col items-center"
     >
-      <!-- <nuxt-img
-        src="/illustrations/dataset.svg"
+      <nuxt-img
+        src="/illustrations/schema.svg"
         class="h-20"
-      /> -->
+      />
       <p class="fr-text--bold fr-my-3v">
         {{ t(`You haven't published a community resource yet`) }}
       </p>
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 

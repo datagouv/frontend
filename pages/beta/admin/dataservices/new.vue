@@ -38,12 +38,14 @@
       type="create"
       @submit="dataserviceNext"
     >
-      <button
-        type="submit"
-        class="fr-btn"
-      >
-        {{ $t("Next") }}
-      </button>
+      <template #button>
+        <button
+          type="submit"
+          class="fr-btn"
+        >
+          {{ $t("Next") }}
+        </button>
+      </template>
     </DescribeDataservice>
     <Step2AddDatasets
       v-if="currentStep === 2"
@@ -149,15 +151,7 @@ async function save() {
       && dataserviceForm.value.owned?.organization
       && !('id' in dataserviceForm.value.contact_point)
     ) {
-      dataserviceForm.value.contact_point = await $api<ContactPoint>('/api/1/contacts/', {
-        method: 'POST',
-        body: JSON.stringify({
-          name: dataserviceForm.value.contact_point.name,
-          email: dataserviceForm.value.contact_point.email,
-          contact_form: dataserviceForm.value.contact_point.contact_form,
-          organization: dataserviceForm.value.owned.organization.id,
-        }),
-      })
+      dataserviceForm.value.contact_point = await newContactPoint($api, dataserviceForm.value.owned?.organization, dataserviceForm.value.contact_point)
     }
 
     newDataservice.value = await $api<Dataservice>('/api/1/dataservices/', {

@@ -17,7 +17,7 @@ export default defineNuxtConfig({
       apiBase: 'http://dev.local:7000',
       qualityDescriptionLength: 100,
       searchSirenUrl: 'https://recherche-entreprises.api.gouv.fr/search',
-
+      csvDatasetId: undefined,
       title: 'data.gouv.fr',
       demoServer: {
         url: 'https://demo.data.gouv.fr',
@@ -34,11 +34,16 @@ export default defineNuxtConfig({
       supportUrl: 'https://support.data.gouv.fr/',
       catalogUrl: 'https://guides.data.gouv.fr/autres-ressources-utiles/catalogage-de-donnees-grist',
 
+      feedbackFormUrl: 'https://tally.so/r/mOld5R',
       betaAdminFeedbackUrl: 'https://tally.so/r/nP25OB',
-
       publishingDatasetFeedbackUrl: 'https://tally.so/r/nGo0yO',
       publishingDataserviceFeedbackUrl: 'https://tally.so/r/w2J7lL',
       publishingReuseFeedbackUrl: 'https://tally.so/r/mV98y6',
+      publishingHarvesterFeedbackUrl: 'https://tally.so/r/3NMLOQ',
+      harvesterRequestValidationUrl: 'https://support.data.gouv.fr/help/datagouv/moissonnage#support-tree',
+      harvesterPreviewMaxItems: 20, // SHould be the same as `HARVEST_PREVIEW_MAX_ITEMS` in udata
+
+      newsletterSubscriptionUrl: 'https://f.info.data.gouv.fr/f/lp/infolettre-data-gouv-fr-landing-page/lk3q01y6',
 
       resourceFileUploadChunk: 2 * 1000 * 1000,
 
@@ -67,9 +72,17 @@ export default defineNuxtConfig({
       changeEmailPage: 'change-email',
       changePasswordPage: 'change',
 
+      readOnlyMode: false,
+
       sentry: {
         dsn: '',
       },
+
+      // URL of your matomo host.
+      matomo_host: undefined,
+
+      // Matomo ID of your site. Check the Matomo backend for it
+      matomo_site_id: 1,
     },
   },
 
@@ -79,7 +92,10 @@ export default defineNuxtConfig({
         class: 'datagouv-components',
       },
       link: [
-        { rel: 'shortcut icon', href: '/favicon.png' },
+        // Cannot use `/public/favicon.png` because the reverse proxy is calling udata-front for `/`
+        // When the migration is over we can remove this static path.
+        // :AfterMigration
+        { rel: 'shortcut icon', href: 'https://static.data.gouv.fr/_themes/gouvfr/img/favicon.png' },
       ],
     },
   },
@@ -113,21 +129,24 @@ export default defineNuxtConfig({
     locales: [
       {
         code: 'en',
+        language: 'en',
         file: 'en-US.json',
       },
       {
         code: 'es',
+        language: 'es',
         file: 'es-ES.json',
       },
       {
         code: 'fr',
+        language: 'fr',
         file: 'fr-FR.json',
       },
     ],
     lazy: true,
-    langDir: 'lang',
     defaultLocale: 'en',
     strategy: 'prefix',
+    trailingSlash: true,
   },
   image: {
     screens: {

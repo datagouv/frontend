@@ -24,13 +24,63 @@ export default {
       aria: {
         'current-page': 'current="page"',
       },
+      fontFamily: {
+        spectral: 'Spectral',
+        gothic: 'URW Gothic',
+      },
+      fontSize: {
+        '4.5xl': '2.75rem',
+      },
       colors: {
         primary: '#3558a2',
         mentionGrey: '#666', // Copy from --text-mention-grey
+        gray: {
+          title: '#161616',
+          medium: '#666666',
+          lower: '#eeeeee',
+          lowest: '#e8eaed',
+          default: '#e5e5e5',
+          plain: '#3a3a3a',
+          some: '#f6f6f6',
+          logo: '#373c42',
+        },
         defaultWarning: '#b32000',
         blue: {
           light: '#e3e3fd',
           tint: '#c1c1fd',
+          outline: '#0a76f6',
+        },
+        secondary: {
+          lightest: '#EEEEEE',
+          dark: '#66666',
+        },
+        datagouv: {
+          lightest: '#E6EEFE',
+          lighter: '#e3e3fd',
+          light: '#c1c1fd',
+          hover: '#5982e0',
+          defaultLight: '#46699D',
+          DEFAULT: '#465F9D',
+          dark: '#3558a2',
+        },
+        danger: {
+          lightest: '#FFE9E9',
+          dark: '#CE0500',
+        },
+        warning: {
+          lightest: '#FFE9E6',
+          dark: '#B34000',
+        },
+        warning2: {
+          lightest: '#FEECC2',
+          dark: '#716043',
+        },
+        success: {
+          lightest: '#ECF7F0',
+          lighter: '#C3FAD5',
+          dark: '#27A658',
+          darker: '#1f8d49', // from DSFR to avoid contrast issue
+          darkest: '#18753c', // from DSFR to avoid contrast issue
         },
       },
       typography: theme => ({

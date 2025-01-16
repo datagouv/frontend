@@ -6,61 +6,62 @@
       type="update"
       @submit="save"
     >
-      <button
-        type="submit"
-        class="fr-btn"
-        :disabled="loading"
-      >
-        {{ t("Save") }}
-      </button>
-    </DescribeReuse>
-    <AdminDangerZone
-      class="mt-5"
-    >
-      <div class="fr-col">
-        <p class="fr-m-0 text-neutral-800">
-          {{ $t('Delete the reuse') }}
-        </p>
-        <p class="fr-m-0 fr-text--xs text-red-600">
-          {{ $t("Be careful, this action can't be reverse.") }}
-        </p>
-      </div>
-      <div class="fr-col-auto">
-        <ModalWithButton
-          :title="$t('Are you sure you want to delete this reuse ?')"
-          size="lg"
+      <template #button>
+        <button
+          type="submit"
+          class="fr-btn"
+          :disabled="loading"
         >
-          <template #button="{ attrs, listeners }">
-            <BrandedButton
-              color="red"
-              size="sm"
-              level="secondary"
-              :icon="RiDeleteBin6Line"
-              v-bind="attrs"
-              v-on="listeners"
+          {{ t("Save") }}
+        </button>
+      </template>
+      <div class="mt-5 space-y-5">
+        <TransferBanner
+          type="Reuse"
+          :subject="reuse"
+          :label="$t('Transfer reuse')"
+        />
+        <BannerAction
+          class="mt-5"
+          type="danger"
+          :title="$t('Delete the reuse')"
+        >
+          {{ $t("Be careful, this action can't be reverse.") }}
+          <template #button>
+            <ModalWithButton
+              :title="$t('Are you sure you want to delete this reuse ?')"
+              size="lg"
             >
-              {{ $t('Delete') }}
-            </BrandedButton>
+              <template #button="{ attrs, listeners }">
+                <BrandedButton
+                  color="danger"
+                  size="xs"
+                  :icon="RiDeleteBin6Line"
+                  v-bind="attrs"
+                  v-on="listeners"
+                >
+                  {{ $t('Delete') }}
+                </BrandedButton>
+              </template>
+              <p class="fr-text--bold">
+                {{ $t("This action can't be reverse.") }}
+              </p>
+              <template #footer>
+                <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+                  <BrandedButton
+                    color="danger"
+                    :disabled="loading"
+                    @click="deleteReuse"
+                  >
+                    {{ $t("Delete the reuse") }}
+                  </BrandedButton>
+                </div>
+              </template>
+            </ModalWithButton>
           </template>
-          <p class="fr-text--bold">
-            {{ $t("This action can't be reverse.") }}
-          </p>
-          <template #footer>
-            <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
-              <BrandedButton
-                color="red"
-                level="secondary"
-                role="button"
-                :disabled="loading"
-                @click="deleteReuse"
-              >
-                {{ $t("Delete the reuse") }}
-              </BrandedButton>
-            </div>
-          </template>
-        </ModalWithButton>
+        </BannerAction>
       </div>
-    </AdminDangerZone>
+    </DescribeReuse>
   </div>
 </template>
 

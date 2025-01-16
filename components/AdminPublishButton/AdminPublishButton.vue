@@ -1,14 +1,13 @@
 <template>
-  <NuxtLinkLocale
-    :to="link"
-    class="fr-btn fr-icon-add-line fr-btn--icon-left"
+  <BrandedButton
+    v-if="!config.public.readOnlyMode"
+    :href="link"
+    color="primary"
+    :external="type === 'harvester'"
   >
-    <span>{{ t("Publish on") }}</span>
-    <SiteLogo
-      class="ml-1.5 mt-0.5 h-4"
-      white
-    />
-  </NuxtLinkLocale>
+    <span v-if="type === 'harvester'">{{ t("Create an harvester on") }}</span>
+    <span v-else>{{ t("Publish on") }}</span>&nbsp;<SiteLogo />
+  </BrandedButton>
 </template>
 
 <script setup lang="ts">
@@ -21,13 +20,14 @@ const props = defineProps<{
 
 const { t } = useI18n()
 
+const config = useRuntimeConfig()
+
 const link = computed(() => {
   switch (props.type) {
     case 'dataset':
       return '/beta/admin/datasets/new'
     case 'harvester':
-      return ''
-      // return `${admin_root}harvester/new/`;
+      return `/beta/admin/harvesters/new/`
     case 'reuse':
       return '/beta/admin/reuses/new'
     case 'dataservice':

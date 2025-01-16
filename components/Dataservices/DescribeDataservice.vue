@@ -151,30 +151,26 @@
       @submit.prevent="submit"
     >
       <div class="fr-p-3w bg-white">
-        <Well
+        <SimpleBanner
           v-if="type === 'create'"
-          color="blue-cumulus"
-          weight="regular"
-          class="fr-mb-2w"
+          type="primary"
+          class="mb-4 flex items-center space-x-5"
         >
-          <div class="fr-grid-row">
-            <div class="fr-col-auto fr-mr-3v">
-              <NuxtImg
-                src="/illustrations/dataservice.svg"
-                loading="lazy"
-                alt=""
-              />
-            </div>
-            <div class="fr-col">
-              <p class="fr-m-0 fr-text--bold">
-                {{ t('What is a dataservice?') }}
-              </p>
-              <p class="fr-m-0 fr-text--xs">
-                {{ t('A dataservice is a computer tool that allows a website or software to communicate with another computer and exchange data.') }}
-              </p>
-            </div>
+          <NuxtImg
+            src="/illustrations/dataservice.svg"
+            loading="lazy"
+            class="size-14 shrink-0"
+            alt=""
+          />
+          <div class="w-full">
+            <p class="font-bold mb-1">
+              {{ t('What is a dataservice?') }}
+            </p>
+            <p class="m-0 text-xs/5">
+              {{ t('A dataservice is a computer tool that allows a website or software to communicate with another computer and exchange data.') }}
+            </p>
           </div>
-        </Well>
+        </SimpleBanner>
 
         <fieldset
           v-if="type === 'create'"
@@ -192,6 +188,7 @@
           <div class="fr-fieldset__element">
             <ProducerSelect
               v-model="form.owned"
+              :label="t('Check the identity with which you want to publish')"
               :options="ownedOptions"
               :error-text="getFirstError('owned')"
               :warning-text="getFirstWarning('owned')"
@@ -423,44 +420,35 @@
               :error-text="getFirstError('business_documentation_url')"
             />
           </LinkedToAccordion>
-          <fieldset
-            v-if="type === 'update'"
-            class="fr-fieldset__element"
-          >
-            <fieldset
-              id="checkboxes-hint-el-sm"
-              class="fr-fieldset"
-              aria-labelledby="checkboxes-hint-el-sm-legend checkboxes-hint-el-sm-messages"
-            >
-              <div class="fr-fieldset__element">
-                <div class="fr-checkbox-group fr-checkbox-group--sm">
-                  <input
-                    id="checkboxes-hint-el-sm-1"
-                    v-model="dataserviceForm.private"
-                    name="checkboxes-hint-el-sm-1"
-                    type="checkbox"
-                    aria-describedby="checkboxes-hint-el-sm-1-messages"
-                  >
-                  <label
-                    class="fr-label"
-                    for="checkboxes-hint-el-sm-1"
-                  >
-                    {{ t('Switch to draft mode') }}
-                    <span class="fr-hint-text">{{ t('The dataservice will only be visible to members of your organization.') }}</span>
-                  </label>
-                  <div
-                    id="checkboxes-hint-el-sm-1-messages"
-                    class="fr-messages-group"
-                    aria-live="assertive"
-                  />
-                </div>
-              </div>
-            </fieldset>
-          </fieldset>
         </fieldset>
-        <div class="fr-grid-row fr-grid-row--right">
-          <slot />
+        <div
+          v-if="type === 'update'"
+          class="fr-checkbox-group fr-checkbox-group--sm mb-4"
+        >
+          <input
+            id="checkboxes-hint-el-sm-1"
+            v-model="dataserviceForm.private"
+            name="checkboxes-hint-el-sm-1"
+            type="checkbox"
+            aria-describedby="checkboxes-hint-el-sm-1-messages"
+          >
+          <label
+            class="fr-label"
+            for="checkboxes-hint-el-sm-1"
+          >
+            {{ t('Switch to draft mode') }}
+            <span class="fr-hint-text">{{ t('The dataservice will only be visible to members of your organization.') }}</span>
+          </label>
+          <div
+            id="checkboxes-hint-el-sm-1-messages"
+            class="fr-messages-group"
+            aria-live="assertive"
+          />
         </div>
+        <div class="fr-grid-row fr-grid-row--right">
+          <slot name="button" />
+        </div>
+        <slot />
       </div>
     </form>
   </div>

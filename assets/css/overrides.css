@@ -1,29 +1,34 @@
-@import 'fonts.css';
-@import 'forms.css';
+@import "fonts.css";
+@import "forms.css";
 
 :root {
-    --blue-france-975-75: var(--blue-cumulus-975-75);
-    --blue-france-975-75-hover: var(--blue-cumulus-975-75-hover);
-    --blue-france-975-75-active: var(--blue-cumulus-975-75-active);
-    --blue-france-950-100: var(--blue-cumulus-950-100);
-    --blue-france-950-100-hover: var(--blue-cumulus-950-100-hover);
-    --blue-france-950-100-active: var(--blue-cumulus-950-100-active);
-    --blue-france-sun-113-625: var(--blue-cumulus-sun-368-moon-732);
-    --blue-france-sun-113-625-hover: var(--blue-cumulus-sun-368-moon-732-hover);
-    --blue-france-sun-113-625-active: var(--blue-cumulus-sun-368-moon-732-active);
-    --blue-france-925-125: var(--blue-cumulus-925-125);
-    --blue-france-925-125-hover: var(--blue-cumulus-925-125-hover);
-    --blue-france-925-125-active: var(--blue-cumulus-925-125-active);
-    --blue-france-975-sun-113: var(--blue-cumulus-975-75);
-    --blue-france-main-525: var(--blue-cumulus-main-526);
-    --blue-france-850-200: var(--blue-cumulus-850-200);
-  }
+  --blue-france-975-75: var(--blue-cumulus-975-75);
+  --blue-france-975-75-hover: var(--blue-cumulus-975-75-hover);
+  --blue-france-975-75-active: var(--blue-cumulus-975-75-active);
+  --blue-france-950-100: var(--blue-cumulus-950-100);
+  --blue-france-950-100-hover: var(--blue-cumulus-950-100-hover);
+  --blue-france-950-100-active: var(--blue-cumulus-950-100-active);
+  --blue-france-sun-113-625: var(--blue-cumulus-sun-368-moon-732);
+  --blue-france-sun-113-625-hover: var(--blue-cumulus-sun-368-moon-732-hover);
+  --blue-france-sun-113-625-active: var(--blue-cumulus-sun-368-moon-732-active);
+  --blue-france-925-125: var(--blue-cumulus-925-125);
+  --blue-france-925-125-hover: var(--blue-cumulus-925-125-hover);
+  --blue-france-925-125-active: var(--blue-cumulus-925-125-active);
+  --blue-france-975-sun-113: var(--blue-cumulus-975-75);
+  --blue-france-main-525: var(--blue-cumulus-main-526);
+  --blue-france-850-200: var(--blue-cumulus-850-200);
+}
 
 .ProseMirror .selectedCell:after {
   @apply bg-primary;
   @apply opacity-50;
 }
 
-#__nuxt, #__nuxt > div {
+#__nuxt,
+#__nuxt > div {
   @apply h-full;
+}
+
+.link {
+  @apply !bg-none underline underline-offset-4 hover:decoration-2 text-datagouv-dark;
 }

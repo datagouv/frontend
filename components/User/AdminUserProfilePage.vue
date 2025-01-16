@@ -35,8 +35,8 @@
         </h2>
         <div class="flex-none">
           <BrandedButton
-            size="sm"
-            level="secondary"
+            size="xs"
+            color="secondary"
             as="a"
             :href="me.page"
             :icon="RiEyeLine"
@@ -80,9 +80,28 @@
         :label="$t('Website')"
         type="url"
       />
+      <UploadGroup
+        :label="$t('Profile picture')"
+        type="drop"
+        accept=".jpeg, .jpg, .png"
+        :hint-text="$t('Max size: 4Mo. Accepted formats: JPG, JPEG, PNG')"
+        :show-label="true"
+        @change="setFiles"
+      />
+      <div
+        v-if="imagePreview"
+        class="text-align-center"
+      >
+        <NuxtImg
+          :src="imagePreview"
+          class="border mx-auto max-h-40"
+          loading="lazy"
+          alt=""
+        />
+      </div>
       <div class="flex justify-end">
         <BrandedButton
-          size="sm"
+          size="xs"
           :disabled="loading"
           :icon="RiSaveLine"
           @click="updateMe"
@@ -123,9 +142,8 @@
           <div class="fr-col-auto flex gap-4">
             <div class="flex-none">
               <BrandedButton
-                color="neutral"
-                size="sm"
-                level="secondary"
+                color="secondary"
+                size="xs"
                 :disabled="loading"
                 :icon="RiRecycleLine"
                 @click="regenerateApiKey"
@@ -135,9 +153,8 @@
             </div>
             <div class="flex-none">
               <BrandedButton
-                color="red"
-                size="sm"
-                level="secondary"
+                color="danger"
+                size="xs"
                 :disabled="loading"
                 :icon="RiDeleteBin6Line"
                 @click="deleteApiKey"
@@ -169,9 +186,8 @@
           </div>
           <div class="fr-col-auto">
             <BrandedButton
-              color="neutral"
-              size="sm"
-              level="secondary"
+              color="secondary"
+              size="xs"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changeEmailPage}`"
               :icon="RiEditLine"
@@ -202,9 +218,8 @@
           </div>
           <div class="fr-col-auto">
             <BrandedButton
-              color="neutral"
-              size="sm"
-              level="secondary"
+              color="secondary"
+              size="xs"
               as="a"
               :href="`${config.public.apiBase}/${config.public.changePasswordPage}`"
               :icon="RiEditLine"
@@ -214,27 +229,21 @@
           </div>
         </div>
       </div>
-      <AdminDangerZone
-        class="mt-5"
+      <BannerAction
+        type="danger"
+        :title="$t('Delete the account')"
       >
-        <div class="fr-col">
-          <p class="fr-m-0 text-neutral-800">
-            {{ $t('Delete your account') }}
-          </p>
-          <p class="fr-m-0 fr-text--xs text-red-600">
-            {{ $t("Be careful, this action can't be reverse.") }}
-          </p>
-        </div>
-        <div class="fr-col-auto">
+        {{ $t("Be careful, this action can't be reverse.") }}
+
+        <template #button>
           <ModalWithButton
             :title="$t('Are you sure you want to delete this organization ?')"
             size="lg"
           >
             <template #button="{ attrs, listeners }">
               <BrandedButton
-                color="red"
-                size="sm"
-                level="secondary"
+                color="danger"
+                size="xs"
                 :icon="RiDeleteBin6Line"
                 v-bind="attrs"
                 v-on="listeners"
@@ -252,9 +261,7 @@
             <template #footer>
               <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
                 <BrandedButton
-                  color="red"
-                  level="secondary"
-                  role="button"
+                  color="danger"
                   :disabled="loading"
                   @click="deleteUser"
                 >
@@ -263,8 +270,8 @@
               </div>
             </template>
           </ModalWithButton>
-        </div>
-      </AdminDangerZone>
+        </template>
+      </BannerAction>
     </PaddedContainer>
   </div>
 </template>
@@ -272,6 +279,7 @@
 <script setup lang="ts">
 import { Avatar, CopyButton } from '@datagouv/components'
 import { RiDeleteBin6Line, RiEditLine, RiEyeLine, RiRecycleLine, RiSaveLine } from '@remixicon/vue'
+import { uploadProfilePicture } from '~/api/users'
 
 const me = useMe()
 const config = useNuxtApp().$config
@@ -285,8 +293,34 @@ const passwordId = useId()
 
 const loading = ref(false)
 
+const profilePicture = ref<File | null>(null)
+
+watchEffect(() => {
+  if (me.value.about === null) {
+    me.value.about = ''
+  }
+})
+
+const setFiles = (files: Array<File>) => {
+  profilePicture.value = files[0]
+}
+
+const imagePreview = computed(() => {
+  if (!profilePicture.value) return null
+  if (typeof profilePicture.value === 'string') return profilePicture.value
+  return URL.createObjectURL(profilePicture.value)
+})
+
 async function updateMe() {
   loading.value = true
+  if (profilePicture.value) {
+    try {
+      await uploadProfilePicture(profilePicture.value)
+    }
+    catch {
+      toast.error(t(`Your profile picture couldn't be updated !`))
+    }
+  }
   try {
     me.value = await $api<Me>('/api/1/me/', {
       method: 'PUT',
@@ -297,7 +331,6 @@ async function updateMe() {
         website: me.value.website,
       },
     })
-
     toast.success(t('Profile updated !'))
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }

@@ -1,5 +1,5 @@
 <template>
-  <AdminTable :loading>
+  <AdminTable>
     <thead>
       <tr>
         <AdminTableTh
@@ -9,10 +9,10 @@
         >
           {{ t("Dataservice title") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Status") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Access") }}
         </AdminTableTh>
         <AdminTableTh>
@@ -46,12 +46,18 @@
           </AdminContentWithTooltip>
         </td>
         <td>
-          <AdminBadge :type="getStatus(dataservice).type">
+          <AdminBadge
+            size="xs"
+            :type="getStatus(dataservice).type"
+          >
             {{ getStatus(dataservice).label }}
           </AdminBadge>
         </td>
         <td>
-          <AdminBadge :type="getAccess(dataservice).type">
+          <AdminBadge
+            size="xs"
+            :type="getAccess(dataservice).type"
+          >
             {{ getAccess(dataservice).label }}
           </AdminBadge>
         </td>
@@ -71,11 +77,10 @@ import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
-import type { AdminBadgeState, DataserviceSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, DataserviceSortedBy, SortDirection } from '~/types/types'
 
 const props = defineProps<{
   dataservices: Array<Dataservice>
-  loading: boolean
   sortedBy: DataserviceSortedBy
   sortDirection: SortDirection
 }>()
@@ -85,7 +90,6 @@ defineEmits<{
 }>()
 
 const { t } = useI18n()
-const config = useRuntimeConfig()
 
 function sorted(column: DataserviceSortedBy) {
   if (props.sortedBy === column) {
@@ -94,22 +98,28 @@ function sorted(column: DataserviceSortedBy) {
   return null
 }
 
-function getStatus(dataservice: Dataservice): { label: string, type: AdminBadgeState } {
-  if (dataservice.private) {
+function getStatus(dataservice: Dataservice): { label: string, type: AdminBadgeType } {
+  if (dataservice.deleted_at) {
+    return {
+      label: t('Deleted'),
+      type: 'danger',
+    }
+  }
+  else if (dataservice.private) {
     return {
       label: t('Draft'),
-      type: 'default',
+      type: 'secondary',
     }
   }
   else {
     return {
       label: t('Public'),
-      type: 'info',
+      type: 'primary',
     }
   }
 }
 
-function getAccess(dataservice: Dataservice): { label: string, type: AdminBadgeState } {
+function getAccess(dataservice: Dataservice): { label: string, type: AdminBadgeType } {
   if (dataservice.is_restricted) {
     return {
       label: t('Restricted'),

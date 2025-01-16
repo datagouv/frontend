@@ -2,7 +2,8 @@
   <SearchableSelect
     v-model="model"
     :options="ownedOptions"
-    :label="t('Check the identity with which you want to publish')"
+    :suggest
+    :label
     :placeholder="t('Search…')"
     :get-option-id="(option) => option.organization ? option.organization.id : option.owner.id"
     :display-value="(option) => option.organization ? option.organization.name : `${option.owner.first_name} ${option.owner.last_name}`"
@@ -35,21 +36,46 @@
 </template>
 
 <script setup lang="ts">
-import { useUserAvatar } from '@datagouv/components'
+import { getUserAvatar, type Organization, type User } from '@datagouv/components'
 import type { Owned } from '~/types/types'
 
-defineProps<{
+const props = withDefaults(defineProps<{
+  label: string
   errorText?: string | null
   warningText?: string | null
-}>()
+  all?: boolean
+}>(), {
+  all: false,
+})
 const model = defineModel<Owned | null>({ required: true })
 
 const { t } = useI18n()
 const user = useMe()
+const { $api } = useNuxtApp()
 
-const avatar = computed(() => useUserAvatar(user.value, 24))
+const avatar = computed(() => getUserAvatar(user.value, 24))
 
 const ownedOptions = computed<Array<Owned>>(() => {
   return [...user.value.organizations.map(organization => ({ organization, owner: null })), { owner: user.value, organization: null }]
+})
+
+const suggest = computed(() => {
+  if (!props.all) return undefined
+
+  return async (query: string) => {
+    const users = await $api<Array<User>>('/api/1/users/suggest/', {
+      query: {
+        q: query,
+        size: 5,
+      },
+    })
+    const organizations = await $api<Array<Organization>>('/api/1/organizations/suggest/', {
+      query: {
+        q: query,
+        size: 5,
+      },
+    })
+    return [...organizations.map(organization => ({ organization, owner: null })), ...users.map(user => ({ organization: null, owner: user }))]
+  }
 })
 </script>

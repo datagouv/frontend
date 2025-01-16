@@ -42,33 +42,36 @@
         <!-- Buttons -->
       </div>
     </div>
-    <AdminDiscussionsTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :discussions="pageData ? pageData.data : []"
-      :loading="status === 'pending'"
-      :sort-direction="direction"
-      :sorted-by
-      @sort="sort"
-    />
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminDiscussionsTable
+          :discussions="pageData ? pageData.data : []"
+          :sort-direction="direction"
+          :sorted-by
+          @sort="sort"
+        />
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+
     <div
-      v-else
+      v-if="pageData && !pageData.total"
       class="flex flex-col items-center"
     >
-      <!-- <nuxt-img
-        src="/illustrations/dataset.svg"
+      <nuxt-img
+        src="/illustrations/discussion.svg"
         class="h-20"
-      /> -->
+      />
       <p class="fr-text--bold fr-my-3v">
         {{ t(`There is no discussion yet`) }}
       </p>
     </div>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
   </div>
 </template>
 
@@ -77,7 +80,8 @@ import { Pagination } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { DiscussionSortedBy, PaginatedArray, SortDirection, Thread } from '~/types/types'
+import type { DiscussionSortedBy, Thread } from '~/types/discussions'
+import type { PaginatedArray, SortDirection } from '~/types/types'
 import AdminDiscussionsTable from '~/components/AdminTable/AdminDiscussionsTable/AdminDiscussionsTable.vue'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 
