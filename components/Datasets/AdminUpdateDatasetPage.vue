@@ -134,6 +134,13 @@ async function save() {
 
   try {
     loading.value = true
+    if (
+      datasetForm.value.contact_point
+      && datasetForm.value.owned?.organization
+      && !('id' in datasetForm.value.contact_point)
+    ) {
+      datasetForm.value.contact_point = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_point)
+    }
 
     await $api(`/api/1/datasets/${dataset.value.id}/`, {
       method: 'PUT',

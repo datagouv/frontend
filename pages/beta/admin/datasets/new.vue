@@ -128,6 +128,14 @@ const filesNext = (files: Array<NewDatasetFile>) => {
 async function save() {
   try {
     loading.value = true
+    if (
+      datasetForm.value.contact_point
+      && datasetForm.value.owned?.organization
+      && !('id' in datasetForm.value.contact_point)
+    ) {
+      datasetForm.value.contact_point = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_point)
+    }
+
     newDataset.value = newDataset.value || await $api<Dataset>('/api/1/datasets/', {
       method: 'POST',
       body: JSON.stringify(toApi(datasetForm.value, { private: true })),

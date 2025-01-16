@@ -108,6 +108,7 @@ export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: 
     acronym: dataset.acronym,
     tags: dataset.tags?.map(text => ({ text })) || [],
     license: licenses.find(l => l.id === dataset.license) || null,
+    contact_point: dataset.contact_point,
     frequency: frequencies.find(f => f.id === dataset.frequency) || null,
     temporal_coverage: dataset.temporal_coverage ? { start: dataset.temporal_coverage.start, end: dataset.temporal_coverage.end } : { start: null, end: null }, // TODO fix this type, the API returns an object not a string
     spatial_zones: dataset.spatial?.zones?.map(id => zones.find(z => z.id === id)).filter(z => z !== undefined) || [],
@@ -127,6 +128,7 @@ export function toApi(form: DatasetForm, overrides: { private?: boolean, archive
     acronym: form.acronym,
     tags: form.tags.map(t => t.text),
     license: form.license?.id || '',
+    contact_point: form.contact_point && 'id' in form.contact_point ? form.contact_point.id : undefined,
     frequency: form.frequency?.id || '',
     temporal_coverage: (form.temporal_coverage.start && form.temporal_coverage.end) ? form.temporal_coverage as { start: string, end: string } : undefined,
     spatial: (form.spatial_granularity || form.spatial_zones)

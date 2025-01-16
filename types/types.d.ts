@@ -127,6 +127,7 @@ export type DatasetForm = {
   description: string
   tags: Array<Tag>
   license: License | null
+  contact_point: NewContactPoint | ContactPoint | null
   temporal_coverage: { start: null | string, end: null | string }
   frequency: Frequency | null
   spatial_zones: Array<SpatialZone>
@@ -144,6 +145,7 @@ export type NewDatasetForApi = {
   owner?: string
   tags: Array<string>
   license?: string
+  contact_point?: string | null
   temporal_coverage?: { start: string, end: string }
   frequency?: string
   spatial?: {
