@@ -23,15 +23,18 @@
     </h1>
     <div
       v-if="pageData"
-      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+      class="flex items-center justify-between"
     >
-      <div class="fr-col">
-        <h2 class="subtitle subtitle--uppercase fr-m-0">
-          {{ t('{n} posts', pageData.total) }}
-        </h2>
-      </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <!-- Buttons -->
+      <h2 class="subtitle subtitle--uppercase fr-m-0">
+        {{ t('{n} posts', pageData.total) }}
+      </h2>
+      <div>
+        <AdminInput
+          v-model="q"
+          type="search"
+          :icon="RiSearchLine"
+          :placeholder="$t('Search')"
+        />
       </div>
     </div>
 
@@ -99,26 +102,52 @@
         />
       </div>
     </LoadingBlock>
+
+    <div
+      v-if="status != 'pending' && pageData && !pageData.total"
+      class="flex flex-col items-center"
+    >
+      <nuxt-img
+        src="/illustrations/journal.svg"
+        class="h-20"
+      />
+      <template v-if="q">
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`No results for "{q}"`, { q }) }}
+        </p>
+        <BrandedButton
+          color="primary"
+          @click="q = qDebounced = ''"
+        >
+          {{ $t('Reset filters') }}
+        </BrandedButton>
+      </template>
+      <p
+        v-else
+        class="fr-text--bold fr-my-3v"
+      >
+        {{ t(`No posts`) }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination, type User } from '@datagouv/components'
+import { formatDate, Pagination } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { AdminBadgeType, DiscussionSortedBy, PaginatedArray, Post, SortDirection } from '~/types/types'
+import { RiSearchLine } from '@remixicon/vue'
+import type { AdminBadgeType, PaginatedArray } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
+import type { Post } from '~/types/posts'
 
 const { t } = useI18n()
 
 const page = ref(1)
 const pageSize = ref(10)
-const sortedBy = ref<DiscussionSortedBy>('created_at')
-const direction = ref<SortDirection>('desc')
-const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
@@ -126,7 +155,6 @@ const params = computed(() => {
   return {
     with_drafts: true,
 
-    sort: sortDirection.value,
     q: qDebounced.value,
     page_size: pageSize.value,
     page: page.value,

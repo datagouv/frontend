@@ -62,7 +62,7 @@
             {{ harvester.name }}
           </h1>
           <BrandedButton
-            v-if="harvester.validation.state === 'accepted'"
+            v-if="harvester.validation.state === 'accepted' && harvester.active"
             :icon="RiPlayLargeLine"
             size="xs"
             :loading
@@ -197,7 +197,7 @@
 </template>
 
 <script setup lang="ts">
-import { RiCalendarEventLine, RiCheckboxCircleLine, RiExternalLinkLine, RiLink, RiPlayLargeLine, RiToolsLine } from '@remixicon/vue'
+import { RiCalendarEventLine, RiCheckboxCircleLine, RiLink, RiPlayLargeLine, RiToolsLine } from '@remixicon/vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 import TabLinks from '~/components/TabLinks.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'

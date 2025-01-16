@@ -41,6 +41,7 @@ export default defineNuxtConfig({
       publishingReuseFeedbackUrl: 'https://tally.so/r/mV98y6',
       publishingHarvesterFeedbackUrl: 'https://tally.so/r/3NMLOQ',
       harvesterRequestValidationUrl: 'https://support.data.gouv.fr/help/datagouv/moissonnage#support-tree',
+      harvesterPreviewMaxItems: 20, // SHould be the same as `HARVEST_PREVIEW_MAX_ITEMS` in udata
 
       newsletterSubscriptionUrl: 'https://f.info.data.gouv.fr/f/lp/infolettre-data-gouv-fr-landing-page/lk3q01y6',
 

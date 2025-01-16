@@ -162,6 +162,7 @@
                               :to="link.link"
                               target="_self"
                               :external="link.external"
+                              :aria-current="getAriaCurrent(localePath(link.link))"
                             >
                               {{ link.label }}
                             </NuxtLinkLocale>
@@ -245,7 +246,7 @@
                 href="/"
                 title="Retourner à l'accueil de data.gouv.fr"
               >
-                <SiteLogo class="text-gray-logo text-2xl" />
+                <SiteLogo class="text-gray-logo text-xl tracking-wide" />
               </a>
             </div>
           </div>
@@ -356,6 +357,7 @@
                 :to="link.link"
                 target="_self"
                 :external="link.external"
+                :aria-current="getAriaCurrent(localePath(link.link))"
               >
                 {{ link.label }}
               </NuxtLinkLocale>
@@ -451,14 +453,17 @@ defineProps<{
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const localePath = useLocalePath()
 const me = useMaybeMe()
+const currentRoute = useRoute()
+const router = useRouter()
 
 const searchInputId = useId()
 
 const menu = [
   { label: t('Data'), link: '/datasets/', external: true },
-  { label: t('Reuses'), link: '/reuses/', external: true },
   { label: t('API'), link: '/dataservices/', external: true },
+  { label: t('Reuses'), link: '/reuses/', external: true },
   { label: t('Organizations'), link: '/organizations/', external: true },
   { label: t('Getting started on {site}', { site: config.public.title }), items: [
     { label: t('What is {site}?', { site: config.public.title }), link: '/pages/about/a-propos_data-gouv/', external: true },
@@ -470,6 +475,8 @@ const menu = [
   { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
 ]
 
+const routesInPath = router.getRoutes().map(route => route.path).filter(path => currentRoute.path.startsWith(path))
+
 const publishMenu = [
   { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
   { label: t('A dataservice'), icon: RiRobot2Line, link: '/beta/admin/dataservices/new/' },
@@ -480,4 +487,11 @@ const publishMenu = [
 ]
 
 const filteredPublishMenu = computed(() => publishMenu.filter(item => !('show' in item) || item.show))
+
+function getAriaCurrent(link: string) {
+  if (currentRoute.path === link) {
+    return 'page'
+  }
+  return routesInPath.includes(localePath(link))
+}
 </script>
