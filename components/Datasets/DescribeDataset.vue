@@ -336,7 +336,7 @@
             class="fr-fieldset__legend"
           >
             <h2 class="subtitle subtitle--uppercase fr-mb-3v">
-              {{ t("Access Point") }}
+              {{ t("Contact Point") }}
             </h2>
           </legend>
           <LinkedToAccordion
