@@ -849,6 +849,7 @@
   "Please note that the data will be published once the harvester has been validated.": "Please note that the data will be published once the harvester has been validated.",
   "Start typing to search in {type}": "Start typing to search in {type}",
   "Search “{query}” in {type}": "Search “{query}” in {type}",
+  "Transfer": "Transfer",
   "Transfer dataservice": "Transfer dataservice",
   "Topics": "Topics",
   "Reference Data": "Reference Data",
