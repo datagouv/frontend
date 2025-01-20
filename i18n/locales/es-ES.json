@@ -813,6 +813,8 @@
   "Harvester validation": "Harvester validation",
   "Status:": "Status:",
   "Waiting validation": "Waiting validation",
+  "Inactive": "Inactive",
+  "Refused": "Refused",
   "Your harvester is created, it's waiting the validation from the administration team.": "Your harvester is created, it's waiting the validation from the administration team.",
   "Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)": "Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)",
   "Request validation": "Request validation",

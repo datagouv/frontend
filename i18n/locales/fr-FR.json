@@ -841,6 +841,8 @@
   "Harvester validation": "Validation du moissonneur",
   "Status:": "Statut :",
   "Waiting validation": "En attente de validation",
+  "Inactive": "Inactif",
+  "Refused": "Refusé",
   "Your harvester is created, it's waiting the validation from the administration team.": "Votre moissonneur a été créé, il est en attente de validation par l’équipe d’administration.",
   "Please notify us via the contact form below if you want this harvester validated. You'll be notify when approved (or refused)": "Merci de nous informer via le formulaire de contact suivant si vous souhaitez que nous validions votre moissonneur. Vous serez notifié à l’approbation (ou au refus).",
   "Request validation": "Demander la validation",
