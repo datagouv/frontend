@@ -38,16 +38,67 @@
     </Breadcrumb>
 
     <div v-if="dataset">
-      <div class="flex items-center justify-between mb-5">
-        <h1 class="fr-h3 !mb-0">
-          {{ dataset.title }}
-        </h1>
-        <a
-          :href="dataset.page"
-          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-eye-line"
-        >
-          {{ t('See the dataset page') }}
-        </a>
+      <div class="mb-5">
+        <div class="flex items-center justify-between mb-3">
+          <h1 class="fr-h3 !mb-0">
+            {{ dataset.title }}
+          </h1>
+          <a
+            :href="dataset.page"
+            class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-eye-line"
+          >
+            {{ t('See the dataset page') }}
+          </a>
+        </div>
+
+        <div class="text-sm text-mentionGrey space-y-1.5">
+          <div class="space-x-1 flex items-center">
+            <RiPriceTag3Line class="inline size-3" />
+            <span>{{ $t('Metadata:') }}</span>
+            <Tooltip>
+              <QualityScore
+                class="w-32"
+                :score="dataset.quality.score"
+              />
+              <template #tooltip>
+                <QualityScoreTooltipContent :dataset="dataset" />
+              </template>
+            </Tooltip>
+          </div>
+          <div class="space-x-1">
+            <RiInformationLine class="inline size-3" />
+            <span>{{ $t('Informations:') }}</span>
+            <span class="space-x-2">
+              <Tooltip class="inline">
+                <span class="space-x-0.5 text-sm">
+                  <RiEyeLine class="inline size-3.5" />
+                  <span>{{ summarize(dataset.metrics.views ?? 0) }}</span>
+                </span>
+                <template #tooltip>
+                  {{ $t('Views') }}
+                </template>
+              </Tooltip>
+              <Tooltip class="inline">
+                <span class="space-x-0.5 text-sm">
+                  <RiDownloadLine class="inline size-3.5" />
+                  <span>{{ summarize(dataset.metrics.resources_downloads ?? 0) }}</span>
+                </span>
+                <template #tooltip>
+                  {{ $t('Downloads') }}
+                </template>
+              </Tooltip>
+              <Tooltip class="inline">
+                <span class="space-x-0.5 text-sm">
+                  <RiLineChartLine class="inline size-3.5" />
+                  <span>{{ summarize(dataset.metrics.reuses) }}</span>
+                </span>
+                <template #tooltip>
+                  {{ $t('Reuses') }}
+                </template>
+              </Tooltip>
+            </span>
+          </div>
+        </div>
       </div>
 
       <TabLinks
@@ -64,7 +115,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset } from '@datagouv/components'
+import { QualityScore, summarize, type Dataset } from '@datagouv/components'
+import { RiDownloadLine, RiEyeLine, RiInformationLine, RiLineChartLine, RiPriceTag3Line } from '@remixicon/vue'
+import QualityScoreTooltipContent from '~/components/dataset/QualityScore/QualityScoreTooltipContent/QualityScoreTooltipContent.vue'
 import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()

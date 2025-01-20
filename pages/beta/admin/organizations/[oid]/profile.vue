@@ -72,22 +72,14 @@
     <DescribeOrganizationFrom
       v-if="organization"
       ref="form"
+      type="update"
+      :submit-label="$t('Save')"
       :organization="organization"
       :errors="errors"
       :show-legend="false"
       :show-well="false"
       @submit="updateCurrentOrganization"
     >
-      <template #submitButton="{ submit }">
-        <button
-          class="fr-btn fr-btn--icon-left fr-icon-save-line"
-          :disabled="loading"
-          data-testid="submitButton"
-          @click="submit"
-        >
-          {{ t("Save") }}
-        </button>
-      </template>
       <template #default>
         <BannerAction
           class="mt-12"

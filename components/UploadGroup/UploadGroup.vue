@@ -1,6 +1,7 @@
 <template>
+  <!-- DSFR fr-upload-group is missing a relative positionning to set the correct border in case of error -->
   <div
-    class="fr-upload-group"
+    class="fr-upload-group relative"
     :class="containerClass"
   >
     <label
