@@ -59,7 +59,10 @@
           {{ t("{n} members", { n: organization.members.length }) }}
         </h2>
       </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
+      <div
+        v-if="isAdmin"
+        class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6"
+      >
         <ModalWithButton
           :title="t('Add member to the organization')"
           size="lg"
