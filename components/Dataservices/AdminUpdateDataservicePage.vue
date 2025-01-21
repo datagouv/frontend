@@ -85,7 +85,7 @@ import type { Dataservice } from '@datagouv/components'
 import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
-import type { ContactPoint, DataserviceForm, LinkToSubject } from '~/types/types'
+import type { DataserviceForm, LinkToSubject } from '~/types/types'
 import { toForm, toApi } from '~/utils/dataservices'
 
 const { t } = useI18n()
@@ -117,11 +117,14 @@ async function save() {
     loading.value = true
 
     if (
-      dataserviceForm.value.contact_point
+      dataserviceForm.value.contact_points
       && dataserviceForm.value.owned?.organization
-      && !('id' in dataserviceForm.value.contact_point)
     ) {
-      dataserviceForm.value.contact_point = await newContactPoint($api, dataserviceForm.value.owned?.organization, dataserviceForm.value.contact_point)
+      for (const contactPointKey in dataserviceForm.value.contact_points) {
+        if (!('id' in dataserviceForm.value.contact_points[contactPointKey])) {
+          dataserviceForm.value.contact_points[contactPointKey] = await newContactPoint($api, dataserviceForm.value.owned?.organization, dataserviceForm.value.contact_points[contactPointKey])
+        }
+      }
     }
     await $api(`/api/1/dataservices/${dataservice.value.id}/`, {
       method: 'PATCH',

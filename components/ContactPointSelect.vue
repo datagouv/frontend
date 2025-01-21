@@ -9,7 +9,6 @@
         :display-value="(option) => 'id' in option ? (option.name || option.email || $t('Unknown')) : t('New contact')"
         :get-option-id="(option) => 'id' in option ? option.id : 'new'"
         :multiple="false"
-        required
         :loading
         :error-text
         :warning-text
@@ -39,6 +38,7 @@
     >
       <InputGroup
         v-model="newContactForm.name"
+        required
         :label="t('Contact Name')"
         :has-error="!!getFirstError('name')"
         :has-warning="!!getFirstWarning('name')"
@@ -106,11 +106,15 @@ const { form: newContactForm, getFirstError, getFirstWarning, touch } = useForm(
   email: '',
   contact_form: '',
 } as NewContactPoint, {
+  name: [required()],
   email: [email()],
   contact_form: [url()],
 }, {})
 
 const contact = defineModel<ContactPointInForm | null>()
+
+console.log(contact.value)
+
 const props = defineProps<{
   organization: Organization
   errorText?: string | null

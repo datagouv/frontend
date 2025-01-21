@@ -72,7 +72,6 @@ import Step2AddDatasets from '~/components/Dataservices/New/Step2AddDatasets.vue
 import Step3CompletePublication from '~/components/Dataservices/New/Step3CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
 import type {
-  ContactPoint,
   DataserviceForm,
   DatasetSuggest,
 } from '~/types/types'
@@ -110,7 +109,7 @@ const dataserviceForm = useState(
       license: null,
       private: true,
       rate_limiting: '',
-      contact_point: null,
+      contact_points: [],
     } as DataserviceForm),
 )
 
@@ -147,11 +146,14 @@ async function save() {
   try {
     loading.value = true
     if (
-      dataserviceForm.value.contact_point
+      dataserviceForm.value.contact_points
       && dataserviceForm.value.owned?.organization
-      && !('id' in dataserviceForm.value.contact_point)
     ) {
-      dataserviceForm.value.contact_point = await newContactPoint($api, dataserviceForm.value.owned?.organization, dataserviceForm.value.contact_point)
+      for (const contactPointKey in dataserviceForm.value.contact_points) {
+        if (!('id' in dataserviceForm.value.contact_points[contactPointKey])) {
+          dataserviceForm.value.contact_points[contactPointKey] = await newContactPoint($api, dataserviceForm.value.owned?.organization, dataserviceForm.value.contact_points[contactPointKey])
+        }
+      }
     }
 
     newDataservice.value = await $api<Dataservice>('/api/1/dataservices/', {

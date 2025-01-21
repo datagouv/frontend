@@ -135,11 +135,14 @@ async function save() {
   try {
     loading.value = true
     if (
-      datasetForm.value.contact_point
+      datasetForm.value.contact_points
       && datasetForm.value.owned?.organization
-      && !('id' in datasetForm.value.contact_point)
     ) {
-      datasetForm.value.contact_point = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_point)
+      for (const contactPointKey in datasetForm.value.contact_points) {
+        if (!('id' in datasetForm.value.contact_points[contactPointKey])) {
+          datasetForm.value.contact_points[contactPointKey] = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_points[contactPointKey])
+        }
+      }
     }
 
     await $api(`/api/1/datasets/${dataset.value.id}/`, {
