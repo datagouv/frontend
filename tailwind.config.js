@@ -24,6 +24,9 @@ export default {
       aria: {
         'current-page': 'current="page"',
       },
+      boxShadow: {
+        input: 'inset 0 -2px 0 0 var(--blue-cumulus-sun-368-moon-732)',
+      },
       fontFamily: {
         spectral: 'Spectral',
         gothic: 'URW Gothic',
