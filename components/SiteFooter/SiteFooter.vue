@@ -3,7 +3,7 @@
     <div class="bg-white py-6 md:py-8 border-t border-t-gray-default">
       <div class="fr-container">
         <div class="flex divide-x divide-gray-default">
-          <div class="w-full md:pr-[8%] md:w-2/3 flex">
+          <div class="w-full md:pr-[6%] md:w-2/3 flex">
             <div class="flex-none flex items-center fr-mr-5v">
               <NuxtImg
                 src="/img/newspaper.svg"
@@ -44,7 +44,7 @@
               </div>
             </div>
           </div>
-          <div class="w-full md:pl-[8%] md:w-1/3">
+          <div class="w-full md:pl-[6%] md:w-1/3">
             <div class="flex flex-col items-start justify-between h-full">
               <p class="font-extrabold text-2xl leading-8 text-gray-title">
                 {{ $t("Follow us") }}
@@ -53,7 +53,7 @@
               <ul class="flex justify-between list-none m-0 p-0 *:p-0 -ml-4">
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Twitter - new tab')"
                     href="https://twitter.com/datagouvfr"
                     target="_blank"
@@ -63,7 +63,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Linkedin - new tab')"
                     href="https://www.linkedin.com/company/data-gouv-fr/"
                     target="_blank"
@@ -73,7 +73,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Mastodon - new tab')"
                     href="https://social.numerique.gouv.fr/@datagouvfr"
                     target="_blank"
@@ -83,7 +83,17 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
+                    :title="$t('Bluesky - new tab')"
+                    href="https://bsky.app/profile/datagouvfr.bsky.social"
+                    target="_blank"
+                  >
+                    <RiBlueskyLine />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Github - new tab')"
                     href="https://github.com/datagouv/data.gouv.fr"
                     target="_blank"
@@ -93,7 +103,7 @@
                 </li>
                 <li>
                   <NuxtLinkLocale
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('RSS - new tab')"
                     to="datasets/recent.atom"
                     :external="true"
@@ -307,7 +317,7 @@
 </template>
 
 <script setup lang="ts">
-import { RiGithubLine, RiLinkedinBoxLine, RiMastodonLine, RiRssLine, RiTwitterLine } from '@remixicon/vue'
+import { RiBlueskyLine, RiGithubLine, RiLinkedinBoxLine, RiMastodonLine, RiRssLine, RiTwitterLine } from '@remixicon/vue'
 
 const config = useRuntimeConfig()
 
