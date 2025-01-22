@@ -53,7 +53,7 @@
               <ul class="flex justify-between list-none m-0 p-0 *:p-0 -ml-4">
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Twitter - new tab')"
                     href="https://twitter.com/datagouvfr"
                     target="_blank"
@@ -63,7 +63,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Linkedin - new tab')"
                     href="https://www.linkedin.com/company/data-gouv-fr/"
                     target="_blank"
@@ -73,7 +73,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Mastodon - new tab')"
                     href="https://social.numerique.gouv.fr/@datagouvfr"
                     target="_blank"
@@ -83,7 +83,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Bluesky - new tab')"
                     href="https://bsky.app/profile/datagouvfr.bsky.social"
                     target="_blank"
@@ -93,7 +93,7 @@
                 </li>
                 <li>
                   <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('Github - new tab')"
                     href="https://github.com/datagouv/data.gouv.fr"
                     target="_blank"
@@ -103,7 +103,7 @@
                 </li>
                 <li>
                   <NuxtLinkLocale
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline"
+                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
                     :title="$t('RSS - new tab')"
                     to="datasets/recent.atom"
                     :external="true"
