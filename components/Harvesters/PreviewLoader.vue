@@ -15,15 +15,14 @@
         </p>
       </div>
     </SimpleBanner>
-    <div class="animate-pulse-placeholder space-y-8">
-      <div class="bg-gray-200 w-64 h-6 mb-3 " />
+    <div class="animate-pulse-placeholder space-y-8 mt-3.5">
       <div class="space-y-1.5 mb-5">
-        <div class="bg-gray-200 w-48 h-4 " />
-        <div class="bg-gray-200 w-72 h-4 " />
-        <div class="bg-gray-200 w-64 h-4 " />
-        <div class="bg-gray-200 w-52 h-4 " />
+        <div class="bg-gray-200 w-72 h-5" />
+        <div class="bg-gray-200 w-72 h-5" />
+        <div class="bg-gray-200 w-32 h-5" />
+        <div class="bg-gray-200 w-56 h-5" />
       </div>
-      <div class="bg-gray-200 w-64 h-4 mb-2.5" />
+      <div class="bg-gray-200 w-96 h-5 mb-2.5" />
       <AdminTable class="!pt-0">
         <thead>
           <tr>
@@ -31,13 +30,13 @@
               <div class="bg-gray-200 w-32 h-4 mb-0.5" />
             </AdminTableTh>
             <AdminTableTh scope="col">
-              <div class="bg-gray-200 w-32 h-4 mb-0.5" />
+              <div class="bg-gray-200 w-12 h-4 mb-0.5" />
             </AdminTableTh>
             <AdminTableTh scope="col">
               <div class="bg-gray-200 w-32 h-4 mb-0.5" />
             </AdminTableTh>
             <AdminTableTh scope="col">
-              <div class="bg-gray-200 w-32 h-4 mb-0.5" />
+              <div class="bg-gray-200 w-8 h-4 mb-0.5" />
             </AdminTableTh>
           </tr>
         </thead>
@@ -47,16 +46,16 @@
             :key="i"
           >
             <td>
-              <div class="bg-gray-200 w-64 h-4 " />
+              <div class="bg-gray-200 w-80 h-4 " />
             </td>
             <td>
-              <div class="bg-gray-200 w-64 h-4 " />
+              <div class="bg-gray-200 w-12 h-4 " />
             </td>
             <td>
-              <div class="bg-gray-200 w-64 h-4 " />
+              <div class="bg-gray-200 w-32 h-4 " />
             </td>
             <td class="font-mono !text-right">
-              <div class="bg-gray-200 w-64 h-4 " />
+              <div class="bg-gray-200 w-8 h-4 " />
             </td>
           </tr>
         </tbody>
