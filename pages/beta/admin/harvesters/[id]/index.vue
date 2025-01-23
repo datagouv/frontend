@@ -160,6 +160,13 @@
       <p class="fr-text--bold fr-my-3v">
         {{ $t(`No job yet.`) }}
       </p>
+      <BrandedButton
+        color="primary"
+        size="xs"
+        :href="`/beta/admin/harvesters/${harvester.id}/configuration`"
+      >
+        {{ $t('Go to configuration') }}
+      </BrandedButton>
     </div>
   </div>
 </template>
@@ -169,6 +176,7 @@ import { formatDate, Pagination } from '@datagouv/components'
 import { RiArchiveLine, RiCheckLine, RiCloseLine, RiDatabase2Line, RiEyeOffLine, RiRobot2Line } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
+import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 import JobBadge from '~/components/Harvesters/JobBadge.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
 import type { PaginatedArray } from '~/types/types'
