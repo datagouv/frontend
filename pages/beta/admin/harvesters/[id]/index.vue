@@ -35,23 +35,13 @@
                 scope="col"
                 class="w-12"
               >
-                <Tooltip class="ml-auto">
-                  <RiDatabase2Line class="size-3.5" />
-                  <template #tooltip>
-                    {{ $t('Datasets') }}
-                  </template>
-                </Tooltip>
+                {{ $t("Datasets") }}
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
                 class="w-12"
               >
-                <Tooltip class="ml-auto">
-                  <RiRobot2Line class="size-3.5" />
-                  <template #tooltip>
-                    {{ $t('Dataservices') }}
-                  </template>
-                </Tooltip>
+                {{ $t('API') }}
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
