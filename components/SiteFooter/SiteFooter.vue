@@ -330,7 +330,7 @@ type Link = {
 
 const openDataLinks: Array<Link> = [
   { label: t('Topics'), link: '/pages/thematiques-a-la-une' },
-  { label: t('Reference Data'), link: 'pages/spd/reference' },
+  { label: t('Reference Data'), link: '/pages/spd/reference' },
 ]
 
 if (config.public.csvDatasetId) {
