@@ -62,6 +62,7 @@
               {{ $t('Failed items') }}
             </template>
           </Tooltip>
+          <span>{{ $t('({count} in total)', { count: job.items.length }) }}</span>
         </span>
       </div>
     </div>

@@ -793,6 +793,7 @@
   "Skipped items": "Skipped items",
   "Archived items": "Archived items",
   "Failed items": "Failed items",
+  "({count} in total)": "({count} in total)",
   "ID": "ID",
   "Started": "Started",
   "Skipped": "Skipped",

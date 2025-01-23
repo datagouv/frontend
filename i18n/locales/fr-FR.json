@@ -821,6 +821,7 @@
   "Skipped items": "Éléments ignorés",
   "Archived items": "Éléments archivés",
   "Failed items": "Éléments en échec",
+  "({count} in total)": "({count} au total)",
   "ID": "ID",
   "Started": "Démarré",
   "Skipped": "Ignoré",
