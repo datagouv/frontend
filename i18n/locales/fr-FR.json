@@ -44,6 +44,8 @@
   "Next page": "Page suivante",
   "Last page": "Dernière page",
   "Preview": "Prévisualiser",
+  "Your harvester's preview is loading.": "La prévisualisation de votre moissonneur est en cours.",
+  "This may take a few moments, thank you for your patience!": "Cela peut prendre quelques instants, merci de votre patience !",
   "URL": "URL",
   "MIME Type": "Type MIME",
   "Created on": "Créée le",
