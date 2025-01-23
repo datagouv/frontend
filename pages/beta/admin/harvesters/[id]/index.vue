@@ -163,7 +163,7 @@
 
 <script setup lang="ts">
 import { formatDate, Pagination } from '@datagouv/components'
-import { RiArchiveLine, RiCheckLine, RiCloseLine, RiDatabase2Line, RiEyeOffLine, RiRobot2Line } from '@remixicon/vue'
+import { RiArchiveLine, RiCheckLine, RiCloseLine, RiEyeOffLine } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
