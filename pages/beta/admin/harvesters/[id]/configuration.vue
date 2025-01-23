@@ -26,7 +26,7 @@
             v-if="!previewJob"
             class="flex items-center justify-center"
           >
-            <AdminLoader class="size-20" />
+            <PreviewLoader />
           </div>
           <div
             v-else-if="previewJob"
@@ -94,6 +94,7 @@ import { RiDeleteBin6Line } from '@remixicon/vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 import DescribeHarvester from '~/components/Harvesters/DescribeHarvester.vue'
 import JobPage from '~/components/Harvesters/JobPage.vue'
+import PreviewLoader from '~/components/Harvesters/PreviewLoader.vue'
 import type { HarvesterForm, HarvesterJob, HarvesterSource } from '~/types/harvesters'
 import { toForm, toApi } from '~/utils/harvesters'
 
