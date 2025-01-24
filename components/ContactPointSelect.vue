@@ -113,8 +113,6 @@ const { form: newContactForm, getFirstError, getFirstWarning, touch } = useForm(
 
 const contact = defineModel<ContactPointInForm | null>()
 
-console.log(contact.value)
-
 const props = defineProps<{
   organization: Organization
   errorText?: string | null

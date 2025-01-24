@@ -344,11 +344,17 @@
             :accordion="contactPointAccordionId"
             @blur="touch('contact_points')"
           >
+            <template v-for="(contact_point, index) in form.contact_points">
+              <ContactPointSelect
+                v-if="contact_point.role == 'contact'"
+                :key="'id' in contact_point ? contact_point.id : index"
+                v-model="form.contact_points[index]"
+                :organization="form.owned?.organization"
+              />
+            </template>
             <ContactPointSelect
-              v-for="(contact_point, index) in form.contact_points"
-              v-if="contact_point.role === 'contact'"
-              :key="'id' in contact_point ? contact_point.id : index"
-              v-model="form.contact_points[index]"
+              v-if="form.contact_points.length === 0"
+              v-model="form.contact_points[0]"
               :organization="form.owned?.organization"
             />
           </LinkedToAccordion>
