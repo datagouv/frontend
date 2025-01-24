@@ -105,6 +105,7 @@ const { form: newContactForm, getFirstError, getFirstWarning, touch } = useForm(
   name: '',
   email: '',
   contact_form: '',
+  role: 'contact',
 } as NewContactPoint, {
   name: [required()],
   email: [email()],

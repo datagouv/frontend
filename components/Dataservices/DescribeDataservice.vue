@@ -347,6 +347,7 @@
               />
             </template>
             <ContactPointSelect
+              class="bg-datagouv-light"
               v-if="form.contact_points.length === 0"
               v-model="form.contact_points[0]"
               :organization="form.owned?.organization"

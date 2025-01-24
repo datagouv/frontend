@@ -9,6 +9,7 @@ export async function newContactPoint(api: $Fetch, organization: Organization, c
       name: contactPoint.name,
       email: contactPoint.email,
       contact_form: contactPoint.contact_form,
+      role: contactPoint.role,
       organization: organization.id,
     }),
   })
