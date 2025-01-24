@@ -62,6 +62,9 @@
           :hint-text="$t('Max size: 4 Mb. Accepted formats: JPEG, JPG and PNG.')"
           show-label
           required
+          :has-error="!!getFirstError('image')"
+          :error-text="getFirstError('image')"
+          :warning-text="getFirstWarning('image')"
           @change="setFiles"
         />
         <div
@@ -95,6 +98,7 @@
         {{ submitLabel }}
       </BrandedButton>
     </div>
+    <slot />
   </div>
 </template>
 

@@ -6,7 +6,7 @@
         :options="contactsWithNewOption"
         :label="t('Choose the contact point with which you want to publish')"
         :placeholder="t('Select a contact point')"
-        :display-value="(option) => 'id' in option ? option.name : t('New contact')"
+        :display-value="(option) => 'id' in option ? (option.name || option.email || $t('Unknown')) : t('New contact')"
         :get-option-id="(option) => 'id' in option ? option.id : 'new'"
         :multiple="false"
         required
@@ -16,7 +16,15 @@
       >
         <template #option="{ option }">
           <span v-if="'id' in option">
-            {{ option.name }} <template v-if="option.email">({{ option.email }})</template>
+            <template v-if="option.name">
+              {{ option.name }} <template v-if="option.email">({{ option.email }})</template>
+            </template>
+            <template v-else-if="option.email">
+              {{ option.email }}
+            </template>
+            <template v-else>
+              {{ $t('Unknown') }}
+            </template>
           </span>
           <span v-else>
             {{ t('New contact') }}
@@ -71,6 +79,15 @@
         {{ t("Contact link:") }} {{ contact.contact_form }}
       </div>
     </div>
+    <button
+      v-if="! contact || 'id' in contact"
+      class="flex items-center space-x-1 text-datagouv-dark"
+      type="button"
+      @click="contact = newContactForm"
+    >
+      <RiAddLine class="size-4" />
+      <span>{{ $t('New contact') }}</span>
+    </button>
   </div>
 </template>
 
@@ -78,6 +95,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Organization } from '@datagouv/components'
+import { RiAddLine } from '@remixicon/vue'
 import InputGroup from './InputGroup/InputGroup.vue'
 import type { ContactPoint, ContactPointInForm, NewContactPoint, PaginatedArray } from '~/types/types'
 

@@ -63,18 +63,11 @@
             :key="resource.id"
           >
             <td>
-              <AdminContentWithTooltip>
-                <a
-                  class="fr-link fr-reset-link"
-                  :href="`/${locale}/admin/dataset/${dataset.id}/resource/${resource.id}`"
-                >
-                  <TextClamp
-                    :text="resource.title"
-                    :auto-resize="true"
-                    :max-lines="2"
-                  />
-                </a>
-              </AdminContentWithTooltip>
+              <TextClamp
+                :text="resource.title"
+                :auto-resize="true"
+                :max-lines="2"
+              />
             </td>
             <td>
               <AdminBadge
@@ -102,9 +95,7 @@
                 button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
                 @update:model-value="() => {}"
                 @submit="(file) => saveFile(index, resource, file)"
-              >
-                <template #button />
-              </FileEditModal>
+              />
             </td>
           </tr>
         </tbody>

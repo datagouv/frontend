@@ -40,6 +40,8 @@
     />
     <OrganizationNewStep2DescribeOrganization
       v-if="currentStep === 2"
+      type="create"
+      :submit-label="$t('Next')"
       :organization="organizationForm"
       :errors="errors"
       :loading

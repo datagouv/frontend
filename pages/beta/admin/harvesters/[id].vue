@@ -88,26 +88,10 @@
             <span>{{ $t('Schedule:') }}</span>
             <span class="font-mono">{{ harvester.schedule || 'N/A' }}</span>
           </div>
-          <div
-            v-if="harvester.validation.state !== 'accepted'"
-            class="space-x-1"
-          >
+          <div class="space-x-1">
             <RiCheckboxCircleLine class="inline size-3" />
             <span>{{ $t('Status:') }}</span>
-            <AdminBadge
-              v-if="harvester.validation.state === 'pending'"
-              type="secondary"
-              size="xs"
-            >
-              {{ $t('Waiting validation') }}
-            </AdminBadge>
-            <AdminBadge
-              v-if="harvester.validation.state === 'refused'"
-              type="danger"
-              size="xs"
-            >
-              {{ $t('Refused') }}
-            </AdminBadge>
+            <HarvesterBadge :harvester />
           </div>
         </div>
 
@@ -199,6 +183,7 @@
 <script setup lang="ts">
 import { RiCalendarEventLine, RiCheckboxCircleLine, RiLink, RiPlayLargeLine, RiToolsLine } from '@remixicon/vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
+import HarvesterBadge from '~/components/Harvesters/HarvesterBadge.vue'
 import TabLinks from '~/components/TabLinks.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
 

@@ -34,7 +34,7 @@
         </Accordion>
         <Accordion
           :id="addTypeAccordionId"
-          :title="('Choose a type')"
+          :title="t('Choose a type')"
           :state="accordionState('type')"
         >
           <div class="prose prose-neutral fr-m-0">

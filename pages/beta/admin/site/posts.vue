@@ -28,13 +28,20 @@
       <h2 class="subtitle subtitle--uppercase fr-m-0">
         {{ t('{n} posts', pageData.total) }}
       </h2>
-      <div>
+      <div class="flex space-x-2.5">
         <AdminInput
           v-model="q"
           type="search"
           :icon="RiSearchLine"
           :placeholder="$t('Search')"
         />
+        <BrandedButton
+          size="xs"
+          :icon="RiAddLine"
+          href="/beta/admin/posts/new"
+        >
+          {{ $t('Create a post') }}
+        </BrandedButton>
       </div>
     </div>
 
@@ -137,12 +144,13 @@ import { formatDate, Pagination } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RiSearchLine } from '@remixicon/vue'
+import { RiAddLine, RiSearchLine } from '@remixicon/vue'
 import type { AdminBadgeType, PaginatedArray } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import type { Post } from '~/types/posts'
+import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 
 const { t } = useI18n()
 

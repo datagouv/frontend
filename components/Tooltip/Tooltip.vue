@@ -11,6 +11,7 @@
         ref="reference"
         v-bind="$attrs"
         :aria-describedby="id"
+        class="!mb-0"
       >
         <slot />
       </p>

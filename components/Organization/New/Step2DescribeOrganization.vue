@@ -279,27 +279,23 @@
             {{ errors[0] }}
           </p>
         </Alert>
-        <div class="fr-grid-row justify-between">
+        <div
+          class="fr-grid-row"
+          :class="{ 'fr-grid-row--right': type === 'update', 'justify-between': type === 'create' }"
+        >
           <BrandedButton
+            v-if="type === 'create'"
             color="secondary"
             @click="$emit('previous')"
           >
-            {{ t("Previous") }}
+            {{ $t('Previous') }}
           </BrandedButton>
-          <slot
-            name="submitButton"
-            :loading
-            :submit
+          <BrandedButton
+            color="primary"
+            @click="submit"
           >
-            <BrandedButton
-              color="primary"
-              data-testid="submitButton"
-              :loading
-              @click="submit"
-            >
-              {{ t("Next") }}
-            </BrandedButton>
-          </slot>
+            {{ submitLabel }}
+          </BrandedButton>
         </div>
         <slot />
       </PaddedContainer>
@@ -323,8 +319,10 @@ import type { PublishingFormAccordionState } from '~/types/form'
 import Sidemenu from '~/components/Sidemenu/Sidemenu.vue'
 
 const props = withDefaults(defineProps<{
+  type: 'create' | 'update'
   organization: NewOrganization | Organization
   errors: Array<string>
+  submitLabel: string
   loading?: boolean
   showLegend?: boolean
   showWell?: boolean
