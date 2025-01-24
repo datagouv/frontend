@@ -2,12 +2,7 @@ import type { Dataset, Reuse, ReuseType } from '@datagouv/components'
 import type { DatasetSuggest, NewReuseForApi, ReuseForm, ReuseTopic } from '~/types/types'
 
 export function getReuseAdminUrl(reuse: Reuse): string {
-  if (reuse.owner) {
-    return `/beta/admin/me/reuses/${reuse.id}`
-  }
-  else {
-    return `/beta/admin/organizations/${reuse.organization.id}/reuses/${reuse.id}`
-  }
+  return `/beta/admin/reuses/${reuse.id}`
 }
 
 export function toForm(reuse: Reuse, types: Array<ReuseType>, topics: Array<ReuseTopic>): ReuseForm {
