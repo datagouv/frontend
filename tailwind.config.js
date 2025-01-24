@@ -50,6 +50,7 @@ export default {
         defaultWarning: '#b32000',
         blue: {
           light: '#e3e3fd',
+          lighter: '#EEF4F8',
           tint: '#c1c1fd',
           outline: '#0a76f6',
         },

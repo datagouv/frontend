@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mb-16">
     <Breadcrumb>
       <li>
         <NuxtLinkLocale
@@ -46,11 +46,29 @@
         {{ $t('Search') }}
       </BrandedButton>
     </div>
+    <div class="flex justify-between mb-6">
+      <p class="mb-0">
+        {{ $t('{count} results', { count: organizations.total }) }}
+      </p>
+    </div>
+    <div class="grid gap-2 grid-cols-2 mb-16">
+      <OrganizationCard
+        v-for="organization in organizations.data"
+        :key="organization.id"
+        class="col-span-1"
+        :organization
+      />
+    </div>
+    <Pagination
+      :page
+      :page-size="pageSize"
+      :total-results="organizations.total"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Organization } from '@datagouv/components'
+import { Pagination, type Organization } from '@datagouv/components'
 import { RiSearch2Line } from '@remixicon/vue'
 import { debouncedRef } from '@vueuse/core'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
@@ -59,6 +77,7 @@ import type { PaginatedArray } from '~/types/types'
 const config = useRuntimeConfig()
 const route = useRoute()
 const page = ref(route.query.page ?? 1)
+const pageSize = 20
 const q = ref()
 const inputId = useId()
 const qDebounced = debouncedRef(q, config.public.searchAutocompleteDebounce)
@@ -82,7 +101,7 @@ const { data: organizations } = await useAPI<PaginatedArray<Organization>>(`/api
   {
     q: qDebounced,
     page,
-    page_size: 20,
+    page_size: pageSize,
   },
 })
 </script>
