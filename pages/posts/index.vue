@@ -71,6 +71,7 @@ const { data: posts } = await useAPI<PaginatedArray<Post>>('api/1/posts', { para
   {
     page,
     page_size: pageSize,
+    sort: '-published',
   },
 })
 </script>
