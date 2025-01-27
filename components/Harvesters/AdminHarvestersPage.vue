@@ -51,19 +51,40 @@
               <AdminTableTh scope="col">
                 {{ t("Name") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-56"
+              >
                 {{ t("Status") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-56"
+              >
+                {{ t("Implementation") }}
+              </AdminTableTh>
+              <AdminTableTh
+                scope="col"
+                class="w-32"
+              >
                 {{ t("Created at") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-32"
+              >
                 {{ t("Last run") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-24"
+              >
                 {{ t("Datasets") }}
               </AdminTableTh>
-              <AdminTableTh scope="col">
+              <AdminTableTh
+                scope="col"
+                class="w-24"
+              >
                 {{ t("Dataservices") }}
               </AdminTableTh>
             </tr>
@@ -75,26 +96,22 @@
             >
               <td>
                 <AdminContentWithTooltip>
-                  <a
+                  <NuxtLinkLocale
                     class="fr-link fr-reset-link"
-                    :href="getHarvesterLinkToAdmin(harvester)"
+                    :href="getHarvesterAdminUrl(harvester)"
                   >
                     <TextClamp
                       :text="harvester.name"
                       :auto-resize="true"
                       :max-lines="2"
                     />
-                  </a>
+                  </NuxtLinkLocale>
                 </AdminContentWithTooltip>
               </td>
               <td>
-                <AdminBadge
-                  size="xs"
-                  :type="getStatus(harvester).type"
-                >
-                  {{ getStatus(harvester).label }}
-                </AdminBadge>
+                <HarvesterBadge :harvester />
               </td>
+              <td>{{ harvester.backend }}</td>
               <td>{{ formatDate(harvester.created_at) }}</td>
               <td>
                 <template v-if="harvester.last_job?.ended">
@@ -143,11 +160,14 @@ import { formatDate, Pagination, type Organization } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { AdminBadgeState, AdminBadgeType, DiscussionSortedBy, PaginatedArray, SortDirection } from '~/types/types'
+import JobBadge from './JobBadge.vue'
+import HarvesterBadge from './HarvesterBadge.vue'
+import type { PaginatedArray } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
+import { getHarvesterAdminUrl } from '~/utils/harvesters'
 
 const props = defineProps<{
   organization?: Organization | null
@@ -158,9 +178,6 @@ const { $api } = useNuxtApp()
 
 const page = ref(1)
 const pageSize = ref(10)
-const sortedBy = ref<DiscussionSortedBy>('created')
-const direction = ref<SortDirection>('desc')
-const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
@@ -172,7 +189,6 @@ const url = computed(() => {
   }
 
   url.searchParams.set('deleted', 'true')
-  url.searchParams.set('sort', sortDirection.value)
   url.searchParams.set('q', qDebounced.value)
   url.searchParams.set('page_size', pageSize.value.toString())
   url.searchParams.set('page', page.value.toString())
@@ -194,16 +210,14 @@ watchEffect(async () => {
 
     jobsPromises.value[source.last_job.id] = $api<HarvesterJob>(`/api/1/harvest/job/${source.last_job.id}/`)
       .then((job) => {
-        jobs.value[source.last_job.id] = job // Working because there is no conflicts between IDs from different types
+        if (source.last_job) {
+          jobs.value[source.last_job.id] = job // Working because there is no conflicts between IDs from different types
+        }
       })
   }
 
   await Promise.all(Object.values(jobsPromises.value))
 })
-
-function getHarvesterLinkToAdmin(harvester: HarvesterSource) {
-  return `${config.public.apiBase}/en/admin/harvester/${harvester.id}/`
-}
 
 function getHarvesterDataservices(harvester: HarvesterSource) {
   if (!harvester.last_job || !jobs.value[harvester.last_job.id]) {
@@ -217,50 +231,5 @@ function getHarvesterDatasets(harvester: HarvesterSource) {
     return 0
   }
   return jobs.value[harvester.last_job.id].items.filter(item => item.dataset).length
-}
-
-function getStatus(harvester: HarvesterSource): { label: string, type: AdminBadgeType } {
-  switch (harvester.last_job?.status) {
-    case 'pending':
-      return {
-        label: t('Pending'),
-        type: 'secondary',
-      }
-    case 'initializing':
-      return {
-        label: t('Initializing'),
-        type: 'primary',
-      }
-    case 'initialized':
-      return {
-        label: t('Initialized'),
-        type: 'secondary',
-      }
-    case 'processing':
-      return {
-        label: t('Processing'),
-        type: 'primary',
-      }
-    case 'done':
-      return {
-        label: t('Done'),
-        type: 'success',
-      }
-    case 'done-errors':
-      return {
-        label: t('Done with errors'),
-        type: 'warning',
-      }
-    case 'failed':
-      return {
-        label: t('Failed'),
-        type: 'danger',
-      }
-    default:
-      return {
-        label: t('No job yet'),
-        type: 'secondary',
-      }
-  }
 }
 </script>

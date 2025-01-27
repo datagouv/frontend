@@ -2,13 +2,13 @@
   <Disclosure>
     <li
       class="fr-sidemenu__item"
-      :class="{ 'fr-sidemenu__item--active': expanded }"
+      :class="{ 'fr-sidemenu__item--active': isOpen(id) }"
     >
       <DisclosureButton
         class="fr-sidemenu__btn"
-        :aria-current="expanded"
-        :aria-expanded="expanded"
-        @click="toggle"
+        :aria-current="isOpen(id)"
+        :aria-expanded="isOpen(id)"
+        @click="toggle(id)"
       >
         <template v-if="user">
           <Avatar
@@ -41,7 +41,7 @@
         </template>
       </DisclosureButton>
       <DisclosurePanel
-        v-show="expanded"
+        v-show="isOpen(id)"
         static
       >
         <ul class="fr-sidemenu__list !mx-2 !my-3">
@@ -158,6 +158,11 @@
               :label="$t('Community Resources')"
               to="/beta/admin/site/community-resources"
             />
+            <AdminSidebarLink
+              :icon="RiArticleLine"
+              :label="$t('Posts')"
+              to="/beta/admin/site/posts"
+            />
           </template>
         </ul>
       </DisclosurePanel>
@@ -168,7 +173,7 @@
 <script setup lang="ts">
 import { Avatar, type Organization, type User } from '@datagouv/components'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { RiBuilding2Line, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiGroup3Line, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
+import { RiArticleLine, RiBuilding2Line, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiGroup3Line, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 import AdminSidebarLink from '~/components/AdminSidebar/AdminSidebarLink/AdminSidebarLink.vue'
 
@@ -189,17 +194,16 @@ defineEmits<{
   click: []
 }>()
 
-const register = inject(key) as AccordionRegister
+const id = useId()
+const { isOpen, open, toggle, unregister } = inject(key) as AccordionRegister
 
-const { expanded, toggle, unregister } = register()
-
-watchEffect(() => {
+onMounted(() => {
   if (props.defaultOpen) {
-    toggle()
+    open(id)
   }
 })
 
-onUnmounted(unregister)
+onUnmounted(() => unregister(id))
 </script>
 
 <style scoped>

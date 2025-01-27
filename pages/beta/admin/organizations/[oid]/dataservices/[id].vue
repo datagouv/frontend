@@ -52,7 +52,7 @@
         class="mb-5"
         :links="[
           { href: getDataserviceAdminUrl(dataservice), label: t('Metadata') },
-          { href: `${getDataserviceAdminUrl(dataservice)}/datasets`, label: t('Datasets') },
+          { href: `${getDataserviceAdminUrl(dataservice)}/datasets`, label: t('Associated datasets') },
         ]"
       />
 

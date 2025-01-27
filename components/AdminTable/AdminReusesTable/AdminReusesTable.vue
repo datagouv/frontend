@@ -26,7 +26,10 @@
         >
           {{ t("Datasets") }}
         </AdminTableTh>
-        <AdminTableTh scope="col">
+        <AdminTableTh
+          scope="col"
+          class="w-16"
+        >
           <Tooltip>
             <span
               class="fr-icon--sm fr-icon-chat-3-line"
@@ -38,6 +41,7 @@
           </Tooltip>
         </AdminTableTh>
         <AdminTableTh
+          class="w-16"
           :sorted="sorted('views')"
           scope="col"
           @sort="(direction: SortDirection) => $emit('sort', 'views', direction)"
@@ -53,6 +57,7 @@
           </Tooltip>
         </AdminTableTh>
         <AdminTableTh
+          class="w-16"
           :sorted="sorted('followers')"
           scope="col"
           @sort="(direction: SortDirection) => $emit('sort', 'followers', direction)"

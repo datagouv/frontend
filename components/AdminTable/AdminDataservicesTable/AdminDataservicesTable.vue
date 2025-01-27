@@ -9,10 +9,10 @@
         >
           {{ t("Dataservice title") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Status") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh class="w-24">
           {{ t("Access") }}
         </AdminTableTh>
         <AdminTableTh>
@@ -99,7 +99,13 @@ function sorted(column: DataserviceSortedBy) {
 }
 
 function getStatus(dataservice: Dataservice): { label: string, type: AdminBadgeType } {
-  if (dataservice.private) {
+  if (dataservice.deleted_at) {
+    return {
+      label: t('Deleted'),
+      type: 'danger',
+    }
+  }
+  else if (dataservice.private) {
     return {
       label: t('Draft'),
       type: 'secondary',

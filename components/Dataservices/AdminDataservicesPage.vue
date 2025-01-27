@@ -29,18 +29,25 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Dataservices") }}
     </h1>
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <TransferRequestList
+      v-if="props.organization || props.user"
+      type="Dataservice"
+      :recipient="props.organization || props.user"
+      @done="refresh"
+    />
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
-        <h2
-          v-if="pageData && pageData.total"
-          class="subtitle subtitle--uppercase fr-m-0"
-        >
+        <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} dataservices', pageData.total) }}
         </h2>
       </div>
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
         <AdminInput
           v-model="q"
+          type="search"
           :icon="RiSearchLine"
           :placeholder="$t('Search')"
         />
@@ -65,17 +72,30 @@
     </LoadingBlock>
 
     <div
-      v-if="pageData && !pageData.total"
+      v-if="status != 'pending' && pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
         src="/illustrations/dataservice.svg"
         class="h-20"
       />
-      <p class="fr-text--bold fr-my-3v">
-        {{ t(`You haven't published a dataservice yet`) }}
-      </p>
-      <AdminPublishButton type="dataservice" />
+      <template v-if="q">
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`No results for "{q}"`, { q }) }}
+        </p>
+        <BrandedButton
+          color="primary"
+          @click="q = qDebounced = ''"
+        >
+          {{ $t('Reset filters') }}
+        </BrandedButton>
+      </template>
+      <template v-else>
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`You haven't published a dataservice yet`) }}
+        </p>
+        <AdminPublishButton type="dataservice" />
+      </template>
     </div>
   </div>
 </template>
@@ -92,7 +112,6 @@ import AdminDataservicesTable from '~/components/AdminTable/AdminDataservicesTab
 import type { DataserviceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
 const { t } = useI18n()
-const config = useRuntimeConfig()
 
 const page = ref(1)
 const pageSize = ref(10)
@@ -112,22 +131,17 @@ function sort(column: DataserviceSortedBy, newDirection: SortDirection) {
   direction.value = newDirection
 }
 
-const url = computed(() => {
-  const url = new URL(`/api/1/dataservices/`, config.public.apiBase)
-  if (props.organization) {
-    url.searchParams.set('organization', props.organization.id)
-  }
-  else if (props.user) {
-    url.searchParams.set('owner', props.user.id)
-  }
+const params = computed(() => {
+  return {
+    organization: props.organization?.id,
+    owner: props.user?.id,
 
-  url.searchParams.set('sort', sortDirection.value)
-  url.searchParams.set('q', qDebounced.value)
-  url.searchParams.set('page_size', pageSize.value.toString())
-  url.searchParams.set('page', page.value.toString())
-
-  return url.toString()
+    sort: sortDirection.value,
+    q: qDebounced.value,
+    page_size: pageSize.value,
+    page: page.value,
+  }
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<Dataservice>>(url, { lazy: true })
+const { data: pageData, status, refresh } = await useAPI<PaginatedArray<Dataservice>>('/api/1/dataservices/', { lazy: true, query: params })
 </script>

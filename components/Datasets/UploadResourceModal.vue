@@ -5,13 +5,15 @@
   >
     <template #button="{ attrs, listeners }">
       <div class="flex flex-col items-center">
-        <button
-          class="fr-btn fr-btn--icon-left fr-icon-upload-line"
+        <BrandedButton
+          color="primary"
+          size="xs"
+          :icon="RiUploadLine"
           v-bind="attrs"
           v-on="listeners"
         >
           {{ $t('Add files') }}
-        </button>
+        </BrandedButton>
         <p
           v-if="errorText"
           class="fr-error-text mt-4 mb-0"
@@ -87,6 +89,8 @@
 </template>
 
 <script setup lang="ts">
+import { RiUploadLine } from '@remixicon/vue'
+import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import UploadGroup from '../UploadGroup/UploadGroup.vue'
 import type { NewDatasetFile } from '~/types/types'

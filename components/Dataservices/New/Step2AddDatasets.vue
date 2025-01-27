@@ -28,7 +28,6 @@
         {{ t("Previous") }}
       </BrandedButton>
       <BrandedButton
-        :disabled="!datasets.length"
         :loading
         color="secondary"
         @click="$emit('next')"

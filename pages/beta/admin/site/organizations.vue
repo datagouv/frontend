@@ -21,97 +21,130 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Organizations") }}
     </h1>
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
-        <h2
-          v-if="status === 'success' && pageData.total"
-          class="subtitle subtitle--uppercase fr-m-0"
-        >
+        <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} organizations', pageData.total) }}
         </h2>
       </div>
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <!-- Buttons -->
+        <AdminInput
+          v-model="q"
+          type="search"
+          :icon="RiSearchLine"
+          :placeholder="$t('Search')"
+        />
       </div>
     </div>
-    <AdminTable
-      v-if="status === 'pending' || (status === 'success' && pageData.total > 0)"
-      :loading="status === 'pending'"
+
+    <LoadingBlock :status>
+      <div v-if="pageData && pageData.total > 0">
+        <AdminTable>
+          <thead>
+            <tr>
+              <AdminTableTh scope="col">
+                {{ t("Name") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Created at") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Datasets") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Dataservices") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Reuses") }}
+              </AdminTableTh>
+              <AdminTableTh scope="col">
+                {{ t("Members") }}
+              </AdminTableTh>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="organization in pageData.data"
+              :key="organization.id"
+            >
+              <td>
+                <div class="flex items-center space-x-2">
+                  <Placeholder
+                    type="organization"
+                    :src="organization.logo_thumbnail"
+                    :size="20"
+                  />
+                  <AdminContentWithTooltip>
+                    <TextClamp
+                      :text="organization.name"
+                      :auto-resize="true"
+                      :max-lines="2"
+                    />
+                  </AdminContentWithTooltip>
+                </div>
+              </td>
+              <td>{{ formatDate(organization.created_at) }}</td>
+              <td>
+                <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/datasets`">
+                  {{ organization.metrics.datasets || 0 }}
+                </NuxtLinkLocale>
+              </td>
+              <td>
+                <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/dataservices`">
+                  {{ organization.metrics.dataservices || 0 }}
+                </NuxtLinkLocale>
+              </td>
+              <td>
+                <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/reuses`">
+                  {{ organization.metrics.reuses || 0 }}
+                </NuxtLinkLocale>
+              </td>
+              <td>
+                <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/members`">
+                  {{ organization.metrics.members || 0 }}
+                </NuxtLinkLocale>
+              </td>
+            </tr>
+          </tbody>
+        </AdminTable>
+        <Pagination
+          :page="page"
+          :page-size="pageSize"
+          :total-results="pageData.total"
+          @change="(changedPage: number) => page = changedPage"
+        />
+      </div>
+    </LoadingBlock>
+
+    <div
+      v-if="status != 'pending' && pageData && !pageData.total"
+      class="flex flex-col items-center"
     >
-      <thead>
-        <tr>
-          <AdminTableTh scope="col">
-            {{ t("Name") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Created at") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Datasets") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Dataservices") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Reuses") }}
-          </AdminTableTh>
-          <AdminTableTh scope="col">
-            {{ t("Members") }}
-          </AdminTableTh>
-        </tr>
-      </thead>
-      <tbody v-if="pageData">
-        <tr
-          v-for="organization in pageData.data"
-          :key="organization.id"
+      <nuxt-img
+        src="/illustrations/organization.svg"
+        class="h-20"
+      />
+      <template v-if="q">
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`No results for "{q}"`, { q }) }}
+        </p>
+        <BrandedButton
+          color="primary"
+          @click="q = qDebounced = ''"
         >
-          <td>
-            <div class="flex items-center space-x-2">
-              <Placeholder
-                type="organization"
-                :src="organization.logo_thumbnail"
-                :size="20"
-              />
-              <AdminContentWithTooltip>
-                <TextClamp
-                  :text="organization.name"
-                  :auto-resize="true"
-                  :max-lines="2"
-                />
-              </AdminContentWithTooltip>
-            </div>
-          </td>
-          <td>{{ formatDate(organization.created_at) }}</td>
-          <td>
-            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/datasets`">
-              {{ organization.metrics.datasets || 0 }}
-            </NuxtLinkLocale>
-          </td>
-          <td>
-            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/dataservices`">
-              {{ organization.metrics.dataservices || 0 }}
-            </NuxtLinkLocale>
-          </td>
-          <td>
-            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/reuses`">
-              {{ organization.metrics.reuses || 0 }}
-            </NuxtLinkLocale>
-          </td>
-          <td>
-            <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/members`">
-              {{ organization.metrics.members || 0 }}
-            </NuxtLinkLocale>
-          </td>
-        </tr>
-      </tbody>
-    </AdminTable>
-    <Pagination
-      v-if="status === 'success' && pageData.total > pageSize"
-      :page="page"
-      :page-size="pageSize"
-      :total-results="pageData.total"
-      @change="(changedPage: number) => page = changedPage"
-    />
+          {{ $t('Reset filters') }}
+        </BrandedButton>
+      </template>
+      <p
+        v-else
+        class="fr-text--bold fr-my-3v"
+      >
+        {{ t(`No organizations`) }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -120,11 +153,13 @@ import { formatDate, Pagination, type Organization } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RiSearchLine } from '@remixicon/vue'
 import type { DiscussionSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import Placeholder from '~/components/Placeholder/Placeholder.vue'
+import AdminInput from '~/components/AdminInput.vue'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()

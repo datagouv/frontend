@@ -29,21 +29,28 @@
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Reuses") }}
     </h1>
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
+    <TransferRequestList
+      v-if="props.organization || props.user"
+      type="Reuse"
+      :recipient="props.organization || props.user"
+      @done="refresh"
+    />
+    <div
+      v-if="pageData"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
       <div class="fr-col">
-        <h2
-          v-if="pageData && pageData.total"
-          class="subtitle subtitle--uppercase fr-m-0"
-        >
+        <h2 class="subtitle subtitle--uppercase fr-m-0">
           {{ t('{n} reuses', pageData.total) }}
         </h2>
       </div>
       <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
-        <!-- <AdminInput
+        <AdminInput
           v-model="q"
+          type="search"
           :icon="RiSearchLine"
           :placeholder="$t('Search')"
-        /> -->
+        />
       </div>
     </div>
 
@@ -65,17 +72,30 @@
     </LoadingBlock>
 
     <div
-      v-if="pageData && !pageData.total"
+      v-if="status != 'pending' && pageData && !pageData.total"
       class="flex flex-col items-center"
     >
       <nuxt-img
         src="/illustrations/reuse.svg"
         class="h-20"
       />
-      <p class="fr-text--bold fr-my-3v">
-        {{ t(`You haven't published a reuse yet`) }}
-      </p>
-      <AdminPublishButton type="reuse" />
+      <template v-if="q">
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`No results for "{q}"`, { q }) }}
+        </p>
+        <BrandedButton
+          color="primary"
+          @click="q = qDebounced = ''"
+        >
+          {{ $t('Reset filters') }}
+        </BrandedButton>
+      </template>
+      <template v-else>
+        <p class="fr-text--bold fr-my-3v">
+          {{ t(`You haven't published a reuse yet`) }}
+        </p>
+        <AdminPublishButton type="reuse" />
+      </template>
     </div>
   </div>
 </template>
@@ -86,12 +106,13 @@ import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 // import { RiSearchLine } from '@remixicon/vue'
+import { RiSearchLine } from '@remixicon/vue'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import AdminReusesTable from '../AdminTable/AdminReusesTable/AdminReusesTable.vue'
+import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import type { PaginatedArray, ReuseSortedBy, SortDirection } from '~/types/types'
 
 const { t } = useI18n()
-const config = useRuntimeConfig()
 
 const props = defineProps<{
   organization?: Organization | null
@@ -111,22 +132,17 @@ function sort(column: ReuseSortedBy, newDirection: SortDirection) {
   direction.value = newDirection
 }
 
-const url = computed(() => {
-  const url = new URL(`/api/1/reuses/`, config.public.apiBase)
-  if (props.organization) {
-    url.searchParams.set('organization', props.organization.id)
-  }
-  else if (props.user) {
-    url.searchParams.set('owner', props.user.id)
-  }
+const params = computed(() => {
+  return {
+    organization: props.organization?.id,
+    owner: props.user?.id,
 
-  url.searchParams.set('sort', sortDirection.value)
-  url.searchParams.set('q', qDebounced.value)
-  url.searchParams.set('page_size', pageSize.value.toString())
-  url.searchParams.set('page', page.value.toString())
-
-  return url.toString()
+    sort: sortDirection.value,
+    q: qDebounced.value,
+    page_size: pageSize.value,
+    page: page.value,
+  }
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<Reuse>>(url, { lazy: true })
+const { data: pageData, status, refresh } = await useAPI<PaginatedArray<Reuse>>('/api/1/reuses/', { lazy: true, query: params })
 </script>

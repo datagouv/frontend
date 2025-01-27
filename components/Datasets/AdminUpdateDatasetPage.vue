@@ -13,7 +13,22 @@
           :subject="dataset"
           :label="$t('Transfer dataset')"
         />
+        <BannerAction
+          type="warning"
+          :title="dataset.archived ? $t('Unarchive the dataset') : $t('Archive the dataset')"
+        >
+          {{ $t("An archived dataset is no longer indexed but still accessible for users with the direct link.") }}
 
+          <template #button>
+            <BrandedButton
+              :icon="RiArchiveLine"
+              type="button"
+              @click="archiveDataset"
+            >
+              {{ dataset.archived ? $t('Unarchive') : $t('Archive') }}
+            </BrandedButton>
+          </template>
+        </BannerAction>
         <BannerAction
           type="danger"
           :title="$t('Delete the dataset')"
@@ -26,13 +41,13 @@
               size="lg"
             >
               <template #button="{ attrs, listeners }">
-                <BannerActionButton
+                <BrandedButton
                   :icon="RiDeleteBin6Line"
                   v-bind="attrs"
                   v-on="listeners"
                 >
                   {{ $t('Delete') }}
-                </BannerActionButton>
+                </BrandedButton>
               </template>
               <p class="fr-text--bold">
                 {{ $t("This action can't be reverse.") }}
@@ -58,7 +73,8 @@
 
 <script setup lang="ts">
 import type { Dataset, Frequency, License } from '@datagouv/components'
-import { RiDeleteBin6Line } from '@remixicon/vue'
+import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
+import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import type { DatasetForm, EnrichedLicense, SpatialGranularity } from '~/types/types'
 import { toForm, toApi } from '~/utils/datasets'
@@ -99,7 +115,7 @@ const licenses = computed(() => {
 const { data: granularities } = await useAPI<Array<SpatialGranularity>>('/api/1/spatial/granularities/', { lazy: true })
 
 const url = computed(() => `/api/1/datasets/${route.params.id}`)
-const { data: dataset } = await useAPI<Dataset>(url, { lazy: true })
+const { data: dataset, refresh } = await useAPI<Dataset>(url, { lazy: true })
 const datasetForm = ref<DatasetForm | null>(null)
 watchEffect(() => {
   if (dataset.value && licenses.value && frequencies.value && granularities.value) {
@@ -113,11 +129,18 @@ watchEffect(() => {
   }
 })
 
-const save = async () => {
+async function save() {
   if (!datasetForm.value) throw new Error('No dataset form')
 
   try {
     loading.value = true
+    if (
+      datasetForm.value.contact_point
+      && datasetForm.value.owned?.organization
+      && !('id' in datasetForm.value.contact_point)
+    ) {
+      datasetForm.value.contact_point = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_point)
+    }
 
     await $api(`/api/1/datasets/${dataset.value.id}/`, {
       method: 'PUT',
@@ -143,6 +166,27 @@ async function deleteDataset() {
     }
     else {
       await navigateTo(localePath('/beta/admin/me/datasets'), { replace: true })
+    }
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+async function archiveDataset() {
+  if (!datasetForm.value) throw new Error('No dataset form')
+  loading.value = true
+  try {
+    await $api(`/api/1/datasets/${dataset.value.id}/`, {
+      method: 'PUT',
+      body: JSON.stringify(toApi(datasetForm.value, { archived: dataset.value.archived ? null : new Date().toISOString() })),
+    })
+    refresh()
+    if (dataset.value.archived) {
+      toast.success(t('Dataset unarchived!'))
+    }
+    else {
+      toast.success(t('Dataset archived!'))
     }
   }
   finally {

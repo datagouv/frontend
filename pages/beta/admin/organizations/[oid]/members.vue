@@ -26,28 +26,56 @@
         </a>
       </li>
     </Breadcrumb>
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle justify-center">
-      <div class="fr-col-12 fr-col-md">
-        <h1 class="fr-h3 fr-mb-0">
-          {{ t("Members") }}
-        </h1>
+
+    <h1 class="fr-h3 fr-mb-5v">
+      {{ t("Members") }}
+    </h1>
+
+    <div
+      v-if="membershipRequests && membershipRequests.length"
+      class="mb-8"
+    >
+      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-5v">
+        {{ t("{n} requests", { n: membershipRequests.length }) }}
+      </h2>
+      <div class="space-y-8 max-w-6xl">
+        <AdminMembershipRequest
+          v-for="request in membershipRequests"
+          :key="request.id"
+          :oid="currentOrganization.id"
+          :request="request"
+          :show-actions="true"
+          @refresh="refreshAll"
+        />
+      </div>
+    </div>
+
+    <div
+      v-if="organization"
+      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+    >
+      <div class="fr-col">
+        <h2 class="subtitle subtitle--uppercase fr-m-0">
+          {{ t("{n} members", { n: organization.members.length }) }}
+        </h2>
       </div>
       <div
         v-if="isAdmin"
-        class="fr-col-auto"
+        class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6"
       >
         <ModalWithButton
           :title="t('Add member to the organization')"
           size="lg"
         >
           <template #button="{ attrs, listeners }">
-            <button
-              class="fr-btn fr-btn--sm fr-btn--icon-left fr-icon-add-line"
+            <BrandedButton
+              size="xs"
+              :icon="RiAddLine"
               v-bind="attrs"
               v-on="listeners"
             >
               {{ t("Add member") }}
-            </button>
+            </BrandedButton>
           </template>
 
           <template #default="{ close }">
@@ -69,7 +97,7 @@
                     <div class="flex items-center space-x-2">
                       <NuxtImg
                         class="rounded-full border border-default-grey size-5"
-                        :src="useUserAvatar(user, 24)"
+                        :src="getUserAvatar(user, 24)"
                         loading="lazy"
                         alt=""
                       />
@@ -110,30 +138,6 @@
         </ModalWithButton>
       </div>
     </div>
-    <div
-      v-if="membershipRequests && membershipRequests.length"
-      class="mb-8"
-    >
-      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-5v">
-        {{ t("{n} requests", { n: membershipRequests.length }) }}
-      </h2>
-      <div class="space-y-8 max-w-6xl">
-        <AdminMembershipRequest
-          v-for="request in membershipRequests"
-          :key="request.id"
-          :oid="currentOrganization.id"
-          :request="request"
-          :show-actions="true"
-          @refresh="refreshAll"
-        />
-      </div>
-    </div>
-    <h2
-      v-if="organization"
-      class="subtitle subtitle--uppercase fr-mb-0"
-    >
-      {{ t("{n} members", { n: organization.members.length }) }}
-    </h2>
 
     <LoadingBlock :status>
       <AdminTable
@@ -145,17 +149,27 @@
             <AdminTableTh scope="col">
               {{ t("Members") }}
             </AdminTableTh>
-            <AdminTableTh scope="col">
+            <AdminTableTh
+              scope="col"
+              class="w-36"
+            >
               {{ t("Status") }}
             </AdminTableTh>
-            <AdminTableTh scope="col">
+            <AdminTableTh
+              scope="col"
+              class="w-28"
+            >
               {{ t("Member since") }}
             </AdminTableTh>
-            <AdminTableTh scope="col">
+            <AdminTableTh
+              scope="col"
+              class="w-40"
+            >
               {{ t("Last connection") }}
             </AdminTableTh>
             <AdminTableTh
               v-if="isOrgAdmin"
+              class="w-16"
               scope="col"
             >
               {{ t("Action") }}
@@ -234,13 +248,13 @@
                   >
                     {{ t("Be careful, this action can't be reverse.") }}
                     <template #button>
-                      <button
-                        class="fr-btn fr-btn--secondary fr-btn--secondary--error fr-btn--icon-left fr-icon-logout-box-r-line"
-                        :disabled="loading"
+                      <BrandedButton
+                        :loading
+                        :icon="RiLogoutBoxRLine"
                         @click="removeMemberFromOrganization(member, close)"
                       >
                         {{ t('Remove member') }}
-                      </button>
+                      </BrandedButton>
                     </template>
                   </BannerAction>
                 </template>
@@ -254,10 +268,10 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, formatDate, formatFromNow, useUserAvatar, type Member, type Organization } from '@datagouv/components'
+import { Avatar, formatDate, formatFromNow, getUserAvatar, type Member, type Organization } from '@datagouv/components'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RiMailLine } from '@remixicon/vue'
+import { RiAddLine, RiLogoutBoxRLine, RiMailLine } from '@remixicon/vue'
 import type { AdminBadgeType, MemberRole, PendingMembershipRequest, UserSuggest } from '~/types/types'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
@@ -265,6 +279,7 @@ import ModalWithButton from '~/components/Modal/ModalWithButton.vue'
 import SelectGroup from '~/components/Form/SelectGroup/SelectGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
 import AdminMembershipRequest from '~/components/AdminMembershipRequest/AdminMembershipRequest.vue'
+import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 
 const config = useRuntimeConfig()
 const { t } = useI18n()

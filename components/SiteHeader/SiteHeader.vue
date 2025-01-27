@@ -6,7 +6,7 @@
     <div class="fr-header__body">
       <div
         class="fr-container"
-        :class="{ '!max-w-none !overflow-hidden': fluid }"
+        :class="{ '!max-w-none': fluid }"
       >
         <div class="fr-header__body-row">
           <div class="fr-header__brand fr-enlarge-link">
@@ -74,6 +74,77 @@
                   </template>
                   <template #default>
                     <div class="fr-container">
+                      <div class="fr-header__menu-links">
+                        <ul
+                          v-if="me"
+                          class="fr-btns-group fr-btns-group--sm fr-btns-group--icon-left"
+                        >
+                          <li>
+                            <a
+                              :href="me.page"
+                              class="fr-btn fr-icon-svg fr-icon--sm flex !justify-start !mb-0"
+                            >
+                              <NuxtImg
+                                :src="getUserAvatar(me, 24)"
+                                width="24"
+                                height="24"
+                                loading="lazy"
+                                alt=""
+                                class="mr-2 rounded-full"
+                              />
+                              {{ me.first_name }} {{ me.last_name }}
+                            </a>
+                          </li>
+                          <li>
+                            <NuxtLinkLocale
+                              to="/admin/"
+                              :external="true"
+                              class="fr-btn !justify-start !text-sm !p-3 !mb-0"
+                            >
+                              <RiSettings3Line
+                                size="1rem"
+                                class="fr-mr-1w"
+                              />
+                              {{ $t("Administration") }}
+                            </NuxtLinkLocale>
+                          </li>
+                          <li>
+                            <a
+                              :href="`${config.public.apiBase}/logout`"
+                              class="fr-btn !justify-start !text-sm !p-3 !mb-0"
+                            >
+                              <RiLogoutBoxRLine
+                                size="1rem"
+                                class="fr-mr-1w"
+                              />
+                              {{ $t('Logout') }}
+                            </a>
+                          </li>
+                        </ul>
+                        <ul
+                          v-else
+                          class="fr-btns-group"
+                        >
+                          <li>
+                            <NuxtLinkLocale
+                              class="fr-btn items-center !justify-start !p-3 !mb-0 !text-sm"
+                              to="/login"
+                            >
+                              <RiLockLine class="inline mr-2 size-4" />
+                              {{ $t("Log in") }}
+                            </NuxtLinkLocale>
+                          </li>
+                          <li>
+                            <NuxtLinkLocale
+                              class="fr-btn !justify-start !p-3 !mb-0 !text-sm"
+                              to="/register"
+                            >
+                              <RiAccountCircleLine class="inline mr-2 size-4" />
+                              {{ $t("Register") }}
+                            </NuxtLinkLocale>
+                          </li>
+                        </ul>
+                      </div>
                       <nav
                         class="fr-nav"
                         role="navigation"
@@ -91,6 +162,7 @@
                               :to="link.link"
                               target="_self"
                               :external="link.external"
+                              :aria-current="getAriaCurrent(localePath(link.link))"
                             >
                               {{ link.label }}
                             </NuxtLinkLocale>
@@ -174,7 +246,7 @@
                 href="/"
                 title="Retourner à l'accueil de data.gouv.fr"
               >
-                <SiteLogo class="text-gray-logo text-2xl" />
+                <SiteLogo class="text-gray-logo text-xl tracking-wide" />
               </a>
             </div>
           </div>
@@ -190,7 +262,7 @@
                       class="fr-btn fr-icon-svg fr-icon--sm fr-grid-row"
                     >
                       <NuxtImg
-                        :src="useUserAvatar(me, 24)"
+                        :src="getUserAvatar(me, 24)"
                         width="24"
                         height="24"
                         loading="lazy"
@@ -254,26 +326,8 @@
             <div
               class="fr-header__search"
             >
-              <div class="fr-container hidden lg:block fr-container-lg--fluid">
-                <div
-                  class="fr-search-bar"
-                  role="search"
-                >
-                  <label
-                    class="fr-label"
-                    :for="searchInputId"
-                  > {{ $t('Search') }} </label> <input
-                    :id="searchInputId"
-                    class="fr-input"
-                    :placeholder="$t('Search')"
-                    type="search"
-                  > <button
-                    class="fr-btn"
-                    :title="$t('Search')"
-                  >
-                    {{ $t('Search') }}
-                  </button>
-                </div>
+              <div class="!hidden lg:!block">
+                <MenuSearch />
               </div>
             </div>
           </div>
@@ -304,6 +358,7 @@
                 :to="link.link"
                 target="_self"
                 :external="link.external"
+                :aria-current="getAriaCurrent(localePath(link.link))"
               >
                 {{ link.label }}
               </NuxtLinkLocale>
@@ -388,7 +443,7 @@
 <script setup lang="ts">
 import { RiAccountCircleLine, RiAddLine, RiDatabase2Line, RiGovernmentLine, RiLockLine, RiMenuLine, RiSearchLine, RiRobot2Line, RiLineChartLine, RiServerLine, RiArticleLine, RiSettings3Line, RiLogoutBoxRLine } from '@remixicon/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import { useUserAvatar } from '@datagouv/components'
+import { getUserAvatar } from '@datagouv/components'
 import { NuxtLinkLocale } from '#components'
 import SiteLogo from '~/components/SiteLogo.vue'
 import { useMaybeMe } from '~/utils/auth'
@@ -399,14 +454,17 @@ defineProps<{
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const localePath = useLocalePath()
 const me = useMaybeMe()
+const currentRoute = useRoute()
+const router = useRouter()
 
 const searchInputId = useId()
 
 const menu = [
   { label: t('Data'), link: '/datasets/', external: true },
-  { label: t('Reuses'), link: '/reuses/', external: true },
   { label: t('API'), link: '/dataservices/', external: true },
+  { label: t('Reuses'), link: '/reuses/', external: true },
   { label: t('Organizations'), link: '/organizations/', external: true },
   { label: t('Getting started on {site}', { site: config.public.title }), items: [
     { label: t('What is {site}?', { site: config.public.title }), link: '/pages/about/a-propos_data-gouv/', external: true },
@@ -414,18 +472,27 @@ const menu = [
     { label: t('How to use data?'), link: '/pages/onboarding/reutilisateurs/', external: true },
     { label: t('{site} guides', { site: config.public.title }), link: config.public.guidesUrl, external: true },
   ], external: true },
-  { label: t('News'), link: '/posts/', external: true },
+  { label: t('News'), link: '/posts/' },
   { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
 ]
+
+const routesInPath = router.getRoutes().map(route => route.path).filter(path => currentRoute.path.startsWith(path))
 
 const publishMenu = [
   { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
   { label: t('A dataservice'), icon: RiRobot2Line, link: '/beta/admin/dataservices/new/' },
   { label: t('A reuse'), icon: RiLineChartLine, link: '/beta/admin/reuses/new/' },
-  { label: t('A harverster'), icon: RiServerLine, link: '/admin/harvester/new/', external: true },
+  { label: t('A harverster'), icon: RiServerLine, link: '/beta/admin/harvesters/new/' },
   { label: t('An organization'), icon: RiGovernmentLine, link: '/beta/admin/organizations/new/' },
-  { label: t('A post'), icon: RiArticleLine, link: '/admin/post/new/', external: true, show: isAdmin(me.value ?? null) },
+  { label: t('A post'), icon: RiArticleLine, link: '/beta/admin/posts/new/', show: isAdmin(me.value ?? null) },
 ]
 
 const filteredPublishMenu = computed(() => publishMenu.filter(item => !('show' in item) || item.show))
+
+function getAriaCurrent(link: string) {
+  if (currentRoute.path === link) {
+    return 'page'
+  }
+  return routesInPath.includes(localePath(link))
+}
 </script>
