@@ -159,17 +159,14 @@ const removeFirstNewFile = () => {
   newFiles.value = [...newFiles.value.slice(1)]
 }
 const saveFirstNewFile = async () => {
-  await uploadFile(dataset.value, newFiles.value[0], 3)
+  await saveNewResource(dataset.value, newFiles.value[0], 3)
   removeFirstNewFile()
 
   page.value = 1
   refreshResources()
 }
 const saveFile = async (index: number, resource: Resource, file: NewDatasetFile, newFile: File | null) => {
-  const updated = await $api<Resource>(`/api/1/datasets/${dataset.value.id}/resources/${resource.id}/`, {
-    method: 'PUT',
-    body: JSON.stringify(resourceToApi(file)),
-  })
+  const updated = await updateResource(dataset.value, resource, file, 3)
   if (resourcesPage.value) {
     resourcesPage.value.data[index] = updated
   }

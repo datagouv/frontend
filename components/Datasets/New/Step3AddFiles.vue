@@ -115,6 +115,7 @@
               </h3>
               <UploadResourceModal
                 :error-text="getFirstError('files')"
+                :extensions
                 @new-files="addFiles"
               />
             </PaddedContainer>
@@ -124,10 +125,12 @@
                 :key="index"
                 v-model="form.files[index]"
                 class="fr-mb-3v"
+                :extensions
                 @delete="removeFile(index)"
               />
               <div class="fr-grid-row fr-grid-row--center">
                 <UploadResourceModal
+                  :extensions
                   @new-files="addFiles"
                 />
               </div>
@@ -177,7 +180,7 @@
 <script setup lang="ts">
 import { Well } from '@datagouv/components'
 import UploadResourceModal from '../UploadResourceModal.vue'
-import type { NewDatasetFile } from '~/types/types'
+import type { ResourceForm } from '~/types/types'
 
 defineProps<{
   loading: boolean
@@ -185,10 +188,12 @@ defineProps<{
 
 const emit = defineEmits<{
   previous: []
-  next: [value: Array<NewDatasetFile>]
+  next: [value: Array<ResourceForm>]
 }>()
 
-const files = defineModel<Array<NewDatasetFile>>({ required: true })
+const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
+
+const files = defineModel<Array<ResourceForm>>({ required: true })
 
 const { t } = useI18n()
 
@@ -210,7 +215,7 @@ watchEffect(() => {
   touch('hasDocumentation')
 })
 
-const addFiles = (files: Array<NewDatasetFile>) => {
+const addFiles = (files: Array<ResourceForm>) => {
   for (const file of files) form.value.files.push(file)
   touch('files')
 }

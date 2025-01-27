@@ -160,11 +160,12 @@
                     v-model="form"
                     class="mb-3"
                     :hide-actions="true"
+                    :extensions
                   />
                 </div>
                 <RequiredExplanation class="px-2" />
                 <LinkedToAccordion
-                  v-if="'url' in form"
+                  v-if="form.filetype === 'remote'"
                   class="fr-fieldset__element min-width-0"
                   :accordion="chooseTheCorrectLinkAccordionId"
                   @blur="touch('url')"
@@ -177,15 +178,15 @@
                     :error-text="getFirstError('url')"
                   />
                 </LinkedToAccordion>
-                <div class="fr-fieldset__element">
+                <!-- <div class="fr-fieldset__element">
                   <div v-if="newFile">
                     <label
-                    class="fr-label fr-mb-1w"
-                  >
-                    {{ $t('File replaced by') }}
-                  </label>
+                      class="fr-label fr-mb-1w"
+                    >
+                      {{ $t('File replaced by') }}
+                    </label>
                     <FileCard
-                      :modelValue="{
+                      :model-value="{
                         file: newFile,
                         description: '',
                         format: guessFormat(newFile),
@@ -211,8 +212,7 @@
                     :hint-text="$t('Max size: 420 Mb. Multiple files allowed.')"
                     @change="setFiles"
                   />
-
-                </div>
+                </div> -->
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
                   :accordion="nameAFileAccordionId"
@@ -241,6 +241,7 @@
                   />
                 </LinkedToAccordion>
                 <LinkedToAccordion
+                  v-if="form.filetype === 'remote'"
                   class="fr-fieldset__element min-width-0"
                   :accordion="chooseTheCorrectFormatAccordionId"
                   @blur="touch('format')"
@@ -250,7 +251,7 @@
                     :label="$t('Format')"
                     :placeholder="$t('Search a format…')"
                     :display-value="(option) => option"
-                    :allow-new-option="isRemote ? (query) => query : undefined"
+                    :allow-new-option="(query) => query"
                     :options="extensions"
                     :multiple="false"
                     class="mb-6"
@@ -291,6 +292,7 @@
                   />
                 </LinkedToAccordion>
                 <LinkedToAccordion
+                  v-if="form.filetype === 'remote'"
                   class="fr-fieldset__element min-width-0"
                   :accordion="whatIsAMimeTypeAccordionId"
                   @blur="touch('mime')"
@@ -301,7 +303,7 @@
                     :placeholder="$t('Search a mime type…')"
                     :display-value="(option) => option.text"
                     :get-option-id="(option) => option.text"
-                    :allow-new-option="isRemote ? (query) => ({ text: query }) : undefined"
+                    :allow-new-option="(query) => ({ text: query })"
                     :suggest="suggestMime"
                     :multiple="false"
 
@@ -346,7 +348,7 @@ import { getResourceLabel, RESOURCE_TYPE, Well, type SchemaResponseData } from '
 import { cloneDeep } from 'lodash-es'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
-import type { NewDatasetFile } from '~/types/types'
+import type { ResourceForm } from '~/types/types'
 import type { KeysOfUnion } from '~/composables/useForm'
 
 const { t } = useI18n()
@@ -362,13 +364,13 @@ const props = withDefaults(defineProps<{
   buttonClasses: 'fr-btn fr-icon-pencil-line fr-icon--sm',
 })
 const emit = defineEmits<{
-  (e: 'submit', file: NewDatasetFile, newFile: File | null): void
+  (e: 'submit', file: ResourceForm, newFile: File | null): void
   (e: 'cancel'): void
 }>()
 
-const file = defineModel<NewDatasetFile>({ required: true })
+const file = defineModel<ResourceForm>({ required: true })
 const open = ref(false)
-const newFile = ref<File | null>(null);
+const newFile = ref<File | null>(null)
 
 onMounted(() => {
   if (props.openOnMounted) open.value = true
@@ -379,19 +381,10 @@ const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a f
 const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
-const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useNewDatasetFileForm(cloneDeep(file.value))
+const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useResourceForm(cloneDeep(file.value))
 
 const setFiles = (files: Array<File>) => {
-  newFile.value = files[0];
-}
-const guessFormat = (file: File) => {
-  const formatFromMime = file.type.includes('/') ? file.type.split('/').pop() || '' : file.type
-  let guessedFormat = extensions.value.includes(formatFromMime) ? formatFromMime : ''
-  if (!guessedFormat) {
-    const formatFromName = file.name.includes('.') ? file.name.split('.').pop() || '' : file.name
-    guessedFormat = extensions.value.includes(formatFromName) ? formatFromName : ''
-  }
-  return guessedFormat
+  newFile.value = files[0]
 }
 
 const chooseTheCorrectLinkAccordionId = useId()
