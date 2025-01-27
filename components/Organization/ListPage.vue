@@ -42,19 +42,19 @@
         class="fr-select !shadow-input"
       >
         <option value="">
-          Relevance
+          {{ $t('Relevance') }}
         </option>
         <option value="-created">
-          Newest
+          {{ $t('Newest') }}
         </option>
         <option value="created">
-          Oldest
+          {{ $t('Oldest') }}
         </option>
         <option value="-followers">
-          Followers
+          {{ $t('Followers') }}
         </option>
         <option value="-reuses">
-          Reuses
+          {{ $t('Reuses') }}
         </option>
       </select>
     </div>
