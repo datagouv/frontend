@@ -47,6 +47,7 @@
       />
       <InputGroup
         v-model="newContactForm.email"
+        type="email"
         :label="t('Contact Email')"
         placeholder="contact@organization.org"
         :has-error="!!getFirstError('email')"
@@ -120,7 +121,13 @@ const props = defineProps<{
   warningText?: string | null
 }>()
 
-const contactsUrl = computed(() => `/api/1/organizations/${props.organization.id}/contacts`)
+onMounted(() => {
+  if (contact.value && !('id' in contact.value)) {
+    contact.value = newContactForm.value
+  }
+})
+
+const contactsUrl = computed(() => `/api/1/organizations/${props.organization.id}/contacts/`)
 const { data: contacts, status } = await useAPI<PaginatedArray<ContactPoint>>(contactsUrl, { lazy: true })
 const loading = computed(() => status.value === 'pending')
 const contactsWithNewOption = computed<Array<ContactPointInForm>>(() => {
