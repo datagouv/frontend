@@ -54,7 +54,7 @@ function change(newQs: string, newSort: string | undefined, newPage: number) {
   })
 }
 
-const { data: organizations, status } = await useAPI<PaginatedArray<Organization>>(`/api/1/organizations/`, { params:
+const { data: organizations, status } = await useAPI<PaginatedArray<Organization>>(`/api/2/organizations/search/`, { params:
   {
     q,
     page,
