@@ -60,7 +60,7 @@
     </div>
   </div>
   <LoadingBlock :status>
-    <div class="grid gap-2 grid-cols-3 mb-16">
+    <div class="grid gap-4 grid-cols-3 mb-16">
       <OrganizationCard
         v-for="organization in organizations.data"
         :key="organization.id"
