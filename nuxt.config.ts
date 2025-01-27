@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: 'http://dev.local:7000',
       qualityDescriptionLength: 100,
+      searchAutocompleteDebounce: 200,
       searchSirenUrl: 'https://recherche-entreprises.api.gouv.fr/search',
       csvDatasetId: undefined,
       title: 'data.gouv.fr',

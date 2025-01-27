@@ -7,7 +7,7 @@
       class="relative w-full bg-white sm:text-sm"
     >
       <ComboboxInput
-        class="w-full border-none bg-gray-lower rounded-tl py-2 px-4 text-base text-gray-plain focus:outline-offset-2 focus:outline-2 focus:outline-blue-outline shadow-[inset_0_-2px_0_0] shadow-datagouv placeholder:italic placeholder:text-gray-medium"
+        class="w-full border-none bg-gray-lower rounded-tl py-2 px-4 text-base text-gray-plain focus:outline-offset-2 focus:outline-2 focus:outline-blue-outline shadow-input placeholder:italic placeholder:text-gray-medium"
         :display-value="() => ''"
         :placeholder="$t('Search')"
         @change="query = $event.target.value"

@@ -43,7 +43,7 @@ import { NuxtLinkLocale } from '#components'
 type ColorType = 'primary' | 'primary-soft' | 'secondary' | 'warning' | 'danger'
 
 const props = withDefaults(defineProps<{
-  size?: 'xs' | 'sm'
+  size?: 'xs' | 'sm' | 'lg'
   color?: ColorType
   disabled?: boolean
   loading?: boolean
@@ -93,6 +93,7 @@ const colors = computed(() => {
 
 const sizes = computed(() => {
   return {
+    lg: `text-lg ${hasText.value ? 'px-6 py-2' : 'p-3'}`,
     sm: `text-sm leading-none ${hasText.value ? 'px-4 py-3' : 'p-2.5'}`,
     xs: `text-xs leading-[0.875rem] ${hasText.value ? 'px-4 py-2' : 'p-2'}`,
   }[size.value]

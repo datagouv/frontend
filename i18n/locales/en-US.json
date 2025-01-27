@@ -889,5 +889,7 @@
   "Max size: 4 Mb. Accepted formats: JPEG, JPG and PNG.": "Max size: 4 Mb. Accepted formats: JPEG, JPG and PNG.",
   "Previous": "Previous",
   "Describe your post": "Describe your post",
+  "Search...": "Search...",
+  "Search among {count} organizations on {site}": "Search among {count} organizations on {site}",
   "": ""
 }

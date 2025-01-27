@@ -9,6 +9,8 @@ export type Sort = {
   key: string
 }
 
+export type RequestStatus = 'idle' | 'pending' | 'success' | 'error'
+
 export type DSFRFormDefaultState = 'default'
 
 export type DSFRFormFunctionalState = 'error' | 'success'
