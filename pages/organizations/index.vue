@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { type Organization } from '@datagouv/components'
+import type { Organization } from '@datagouv/components'
 import type { LocationQueryValue } from 'vue-router'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import type { PaginatedArray } from '~/types/types'
@@ -36,8 +36,8 @@ import type { PaginatedArray } from '~/types/types'
 const route = useRoute()
 const q = ref('')
 const sort = ref()
-const page = ref(parseInt(route.query.page as LocationQueryValue ?? "1", 10))
-const pageSize = 20
+const page = ref(parseInt(route.query.page as LocationQueryValue ?? '1', 10))
+const pageSize = 21
 
 function change(newQs: string, newSort: string | undefined, newPage: number) {
   q.value = newQs

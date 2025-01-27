@@ -1,5 +1,5 @@
 <template>
-  <div class="border border-gray-default relative">
+  <div class="border border-gray-default relative fr-enlarge-link">
     <div class="h-14 pt-4 px-4 bg-blue-lighter" />
     <div class="px-4 pb-4 pt-7 mt-2">
       <div class="inline-flex border border-gray-default p-1 absolute top-4 left-4 bg-white">
@@ -12,7 +12,12 @@
         >
       </div>
       <p class="mb-0 font-bold">
-        {{ organization.name }}
+        <NuxtLinkLocale
+          :to="organization.page"
+          :external="true"
+        >
+          {{ organization.name }}
+        </NuxtLinkLocale>
       </p>
       <div class="mb-2 text-gray-medium flex">
         <p class="mb-0 text-sm mr-1">
