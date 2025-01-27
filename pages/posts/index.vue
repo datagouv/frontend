@@ -67,7 +67,7 @@ watch(page, async () => {
   document.children[0].scrollIntoView({ behavior: 'smooth', block: 'start' })
 })
 
-const { data: posts } = await useAPI<PaginatedArray<Post>>('api/1/posts', { params:
+const { data: posts } = await useAPI<PaginatedArray<Post>>('api/1/posts/', { params:
   {
     page,
     page_size: pageSize,

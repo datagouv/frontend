@@ -1,15 +1,29 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+
+  modules: [
+    '@nuxt/content',
+    '@nuxt/eslint',
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@nuxtjs/i18n',
+    '@nuxtjs/tailwindcss',
+    '@sentry/nuxt/module',
+  ],
   devtools: { enabled: true, componentInspector: false },
 
-  features: {
-    inlineStyles: false,
-  },
-
-  devServer: {
-    port: 3000,
-    host: 'dev.local',
+  app: {
+    head: {
+      bodyAttrs: {
+        class: 'datagouv-components',
+      },
+      link: [
+        // Cannot use `/public/favicon.png` because the reverse proxy is calling udata-front for `/`
+        // When the migration is over we can remove this static path.
+        // :AfterMigration
+        { rel: 'shortcut icon', href: 'https://static.data.gouv.fr/_themes/gouvfr/img/favicon.png' },
+      ],
+    },
   },
 
   runtimeConfig: {
@@ -87,40 +101,34 @@ export default defineNuxtConfig({
     },
   },
 
-  app: {
-    head: {
-      bodyAttrs: {
-        class: 'datagouv-components',
-      },
-      link: [
-        // Cannot use `/public/favicon.png` because the reverse proxy is calling udata-front for `/`
-        // When the migration is over we can remove this static path.
-        // :AfterMigration
-        { rel: 'shortcut icon', href: 'https://static.data.gouv.fr/_themes/gouvfr/img/favicon.png' },
-      ],
+  routeRules: {
+    '/login': { prerender: true },
+    '/register': { prerender: true },
+    '/posts/': { swr: 3600 },
+    '/posts/**': { swr: 3600 },
+    // Admin dashboard renders only on server-side
+    '/beta/admin/**': { ssr: true },
+  },
+
+  devServer: {
+    port: 3000,
+    host: 'dev.local',
+  },
+
+  features: {
+    inlineStyles: false,
+  },
+  compatibilityDate: '2024-04-03',
+
+  vite: {
+    server: {
+      allowedHosts: ['dev.local'],
     },
   },
 
   typescript: {
     typeCheck: false,
   },
-
-  routeRules: {
-    '/login': { prerender: true },
-    '/register': { prerender: true },
-    // Admin dashboard renders only on server-side
-    '/beta/admin/**': { ssr: true },
-  },
-
-  modules: [
-    '@nuxt/content',
-    '@nuxt/eslint',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxtjs/i18n',
-    '@nuxtjs/tailwindcss',
-    '@sentry/nuxt/module',
-  ],
   eslint: {
     config: {
       stylistic: true,
