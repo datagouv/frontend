@@ -145,7 +145,7 @@ export function resourceToForm(resource: Resource, schemas: Array<RegisteredSche
   const form = {
     title: resource.title,
     type: resource.type,
-    description: resource.description,
+    description: resource.description || '',
     schema: schemas.find(schema => schema.name === resource.schema?.name) || null,
 
     resource,

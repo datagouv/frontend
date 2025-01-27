@@ -8,6 +8,7 @@
         {{ t('{n} files', resourcesPage.total) }}
       </h2>
       <UploadResourceModal
+        :extensions
         @new-files="addFiles"
       />
     </div>
@@ -118,14 +119,14 @@ import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
 import UploadResourceModal from './UploadResourceModal.vue'
 import FileEditModal from './FileEditModal.vue'
-import type { AdminBadgeType, NewDatasetFile, PaginatedArray } from '~/types/types'
+import type { AdminBadgeType, PaginatedArray, ResourceForm } from '~/types/types'
 
 const route = useRoute()
 const { toast } = useToast()
 const { $api } = useNuxtApp()
-const { locale } = useI18n()
 
 const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
+const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
 
 const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
 const { data: dataset, status } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
@@ -150,23 +151,31 @@ watchEffect(async () => await refreshResources())
 
 const { t } = useI18n()
 
-const newFiles = ref<Array<NewDatasetFile>>([])
+const newFiles = ref<Array<ResourceForm>>([])
 
-const addFiles = (files: Array<NewDatasetFile>) => {
+const addFiles = (files: Array<ResourceForm>) => {
   newFiles.value = files
 }
 const removeFirstNewFile = () => {
   newFiles.value = [...newFiles.value.slice(1)]
 }
 const saveFirstNewFile = async () => {
-  await saveNewResource(dataset.value, newFiles.value[0], 3)
+  await saveResourceForm(dataset.value, newFiles.value[0])
   removeFirstNewFile()
 
   page.value = 1
   refreshResources()
 }
-const saveFile = async (index: number, resource: Resource, file: NewDatasetFile, newFile: File | null) => {
-  const updated = await updateResource(dataset.value, resource, file, 3)
+const saveFile = async (index: number, resource: Resource, resourceForm: ResourceForm, newFile: File | null) => {
+  if (resourceForm.filetype !== 'file') throw new Error('Cannot update file of not local file')
+
+  if (newFile) {
+    resourceForm.file = {
+      raw: newFile,
+      state: { status: 'waiting' },
+    }
+  }
+  const updated = await saveResourceForm(dataset.value, resourceForm)
   if (resourcesPage.value) {
     resourcesPage.value.data[index] = updated
   }

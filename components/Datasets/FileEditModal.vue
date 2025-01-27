@@ -178,7 +178,7 @@
                     :error-text="getFirstError('url')"
                   />
                 </LinkedToAccordion>
-                <!-- <div class="fr-fieldset__element">
+                <div class="fr-fieldset__element">
                   <div v-if="newFile">
                     <label
                       class="fr-label fr-mb-1w"
@@ -186,20 +186,23 @@
                       {{ $t('File replaced by') }}
                     </label>
                     <FileCard
+                      v-if="newFile"
                       :model-value="{
-                        file: newFile,
-                        description: '',
-                        format: guessFormat(newFile),
-                        filesize: newFile.size,
                         filetype: 'file',
-                        mime: newFile.type,
                         title: newFile.name,
                         type: 'main',
-                        state: 'none',
+                        description: '',
+                        schema: null,
+                        file: {
+                          raw: newFile,
+                          state: { status: 'waiting' },
+                        },
+                        resource: null,
                       }"
                       class="fr-mb-3v"
                       :show-edit-and-warning="false"
-                      @delete="form.file = null"
+                      :extensions
+                      @delete="newFile = null"
                     />
                   </div>
                   <UploadGroup
@@ -212,7 +215,7 @@
                     :hint-text="$t('Max size: 420 Mb. Multiple files allowed.')"
                     @change="setFiles"
                   />
-                </div> -->
+                </div>
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
                   :accordion="nameAFileAccordionId"
