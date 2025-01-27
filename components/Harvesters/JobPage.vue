@@ -62,6 +62,7 @@
               {{ $t('Failed items') }}
             </template>
           </Tooltip>
+          <span>{{ $t('({count} in total)', { count: job.items.length }) }}</span>
         </span>
       </div>
     </div>
@@ -137,7 +138,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="item in job.items"
+            v-for="item in paginatedItems"
             :key="item.remote_id"
           >
             <td>
@@ -181,6 +182,12 @@
           </tr>
         </tbody>
       </AdminTable>
+      <Pagination
+        :page="page"
+        :page-size="pageSize"
+        :total-results="job.items.length"
+        @change="(changedPage: number) => page = changedPage"
+      />
     </div>
 
     <Modal
@@ -231,7 +238,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '@datagouv/components'
+import { formatDate, Pagination } from '@datagouv/components'
 import { RiAlertLine, RiArchiveLine, RiCalendarEventLine, RiCheckboxCircleLine, RiCheckLine, RiCloseLine, RiEyeOffLine, RiInformationLine } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
@@ -242,11 +249,18 @@ import type { AdminBadgeType } from '~/types/types'
 const config = useRuntimeConfig()
 const { t } = useI18n()
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   job: HarvesterJob
   preview?: boolean
 }>(), {
   preview: false,
+})
+
+const page = ref(1)
+const pageSize = ref(15)
+
+const paginatedItems = computed(() => {
+  return props.job.items.slice((page.value - 1) * pageSize.value, page.value * pageSize.value)
 })
 
 function getStatus(item: HarvestItem): { label: string, type: AdminBadgeType } {

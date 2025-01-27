@@ -90,6 +90,18 @@ export default {
           },
         },
       }),
+      // This animation are copy/paste from the `pulse` animation of TailwindCSS
+      // because the `pulse` animation inherit of a blue background from somewhere
+      // (DSFR? Wrong component not-scoped style?)
+      animation: {
+        'pulse-placeholder': 'pulse-placeholder 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        'pulse-placeholder': {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.5 },
+        },
+      },
     },
   },
   plugins: [

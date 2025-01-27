@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded p-3"
+    class="w-full rounded p-3"
     :class="classes"
   >
     <slot />

@@ -3,7 +3,7 @@
     v-if="loading"
     class="flex justify-center items-center"
   >
-    <AdminLoader class="size-24" />
+    <PreviewLoader />
   </div>
   <div v-else-if="job">
     <JobPage
@@ -28,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import AdminLoader from '../AdminLoader/AdminLoader.vue'
 import JobPage from './JobPage.vue'
+import PreviewLoader from './PreviewLoader.vue'
 import type { HarvesterForm, HarvesterJob } from '~/types/harvesters'
 import { toApi } from '~/utils/harvesters'
 
