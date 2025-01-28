@@ -17,7 +17,7 @@
     <FileEditModal
       v-if="resourceForms.length"
       :key="resourceForms.length"
-      v-model="resourceForms[0]"
+      :resource="resourceForms[0]"
       open-on-mounted
       :loading
       @submit="saveFirstNewFile"
@@ -95,9 +95,8 @@
               <FileEditModal
                 :dataset
                 :loading
-                :model-value="resourceToForm(resource, schemas || [])"
+                :resource="resourceToForm(resource, schemas || [])"
                 button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
-                @update:model-value="() => {}"
                 @submit="(close, file, newFile) => saveFile(index, close, resource, file, newFile)"
                 @delete="refreshResources"
               />

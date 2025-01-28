@@ -59,7 +59,7 @@
             class="fr-col-auto fr-ml-1w fr-m-0"
           >
             <FileEditModal
-              v-model="resourceForm"
+              :resource="resourceForm"
               @submit="(close) => close()"
             />
           </p>

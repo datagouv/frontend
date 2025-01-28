@@ -408,6 +408,7 @@ const props = withDefaults(defineProps<{
   buttonClasses?: string
   loading?: boolean
   dataset?: Dataset | DatasetV2 // only require for deleting a resource :-(
+  resource: ResourceForm
 }>(), {
   loading: false,
   openOnMounted: false,
@@ -418,7 +419,7 @@ const emit = defineEmits<{
   (e: 'cancel' | 'delete'): void
 }>()
 
-const file = defineModel<ResourceForm>({ required: true })
+// const file = defineModel<ResourceForm>({ required: true })
 const open = ref(false)
 const newFile = ref<File | null>(null)
 
@@ -426,12 +427,12 @@ onMounted(() => {
   if (props.openOnMounted) open.value = true
 })
 
-const isRemote = computed(() => file.value.filetype === 'remote')
+const isRemote = computed(() => props.resource.filetype === 'remote')
 const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a file'))
 const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
-const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useResourceForm(cloneDeep(file.value))
+const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useResourceForm(cloneDeep(props.resource))
 
 const setFiles = (files: Array<File>) => {
   newFile.value = files[0]
@@ -450,12 +451,11 @@ const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/sche
 
 const submit = (close: () => void) => {
   if (validate()) {
-    file.value = form.value
     emit('submit', close, form.value, newFile.value)
   }
 }
 const cancel = (close: () => void) => {
-  form.value = file.value
+  form.value = props.resource
   close()
   emit('cancel')
 }
