@@ -326,24 +326,21 @@
 
     <template #footer="{ close }">
       <div class="w-full flex gap-4">
-        <div class="fr-col-auto">
-          <button
-            class="fr-btn"
-            type="submit"
-            :form="formId"
-          >
-            {{ t("Validate") }}
-          </button>
-        </div>
-        <div class="fr-col-auto">
-          <button
-            class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
-            type="button"
-            @click="cancel(close)"
-          >
-            {{ t("Cancel") }}
-          </button>
-        </div>
+        <BrandedButton
+          color="primary"
+          type="submit"
+          :form="formId"
+          :loading
+        >
+          {{ t('Validate') }}
+        </BrandedButton>
+        <BrandedButton
+          color="secondary"
+          :disabled="loading"
+          @click="cancel(close)"
+        >
+          {{ t('Cancel') }}
+        </BrandedButton>
       </div>
     </template>
   </ModalWithButton>
@@ -365,12 +362,14 @@ const formId = useId()
 const props = withDefaults(defineProps<{
   openOnMounted?: boolean
   buttonClasses?: string
+  loading?: boolean
 }>(), {
+  loading: false,
   openOnMounted: false,
   buttonClasses: 'fr-btn fr-icon-pencil-line fr-icon--sm',
 })
 const emit = defineEmits<{
-  (e: 'submit', file: ResourceForm, newFile: File | null): void
+  (e: 'submit', close: () => void, file: ResourceForm, newFile: File | null): void
   (e: 'cancel'): void
 }>()
 
@@ -407,8 +406,7 @@ const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/sche
 const submit = (close: () => void) => {
   if (validate()) {
     file.value = form.value
-    close()
-    emit('submit', form.value, newFile.value)
+    emit('submit', close, form.value, newFile.value)
   }
 }
 const cancel = (close: () => void) => {

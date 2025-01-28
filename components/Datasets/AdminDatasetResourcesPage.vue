@@ -19,6 +19,7 @@
       :key="resourceForms.length"
       v-model="resourceForms[0]"
       open-on-mounted
+      :loading
       @submit="saveFirstNewFile"
       @cancel="removeFirstNewFile"
     />
@@ -92,10 +93,11 @@
             </td>
             <td>
               <FileEditModal
+                :loading
                 :model-value="resourceToForm(resource, schemas || [])"
                 button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
                 @update:model-value="() => {}"
-                @submit="(file, newFile) => saveFile(index, resource, file, newFile)"
+                @submit="(close, file, newFile) => saveFile(index, close, resource, file, newFile)"
               />
             </td>
           </tr>
@@ -152,6 +154,7 @@ watchEffect(async () => await refreshResources())
 const { t } = useI18n()
 
 const resourceForms = ref<Array<ResourceForm>>([])
+const loading = ref(false)
 
 const addFiles = (files: Array<ResourceForm>) => {
   resourceForms.value = files
@@ -159,14 +162,21 @@ const addFiles = (files: Array<ResourceForm>) => {
 const removeFirstNewFile = () => {
   resourceForms.value = [...resourceForms.value.slice(1)]
 }
-const saveFirstNewFile = async () => {
-  await saveResourceForm(dataset.value, resourceForms.value[0])
+const saveFirstNewFile = async (closeModal: () => void) => {
+  loading.value = true
+  try {
+    await saveResourceForm(dataset.value, resourceForms.value[0])
+    closeModal()
+  }
+  finally {
+    loading.value = false
+  }
   removeFirstNewFile()
 
   page.value = 1
   refreshResources()
 }
-const saveFile = async (index: number, resource: Resource, resourceForm: ResourceForm, newFile: File | null) => {
+const saveFile = async (index: number, closeModal: () => void, resource: Resource, resourceForm: ResourceForm, newFile: File | null) => {
   if (newFile) {
     if (resourceForm.filetype !== 'file') throw new Error('Cannot update file of not local file')
 
@@ -175,10 +185,20 @@ const saveFile = async (index: number, resource: Resource, resourceForm: Resourc
       state: { status: 'waiting' },
     }
   }
-  const updated = await saveResourceForm(dataset.value, resourceForm)
-  if (resourcesPage.value) {
-    resourcesPage.value.data[index] = updated
+
+  loading.value = true
+
+  try {
+    const updated = await saveResourceForm(dataset.value, resourceForm)
+    if (resourcesPage.value) {
+      resourcesPage.value.data[index] = updated
+    }
+    closeModal()
   }
+  finally {
+    loading.value = false
+  }
+
   toast.success(t('Resource updated!'))
 }
 
