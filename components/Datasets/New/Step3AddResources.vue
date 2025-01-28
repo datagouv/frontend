@@ -225,15 +225,7 @@ const removeFile = (position: number) => {
 
 const submit = () => {
   if (validate()) {
-    try {
-      emit('next', form.value.resources)
-    }
-    catch {
-      // here
-    }
-    finally {
-      //
-    }
+    emit('next', form.value.resources)
   }
 }
 
