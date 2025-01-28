@@ -15,9 +15,9 @@
 
     <!-- :key is here to force re-render when length change and then re-call onMounted -->
     <FileEditModal
-      v-if="newFiles.length"
-      :key="newFiles.length"
-      v-model="newFiles[0]"
+      v-if="resourceForms.length"
+      :key="resourceForms.length"
+      v-model="resourceForms[0]"
       open-on-mounted
       @submit="saveFirstNewFile"
       @cancel="removeFirstNewFile"
@@ -151,16 +151,16 @@ watchEffect(async () => await refreshResources())
 
 const { t } = useI18n()
 
-const newFiles = ref<Array<ResourceForm>>([])
+const resourceForms = ref<Array<ResourceForm>>([])
 
 const addFiles = (files: Array<ResourceForm>) => {
-  newFiles.value = files
+  resourceForms.value = files
 }
 const removeFirstNewFile = () => {
-  newFiles.value = [...newFiles.value.slice(1)]
+  resourceForms.value = [...resourceForms.value.slice(1)]
 }
 const saveFirstNewFile = async () => {
-  await saveResourceForm(dataset.value, newFiles.value[0])
+  await saveResourceForm(dataset.value, resourceForms.value[0])
   removeFirstNewFile()
 
   page.value = 1

@@ -144,6 +144,10 @@ watchEffect(() => validate())
 const format = computed(() => {
   if (resourceForm.value.filetype === 'remote') return resourceForm.value.format.trim().toLowerCase()
 
+  if (resourceForm.value.resource && resourceForm.value.resource.format) {
+    return resourceForm.value.resource.format.trim().toLowerCase()
+  }
+
   if (!resourceForm.value.file) return null
   return guessFormat(resourceForm.value.file.raw, props.extensions)
 })
