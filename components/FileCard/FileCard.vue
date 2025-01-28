@@ -26,10 +26,10 @@
             {{ $t('Updated {date}', { date: formatRelativeIfRecentDate(resourceForm.resource.last_modified) }) }}
           </p>
           <p
-            v-if="format"
+            v-if="guessFormat(resourceForm, extensions)"
             class="fr-text--xs fr-m-0"
           >
-            {{ format }}
+            {{ guessFormat(resourceForm, extensions) }}
             <template v-if="resourceForm.filetype === 'file' && resourceForm.file">
               ({{ formatFilesize(resourceForm.file.raw.size) }})
             </template>
@@ -140,15 +140,4 @@ const loaded = computed(() => resourceForm.value.filetype === 'file' && resource
 // Only useful to get potentials errors (no modification here)
 const { errors, warnings, validate } = useResourceForm(resourceForm)
 watchEffect(() => validate())
-
-const format = computed(() => {
-  if (resourceForm.value.filetype === 'remote') return resourceForm.value.format.trim().toLowerCase()
-
-  if (resourceForm.value.resource && resourceForm.value.resource.format) {
-    return resourceForm.value.resource.format.trim().toLowerCase()
-  }
-
-  if (!resourceForm.value.file) return null
-  return guessFormat(resourceForm.value.file.raw, props.extensions)
-})
 </script>

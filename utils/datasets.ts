@@ -95,7 +95,12 @@ const includeInSubtype = <T, U extends T>(array: ReadonlyArray<U>, value: T): va
   return array.includes(value as U)
 }
 
-export const isClosedFormat = (format: string) => includeInSubtype(CLOSED_FORMATS, format)
+export function isClosedFormat(resource: ResourceForm, extensions: Array<string>): boolean {
+  const format = guessFormat(resource, extensions)
+  if (!format) return false // Unknown format shouldn't raise a closed format error
+
+  return includeInSubtype(CLOSED_FORMATS, format)
+}
 
 export function getDatasetAdminUrl(dataset: Dataset | DatasetV2): string {
   return `/beta/admin/datasets/${dataset.id}`
@@ -342,7 +347,18 @@ export async function retry<T>(promise: () => Promise<T>, count: number): Promis
   }
 }
 
-export function guessFormat(file: File, extensions: Array<string>): string | null {
+export function guessFormat(resourceForm: ResourceForm, extensions: Array<string>): string | null {
+  if (resourceForm.filetype === 'remote') return resourceForm.format.trim().toLowerCase()
+
+  if (resourceForm.resource && resourceForm.resource.format) {
+    return resourceForm.resource.format.trim().toLowerCase()
+  }
+
+  if (!resourceForm.file) return null
+  return guessFormatFromRawFile(resourceForm.file.raw, extensions)
+}
+
+export function guessFormatFromRawFile(file: File, extensions: Array<string>): string | null {
   const formatFromMime = file.type.includes('/') ? file.type.split('/').pop() || '' : file.type
   if (extensions.includes(formatFromMime)) return formatFromMime
 
