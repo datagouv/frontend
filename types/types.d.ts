@@ -256,12 +256,6 @@ export type ResourceFormLocal = BaseResourceForm & {
 
 export type ResourceForm = ResourceFormRemote | ResourceFormLocal
 
-// export type DatasetRemoteFile = { description?: string, filetype: RemoteResourceFileType, format: string, mime: { text: string } | null, schema?: RegisteredSchema, title: string, type: ResourceType, url: string }
-
-// export type DatasetLocalFile = { file: File, sha256?: string, description?: string, format: string, filesize: number | null, filetype: FileResourceFileType, mime: { text: string } | null, schema?: RegisteredSchema, title: string, type: ResourceType }
-
-// export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState, errorMessage?: string }
-
 export type NewOrganization = {
   acronym: string | null
   name: string

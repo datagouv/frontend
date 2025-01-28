@@ -13,23 +13,23 @@
         </div>
         <div class="fr-my-0 text-grey-380 fr-grid-row fr-grid-row--middle">
           <p
-            v-if="resourceForm.filetype === 'file' && resourceForm.file"
+            v-if="resourceForm.filetype === 'file' && resourceForm.file && resourceForm.file.raw.name != resourceForm.title"
             class="fr-text--xs fr-m-0 overflow-wrap-anywhere text-overflow-ellipsis dash-after"
           >
             {{ resourceForm.file.raw.name }}
           </p>
           <p
             v-if="resourceForm.resource"
-            class="fr-text--xs fr-m-0"
+            class="fr-text--xs fr-m-0 dash-after"
           >
             <!-- Not sure if this date is useful, since it's about modification on a ressource  -->
             {{ $t('Updated {date}', { date: formatRelativeIfRecentDate(resourceForm.resource.last_modified) }) }}
           </p>
           <p
             v-if="format"
-            class="fr-text--xs fr-m-0 dash-before"
+            class="fr-text--xs fr-m-0"
           >
-            {{ format.trim().toLowerCase() }}
+            {{ format }}
             <template v-if="resourceForm.filetype === 'file' && resourceForm.file">
               ({{ formatFilesize(resourceForm.file.raw.size) }})
             </template>
@@ -142,7 +142,7 @@ const { errors, warnings, validate } = useResourceForm(resourceForm)
 watchEffect(() => validate())
 
 const format = computed(() => {
-  if (resourceForm.value.filetype === 'remote') return resourceForm.value.format
+  if (resourceForm.value.filetype === 'remote') return resourceForm.value.format.trim().toLowerCase()
 
   if (!resourceForm.value.file) return null
   return guessFormat(resourceForm.value.file.raw, props.extensions)

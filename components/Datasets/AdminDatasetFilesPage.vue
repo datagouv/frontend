@@ -167,9 +167,9 @@ const saveFirstNewFile = async () => {
   refreshResources()
 }
 const saveFile = async (index: number, resource: Resource, resourceForm: ResourceForm, newFile: File | null) => {
-  if (resourceForm.filetype !== 'file') throw new Error('Cannot update file of not local file')
-
   if (newFile) {
+    if (resourceForm.filetype !== 'file') throw new Error('Cannot update file of not local file')
+
     resourceForm.file = {
       raw: newFile,
       state: { status: 'waiting' },

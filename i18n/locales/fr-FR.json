@@ -197,6 +197,8 @@
   "Add a link": "Ajouter un lien",
   "Exact link to the file": "Lien exact vers le fichier",
   "Type a valid url, starting with https://": "Saisissez une url valide, commençant par https://",
+  "Replace file": "Remplacer le fichier",
+  "The current file will be replaced by": "Le fichier actuel sera remplacé par",
   "Send": "Envoyer",
   "At least one file or link is required.": "Au moins un fichier ou lien est requis.",
   "Main file": "Fichier principal",

@@ -178,12 +178,15 @@
                     :error-text="getFirstError('url')"
                   />
                 </LinkedToAccordion>
-                <div class="fr-fieldset__element">
+                <div
+                  v-if="form.filetype === 'file'"
+                  class="fr-fieldset__element"
+                >
                   <div v-if="newFile">
                     <label
                       class="fr-label fr-mb-1w"
                     >
-                      {{ $t('File replaced by') }}
+                      {{ $t('The current file will be replaced by') }}
                     </label>
                     <FileCard
                       v-if="newFile"

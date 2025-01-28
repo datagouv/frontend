@@ -198,6 +198,8 @@
   "Add a link": "Add a link",
   "Exact link to the file": "Exact link to the file",
   "Type a valid url, starting with https://": "Type a valid url, starting with https://",
+  "Replace file": "Replace file",
+  "The current file will be replaced by": "The current file will be replaced by",
   "Send": "Send",
   "At least one file or link is required.": "At least one file or link is required.",
   "Main file": "Main file",
