@@ -18,7 +18,7 @@
         <Accordion
           :id="publishFileAccordionId"
           :title="$t('Choose the right format')"
-          :state="accordionState('files')"
+          :state="accordionState('resources')"
           :opened="true"
         >
           <div class="prose prose-neutral fr-m-0">
@@ -32,11 +32,11 @@
             </ul>
           </div>
           <Well
-            v-if="getFirstWarning('files')"
+            v-if="getFirstWarning('resources')"
             class="fr-mt-1w"
             color="orange-terre-battue"
           >
-            {{ getFirstWarning("files") }}
+            {{ getFirstWarning("resources") }}
           </Well>
         </Accordion>
         <Accordion
@@ -106,7 +106,7 @@
             :accordion="publishFileAccordionId"
           >
             <PaddedContainer
-              v-if="form.files.length === 0"
+              v-if="form.resources.length === 0"
               class="flex flex-col items-center"
               color="alt-grey"
             >
@@ -114,16 +114,16 @@
                 {{ $t("Add your first files") }}
               </h3>
               <UploadResourceModal
-                :error-text="getFirstError('files')"
+                :error-text="getFirstError('resources')"
                 :extensions
-                @new-files="addFiles"
+                @new-files="addResourceForms"
               />
             </PaddedContainer>
             <template v-else>
               <FileCard
-                v-for="(_, index) in form.files"
+                v-for="(_, index) in form.resources"
                 :key="index"
-                v-model="form.files[index]"
+                v-model="form.resources[index]"
                 class="fr-mb-3v"
                 :extensions
                 @delete="removeFile(index)"
@@ -131,7 +131,7 @@
               <div class="fr-grid-row fr-grid-row--center">
                 <UploadResourceModal
                   :extensions
-                  @new-files="addFiles"
+                  @new-files="addResourceForms"
                 />
               </div>
             </template>
@@ -182,8 +182,9 @@ import { Well } from '@datagouv/components'
 import UploadResourceModal from '../UploadResourceModal.vue'
 import type { ResourceForm } from '~/types/types'
 
-defineProps<{
+const props = defineProps<{
   loading: boolean
+  resources: Array<ResourceForm>
 }>()
 
 const emit = defineEmits<{
@@ -193,41 +194,39 @@ const emit = defineEmits<{
 
 const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
 
-const files = defineModel<Array<ResourceForm>>({ required: true })
-
 const { t } = useI18n()
 
 const publishFileAccordionId = useId()
 const addDescriptionAccordionId = useId()
 
 const { form, getFirstError, getFirstWarning, touch, validate, errorsAsList: errors } = useForm({
-  files,
+  resources: props.resources,
   hasDocumentation: false,
 }, {
-  files: [required(t('At least one file is required.'))],
+  resources: [required(t('At least one file is required.'))],
 }, {
-  files: [files => files.find(file => !isClosedFormat(file.format)) ? null : t('You did not add a file with an open format.')],
+  resources: [resources => resources.find(resource => !isClosedFormat(resource.format)) ? null : t('You did not add a file with an open format.')],
   hasDocumentation: [hasDocumentation => !hasDocumentation ? t('You have not added a documentation file or described your files.') : null],
 })
 
 watchEffect(() => {
-  form.value.hasDocumentation = !!form.value.files.length && form.value.files.some(file => file.type === 'documentation')
+  form.value.hasDocumentation = !!form.value.resources.length && form.value.resources.some(resource => resource.type === 'documentation')
   touch('hasDocumentation')
 })
 
-const addFiles = (files: Array<ResourceForm>) => {
-  for (const file of files) form.value.files.push(file)
-  touch('files')
+const addResourceForms = (resourceForms: Array<ResourceForm>) => {
+  for (const resourceForm of resourceForms) form.value.resources.push(resourceForm)
+  touch('resources')
 }
 const removeFile = (position: number) => {
-  form.value.files.splice(position, 1)
-  touch('files')
+  form.value.resources.splice(position, 1)
+  touch('resources')
 }
 
 const submit = () => {
   if (validate()) {
     try {
-      emit('next', form.value.files)
+      emit('next', form.value.resources)
     }
     catch {
       // here

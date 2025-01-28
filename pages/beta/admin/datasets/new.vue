@@ -44,9 +44,9 @@
       @previous="moveToStep(1)"
       @submit="datasetNext"
     />
-    <Step3AddFiles
+    <Step3AddResources
       v-if="currentStep === 3"
-      v-model="resources"
+      :resources
       :loading
       @previous="moveToStep(2)"
       @next="filesNext"
@@ -65,7 +65,7 @@
 import type { Dataset, Frequency, Owned } from '@datagouv/components'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
-import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
+import Step3AddResources from '~/components/Datasets/New/Step3AddResources.vue'
 import Step4CompletePublication from '~/components/Datasets/New/Step4CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
 import type { DatasetForm, EnrichedLicense, ResourceForm, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
