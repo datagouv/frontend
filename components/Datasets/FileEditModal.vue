@@ -325,30 +325,74 @@
     </template>
 
     <template #footer="{ close }">
-      <div class="w-full flex gap-4">
-        <BrandedButton
-          color="primary"
-          type="submit"
-          :form="formId"
-          :loading
+      <div class="w-full">
+        <div class="w-full flex gap-4">
+          <BrandedButton
+            color="primary"
+            type="submit"
+            :form="formId"
+            :loading
+          >
+            {{ t('Validate') }}
+          </BrandedButton>
+          <BrandedButton
+            color="secondary"
+            :disabled="loading"
+            @click="cancel(close)"
+          >
+            {{ t('Cancel') }}
+          </BrandedButton>
+        </div>
+
+        <BannerAction
+          v-if="dataset && form.resource"
+          class="w-full mt-6"
+          type="danger"
+          :title="$t('Delete the resource')"
         >
-          {{ t('Validate') }}
-        </BrandedButton>
-        <BrandedButton
-          color="secondary"
-          :disabled="loading"
-          @click="cancel(close)"
-        >
-          {{ t('Cancel') }}
-        </BrandedButton>
+          {{ $t("Be careful, this action can't be reverse.") }}
+          <template #button>
+            <ModalWithButton
+              :title="$t('Are you sure you want to delete this resource?')"
+              size="lg"
+            >
+              <template #button="{ attrs, listeners }">
+                <BrandedButton
+                  color="danger"
+                  size="xs"
+                  :icon="RiDeleteBin6Line"
+                  v-bind="attrs"
+                  v-on="listeners"
+                >
+                  {{ $t('Delete') }}
+                </BrandedButton>
+              </template>
+              <p class="fr-text--bold">
+                {{ $t("This action can't be reverse.") }}
+              </p>
+              <template #footer>
+                <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+                  <BrandedButton
+                    color="danger"
+                    :loading="deleting"
+                    @click="deleteResource(dataset, form.resource, close)"
+                  >
+                    {{ $t("Delete the resource") }}
+                  </BrandedButton>
+                </div>
+              </template>
+            </ModalWithButton>
+          </template>
+        </BannerAction>
       </div>
     </template>
   </ModalWithButton>
 </template>
 
 <script setup lang="ts">
-import { getResourceLabel, RESOURCE_TYPE, Well, type SchemaResponseData } from '@datagouv/components'
+import { getResourceLabel, RESOURCE_TYPE, Well, type Dataset, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
 import { cloneDeep } from 'lodash-es'
+import { RiDeleteBin6Line } from '@remixicon/vue'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
 import type { ResourceForm } from '~/types/types'
@@ -363,6 +407,7 @@ const props = withDefaults(defineProps<{
   openOnMounted?: boolean
   buttonClasses?: string
   loading?: boolean
+  dataset?: Dataset | DatasetV2 // only require for deleting a resource :-(
 }>(), {
   loading: false,
   openOnMounted: false,
@@ -370,7 +415,7 @@ const props = withDefaults(defineProps<{
 })
 const emit = defineEmits<{
   (e: 'submit', close: () => void, file: ResourceForm, newFile: File | null): void
-  (e: 'cancel'): void
+  (e: 'cancel' | 'delete'): void
 }>()
 
 const file = defineModel<ResourceForm>({ required: true })
@@ -428,5 +473,20 @@ const accordionState = (key: KeysOfUnion<typeof form.value>) => {
   if (getFirstWarning(key)) return 'warning'
 
   return 'default'
+}
+
+const deleting = ref(false)
+const deleteResource = async (dataset: Dataset | DatasetV2, resource: Resource, close: () => void) => {
+  deleting.value = true
+  try {
+    await $api(`/api/1/datasets/${dataset.id}/resources/${resource.id}/`, {
+      method: 'DELETE',
+    })
+    emit('delete')
+  }
+  finally {
+    deleting.value = false
+  }
+  close()
 }
 </script>
