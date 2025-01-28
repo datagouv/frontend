@@ -121,7 +121,7 @@ import type { ResourceForm } from '~/types/types'
 
 const resourceForm = defineModel<ResourceForm>({ required: true })
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   showEditAndWarning?: boolean
   hideActions?: boolean
   extensions: Array<string>
