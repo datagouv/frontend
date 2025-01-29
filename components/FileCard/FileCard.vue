@@ -60,7 +60,7 @@
           >
             <FileEditModal
               :resource="resourceForm"
-              @submit="(close) => close()"
+              @submit="save"
             />
           </p>
         </div>
@@ -136,6 +136,14 @@ withDefaults(defineProps<{
 defineEmits<{
   (e: 'delete' | 'edit'): void
 }>()
+
+const save = (close: () => void, form: ResourceForm) => {
+  // We don't want to link the `form` inside the modal to the
+  // model here because otherwise when clicking "cancel" the
+  // modification are still present
+  resourceForm.value = { ...form }
+  close()
+}
 
 const loading = computed(() => resourceForm.value.filetype === 'file' && resourceForm.value.file?.state.status === 'loading')
 const loaded = computed(() => resourceForm.value.filetype === 'file' && resourceForm.value.file?.state.status === 'uploaded')
