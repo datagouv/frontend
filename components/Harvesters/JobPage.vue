@@ -10,12 +10,12 @@
       <div class="space-x-1">
         <RiCalendarEventLine class="inline size-3" />
         <span>{{ $t('Started at:') }}</span>
-        <span class="font-mono">{{ formatDate(job.started || job.created, 'LLL') }}</span>
+        <span class="font-mono">{{ formatDate(job.started || job.created, { dateStyle: 'long', timeStyle: 'short' }) }}</span>
       </div>
       <div class="space-x-1">
         <RiCalendarEventLine class="inline size-3" />
         <span>{{ $t('Ended at:') }}</span>
-        <span class="font-mono">{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</span>
+        <span class="font-mono">{{ job.ended ? formatDate(job.ended, { dateStyle: 'long', timeStyle: 'short' }) : '—' }}</span>
       </div>
       <div class="space-x-1">
         <RiCheckboxCircleLine class="inline size-3" />
@@ -238,7 +238,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination } from '@datagouv/components'
+import { Pagination } from '@datagouv/components'
 import { RiAlertLine, RiArchiveLine, RiCalendarEventLine, RiCheckboxCircleLine, RiCheckLine, RiCloseLine, RiEyeOffLine, RiInformationLine } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'

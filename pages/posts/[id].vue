@@ -67,7 +67,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '@datagouv/components'
 import EditButton from '~/components/BrandedButton/EditButton.vue'
 import type { Post } from '~/types/posts'
 

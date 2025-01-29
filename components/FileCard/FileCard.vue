@@ -113,7 +113,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { filesize as formatFilesize, formatRelativeIfRecentDate } from '@datagouv/components'
+import { filesize as formatFilesize } from '@datagouv/components'
 import File from '../Icons/File.vue'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'

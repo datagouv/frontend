@@ -268,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, formatDate, formatFromNow, getUserAvatar, type Member, type Organization } from '@datagouv/components'
+import { Avatar, formatFromNow, getUserAvatar, type Member, type Organization } from '@datagouv/components'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiAddLine, RiLogoutBoxRLine, RiMailLine } from '@remixicon/vue'

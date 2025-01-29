@@ -40,8 +40,8 @@
         {{ $t('from dd/mm/yyyy to dd/mm/yyyy') }}
       </span>
       <template v-else>
-        {{ formatDate(model.start, formatTemplate) }}<template v-if="model.end">
-          –{{ formatDate(model.end, formatTemplate) }}
+        {{ formatDate(model.start, { dateStyle: 'short' }) }}<template v-if="model.end">
+          –{{ formatDate(model.end, { dateStyle: 'short' }) }}
         </template>
         <button
           v-if="model.start"
@@ -55,7 +55,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { formatDate } from '@datagouv/components'
 import DatePickerClient from '../DatePicker.client.vue'
 import { getDatepickerLocale } from '~/utils/i18n'
 
@@ -74,12 +73,6 @@ const selectorShown = ref<string | null>(null)
 
 const selectorShownStart = 'START'
 const selectorShownEnd = 'END'
-
-/**
- * Format for dayjs
- * L is for localized DD/MM/YYYY
- */
-const formatTemplate = 'L'
 
 const clear = () => {
   model.value = { start: null, end: null }
