@@ -261,6 +261,7 @@
                     :options="extensions"
                     :multiple="false"
                     class="mb-6"
+                    required
 
                     :error-text="getFirstError('format')"
                     :warning-text="getFirstWarning('format')"
