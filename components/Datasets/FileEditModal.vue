@@ -415,7 +415,7 @@ const props = withDefaults(defineProps<{
   buttonClasses: 'fr-btn fr-icon-pencil-line fr-icon--sm',
 })
 const emit = defineEmits<{
-  (e: 'submit', close: () => void, file: ResourceForm, newFile: File | null): void
+  (e: 'submit', close: () => void, file: ResourceForm): void
   (e: 'cancel' | 'delete'): void
 }>()
 
@@ -451,7 +451,16 @@ const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/sche
 
 const submit = (close: () => void) => {
   if (validate()) {
-    emit('submit', close, form.value, newFile.value)
+    if (newFile.value) {
+      if (form.value.filetype !== 'file') throw new Error('Cannot update file of not local file')
+
+      form.value.file = {
+        raw: newFile.value,
+        state: { status: 'waiting' },
+      }
+    }
+
+    emit('submit', close, form.value)
   }
 }
 const cancel = (close: () => void) => {

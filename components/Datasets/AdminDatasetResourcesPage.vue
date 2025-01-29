@@ -97,7 +97,7 @@
                 :loading
                 :resource="resourceToForm(resource, schemas || [])"
                 button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
-                @submit="(close, file, newFile) => saveFile(index, close, resource, file, newFile)"
+                @submit="updateResource"
                 @delete="refreshResources"
               />
             </td>
@@ -163,10 +163,10 @@ const addFiles = (files: Array<ResourceForm>) => {
 const removeFirstNewFile = () => {
   resourceForms.value = [...resourceForms.value.slice(1)]
 }
-const saveFirstNewFile = async (closeModal: () => void) => {
+const saveFirstNewFile = async (closeModal: () => void, form: ResourceForm) => {
   loading.value = true
   try {
-    await saveResourceForm(dataset.value, resourceForms.value[0])
+    await saveResourceForm(dataset.value, form)
     closeModal()
   }
   finally {
@@ -177,23 +177,12 @@ const saveFirstNewFile = async (closeModal: () => void) => {
   page.value = 1
   refreshResources()
 }
-const saveFile = async (index: number, closeModal: () => void, resource: Resource, resourceForm: ResourceForm, newFile: File | null) => {
-  if (newFile) {
-    if (resourceForm.filetype !== 'file') throw new Error('Cannot update file of not local file')
-
-    resourceForm.file = {
-      raw: newFile,
-      state: { status: 'waiting' },
-    }
-  }
-
+const updateResource = async (closeModal: () => void, resourceForm: ResourceForm) => {
   loading.value = true
 
   try {
-    const updated = await saveResourceForm(dataset.value, resourceForm)
-    if (resourcesPage.value) {
-      resourcesPage.value.data[index] = updated
-    }
+    await saveResourceForm(dataset.value, resourceForm)
+    await refreshResources()
     closeModal()
   }
   finally {
