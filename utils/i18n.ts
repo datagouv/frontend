@@ -31,7 +31,10 @@ const SECONDS_IN_A_DAY = 3600 * 24
  * It displays "today" or Intl.RelativeTimeFormat content, based on date.
  */
 export const formatFromNow = (date: Date | string) => {
-  const locale = useNuxtApp().$i18n.locale.value
+  const { t, locale } = useI18n()
+  if (!('RelativeTimeFormat' in Intl)) {
+    return t('on {date}', { date: formatDate(date) })
+  }
   const today = new Date()
   today.setHours(0)
   today.setMinutes(0)
@@ -63,7 +66,7 @@ export const formatFromNow = (date: Date | string) => {
     const diffInUnit = Math.abs(diff / unit.seconds)
     return diffInUnit < unit.changeAfter
   })!
-  return new Intl.RelativeTimeFormat(locale, { numeric: 'auto' }).format(Math.round(diff / correctUnit?.seconds), correctUnit?.unit)
+  return new Intl.RelativeTimeFormat(locale.value, { numeric: 'auto' }).format(Math.round(diff / correctUnit?.seconds), correctUnit?.unit)
 }
 
 /**
