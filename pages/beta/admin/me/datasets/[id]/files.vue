@@ -1,7 +1,7 @@
 <template>
-  <AdminDatasetFilesPage />
+  <AdminDatasetResourcesPage />
 </template>
 
 <script setup lang="ts">
-import AdminDatasetFilesPage from '~/components/Datasets/AdminDatasetFilesPage.vue'
+import AdminDatasetResourcesPage from '~/components/Datasets/AdminDatasetResourcesPage.vue'
 </script>
