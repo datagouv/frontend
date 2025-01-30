@@ -1,12 +1,12 @@
-name: Create and deploy a new release
-run-name: create and deploy ${{ github.sha }}
+name: Create a new Sentry release with source map
+run-name: new sentry release ${{ github.sha }}
 on: push
 # TODO : Restrict
 #  push:
 #    branches:
 #      - main
 jobs:
-  trigger-gitlab-pipeline:
+  sentry-release:
     runs-on: ubuntu-latest
     env:
       SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
@@ -29,9 +29,11 @@ jobs:
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
+          SENTRY_URL: ${{ env.SENTRY_URL }}
+          SENTRY_LOG_LEVEL: debug
         with:
           inject: true
           sourcemaps: ".nuxt/dist"
