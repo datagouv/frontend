@@ -159,6 +159,13 @@ export default defineNuxtConfig({
       xl: 1248,
     },
   },
+
+  sentry: {
+    sourceMapsUploadOptions: {
+      // disable sourcemaps upload from build, it's done later during the release with sentry-cli
+      enabled: false,
+    },
+  },
   // TODO: add sentry config for stack traces based on source maps
   // https://docs.sentry.io/platforms/javascript/guides/nuxt/#add-readable-stack-traces-to-errors
 })
