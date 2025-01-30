@@ -367,3 +367,15 @@ export function guessFormatFromRawFile(file: File, extensions: Array<string>): s
 
   return null
 }
+
+export function getFilesize(resourceForm: ResourceForm): number | null {
+  if (resourceForm.filetype === 'file' && resourceForm.file) {
+    return resourceForm.file.raw.size
+  }
+
+  if (resourceForm.resource) {
+    return resourceForm.resource.filesize
+  }
+
+  return null
+}

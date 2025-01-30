@@ -30,8 +30,8 @@
             class="fr-text--xs fr-m-0"
           >
             {{ guessFormat(resourceForm, extensions) }}
-            <template v-if="resourceForm.filetype === 'file' && resourceForm.file">
-              ({{ formatFilesize(resourceForm.file.raw.size) }})
+            <template v-if="filesize">
+              ({{ formatFilesize(filesize) }})
             </template>
           </p>
         </div>
@@ -144,6 +144,8 @@ const save = (close: () => void, form: ResourceForm) => {
   resourceForm.value = { ...form }
   close()
 }
+
+const filesize = computed(() => getFilesize(resourceForm.value))
 
 const loading = computed(() => resourceForm.value.filetype === 'file' && resourceForm.value.file?.state.status === 'loading')
 const loaded = computed(() => resourceForm.value.filetype === 'file' && resourceForm.value.file?.state.status === 'uploaded')
