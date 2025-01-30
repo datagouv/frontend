@@ -1,9 +1,10 @@
 name: Create and deploy a new release
 run-name: create and deploy ${{ github.sha }}
-on:
-  push:
-    branches:
-      - main
+on: push
+# TODO : Restrict
+#  push:
+#    branches:
+#      - main
 jobs:
   trigger-gitlab-pipeline:
     runs-on: ubuntu-latest
