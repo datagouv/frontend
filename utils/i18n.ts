@@ -15,7 +15,10 @@ export function getDatepickerLocale(lang: keyof typeof dateLocales | string) {
   return undefined
 }
 
-export function formatDate(date: Date | string, options: Intl.DateTimeFormatOptions = {}) {
+export function formatDate(date: Date | string | null, options: Intl.DateTimeFormatOptions = {}) {
+  if (!date) {
+    return ''
+  }
   date = new Date(date)
   if (!('dateStyle' in options)) {
     options.dateStyle = 'long'
@@ -30,7 +33,10 @@ const SECONDS_IN_A_DAY = 3600 * 24
  * Format date as relative from now.
  * It displays "today" or Intl.RelativeTimeFormat content, based on date.
  */
-export const formatFromNow = (date: Date | string) => {
+export const formatFromNow = (date: Date | string | null) => {
+  if (!date) {
+    return ''
+  }
   const { t, locale } = useI18n()
   if (!('RelativeTimeFormat' in Intl)) {
     return t('on {date}', { date: formatDate(date) })
@@ -73,7 +79,10 @@ export const formatFromNow = (date: Date | string) => {
  * Format date relative form now if date is less than a month ago.
  * Otherwise, show a formatted date.
  */
-export const formatRelativeIfRecentDate = (date: Date | string) => {
+export const formatRelativeIfRecentDate = (date: Date | string | null) => {
+  if (!date) {
+    return ''
+  }
   const { t } = useI18n()
   const today = new Date()
   today.setHours(0)

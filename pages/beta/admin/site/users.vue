@@ -78,7 +78,7 @@
                   />
                 </p>
               </td>
-              <td>{{ formatDate(user.created_at) }}</td>
+              <td>{{ formatDate(user.since) }}</td>
               <td>{{ user.metrics.datasets || 0 }}</td>
               <td>{{ user.metrics.reuses || 0 }}</td>
             </tr>
