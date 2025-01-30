@@ -37,3 +37,4 @@ jobs:
         with:
           inject: true
           sourcemaps: ".nuxt/dist"
+          ignore_missing: true
