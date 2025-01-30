@@ -1,4 +1,0 @@
-[defaults]
-url = https://errors.data.gouv.fr/
-org = sentry
-project = datagouv-front
