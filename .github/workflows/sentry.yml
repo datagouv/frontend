@@ -33,7 +33,6 @@ jobs:
           SENTRY_ORG: ${{ env.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
           SENTRY_URL: ${{ env.SENTRY_URL }}
-          SENTRY_LOG_LEVEL: debug
         with:
           inject: true
           sourcemaps: ".nuxt/dist"
