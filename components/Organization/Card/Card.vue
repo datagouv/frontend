@@ -36,6 +36,7 @@
         />
         <div class="flex items-center text-sm">
           <RiDatabase2Line class="size-3.5 mx-1" /> {{ organization.metrics.datasets }}
+          <RiTerminalLine class="size-3.5 mx-1" /> {{ organization.metrics.dataservices }}
           <RiLineChartLine class="size-3.5 mx-1" /> {{ organization.metrics.reuses }}
         </div>
       </div>
@@ -51,7 +52,7 @@
 
 <script setup lang="ts">
 import { AsyncTextClamp, useOrganizationCertified, OwnerType, removeMarkdown, useOrganizationType, type Organization } from '@datagouv/components'
-import { RiLineChartLine, RiDatabase2Line, RiCheckboxCircleLine } from '@remixicon/vue'
+import { RiLineChartLine, RiDatabase2Line, RiCheckboxCircleLine, RiTerminalLine } from '@remixicon/vue'
 
 const props = defineProps<{
   organization: Organization
