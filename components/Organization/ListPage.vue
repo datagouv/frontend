@@ -83,11 +83,16 @@ import { RiSearch2Line } from '@remixicon/vue'
 import { debouncedRef } from '@vueuse/core'
 import type { PaginatedArray, RequestStatus } from '~/types/types'
 
-defineProps<{
+const props = defineProps<{
   /**
    * List of organizations to show
    */
   organizations: PaginatedArray<Organization>
+
+  /**
+   * The starting sort
+   */
+  sort: string
 
   /**
    * The API request status
@@ -107,7 +112,7 @@ const selectId = useId()
 const q = ref()
 
 const qDebounced = debouncedRef(q, config.public.searchAutocompleteDebounce)
-const sort = ref('')
+const sort = ref(props.sort)
 const sortParam = computed(() => sort.value ? sort.value : undefined)
 
 watch([sort, qDebounced], async ([_newSort, newQ], [_oldSort, oldQ]) => {
