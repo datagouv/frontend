@@ -1,8 +1,8 @@
 <template>
   <div class="border border-gray-default relative fr-enlarge-link">
-    <div class="h-14 pt-4 px-4 bg-blue-lighter" />
-    <div class="px-4 pb-4 pt-7 mt-2">
-      <div class="inline-flex border border-gray-default p-1 absolute top-4 left-4 bg-white">
+    <div class="h-[4.5rem] pt-4 px-4 bg-blue-lighter" />
+    <div class="px-4 pb-4 pt-5 mt-2">
+      <div class="inline-flex border border-gray-default p-1.5 absolute top-4 left-4 bg-white">
         <img
           :src="organization.logo_thumbnail"
           width="64"
@@ -16,14 +16,19 @@
           :to="organization.page"
           :external="true"
         >
-          {{ organization.name }}
+          <OrganizationNameWithCertificate
+            :organization="organization"
+            :show-type="false"
+          />
         </NuxtLinkLocale>
       </p>
-      <div class="mb-2 text-gray-medium flex">
-        <p class="mb-0 text-sm mr-1">
-          {{ $t('Updated {date}', { date: formatFromNow(organization.last_modified) }) }}
-        </p>
-        <div class="flex items-center text-sm before:content-['—']">
+      <div class="mb-2 text-gray-medium flex flex-wrap items-center">
+        <OwnerType
+          v-if="type !== 'other'"
+          class="mb-0 text-sm after:content-['—'] after:ml-1"
+          :type
+        />
+        <div class="flex items-center text-sm">
           <RiDatabase2Line class="size-3.5 mx-1" /> {{ organization.metrics.datasets }}
           <RiLineChartLine class="size-3.5 mx-1" /> {{ organization.metrics.reuses }}
         </div>
@@ -39,10 +44,12 @@
 </template>
 
 <script setup lang="ts">
-import { AsyncTextClamp, removeMarkdown, type Organization } from '@datagouv/components'
+import { AsyncTextClamp, OrganizationNameWithCertificate, OwnerType, removeMarkdown, useOrganizationType, type Organization } from '@datagouv/components'
 import { RiLineChartLine, RiDatabase2Line } from '@remixicon/vue'
 
-defineProps<{
+const props = defineProps<{
   organization: Organization
 }>()
+
+const { type } = useOrganizationType(props.organization)
 </script>
