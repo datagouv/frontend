@@ -20,6 +20,7 @@
       </li>
     </Breadcrumb>
     <OrganizationListPage
+      :link="getLink"
       :organizations
       :status
       @change="change"
