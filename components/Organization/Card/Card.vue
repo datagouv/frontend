@@ -13,18 +13,13 @@
       </div>
       <p class="mb-0 font-bold">
         <NuxtLinkLocale
-          class="flex gap-1 items-center"
           :to="organization.page"
           :external="true"
         >
-          <p class="mb-0 overflow-hidden text-ellipsis whitespace-nowrap">
-            {{ organization.name }}
-          </p>
-          <RiCheckboxCircleLine
-            v-if="organizationCertified"
-            class="size-5 flex-none"
-            :title="$t('The identity of this public service is certified by {certifier}', { certifier: config.public.title })"
-            aria-hidden="true"
+          <OrganizationNameWithCertificate
+            :show-type="false"
+            :organization
+            :certifier="config.public.title"
           />
         </NuxtLinkLocale>
       </p>
@@ -51,8 +46,8 @@
 </template>
 
 <script setup lang="ts">
-import { AsyncTextClamp, useOrganizationCertified, OwnerType, removeMarkdown, useOrganizationType, type Organization } from '@datagouv/components'
-import { RiLineChartLine, RiDatabase2Line, RiCheckboxCircleLine, RiTerminalLine } from '@remixicon/vue'
+import { AsyncTextClamp, OwnerType, removeMarkdown, useOrganizationType, type Organization } from '@datagouv/components'
+import { RiLineChartLine, RiDatabase2Line, RiTerminalLine } from '@remixicon/vue'
 
 const props = defineProps<{
   organization: Organization
@@ -61,5 +56,4 @@ const props = defineProps<{
 const config = useRuntimeConfig()
 
 const { type } = useOrganizationType(props.organization)
-const { organizationCertified } = useOrganizationCertified(props.organization)
 </script>
