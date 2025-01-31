@@ -160,11 +160,12 @@
                     v-model="form"
                     class="mb-3"
                     :hide-actions="true"
+                    :extensions
                   />
                 </div>
                 <RequiredExplanation class="px-2" />
                 <LinkedToAccordion
-                  v-if="'url' in form"
+                  v-if="form.filetype === 'remote'"
                   class="fr-fieldset__element min-width-0"
                   :accordion="chooseTheCorrectLinkAccordionId"
                   @blur="touch('url')"
@@ -177,6 +178,47 @@
                     :error-text="getFirstError('url')"
                   />
                 </LinkedToAccordion>
+                <div
+                  v-if="form.filetype === 'file'"
+                  class="fr-fieldset__element"
+                >
+                  <div v-if="newFile">
+                    <label
+                      class="fr-label fr-mb-1w"
+                    >
+                      {{ $t('The current file will be replaced by') }}
+                    </label>
+                    <FileCard
+                      v-if="newFile"
+                      :model-value="{
+                        filetype: 'file',
+                        title: newFile.name,
+                        type: 'main',
+                        description: '',
+                        schema: null,
+                        file: {
+                          raw: newFile,
+                          state: { status: 'waiting' },
+                        },
+                        resource: null,
+                      }"
+                      class="fr-mb-3v"
+                      :show-edit-and-warning="false"
+                      :extensions
+                      @delete="newFile = null"
+                    />
+                  </div>
+                  <UploadGroup
+                    v-else
+                    show-label
+                    :label="$t('Replace file')"
+                    type="drop"
+                    :accept="extensions.join(',')"
+                    :multiple="false"
+                    :hint-text="$t('Max size: 420 Mb. Multiple files allowed.')"
+                    @change="setFiles"
+                  />
+                </div>
                 <LinkedToAccordion
                   class="fr-fieldset__element min-width-0"
                   :accordion="nameAFileAccordionId"
@@ -205,6 +247,7 @@
                   />
                 </LinkedToAccordion>
                 <LinkedToAccordion
+                  v-if="form.filetype === 'remote'"
                   class="fr-fieldset__element min-width-0"
                   :accordion="chooseTheCorrectFormatAccordionId"
                   @blur="touch('format')"
@@ -214,10 +257,11 @@
                     :label="$t('Format')"
                     :placeholder="$t('Search a format…')"
                     :display-value="(option) => option"
-                    :allow-new-option="isRemote ? (query) => query : undefined"
+                    :allow-new-option="(query) => query"
                     :options="extensions"
                     :multiple="false"
                     class="mb-6"
+                    required
 
                     :error-text="getFirstError('format')"
                     :warning-text="getFirstWarning('format')"
@@ -255,6 +299,7 @@
                   />
                 </LinkedToAccordion>
                 <LinkedToAccordion
+                  v-if="form.filetype === 'remote'"
                   class="fr-fieldset__element min-width-0"
                   :accordion="whatIsAMimeTypeAccordionId"
                   @blur="touch('mime')"
@@ -265,7 +310,7 @@
                     :placeholder="$t('Search a mime type…')"
                     :display-value="(option) => option.text"
                     :get-option-id="(option) => option.text"
-                    :allow-new-option="isRemote ? (query) => ({ text: query }) : undefined"
+                    :allow-new-option="(query) => ({ text: query })"
                     :suggest="suggestMime"
                     :multiple="false"
 
@@ -281,36 +326,77 @@
     </template>
 
     <template #footer="{ close }">
-      <div class="w-full flex gap-4">
-        <div class="fr-col-auto">
-          <button
-            class="fr-btn"
+      <div class="w-full">
+        <div class="w-full flex gap-4">
+          <BrandedButton
+            color="primary"
             type="submit"
             :form="formId"
+            :loading
           >
-            {{ t("Validate") }}
-          </button>
-        </div>
-        <div class="fr-col-auto">
-          <button
-            class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
-            type="button"
+            {{ t('Validate') }}
+          </BrandedButton>
+          <BrandedButton
+            color="secondary"
+            :disabled="loading"
             @click="cancel(close)"
           >
-            {{ t("Cancel") }}
-          </button>
+            {{ t('Cancel') }}
+          </BrandedButton>
         </div>
+
+        <BannerAction
+          v-if="dataset && form.resource"
+          class="w-full mt-6"
+          type="danger"
+          :title="$t('Delete the resource')"
+        >
+          {{ $t("Be careful, this action can't be reverse.") }}
+          <template #button>
+            <ModalWithButton
+              :title="$t('Are you sure you want to delete this resource?')"
+              size="lg"
+            >
+              <template #button="{ attrs, listeners }">
+                <BrandedButton
+                  color="danger"
+                  size="xs"
+                  :icon="RiDeleteBin6Line"
+                  v-bind="attrs"
+                  v-on="listeners"
+                >
+                  {{ $t('Delete') }}
+                </BrandedButton>
+              </template>
+              <p class="fr-text--bold">
+                {{ $t("This action can't be reverse.") }}
+              </p>
+              <template #footer>
+                <div class="flex-1 fr-btns-group fr-btns-group--right fr-btns-group--inline-reverse fr-btns-group--inline-lg fr-btns-group--icon-left">
+                  <BrandedButton
+                    color="danger"
+                    :loading="deleting"
+                    @click="deleteResource(dataset, form.resource, close)"
+                  >
+                    {{ $t("Delete the resource") }}
+                  </BrandedButton>
+                </div>
+              </template>
+            </ModalWithButton>
+          </template>
+        </BannerAction>
       </div>
     </template>
   </ModalWithButton>
 </template>
 
 <script setup lang="ts">
-import { getResourceLabel, RESOURCE_TYPE, Well, type SchemaResponseData } from '@datagouv/components'
+import { getResourceLabel, RESOURCE_TYPE, Well, type Dataset, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
 import { cloneDeep } from 'lodash-es'
+import { RiDeleteBin6Line } from '@remixicon/vue'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import SelectGroup from '../Form/SelectGroup/SelectGroup.vue'
-import type { NewDatasetFile } from '~/types/types'
+import type { ResourceForm } from '~/types/types'
 import type { KeysOfUnion } from '~/composables/useForm'
 
 const { t } = useI18n()
@@ -321,28 +407,37 @@ const formId = useId()
 const props = withDefaults(defineProps<{
   openOnMounted?: boolean
   buttonClasses?: string
+  loading?: boolean
+  dataset?: Dataset | DatasetV2 // only require for deleting a resource :-(
+  resource: ResourceForm
 }>(), {
+  loading: false,
   openOnMounted: false,
   buttonClasses: 'fr-btn fr-icon-pencil-line fr-icon--sm',
 })
 const emit = defineEmits<{
-  (e: 'submit', file: NewDatasetFile): void
-  (e: 'cancel'): void
+  (e: 'submit', close: () => void, file: ResourceForm): void
+  (e: 'cancel' | 'delete'): void
 }>()
 
-const file = defineModel<NewDatasetFile>({ required: true })
+// const file = defineModel<ResourceForm>({ required: true })
 const open = ref(false)
+const newFile = ref<File | null>(null)
 
 onMounted(() => {
   if (props.openOnMounted) open.value = true
 })
 
-const isRemote = computed(() => file.value.filetype === 'remote')
+const isRemote = computed(() => props.resource.filetype === 'remote')
 const nameAFile = computed(() => isRemote.value ? t('Name a link') : t('Name a file'))
 const fileTitle = computed(() => isRemote.value ? t('Link title') : t('File title'))
 const fileTypes = RESOURCE_TYPE.map(type => ({ label: getResourceLabel(type), value: type }))
 
-const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useNewDatasetFileForm(cloneDeep(file.value))
+const { form, getFirstError, getFirstWarning, touch, validate, removeErrorsAndWarnings } = useResourceForm(cloneDeep(props.resource))
+
+const setFiles = (files: Array<File>) => {
+  newFile.value = files[0]
+}
 
 const chooseTheCorrectLinkAccordionId = useId()
 const nameAFileAccordionId = useId()
@@ -357,13 +452,20 @@ const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/sche
 
 const submit = (close: () => void) => {
   if (validate()) {
-    file.value = form.value
-    close()
-    emit('submit', form.value)
+    if (newFile.value) {
+      if (form.value.filetype !== 'file') throw new Error('Cannot update file of not local file')
+
+      form.value.file = {
+        raw: newFile.value,
+        state: { status: 'waiting' },
+      }
+    }
+
+    emit('submit', close, form.value)
   }
 }
 const cancel = (close: () => void) => {
-  form.value = file.value
+  form.value = props.resource
   close()
   emit('cancel')
 }
@@ -381,5 +483,20 @@ const accordionState = (key: KeysOfUnion<typeof form.value>) => {
   if (getFirstWarning(key)) return 'warning'
 
   return 'default'
+}
+
+const deleting = ref(false)
+const deleteResource = async (dataset: Dataset | DatasetV2, resource: Resource, close: () => void) => {
+  deleting.value = true
+  try {
+    await $api(`/api/1/datasets/${dataset.id}/resources/${resource.id}/`, {
+      method: 'DELETE',
+    })
+    emit('delete')
+  }
+  finally {
+    deleting.value = false
+  }
+  close()
 }
 </script>

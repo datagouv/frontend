@@ -44,9 +44,9 @@
       @previous="moveToStep(1)"
       @submit="datasetNext"
     />
-    <Step3AddFiles
+    <Step3AddResources
       v-if="currentStep === 3"
-      v-model="datasetFiles"
+      :resources
       :loading
       @previous="moveToStep(2)"
       @next="filesNext"
@@ -65,10 +65,10 @@
 import type { Dataset, Frequency, Owned } from '@datagouv/components'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
-import Step3AddFiles from '~/components/Datasets/New/Step3AddFiles.vue'
+import Step3AddResources from '~/components/Datasets/New/Step3AddResources.vue'
 import Step4CompletePublication from '~/components/Datasets/New/Step4CompletePublication.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'
-import type { DatasetForm, EnrichedLicense, NewDatasetFile, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
+import type { DatasetForm, EnrichedLicense, ResourceForm, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 import { toApi } from '~/utils/datasets'
 
 const { t } = useI18n()
@@ -101,7 +101,7 @@ const datasetForm = useState(DATASET_FORM_STATE, () => ({
   spatial_zones: [] as Array<SpatialZone>,
   spatial_granularity: null as SpatialGranularity | null,
 } as DatasetForm))
-const datasetFiles = useState<Array<NewDatasetFile>>(DATASET_FILES_STATE, () => [])
+const resources = useState<Array<ResourceForm>>(DATASET_FILES_STATE, () => [])
 const newDataset = useState<Dataset | null>('new-dataset', () => null)
 const currentStep = computed(() => parseInt(route.query.step as string) || 1)
 const isCurrentStepValid = computed(() => {
@@ -120,8 +120,8 @@ const datasetNext = () => {
   moveToStep(3)
 }
 
-const filesNext = (files: Array<NewDatasetFile>) => {
-  datasetFiles.value = files
+const filesNext = (files: Array<ResourceForm>) => {
+  resources.value = files
   save()
 }
 
@@ -136,28 +136,21 @@ async function save() {
       datasetForm.value.contact_point = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_point)
     }
 
-    newDataset.value = newDataset.value || await $api<Dataset>('/api/1/datasets/', {
+    const dataset = newDataset.value = newDataset.value || await $api<Dataset>('/api/1/datasets/', {
       method: 'POST',
       body: JSON.stringify(toApi(datasetForm.value, { private: true })),
     })
 
-    const results = await Promise.allSettled(datasetFiles.value.map((_, i: number) => {
-      if (datasetFiles.value[i].state === 'loaded') return
+    const results = await Promise.allSettled(resources.value.map((_, i: number) => saveResourceForm(dataset, resources.value[i])))
 
-      datasetFiles.value[i].state = 'loading'
-      return uploadFile(newDataset.value as Dataset, datasetFiles.value[i], 3)
-    }))
-    loading.value = false
     if (results.every(f => f.status !== 'rejected')) {
       await moveToStep(4)
       clearNuxtState(DATASET_FORM_STATE)
       clearNuxtState(DATASET_FILES_STATE)
     }
   }
-  catch {
-    //
-  }
   finally {
+    loading.value = false
     clearNuxtState(LOADING_STATE)
   }
 }

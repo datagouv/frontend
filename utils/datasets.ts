@@ -8,7 +8,7 @@ import Documentation from '~/components/Icons/Documentation.vue'
 import Image from '~/components/Icons/Image.vue'
 import Link from '~/components/Icons/Link.vue'
 import Table from '~/components/Icons/Table.vue'
-import type { DatasetForm, NewDatasetFile, NewDatasetForApi, SpatialGranularity, SpatialZone } from '~/types/types'
+import type { DatasetForm, FileInfo, NewDatasetForApi, ResourceForm, SpatialGranularity, SpatialZone } from '~/types/types'
 
 export function getResourceFormatIcon(format: string): Component | null {
   switch (format?.trim()?.toLowerCase()) {
@@ -74,15 +74,16 @@ export function getResourceFormatIcon(format: string): Component | null {
   }
 }
 
-export function useNewDatasetFileForm(file: MaybeRef<NewDatasetFile>) {
+export function useResourceForm(file: MaybeRef<ResourceForm>) {
   const isRemote = computed(() => toValue(file).filetype === 'remote')
   const { t } = useI18n()
 
   return useForm(file, {
-    url: [requiredIf(isRemote)],
     title: [required()],
     type: [required()],
-    format: [required()],
+
+    url: [requiredIf(isRemote)],
+    format: [requiredIf(isRemote)],
   }, {
     description: [minLength(200, t(`It's advised to have a {property} of at least {min} characters.`, { property: t('description'), min: 200 }))],
   })
@@ -94,7 +95,12 @@ const includeInSubtype = <T, U extends T>(array: ReadonlyArray<U>, value: T): va
   return array.includes(value as U)
 }
 
-export const isClosedFormat = (format: string) => includeInSubtype(CLOSED_FORMATS, format)
+export function isClosedFormat(resource: ResourceForm, extensions: Array<string>): boolean {
+  const format = guessFormat(resource, extensions)
+  if (!format) return false // Unknown format shouldn't raise a closed format error
+
+  return includeInSubtype(CLOSED_FORMATS, format)
+}
 
 export function getDatasetAdminUrl(dataset: Dataset | DatasetV2): string {
   return `/beta/admin/datasets/${dataset.id}`
@@ -140,73 +146,122 @@ export function toApi(form: DatasetForm, overrides: { private?: boolean, archive
   }
 }
 
-export function resourceToForm(resource: Resource, schemas: Array<RegisteredSchema>): NewDatasetFile {
-  return {
-    description: resource.description || '',
-    format: resource.format,
-    filesize: resource.filesize,
-    filetype: resource.filetype,
-    mime: { text: resource.mime },
+export function resourceToForm(resource: Resource, schemas: Array<RegisteredSchema>): ResourceForm {
+  const form = {
     title: resource.title,
     type: resource.type,
-    state: 'none',
-    schema: schemas.find(schema => schema.name === resource.schema?.name),
+    description: resource.description || '',
+    schema: schemas.find(schema => schema.name === resource.schema?.name) || null,
+
+    resource,
   }
-}
-export function resourceToApi(form: NewDatasetFile): Resource {
-  return {
-    ...form,
-    mime: form.mime?.text || null,
+
+  if (resource.filetype === 'remote') {
+    return {
+      ...form,
+      filetype: 'remote',
+      url: resource.url,
+      format: resource.format,
+      mime: resource.mime ? { text: resource.mime } : null,
+    }
+  }
+  else if (resource.filetype === 'file') {
+    return {
+      ...form,
+      filetype: 'file',
+      file: null,
+    }
+  }
+  else {
+    throwOnNever(resource.filetype, `Unknown resource.filetype ${resource.filetype}`)
   }
 }
 
-export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatasetFile, retry: number) {
-  const { $api, $fileApi, $i18n } = useNuxtApp()
+export function resourceToApi(form: ResourceForm): Resource {
+  let resource = {
+    filetype: form.filetype,
+    title: form.title,
+    type: form.type,
+    description: form.description,
+    schema: form.schema,
+  } as Resource
+
+  if (form.filetype === 'remote') {
+    resource = { ...resource, ...{
+      url: form.url,
+      format: form.format,
+      mime: form.mime?.text || '',
+    } }
+  }
+  else if (form.filetype === 'file') {
+    // Do nothing
+  }
+  else {
+    throwOnNever(form, 'Unknown file type')
+  }
+
+  return resource
+}
+
+export async function sendFile(url: string, resourceForm: ResourceForm, fileInfo: FileInfo): Promise<Resource> {
+  const { $fileApi, $i18n } = useNuxtApp()
   const config = useRuntimeConfig()
 
+  if (resourceForm.filetype !== 'file') {
+    throw new Error('`sendFile` needs to be called only with local files')
+  }
+
+  // We force the caller to check the existance of `resourceForm.file` before calling us (and let TypeScript ensure this)
+  // but we can still check if the two objects are equals.
+  if (resourceForm.file !== fileInfo) {
+    throw new Error('`sendFile` was called with a `fileInfo` not belonging to this `resourceForm`')
+  }
+
+  // If this file was already sent, do not send again.
+  if (fileInfo.state?.status === 'uploaded') {
+    return fileInfo.state.resource
+  }
+
+  // We do not check currently if the file is already loading if the user
+  // called the function multiple times. But it shouldn't happen?
+  fileInfo.state = { status: 'loading' }
+
+  // If it's a local file, first we need to send the file data as multipart/form-data
+  const uuid = uuidv4()
+  const formData = new FormData()
+  formData.set('uuid', uuid)
+  formData.set('filename', fileInfo.raw.name)
+  formData.set('file', fileInfo.raw)
+
+  const chunkSize = config.public.resourceFileUploadChunk
   try {
-    // If this is a remote file, it's easy just send all the information to the server.
-    if (file.filetype === 'remote') {
-      return await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/`, {
-        method: 'POST',
-        body: JSON.stringify(resourceToApi(file)),
-      })
-    }
-
-    // If it's a local file, first we need to send the file data as multipart/form-data
-    const uuid = uuidv4()
-    const formData = new FormData()
-    formData.set('uuid', uuid)
-    formData.set('filename', file.file.name)
-    formData.set('file', file.file)
-
-    const chunkSize = config.public.resourceFileUploadChunk
-    if (file.filesize && file.filesize > chunkSize) {
-      const nbChunks = Math.ceil(file.filesize / chunkSize)
+    if (fileInfo.raw.size && fileInfo.raw.size > chunkSize) {
+      const nbChunks = Math.ceil(fileInfo.raw.size / chunkSize)
       let chunkStart = 0
       const promises = []
 
       for (let i = 0; i < nbChunks; i++) {
-        const chunk = file.file.slice(chunkStart, chunkStart + chunkSize, file.file.type)
+        const chunk = fileInfo.raw.slice(chunkStart, chunkStart + chunkSize, fileInfo.raw.type)
         const chunkData = new FormData()
         chunkData.set('uuid', uuid)
-        chunkData.set('filename', file.file.name)
+        chunkData.set('filename', fileInfo.raw.name)
         chunkData.set('file', chunk)
         chunkData.set('partindex', i.toString())
         chunkData.set('partbyteoffset', chunkStart.toString())
         chunkData.set('totalparts', nbChunks.toString())
         chunkData.set('chunksize', chunk.size.toString())
 
-        const promise = $fileApi<{
-          error: string | null
-          message: string
-          success:
-          boolean
-        }>(`/api/1/datasets/${newDataset.id}/upload/`, {
-          method: 'POST',
-          body: chunkData,
-        })
-        promises.push(promise)
+        promises.push(retry(() => {
+          return $fileApi<{
+            error: string | null
+            message: string
+            success:
+            boolean
+          }>(url, {
+            method: 'POST',
+            body: chunkData,
+          })
+        }, 3))
         chunkStart += chunkSize
       }
 
@@ -215,29 +270,100 @@ export async function uploadFile(newDataset: Dataset | DatasetV2, file: NewDatas
       formData.set('totalparts', nbChunks.toString())
     }
 
-    const newResource = await $fileApi<Resource>(`/api/1/datasets/${newDataset.id}/upload/`, {
+    const resource = await $fileApi<Resource>(url, {
       method: 'POST',
       body: formData,
     })
 
-    // Then we need to update the new resource with all the metadata
-    const updatedNewResource = await $api<Resource>(`/api/1/datasets/${newDataset.id}/resources/${newResource.id}/`, {
-      method: 'PUT',
-      body: JSON.stringify(resourceToApi(file)),
-    })
-
-    file.state = 'loaded'
-    return updatedNewResource
+    fileInfo.state = { status: 'uploaded', resource }
+    return resource
   }
   catch (e) {
-    if (retry === 0) {
-      const fetchError = e as unknown as FetchError
-      if ('data' in fetchError && 'message' in fetchError.data) {
-        file.errorMessage = fetchError.data.message
-      }
-      file.state = 'failed'
-      throw new Error($i18n.t('Failed to upload file {title}', { title: file.title }))
+    const notificationMessage = $i18n.t('Failed to upload file {title}', { title: resourceForm.title })
+    let formError = notificationMessage
+    const fetchError = e as unknown as FetchError
+    if ('data' in fetchError && 'message' in fetchError.data) {
+      formError = fetchError.data.message
     }
-    await uploadFile(newDataset, file, retry - 1)
+    fileInfo.state = { status: 'failed', message: formError }
+    throw new Error(notificationMessage)
   }
+}
+
+export async function saveResourceForm(dataset: Dataset | DatasetV2, resourceForm: ResourceForm) {
+  const { $api } = useNuxtApp()
+
+  // If this is a remote file, it's easy just send all the information to the server.
+  if (resourceForm.filetype === 'remote') {
+    return await $api<Resource>(resourceForm.resource ? `/api/1/datasets/${dataset.id}/resources/${resourceForm.resource.id}` : `/api/1/datasets/${dataset.id}/resources/`, {
+      method: resourceForm.resource ? 'PUT' : 'POST',
+      body: JSON.stringify(resourceToApi(resourceForm)),
+    })
+  }
+
+  // There is 4 possibilities:
+  // - Create a new resource with a file
+  // - Create a new resource without a file          <- Not allowed
+  // - Update an existing resource with a file
+  // - Update an existing resource without a file
+  let resource
+
+  if (resourceForm.file) {
+    if (resourceForm.resource) {
+      resource = await sendFile(`/api/1/datasets/${dataset.id}/resources/${resourceForm.resource.id}/upload/`, resourceForm, resourceForm.file)
+    }
+    else {
+      resource = await sendFile(`/api/1/datasets/${dataset.id}/upload/`, resourceForm, resourceForm.file)
+    }
+  }
+  else {
+    if (resourceForm.resource) {
+      resource = resourceForm.resource
+    }
+    else {
+      throw new Error('Cannot create a new local resource without file.')
+    }
+  }
+
+  // Then we need to update the resource's metadata
+  const updatedResource = await $api<Resource>(`/api/1/datasets/${dataset.id}/resources/${resource.id}/`, {
+    method: 'PUT',
+    body: JSON.stringify(resourceToApi(resourceForm)),
+  })
+  return updatedResource
+}
+
+export async function retry<T>(promise: () => Promise<T>, count: number): Promise<T> {
+  try {
+    return await promise()
+  }
+  catch (e) {
+    if (count > 0) {
+      return await retry(promise, count - 1)
+    }
+    else {
+      throw e
+    }
+  }
+}
+
+export function guessFormat(resourceForm: ResourceForm, extensions: Array<string>): string | null {
+  if (resourceForm.filetype === 'remote') return resourceForm.format.trim().toLowerCase()
+
+  if (resourceForm.resource && resourceForm.resource.format) {
+    return resourceForm.resource.format.trim().toLowerCase()
+  }
+
+  if (!resourceForm.file) return null
+  return guessFormatFromRawFile(resourceForm.file.raw, extensions)
+}
+
+export function guessFormatFromRawFile(file: File, extensions: Array<string>): string | null {
+  const formatFromMime = file.type.includes('/') ? file.type.split('/').pop() || '' : file.type
+  if (extensions.includes(formatFromMime)) return formatFromMime
+
+  const formatFromName = file.name.includes('.') ? file.name.split('.').pop() || '' : file.name
+  if (extensions.includes(formatFromName)) return formatFromName
+
+  return null
 }

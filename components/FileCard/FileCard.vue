@@ -4,34 +4,34 @@
       <div class="fr-col-auto min-width-0">
         <div class="flex items-center">
           <component
-            :is="getResourceFormatIcon(file.format) || File"
+            :is="(resourceForm.filetype === 'remote' ? getResourceFormatIcon(resourceForm.format) : null) || File"
             class="size-4 text-gray-800 shrink-0 mr-1"
-            :resource="file"
           />
           <h4 class="fr-m-0 fr-text--sm overflow-wrap-anywhere text-overflow-ellipsis">
-            {{ file.title || $t('Nameless resource') }}
+            {{ resourceForm.title || $t('Nameless resource') }}
           </h4>
         </div>
         <div class="fr-my-0 text-grey-380 fr-grid-row fr-grid-row--middle">
           <p
-            v-if="'file' in file"
+            v-if="resourceForm.filetype === 'file' && resourceForm.file && resourceForm.file.raw.name != resourceForm.title"
             class="fr-text--xs fr-m-0 overflow-wrap-anywhere text-overflow-ellipsis dash-after"
           >
-            {{ file.file.name }}
+            {{ resourceForm.file.raw.name }}
           </p>
           <p
-            v-if="'file' in file"
+            v-if="resourceForm.resource"
+            class="fr-text--xs fr-m-0 dash-after"
+          >
+            <!-- Not sure if this date is useful, since it's about modification on a ressource  -->
+            {{ $t('Updated {date}', { date: formatRelativeIfRecentDate(resourceForm.resource.last_modified) }) }}
+          </p>
+          <p
+            v-if="guessFormat(resourceForm, extensions)"
             class="fr-text--xs fr-m-0"
           >
-            {{ $t('Updated {date}', { date: formatRelativeIfRecentDate(file.file.lastModified) }) }}
-          </p>
-          <p
-            v-if="file.format"
-            class="fr-text--xs fr-m-0 dash-before"
-          >
-            {{ file.format.trim()?.toLowerCase() }}
-            <template v-if="'filesize' in file && file.filesize">
-              ({{ formatFilesize(file.filesize) }})
+            {{ guessFormat(resourceForm, extensions) }}
+            <template v-if="resourceForm.filetype === 'file' && resourceForm.file">
+              ({{ formatFilesize(resourceForm.file.raw.size) }})
             </template>
           </p>
         </div>
@@ -58,7 +58,10 @@
             v-if="showEditAndWarning"
             class="fr-col-auto fr-ml-1w fr-m-0"
           >
-            <FileEditModal v-model="file" />
+            <FileEditModal
+              :resource="resourceForm"
+              @submit="save"
+            />
           </p>
         </div>
       </div>
@@ -99,14 +102,14 @@
       </template>
     </template>
     <p
-      v-if="file.errorMessage"
+      v-if="resourceForm.filetype === 'file' && resourceForm.file?.state.status === 'failed'"
       class="fr-mt-1w fr-mb-0 fr-text--xs text-default-error"
     >
       <span
         class="fr-icon-error-line fr-icon--sm"
         aria-hidden="true"
       />
-      {{ file.errorMessage }}
+      {{ resourceForm.file.state.message }}
     </p>
   </div>
 </template>
@@ -117,13 +120,14 @@ import { filesize as formatFilesize } from '@datagouv/components'
 import File from '../Icons/File.vue'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
-import type { NewDatasetFile } from '~/types/types'
+import type { ResourceForm } from '~/types/types'
 
-const file = defineModel<NewDatasetFile>({ required: true })
+const resourceForm = defineModel<ResourceForm>({ required: true })
 
 withDefaults(defineProps<{
   showEditAndWarning?: boolean
   hideActions?: boolean
+  extensions: Array<string>
 }>(), {
   showEditAndWarning: true,
   hideActions: false,
@@ -133,9 +137,18 @@ defineEmits<{
   (e: 'delete' | 'edit'): void
 }>()
 
-const loading = computed(() => file.value.state === 'loading')
-const loaded = computed(() => file.value.state === 'loaded')
+const save = (close: () => void, form: ResourceForm) => {
+  // We don't want to link the `form` inside the modal to the
+  // model here because otherwise when clicking "cancel" the
+  // modification are still present
+  resourceForm.value = { ...form }
+  close()
+}
 
-const { errors, warnings, validate } = useNewDatasetFileForm(file)
+const loading = computed(() => resourceForm.value.filetype === 'file' && resourceForm.value.file?.state.status === 'loading')
+const loaded = computed(() => resourceForm.value.filetype === 'file' && resourceForm.value.file?.state.status === 'uploaded')
+
+// Only useful to get potentials errors (no modification here)
+const { errors, warnings, validate } = useResourceForm(resourceForm)
 watchEffect(() => validate())
 </script>
