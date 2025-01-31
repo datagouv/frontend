@@ -1,5 +1,6 @@
 name: Create a new Sentry release with source map
 run-name: new sentry release ${{ github.sha }}
+on:
   push:
     branches:
       - main
