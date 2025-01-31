@@ -36,7 +36,7 @@ import type { PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 const q = ref('')
-const sort = ref(route.query.sort as string | undefined)
+const sort = ref((route.query.sort as string | null) || undefined)
 const page = ref(parseInt(route.query.page as LocationQueryValue ?? '1', 10))
 const pageSize = 21
 

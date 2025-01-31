@@ -92,7 +92,7 @@ const props = defineProps<{
   /**
    * The starting sort
    */
-  sort: string
+  sort: string | undefined
 
   /**
    * The API request status
@@ -112,7 +112,7 @@ const selectId = useId()
 const q = ref()
 
 const qDebounced = debouncedRef(q, config.public.searchAutocompleteDebounce)
-const sort = ref(props.sort)
+const sort = ref(props.sort ?? '')
 const sortParam = computed(() => sort.value ? sort.value : undefined)
 
 watch([sort, qDebounced], async ([_newSort, newQ], [_oldSort, oldQ]) => {
