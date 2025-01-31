@@ -11,11 +11,15 @@ import '@gouvfr/dsfr/dist/dsfr.css'
 import '@gouvfr/dsfr/dist/utility/utility.css'
 import '@datagouv/components/dist/style.css'
 import '~/assets/css/overrides.css'
-import { setupI18nWithExistingInstance } from '@datagouv/components'
+import { setupComponents, setupI18nWithExistingInstance } from '@datagouv/components'
 
 const app = useNuxtApp()
 
 const i18nHead = useLocaleHead()
+
+setupComponents({
+  default_lang: app.$i18n.locale.value,
+})
 
 setupI18nWithExistingInstance({ global: app.$i18n })
 

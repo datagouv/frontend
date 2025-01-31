@@ -120,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, summarize } from '@datagouv/components'
+import { summarize } from '@datagouv/components'
 import type { Reuse } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'

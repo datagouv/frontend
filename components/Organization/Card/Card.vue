@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { AsyncTextClamp, formatFromNow, removeMarkdown, type Organization } from '@datagouv/components'
+import { AsyncTextClamp, removeMarkdown, type Organization } from '@datagouv/components'
 import { RiLineChartLine, RiDatabase2Line } from '@remixicon/vue'
 
 defineProps<{

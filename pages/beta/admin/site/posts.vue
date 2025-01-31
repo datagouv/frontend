@@ -140,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination } from '@datagouv/components'
+import { Pagination } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'

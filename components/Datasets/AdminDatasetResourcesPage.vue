@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
+import { Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'

@@ -149,12 +149,13 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination, type Organization } from '@datagouv/components'
+import { Pagination, type Organization } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiSearchLine } from '@remixicon/vue'
-import type { DiscussionSortedBy, PaginatedArray, SortDirection } from '~/types/types'
+import type { DiscussionSortedBy } from '~/types/discussions'
+import type { PaginatedArray, SortDirection } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
