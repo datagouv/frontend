@@ -23,13 +23,13 @@
           />
         </NuxtLinkLocale>
       </p>
-      <div class="mb-2 text-gray-medium flex flex-wrap items-center">
+      <div class="mb-2 flex flex-wrap items-center">
         <OwnerType
           v-if="type !== 'other'"
           class="mb-0 text-sm after:content-['—'] after:ml-1"
           :type
         />
-        <div class="flex items-center text-sm">
+        <div class="text-gray-medium flex items-center text-sm">
           <RiDatabase2Line class="size-3.5 mx-1" /> {{ organization.metrics.datasets }}
           <RiTerminalLine class="size-3.5 mx-1" /> {{ organization.metrics.dataservices }}
           <RiLineChartLine class="size-3.5 mx-1" /> {{ organization.metrics.reuses }}
