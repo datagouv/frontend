@@ -137,7 +137,7 @@ const props = defineProps<{
 const { t } = useI18n()
 
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 const sortedBy = ref<DatasetSortedBy>('created')
 const direction = ref<SortDirection>('desc')
 const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)

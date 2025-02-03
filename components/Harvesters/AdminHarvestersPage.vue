@@ -176,7 +176,7 @@ const config = useRuntimeConfig()
 const { $api } = useNuxtApp()
 
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 

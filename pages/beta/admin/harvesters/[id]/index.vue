@@ -172,7 +172,7 @@ import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
 import type { PaginatedArray } from '~/types/types'
 
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 
 const route = useRoute()
 const sourceUrl = computed(() => `/api/1/harvest/source/${route.params.id}`)

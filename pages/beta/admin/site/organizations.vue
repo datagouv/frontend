@@ -166,7 +166,7 @@ const { t } = useI18n()
 const config = useRuntimeConfig()
 
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 const sortedBy = ref<DiscussionSortedBy>('created')
 const direction = ref<SortDirection>('desc')
 const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${sortedBy.value}`)
