@@ -28,6 +28,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      i18n: {
+        baseUrl: 'https://www.data.gouv.fr/', // NUXT_PUBLIC_I18N_BASE_URL
+      },
       apiBase: 'http://dev.local:7000',
       qualityDescriptionLength: 100,
       searchAutocompleteDebounce: 200,
@@ -129,6 +132,7 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
+    baseUrl: '',
     locales: [
       {
         code: 'en',
