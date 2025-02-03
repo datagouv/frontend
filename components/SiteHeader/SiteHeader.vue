@@ -153,7 +153,7 @@
                         <ul class="fr-nav__list">
                           <li
                             v-for="link in menu"
-                            :key="link.link"
+                            :key="`${link.link}-${$route.path}`"
                             class="fr-nav__item"
                           >
                             <NuxtLinkLocale
@@ -220,7 +220,6 @@
                                       <NuxtLinkLocale
                                         class="fr-nav__link flex items-center space-x-1"
                                         :to="item.link"
-                                        :external="item.external"
                                       >
                                         <component
                                           :is="item.icon"
@@ -349,7 +348,7 @@
           <ul class="fr-nav__list">
             <li
               v-for="link in menu"
-              :key="link.link"
+              :key="`${link.link}-${$route.path}`"
               class="fr-nav__item"
             >
               <NuxtLinkLocale
@@ -418,7 +417,6 @@
                         <NuxtLinkLocale
                           class="fr-nav__link flex items-center space-x-1"
                           :to="item.link"
-                          :external="item.external"
                           @click="close()"
                         >
                           <component
@@ -465,7 +463,7 @@ const menu = [
   { label: t('Data'), link: '/datasets/', external: true },
   { label: t('API'), link: '/dataservices/', external: true },
   { label: t('Reuses'), link: '/reuses/', external: true },
-  { label: t('Organizations'), link: '/organizations/', external: true },
+  { label: t('Organizations'), link: '/organizations/' },
   { label: t('Getting started on {site}', { site: config.public.title }), items: [
     { label: t('What is {site}?', { site: config.public.title }), link: '/pages/about/a-propos_data-gouv/', external: true },
     { label: t('How to publish data?'), link: '/pages/onboarding/producteurs/', external: true },
@@ -475,8 +473,6 @@ const menu = [
   { label: t('News'), link: '/posts/' },
   { label: t('Contact us'), link: 'https://support.data.gouv.fr/', external: true },
 ]
-
-const routesInPath = router.getRoutes().map(route => route.path).filter(path => currentRoute.path.startsWith(path))
 
 const publishMenu = [
   { label: t('A dataset'), icon: RiDatabase2Line, link: '/beta/admin/datasets/new/' },
@@ -493,6 +489,7 @@ function getAriaCurrent(link: string) {
   if (currentRoute.path === link) {
     return 'page'
   }
+  const routesInPath = router.getRoutes().map(route => route.path).filter(path => currentRoute.path.startsWith(path))
   return routesInPath.includes(localePath(link))
 }
 </script>
