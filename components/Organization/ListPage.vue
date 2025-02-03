@@ -73,17 +73,23 @@
     :page="organizations.page"
     :page-size="organizations.page_size"
     :total-results="organizations.total"
+    :link="link"
     @change="(p: number) => $emit('change', q, sortParam, p)"
   />
 </template>
 
 <script setup lang="ts">
-import { Pagination, type Organization } from '@datagouv/components'
+import type { Organization } from '@datagouv/components'
 import { RiSearch2Line } from '@remixicon/vue'
 import { debouncedRef } from '@vueuse/core'
 import type { PaginatedArray, RequestStatus } from '~/types/types'
 
 const props = defineProps<{
+  /**
+   * Customize the links used
+   */
+  link?: (page: number) => string
+
   /**
    * List of organizations to show
    */

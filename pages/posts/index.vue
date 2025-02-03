@@ -38,6 +38,7 @@
         />
       </div>
       <Pagination
+        :link="getLink"
         :page="posts.page"
         :page-size="posts.page_size"
         :total-results="posts.total"
@@ -48,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination } from '@datagouv/components'
 import type { Post } from '~/types/posts'
 import type { PaginatedArray } from '~/types/types'
 
