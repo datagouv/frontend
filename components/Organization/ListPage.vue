@@ -60,7 +60,7 @@
     </div>
   </div>
   <LoadingBlock :status>
-    <div class="grid gap-4 grid-cols-3 mb-16">
+    <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3 mb-16">
       <OrganizationCard
         v-for="organization in organizations.data"
         :key="organization.id"
@@ -73,21 +73,32 @@
     :page="organizations.page"
     :page-size="organizations.page_size"
     :total-results="organizations.total"
+    :link="link"
     @change="(p: number) => $emit('change', q, sortParam, p)"
   />
 </template>
 
 <script setup lang="ts">
-import { Pagination, type Organization } from '@datagouv/components'
+import type { Organization } from '@datagouv/components'
 import { RiSearch2Line } from '@remixicon/vue'
 import { debouncedRef } from '@vueuse/core'
 import type { PaginatedArray, RequestStatus } from '~/types/types'
 
-defineProps<{
+const props = defineProps<{
+  /**
+   * Customize the links used
+   */
+  link?: (page: number) => string
+
   /**
    * List of organizations to show
    */
   organizations: PaginatedArray<Organization>
+
+  /**
+   * The starting sort
+   */
+  sort: string | undefined
 
   /**
    * The API request status
@@ -107,7 +118,7 @@ const selectId = useId()
 const q = ref()
 
 const qDebounced = debouncedRef(q, config.public.searchAutocompleteDebounce)
-const sort = ref('')
+const sort = ref(props.sort ?? '')
 const sortParam = computed(() => sort.value ? sort.value : undefined)
 
 watch([sort, qDebounced], async ([_newSort, newQ], [_oldSort, oldQ]) => {

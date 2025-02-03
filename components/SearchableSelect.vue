@@ -43,16 +43,30 @@
             v-if="loading"
             class="absolute text-lg top-2 right-3 flex items-center justify-end hover:!bg-transparent"
           />
-          <ComboboxButton
+          <div
             v-else
-            class="absolute inset-y-0 flex items-center justify-end pr-4 hover:!bg-transparent"
+            class="absolute inset-y-0 flex items-center justify-end pr-2"
             :class="{
               'right-0': open,
               'inset-x-0': !open,
             }"
           >
-            <RiArrowDownSLine class="size-4 text-gray-800" />
-          </ComboboxButton>
+            <ComboboxButton
+              v-if="! open"
+              class="w-full h-full hover:!bg-transparent"
+            />
+            <button
+              v-if="! required && ! multiple && model"
+              type="button"
+              class="p-2"
+              @click.prevent="model = null"
+            >
+              <RiDeleteBinLine class="size-4 text-gray-800" />
+            </button>
+            <ComboboxButton class="p-2">
+              <RiArrowDownSLine class="size-4 text-gray-800" />
+            </ComboboxButton>
+          </div>
         </div>
         <TransitionRoot
           leave="transition ease-in duration-100"
@@ -131,7 +145,7 @@
 
 <script setup lang="ts" generic="T extends string | number | object, Multiple extends true | false">
 import { ref, computed } from 'vue'
-import { RiArrowDownSLine, RiCheckLine } from '@remixicon/vue'
+import { RiArrowDownSLine, RiCheckLine, RiDeleteBinLine } from '@remixicon/vue'
 import {
   Combobox,
   ComboboxInput,
@@ -140,7 +154,7 @@ import {
   ComboboxOption,
   TransitionRoot,
 } from '@headlessui/vue'
-import { watchDebounced } from '@vueuse/core';
+import { watchDebounced } from '@vueuse/core'
 
 type ModelType = Multiple extends false ? T : Array<T>
 
@@ -214,16 +228,22 @@ const ariaDescribedBy = computed(() => {
 const query = ref('')
 
 const suggestedOptions = ref<Array<T> | null>(null)
-
-watchDebounced(query, async () => {
+const fetchSuggests = async () => {
   if (!props.suggest) return
 
   const savedQuery = query.value
   const options = await props.suggest(query.value)
-
   if (savedQuery === query.value) {
     suggestedOptions.value = options
   }
+}
+
+onMounted(async () => {
+  await fetchSuggests()
+})
+
+watchDebounced(query, async () => {
+  await fetchSuggests()
 }, { debounce: 400, maxWait: 800 })
 
 const filteredOptions = computed<Array<T>>(() => {

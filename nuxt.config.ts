@@ -28,6 +28,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      i18n: {
+        baseUrl: 'https://www.data.gouv.fr/', // NUXT_PUBLIC_I18N_BASE_URL
+      },
       apiBase: 'http://dev.local:7000',
       qualityDescriptionLength: 100,
       searchAutocompleteDebounce: 200,
@@ -110,6 +113,8 @@ export default defineNuxtConfig({
     '/beta/admin/**': { ssr: true },
   },
 
+  sourcemap: { client: 'hidden' },
+
   devServer: {
     port: 3000,
     host: 'dev.local',
@@ -135,6 +140,7 @@ export default defineNuxtConfig({
     },
   },
   i18n: {
+    baseUrl: '',
     locales: [
       {
         code: 'en',
@@ -164,6 +170,13 @@ export default defineNuxtConfig({
       md: 768,
       lg: 992,
       xl: 1248,
+    },
+  },
+
+  sentry: {
+    sourceMapsUploadOptions: {
+      // disable sourcemaps upload from build, it's done later during the release with sentry-cli
+      enabled: false,
     },
   },
   // TODO: add sentry config for stack traces based on source maps

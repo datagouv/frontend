@@ -174,7 +174,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, QualityScore, summarize } from '@datagouv/components'
+import { QualityScore, summarize } from '@datagouv/components'
 import type { Dataset, DatasetV2 } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import QualityScoreTooltipContent from '../../dataset/QualityScore/QualityScoreTooltipContent/QualityScoreTooltipContent.vue'

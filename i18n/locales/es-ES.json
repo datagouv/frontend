@@ -197,6 +197,10 @@
   "Add a link": "Add a link",
   "Exact link to the file": "Exact link to the file",
   "Type a valid url, starting with https://": "Type a valid url, starting with https://",
+  "Replace file": "Replace file",
+  "The current file will be replaced by": "The current file will be replaced by",
+  "Delete the resource": "Delete the resource",
+  "Are you sure you want to delete this resource?": "Are you sure you want to delete this resource?",
   "Send": "Send",
   "At least one file or link is required.": "At least one file or link is required.",
   "Main file": "Main file",
@@ -884,5 +888,6 @@
   "Describe your post": "Describe your post",
   "Search...": "Search...",
   "Search among {count} organizations on {site}": "Search among {count} organizations on {site}",
+  "Bluesky - new tab": "Bluesky - new tab",
   "": ""
 }

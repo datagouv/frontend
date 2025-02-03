@@ -197,6 +197,10 @@
   "Add a link": "Ajouter un lien",
   "Exact link to the file": "Lien exact vers le fichier",
   "Type a valid url, starting with https://": "Saisissez une url valide, commençant par https://",
+  "Replace file": "Remplacer le fichier",
+  "The current file will be replaced by": "Le fichier actuel sera remplacé par",
+  "Delete the resource": "Supprimer le fichier",
+  "Are you sure you want to delete this resource?": "Êtes-vous sûrs de vouloir supprimer ce fichier ?",
   "Send": "Envoyer",
   "At least one file or link is required.": "Au moins un fichier ou lien est requis.",
   "Main file": "Fichier principal",
@@ -911,5 +915,6 @@
   "Describe your post": "Décrivez votre article",
   "Search...": "Rechercher...",
   "Search among {count} organizations on {site}": "Rechercher parmi les {count} organisations sur {site}",
+  "Bluesky - new tab": "Bluesky - nouvel onglet",
   "": ""
 }

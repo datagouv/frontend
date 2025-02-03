@@ -107,8 +107,8 @@
               <td>
                 <JobBadge :job />
               </td>
-              <td>{{ job.started ? formatDate(job.started, 'LLL') : formatDate(job.created, 'LLL') }}</td>
-              <td>{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</td>
+              <td>{{ job.started ? formatDate(job.started, { dateStyle: 'long', timeStyle: 'short' }) : formatDate(job.created, { dateStyle: 'long', timeStyle: 'short' }) }}</td>
+              <td>{{ job.ended ? formatDate(job.ended, { dateStyle: 'long', timeStyle: 'short' }) : '—' }}</td>
               <td class="!text-right font-mono">
                 {{ job.items.filter((i) => i.dataset).length }}
               </td>
@@ -162,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination } from '@datagouv/components'
+import { Pagination } from '@datagouv/components'
 import { RiArchiveLine, RiCheckLine, RiCloseLine, RiEyeOffLine } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'

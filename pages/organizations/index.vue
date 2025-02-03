@@ -20,7 +20,9 @@
       </li>
     </Breadcrumb>
     <OrganizationListPage
+      :link="getLink"
       :organizations
+      :sort
       :status
       @change="change"
     />
@@ -35,7 +37,7 @@ import type { PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 const q = ref('')
-const sort = ref()
+const sort = ref((route.query.sort as string | null) || undefined)
 const page = ref(parseInt(route.query.page as LocationQueryValue ?? '1', 10))
 const pageSize = 21
 
