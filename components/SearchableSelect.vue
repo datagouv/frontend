@@ -45,14 +45,18 @@
           />
           <div
             v-else
-            class="absolute inset-y-0 flex items-center justify-end pr-2 hover:!bg-transparent"
+            class="absolute inset-y-0 flex items-center justify-end pr-2"
             :class="{
               'right-0': open,
               'inset-x-0': !open,
             }"
           >
+            <ComboboxButton
+              v-if="! open"
+              class="w-full h-full hover:!bg-transparent"
+            />
             <button
-              v-if="! required && model"
+              v-if="! required && ! multiple && model"
               type="button"
               class="p-2"
               @click.prevent="model = null"
@@ -224,16 +228,22 @@ const ariaDescribedBy = computed(() => {
 const query = ref('')
 
 const suggestedOptions = ref<Array<T> | null>(null)
-
-watchDebounced(query, async () => {
+const fetchSuggests = async () => {
   if (!props.suggest) return
 
   const savedQuery = query.value
   const options = await props.suggest(query.value)
-
   if (savedQuery === query.value) {
     suggestedOptions.value = options
   }
+}
+
+onMounted(async () => {
+  await fetchSuggests()
+})
+
+watchDebounced(query, async () => {
+  await fetchSuggests()
 }, { debounce: 400, maxWait: 800 })
 
 const filteredOptions = computed<Array<T>>(() => {
