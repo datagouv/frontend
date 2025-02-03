@@ -2,38 +2,66 @@
   <div class="border border-default-grey fr-p-1w">
     <div class="fr-grid-row fr-grid-row--middle no-wrap wrap-md justify-between">
       <div class="fr-col-auto min-width-0">
-        <div class="flex items-center">
+        <div class="flex items-center mb-1">
           <component
             :is="(resourceForm.filetype === 'remote' ? getResourceFormatIcon(resourceForm.format) : null) || File"
             class="size-4 text-gray-800 shrink-0 mr-1"
           />
-          <h4 class="fr-m-0 fr-text--sm overflow-wrap-anywhere text-overflow-ellipsis">
+          <h4 class="fr-m-0 text-base/6 overflow-wrap-anywhere text-overflow-ellipsis">
             {{ resourceForm.title || $t('Nameless resource') }}
           </h4>
         </div>
         <div class="fr-my-0 text-grey-380 fr-grid-row fr-grid-row--middle">
+          <div
+            v-if="resourceForm.schema?.name"
+            class="flex items-center space-x-1 text-sm fr-m-0 overflow-wrap-anywhere text-overflow-ellipsis dash-after"
+          >
+            <RiInformationLine class="size-3 shrink-0" />
+            <span class="truncate">{{ $t('Schema: {schema}', { schema: resourceForm.schema?.name }) }}</span>
+          </div>
           <p
             v-if="resourceForm.filetype === 'file' && resourceForm.file && resourceForm.file.raw.name != resourceForm.title"
-            class="fr-text--xs fr-m-0 overflow-wrap-anywhere text-overflow-ellipsis dash-after"
+            class="text-sm fr-m-0 overflow-wrap-anywhere text-overflow-ellipsis dash-after"
           >
             {{ resourceForm.file.raw.name }}
           </p>
           <p
             v-if="resourceForm.resource"
-            class="fr-text--xs fr-m-0 dash-after"
+            class="text-sm fr-m-0 dash-after"
           >
             <!-- Not sure if this date is useful, since it's about modification on a ressource  -->
             {{ $t('Updated {date}', { date: formatRelativeIfRecentDate(resourceForm.resource.last_modified) }) }}
           </p>
           <p
             v-if="guessFormat(resourceForm, extensions)"
-            class="fr-text--xs fr-m-0"
+            class="text-sm fr-m-0"
           >
             {{ guessFormat(resourceForm, extensions) }}
             <template v-if="filesize">
               ({{ formatFilesize(filesize) }})
             </template>
           </p>
+        </div>
+        <div
+          v-if="resourceForm.filetype === 'file'"
+          class="flex items-center space-x-1 text-gray-medium text-sm"
+        >
+          <RiMapPin2Line class="size-3 shrink-0" />
+          <span class="truncate">{{ $t('Location: data.gouv.fr servers') }}</span>
+        </div>
+        <div
+          v-if="resourceForm.filetype === 'remote'"
+          class="flex items-center space-x-1 text-gray-medium text-sm"
+        >
+          <RiLink class="size-3 shrink-0" />
+          <span class="truncate">{{ $t('URL: {url}', { url: resourceForm.url }) }}</span>
+        </div>
+        <div
+          v-if="resourceForm.resource?.checksum"
+          class="flex items-center space-x-1 text-gray-medium text-sm"
+        >
+          <RiCodeSSlashLine class="size-3 shrink-0" />
+          <span class="truncate">{{ $t('Checksum: {checksum}', { checksum: resourceForm.resource?.checksum.value }) }}</span>
         </div>
       </div>
       <div
@@ -117,6 +145,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { filesize as formatFilesize } from '@datagouv/components'
+import { RiCodeSSlashLine, RiInformationLine, RiLink, RiMapPin2Line } from '@remixicon/vue'
 import File from '../Icons/File.vue'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
