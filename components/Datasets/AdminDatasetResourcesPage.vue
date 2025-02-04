@@ -135,7 +135,7 @@ const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
 const { data: dataset, status } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
 const resourcesPage = ref<PaginatedArray<Resource> | null>(null)
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 
 const resourcesUrl = computed(() => {
   if (!dataset.value) return
