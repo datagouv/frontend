@@ -486,7 +486,7 @@ const accordionState = (key: KeysOfUnion<typeof form.value>) => {
 }
 
 const deleting = ref(false)
-const deleteResource = async (dataset: Dataset | DatasetV2, resource: Resource, close: () => void) => {
+const deleteResource = async (dataset: Dataset | DatasetV2 | Omit<Dataset, 'resources' | 'community_resources'>, resource: Resource, close: () => void) => {
   deleting.value = true
   try {
     const { metadataUrl } = getResourcesUrls(dataset, resource)

@@ -38,7 +38,10 @@
       </AdminTableTh>
     </thead>
     <tbody>
-      <tr v-for="communityResource in communityResources">
+      <tr
+        v-for="communityResource in communityResources"
+        :key="communityResource.id"
+      >
         <td>
           <AdminContentWithTooltip class="fr-text--bold">
             <a
