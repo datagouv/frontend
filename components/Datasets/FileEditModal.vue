@@ -408,7 +408,7 @@ const props = withDefaults(defineProps<{
   openOnMounted?: boolean
   buttonClasses?: string
   loading?: boolean
-  dataset?: Dataset | DatasetV2 // only require for deleting a resource :-(
+  dataset?: Dataset | DatasetV2 | Omit<Dataset, 'resources' | 'community_resources'> // only require for deleting a resource :-(
   resource: ResourceForm
 }>(), {
   loading: false,
@@ -489,9 +489,8 @@ const deleting = ref(false)
 const deleteResource = async (dataset: Dataset | DatasetV2, resource: Resource, close: () => void) => {
   deleting.value = true
   try {
-    await $api(`/api/1/datasets/${dataset.id}/resources/${resource.id}/`, {
-      method: 'DELETE',
-    })
+    const { metadataUrl } = getResourcesUrls(dataset, resource)
+    await $api(metadataUrl, { method: 'DELETE' })
     emit('delete')
   }
   finally {

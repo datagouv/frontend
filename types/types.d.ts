@@ -1,4 +1,4 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema, Resource } from '@datagouv/components'
+import type { Dataset, CommunityResource, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema, Resource } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -232,7 +232,7 @@ export type FileResourceFileType = 'file'
 export type ResourceFileType = RemoteResourceFileType | FileResourceFileType
 
 export type BaseResourceForm = {
-  resource: Resource | null // Use to know if we update an existing resource or create a new resource
+  resource: Resource | CommunityResource | null // Use to know if we update an existing resource or create a new resource
   title: string
   type: ResourceType
   description: string

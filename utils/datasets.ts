@@ -2,6 +2,7 @@ import type { Dataset, DatasetV2, Frequency, License, RegisteredSchema, Resource
 import type { FetchError } from 'ofetch'
 import type { Component } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
+import type { CommunityResource } from '@datagouv/components/ts'
 import Archive from '~/components/Icons/Archive.vue'
 import Code from '~/components/Icons/Code.vue'
 import Documentation from '~/components/Icons/Documentation.vue'
@@ -290,13 +291,44 @@ export async function sendFile(url: string, resourceForm: ResourceForm, fileInfo
   }
 }
 
-export async function saveResourceForm(dataset: Dataset | DatasetV2, resourceForm: ResourceForm) {
+export function getResourcesUrls(dataset: Dataset | DatasetV2 | Omit<Dataset, 'resources' | 'community_resources'>, resource: Resource | CommunityResource | null): { metadataUrl: string, metadataMethod: 'POST' | 'PUT', uploadUrl: string } {
+  if (resource) {
+    if ('organization' in resource) {
+      // Existing community resource
+      return {
+        metadataUrl: `/api/1/datasets/community_resources/${resource.id}/`,
+        metadataMethod: 'PUT',
+        uploadUrl: `/api/1/datasets/community_resources/${resource.id}/upload/`,
+      }
+    }
+    else {
+      // Existing classic resource
+      return {
+        metadataUrl: `/api/1/datasets/${dataset.id}/resources/${resource.id}/`,
+        metadataMethod: 'PUT',
+        uploadUrl: `/api/1/datasets/${dataset.id}/resources/${resource.id}/upload/`,
+      }
+    }
+  }
+  else {
+    // New resource
+    return {
+      metadataUrl: `/api/1/datasets/${dataset.id}/resources/`,
+      metadataMethod: 'POST',
+      uploadUrl: `/api/1/datasets/${dataset.id}/upload/`,
+    }
+  }
+}
+
+export async function saveResourceForm(dataset: Dataset | DatasetV2 | Omit<Dataset, 'resources' | 'community_resources'>, resourceForm: ResourceForm) {
   const { $api } = useNuxtApp()
+
+  const { metadataUrl, metadataMethod, uploadUrl } = getResourcesUrls(dataset, resourceForm.resource)
 
   // If this is a remote file, it's easy just send all the information to the server.
   if (resourceForm.filetype === 'remote') {
-    return await $api<Resource>(resourceForm.resource ? `/api/1/datasets/${dataset.id}/resources/${resourceForm.resource.id}` : `/api/1/datasets/${dataset.id}/resources/`, {
-      method: resourceForm.resource ? 'PUT' : 'POST',
+    return await $api<Resource>(metadataUrl, {
+      method: metadataMethod,
       body: JSON.stringify(resourceToApi(resourceForm)),
     })
   }
@@ -309,12 +341,7 @@ export async function saveResourceForm(dataset: Dataset | DatasetV2, resourceFor
   let resource
 
   if (resourceForm.file) {
-    if (resourceForm.resource) {
-      resource = await sendFile(`/api/1/datasets/${dataset.id}/resources/${resourceForm.resource.id}/upload/`, resourceForm, resourceForm.file)
-    }
-    else {
-      resource = await sendFile(`/api/1/datasets/${dataset.id}/upload/`, resourceForm, resourceForm.file)
-    }
+    resource = await sendFile(uploadUrl, resourceForm, resourceForm.file)
   }
   else {
     if (resourceForm.resource) {
@@ -325,9 +352,11 @@ export async function saveResourceForm(dataset: Dataset | DatasetV2, resourceFor
     }
   }
 
+  const { metadataUrl: newMetadataUrl, metadataMethod: alwaysPut } = getResourcesUrls(dataset, resource)
+
   // Then we need to update the resource's metadata
-  const updatedResource = await $api<Resource>(`/api/1/datasets/${dataset.id}/resources/${resource.id}/`, {
-    method: 'PUT',
+  const updatedResource = await $api<Resource>(newMetadataUrl, {
+    method: alwaysPut,
     body: JSON.stringify(resourceToApi(resourceForm)),
   })
   return updatedResource

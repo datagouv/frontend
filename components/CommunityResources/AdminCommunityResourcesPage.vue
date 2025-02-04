@@ -50,6 +50,7 @@
           :sort-direction="direction"
           :sorted-by
           @sort="sort"
+          @refresh="refresh"
         />
         <Pagination
           :page="page"
@@ -121,5 +122,5 @@ const url = computed(() => {
   return url.toString()
 })
 
-const { data: pageData, status } = await useAPI<PaginatedArray<CommunityResource>>(url, { lazy: true })
+const { data: pageData, status, refresh } = await useAPI<PaginatedArray<CommunityResource>>(url, { lazy: true })
 </script>
