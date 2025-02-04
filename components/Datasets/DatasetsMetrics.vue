@@ -1,28 +1,34 @@
 <template>
   <div
     class="bg-white border rounded"
-    :class="{ 'fr-pb-4v': metricsOpen }"
+    :class="{ 'pb-4': metricsOpen }"
   >
-    <header class="fr-p-3w flex items-center justify-between relative">
+    <header class="p-4 flex items-center justify-between relative">
       <div>
         <h4
           :id="metricsTitleId"
-          class="fr-mb-1v flex items-center"
+          class="!mb-0 flex items-center"
         >
           <button
             type="button"
-            class="fr-p-0 fr-text flex items-center font-bold"
+            class="fr-p-0 text-left"
             data-testid="expand-button"
             :aria-expanded="metricsOpen"
             @click="metricsOpen = ! metricsOpen"
           >
-            {{ t('Statistics on your datasets') }}
+            <div class="text-gray-title font-bold text-base/6">
+              {{ t('Statistics for the last 12 months') }}
+            </div>
+            <div class="text-gray-medium font-normal text-sm/6">
+              <span v-if="new Date().getHours() > 7 - 1">{{ $t('Updated this morning') }}</span>
+              <span v-else>{{ $t('Updated yesterday') }}</span>
+            </div>
 
             <span class="absolute inset-0 z-1" />
           </button>
         </h4>
       </div>
-      <div class="flex items-center fr-ml-4v buttons">
+      <div class="flex items-center">
         <p class="fr-col-auto fr-ml-3v fr-m-0">
           <a
             :disabled="!downloadStatsUrl"
@@ -44,7 +50,7 @@
     <section
       v-if="metricsOpen"
       :aria-labelledby="metricsTitleId"
-      class="flex flex-col md:flex-row fr-pb-3w fr-pl-3w fr-pr-3w"
+      class="flex flex-col md:flex-row px-4 pb-4"
     >
       <StatBox
         :title="t('Views')"
