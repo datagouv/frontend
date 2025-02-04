@@ -1,3 +1,4 @@
+const swrDuration = process.env.NUXT_PUBLIC_TEMPLATE_CACHE_DURATION ? parseInt(process.env.NUXT_PUBLIC_TEMPLATE_CACHE_DURATION) : true
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
@@ -105,12 +106,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/login': { prerender: true },
-    '/register': { prerender: true },
-    '/posts/': { swr: 3600 },
-    '/posts/**': { swr: 3600 },
+    '/*/login': { prerender: true },
+    '/*/register': { swr: swrDuration },
+    '/*/posts/': { swr: swrDuration },
+    '/*/posts/**': { swr: swrDuration },
     // Admin dashboard renders only on server-side
-    '/beta/admin/**': { ssr: true },
+    '/*/beta/admin/**': { ssr: true },
   },
 
   sourcemap: { client: 'hidden' },
