@@ -1,31 +1,12 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="organization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${organization.id}/profile`"
-        >
-          {{ organization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Reuses') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <DefaultBreadcrumb
+      :items="[
+        { label: t('Administration'), to: '/beta/admin' },
+        organization ? { label: organization.name, to: `/beta/admin/organizations/${organization.id}/profile` } : null,
+        { label: t('Reuses') },
+      ]"
+    />
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Reuses") }}
     </h1>
@@ -110,6 +91,7 @@ import { RiSearchLine } from '@remixicon/vue'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import AdminReusesTable from '../AdminTable/AdminReusesTable/AdminReusesTable.vue'
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
+import DefaultBreadcrumb from '../Breadcrumb/DefaultBreadcrumb.vue'
 import type { PaginatedArray, ReuseSortedBy, SortDirection } from '~/types/types'
 
 const { t } = useI18n()

@@ -1,31 +1,12 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="organization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${organization.id}/profile`"
-        >
-          {{ organization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Harvesters') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <DefaultBreadcrumb
+      :items="[
+        { label: t('Administration'), to: '/beta/admin' },
+        organization ? { label: organization.name, to: `/beta/admin/organizations/${organization.id}/profile` } : null,
+        { label: t('Harvesters') },
+      ]"
+    />
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Harvesters") }}
     </h1>
@@ -160,6 +141,7 @@ import { Pagination, type Organization } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import DefaultBreadcrumb from '../Breadcrumb/DefaultBreadcrumb.vue'
 import HarvesterBadge from './HarvesterBadge.vue'
 import type { PaginatedArray } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'

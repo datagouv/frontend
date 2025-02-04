@@ -1,42 +1,13 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <template v-if="dataset">
-        <li v-if="dataset.organization">
-          <NuxtLinkLocale
-            class="fr-breadcrumb__link"
-            :to="`/beta/admin/organizations/${dataset.organization.id}/profile`"
-          >
-            {{ dataset.organization.name }}
-          </NuxtLinkLocale>
-        </li>
-        <li v-if="dataset.organization">
-          <NuxtLinkLocale
-            class="fr-breadcrumb__link"
-            :to="`/beta/admin/organizations/${dataset.organization.id}/datasets`"
-          >
-            {{ t('Datasets') }}
-          </NuxtLinkLocale>
-        </li>
-        <li>
-          <a
-            class="fr-breadcrumb__link"
-            aria-current="page"
-          >
-            {{ dataset.title }}
-          </a>
-        </li>
-      </template>
-    </Breadcrumb>
-
+    <DefaultBreadcrumb
+      :items="[
+        { label: t('Administration'), to: '/beta/admin' },
+        dataset && dataset.organization ? { label: dataset.organization.name, to: `/beta/admin/organizations/${dataset.organization.id}/profile` } : null,
+        dataset && dataset.organization ? { label: t('Datasets'), to: `/beta/admin/organizations/${dataset.organization.id}/datasets` } : null,
+        dataset ? { label: dataset.title } : null,
+      ]"
+    />
     <div v-if="dataset">
       <div class="mb-5">
         <div class="flex items-center justify-between mb-3">
@@ -117,6 +88,7 @@
 <script setup lang="ts">
 import { QualityScore, summarize, type Dataset } from '@datagouv/components'
 import { RiDownloadLine, RiEyeLine, RiInformationLine, RiLineChartLine, RiPriceTag3Line } from '@remixicon/vue'
+import DefaultBreadcrumb from '~/components/Breadcrumb/DefaultBreadcrumb.vue'
 import QualityScoreTooltipContent from '~/components/dataset/QualityScore/QualityScoreTooltipContent/QualityScoreTooltipContent.vue'
 import TabLinks from '~/components/TabLinks.vue'
 

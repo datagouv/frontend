@@ -1,31 +1,12 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="organization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${organization.id}/profile`"
-        >
-          {{ organization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Community Resources') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <DefaultBreadcrumb
+      :items="[
+        { label: t('Administration'), to: '/beta/admin' },
+        organization ? { label: organization.name, to: `/beta/admin/organizations/${organization.id}/profile` } : null,
+        { label: t('Community Resources') },
+      ]"
+    />
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Community Resources") }}
     </h1>
@@ -82,6 +63,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import AdminCommunityResourcesTable from '../AdminTable/AdminCommunityResourcesTable/AdminCommunityResourcesTable.vue'
+import DefaultBreadcrumb from '../Breadcrumb/DefaultBreadcrumb.vue'
 import type { CommunityResourceSortedBy, PaginatedArray, SortDirection } from '~/types/types'
 
 const props = defineProps<{

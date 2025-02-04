@@ -1,5 +1,15 @@
 <template>
   <div>
+    <DefaultBreadcrumb
+      :items="[
+        { label: t('Administration'), to: '/beta/admin' },
+        harvester && harvester.organization ? { label: harvester.organization.name, to: `/beta/admin/organizations/${harvester.organization.id}/profile` } : null,
+        harvester && harvester.organization ? { label: t('harvesters'), to: `/beta/admin/organizations/${harvester.organization.id}/harvesters` } : null,
+        harvester && !job ? { label: harvester.name } : null,
+        harvester && job ? { label: harvester.name, to: getHarvesterAdminUrl(harvester) } : null,
+        harvester && job ? { label: job.id } : null,
+      ]"
+    />
     <Breadcrumb>
       <li>
         <NuxtLinkLocale
@@ -183,6 +193,7 @@
 <script setup lang="ts">
 import { RiCalendarEventLine, RiCheckboxCircleLine, RiLink, RiPlayLargeLine, RiToolsLine } from '@remixicon/vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
+import DefaultBreadcrumb from '~/components/Breadcrumb/DefaultBreadcrumb.vue'
 import HarvesterBadge from '~/components/Harvesters/HarvesterBadge.vue'
 import TabLinks from '~/components/TabLinks.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
