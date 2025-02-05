@@ -1,4 +1,4 @@
-const swrDuration = process.env.NUXT_PUBLIC_TEMPLATE_CACHE_DURATION ? parseInt(process.env.NUXT_PUBLIC_TEMPLATE_CACHE_DURATION) : 60
+const swrDuration = process.env.NUXT_TEMPLATE_CACHE_DURATION ? parseInt(process.env.NUXT_TEMPLATE_CACHE_DURATION) : 60
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
@@ -126,6 +126,16 @@ export default defineNuxtConfig({
     inlineStyles: false,
   },
   compatibilityDate: '2024-04-03',
+
+  nitro: {
+    // only for production, dev is still using filesystem
+    storage: {
+      cache: {
+        driver: 'redis',
+        url: process.env.NUXT_REDIS_URL,
+      },
+    },
+  },
 
   vite: {
     server: {
