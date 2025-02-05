@@ -10,6 +10,10 @@
           :aria-current="isCurrent(link.href) ? 'page': false"
         >
           {{ link.label }}
+          <sup
+            v-if="'count' in link"
+            class="before:content-['('] after:content-[')'] font-normal"
+          >{{ link.count }}</sup>
         </NuxtLinkLocale>
       </div>
     </div>
@@ -18,15 +22,13 @@
 
 <script setup lang="ts">
 defineProps<{
-  links: Array<{ href: string, label: string }>
+  links: Array<{ href: string, label: string, count?: number }>
 }>()
 
 const route = useRoute()
 const localePath = useLocalePath()
 
 function isCurrent(href: string) {
-  console.log(localePath(href))
-  console.log(route.fullPath)
   return localePath(href) === route.fullPath
 }
 </script>

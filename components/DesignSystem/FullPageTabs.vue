@@ -2,9 +2,9 @@
   <FullPageTabs
     :links="[
       { label: $t('Presentation'), href: '/design/' },
-      { label: $t('Datasets'), href: getOrganizationUrl('datasets') },
+      { label: $t('Datasets'), href: getOrganizationUrl('datasets'), count: 12 },
       { label: $t('Dataservices'), href: getOrganizationUrl('dataservices') },
-      { label: $t('Reuses'), href: getOrganizationUrl('reuses') },
+      { label: $t('Reuses'), href: getOrganizationUrl('reuses'), count: 0 },
       { label: $t('Information'), href: getOrganizationUrl('Information') },
     ]"
   />
