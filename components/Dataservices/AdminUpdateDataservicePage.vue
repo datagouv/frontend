@@ -85,7 +85,7 @@ import type { Dataservice } from '@datagouv/components'
 import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
-import type { ContactPoint, DataserviceForm, LinkToSubject } from '~/types/types'
+import type { DataserviceForm, LinkToSubject } from '~/types/types'
 import { toForm, toApi } from '~/utils/dataservices'
 
 const { t } = useI18n()
@@ -108,6 +108,13 @@ const dataserviceSubject = computed<Dataservice & LinkToSubject>(() => {
 const dataserviceForm = ref<DataserviceForm | null>(null)
 watchEffect(() => {
   dataserviceForm.value = toForm(dataservice.value)
+})
+
+const { setCurrentOrganization } = await useOrganizations()
+watchEffect(() => {
+  if (dataservice.value && dataservice.value.organization) {
+    setCurrentOrganization(dataservice.value.organization)
+  }
 })
 
 async function save() {
