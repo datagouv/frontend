@@ -273,8 +273,7 @@
                   </li>
                   <li>
                     <NuxtLinkLocale
-                      to="/admin/"
-                      :external="true"
+                      to="/beta/admin/"
                       class="fr-btn"
                     >
                       <RiSettings3Line
