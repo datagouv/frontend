@@ -2,15 +2,7 @@ import type { Dataservice, Dataset } from '@datagouv/components'
 import type { ContactPoint, DataserviceForm, DatasetSuggest, NewDataserviceForApi } from '~/types/types'
 
 export function getDataserviceAdminUrl(dataservice: Dataservice): string {
-  if (dataservice.owner) {
-    return `/beta/admin/me/dataservices/${dataservice.id}`
-  }
-  else if (dataservice.organization) {
-    return `/beta/admin/organizations/${dataservice.organization.id}/dataservices/${dataservice.id}`
-  }
-  else {
-    return ''
-  }
+  return `/beta/admin/dataservices/${dataservice.id}`
 }
 
 export function toForm(dataservice: Dataservice): DataserviceForm {
