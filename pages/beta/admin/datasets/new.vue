@@ -100,6 +100,8 @@ const datasetForm = useState(DATASET_FORM_STATE, () => ({
   frequency: null as Frequency | null,
   spatial_zones: [] as Array<SpatialZone>,
   spatial_granularity: null as SpatialGranularity | null,
+  contact_points: [],
+  private: true,
 } as DatasetForm))
 const resources = useState<Array<ResourceForm>>(DATASET_FILES_STATE, () => [])
 const newDataset = useState<Dataset | null>('new-dataset', () => null)
@@ -129,11 +131,14 @@ async function save() {
   try {
     loading.value = true
     if (
-      datasetForm.value.contact_point
+      datasetForm.value.contact_points
       && datasetForm.value.owned?.organization
-      && !('id' in datasetForm.value.contact_point)
     ) {
-      datasetForm.value.contact_point = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_point)
+      for (const contactPointKey in datasetForm.value.contact_points) {
+        if (!('id' in datasetForm.value.contact_points[contactPointKey])) {
+          datasetForm.value.contact_points[contactPointKey] = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_points[contactPointKey])
+        }
+      }
     }
 
     const dataset = newDataset.value = newDataset.value || await $api<Dataset>('/api/1/datasets/', {

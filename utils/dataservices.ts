@@ -11,7 +11,7 @@ export function toForm(dataservice: Dataservice): DataserviceForm {
     title: dataservice.title,
     description: dataservice.description,
     acronym: dataservice.acronym,
-    contact_point: dataservice.contact_point as unknown as ContactPoint | null, // TODO the API returns a ContactPoint object.
+    contact_points: (dataservice.contact_points ?? []) as Array<ContactPoint>, // TODO the API returns a ContactPoint object.
     is_restricted: dataservice.is_restricted,
     has_token: dataservice.has_token,
     base_api_url: dataservice.base_api_url || '',
@@ -25,6 +25,7 @@ export function toForm(dataservice: Dataservice): DataserviceForm {
 }
 
 export function toApi(form: DataserviceForm, overrides: { archived_at?: string | null, datasets?: Array<Dataset | DatasetSuggest>, private?: boolean } = {}): NewDataserviceForApi {
+  const contactPoints = form.contact_points?.filter(cp => 'id' in cp).map(cp => cp.id) ?? []
   return {
     organization: form.owned?.organization?.id,
     owner: form.owned?.owner?.id,
@@ -34,7 +35,7 @@ export function toApi(form: DataserviceForm, overrides: { archived_at?: string |
     private: overrides.private,
     archived_at: overrides.archived_at,
     datasets: overrides.datasets ? overrides.datasets.map(({ id }) => id) : undefined,
-    contact_point: form.contact_point && 'id' in form.contact_point ? form.contact_point.id : undefined,
+    contact_points: form.contact_points && contactPoints.length ? contactPoints : undefined,
     is_restricted: form.is_restricted,
     has_token: form.has_token,
     base_api_url: form.base_api_url || null,

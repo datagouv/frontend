@@ -124,11 +124,14 @@ async function save() {
     loading.value = true
 
     if (
-      dataserviceForm.value.contact_point
+      dataserviceForm.value.contact_points
       && dataserviceForm.value.owned?.organization
-      && !('id' in dataserviceForm.value.contact_point)
     ) {
-      dataserviceForm.value.contact_point = await newContactPoint($api, dataserviceForm.value.owned?.organization, dataserviceForm.value.contact_point)
+      for (const contactPointKey in dataserviceForm.value.contact_points) {
+        if (!('id' in dataserviceForm.value.contact_points[contactPointKey])) {
+          dataserviceForm.value.contact_points[contactPointKey] = await newContactPoint($api, dataserviceForm.value.owned?.organization, dataserviceForm.value.contact_points[contactPointKey])
+        }
+      }
     }
     await $api(`/api/1/dataservices/${dataservice.value.id}/`, {
       method: 'PATCH',

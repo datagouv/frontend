@@ -8,7 +8,7 @@ import Documentation from '~/components/Icons/Documentation.vue'
 import Image from '~/components/Icons/Image.vue'
 import Link from '~/components/Icons/Link.vue'
 import Table from '~/components/Icons/Table.vue'
-import type { DatasetForm, FileInfo, NewDatasetForApi, ResourceForm, SpatialGranularity, SpatialZone } from '~/types/types'
+import type { ContactPoint, DatasetForm, FileInfo, NewDatasetForApi, ResourceForm, SpatialGranularity, SpatialZone } from '~/types/types'
 
 export function getResourceFormatIcon(format: string): Component | null {
   switch (format?.trim()?.toLowerCase()) {
@@ -114,7 +114,7 @@ export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: 
     acronym: dataset.acronym,
     tags: dataset.tags?.map(text => ({ text })) || [],
     license: licenses.find(l => l.id === dataset.license) || null,
-    contact_point: dataset.contact_point,
+    contact_points: dataset.contact_points ?? [],
     frequency: frequencies.find(f => f.id === dataset.frequency) || null,
     temporal_coverage: dataset.temporal_coverage ? { start: dataset.temporal_coverage.start, end: dataset.temporal_coverage.end } : { start: null, end: null }, // TODO fix this type, the API returns an object not a string
     spatial_zones: dataset.spatial?.zones?.map(id => zones.find(z => z.id === id)).filter(z => z !== undefined) || [],
@@ -124,6 +124,7 @@ export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: 
 }
 
 export function toApi(form: DatasetForm, overrides: { private?: boolean, archived?: string | null } = {}): NewDatasetForApi {
+  const contactPoints = form.contact_points?.filter(cp => 'id' in cp).map(cp => cp.id) ?? []
   return {
     organization: form.owned?.organization?.id,
     owner: form.owned?.owner?.id,
@@ -134,7 +135,7 @@ export function toApi(form: DatasetForm, overrides: { private?: boolean, archive
     acronym: form.acronym,
     tags: form.tags.map(t => t.text),
     license: form.license?.id || '',
-    contact_point: form.contact_point && 'id' in form.contact_point ? form.contact_point.id : undefined,
+    contact_points: form.contact_points && contactPoints.length ? contactPoints : undefined,
     frequency: form.frequency?.id || '',
     temporal_coverage: (form.temporal_coverage.start && form.temporal_coverage.end) ? form.temporal_coverage as { start: string, end: string } : undefined,
     spatial: (form.spatial_granularity || form.spatial_zones)

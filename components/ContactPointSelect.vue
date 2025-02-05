@@ -9,7 +9,6 @@
         :display-value="(option) => 'id' in option ? (option.name || option.email || $t('Unknown')) : t('New contact')"
         :get-option-id="(option) => 'id' in option ? option.id : 'new'"
         :multiple="false"
-        required
         :loading
         :error-text
         :warning-text
@@ -39,6 +38,7 @@
     >
       <InputGroup
         v-model="newContactForm.name"
+        required
         :label="t('Contact Name')"
         :has-error="!!getFirstError('name')"
         :has-warning="!!getFirstWarning('name')"
@@ -47,6 +47,7 @@
       />
       <InputGroup
         v-model="newContactForm.email"
+        type="email"
         :label="t('Contact Email')"
         placeholder="contact@organization.org"
         :has-error="!!getFirstError('email')"
@@ -105,19 +106,28 @@ const { form: newContactForm, getFirstError, getFirstWarning, touch } = useForm(
   name: '',
   email: '',
   contact_form: '',
+  role: 'contact',
 } as NewContactPoint, {
+  name: [required()],
   email: [email()],
   contact_form: [url()],
 }, {})
 
 const contact = defineModel<ContactPointInForm | null>()
+
 const props = defineProps<{
   organization: Organization
   errorText?: string | null
   warningText?: string | null
 }>()
 
-const contactsUrl = computed(() => `/api/1/organizations/${props.organization.id}/contacts`)
+onMounted(() => {
+  if (contact.value && !('id' in contact.value)) {
+    contact.value = newContactForm.value
+  }
+})
+
+const contactsUrl = computed(() => `/api/1/organizations/${props.organization.id}/contacts/`)
 const { data: contacts, status } = await useAPI<PaginatedArray<ContactPoint>>(contactsUrl, { lazy: true })
 const loading = computed(() => status.value === 'pending')
 const contactsWithNewOption = computed<Array<ContactPointInForm>>(() => {

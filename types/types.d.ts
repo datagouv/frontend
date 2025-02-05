@@ -129,7 +129,7 @@ export type DatasetForm = {
   description: string
   tags: Array<Tag>
   license: License | null
-  contact_point: NewContactPoint | ContactPoint | null
+  contact_points: Array<NewContactPoint | ContactPoint>
   temporal_coverage: { start: null | string, end: null | string }
   frequency: Frequency | null
   spatial_zones: Array<SpatialZone>
@@ -147,7 +147,7 @@ export type NewDatasetForApi = {
   owner?: string
   tags: Array<string>
   license?: string
-  contact_point?: string | null
+  contact_points?: Array<string> | null
   temporal_coverage?: { start: string, end: string }
   frequency?: string
   spatial?: {
@@ -191,7 +191,7 @@ export type DataserviceForm = {
   title: string
   acronym: string
   description: string
-  contact_point: NewContactPoint | ContactPoint | null
+  contact_points: Array<NewContactPoint | ContactPoint>
   is_restricted: boolean
   has_token: boolean
   base_api_url: string
@@ -212,7 +212,7 @@ export type NewDataserviceForApi = {
   acronym?: string
   description: string
   datasets?: Array<string>
-  contact_point?: string | null
+  contact_points?: Array<string> | null
   is_restricted: boolean
   has_token: boolean
   base_api_url: string | null
@@ -270,6 +270,7 @@ export type ContactPoint = {
   name: string
   contact_form?: string
   email?: string
+  role: string
 }
 
 export type NewContactPoint = Omit<ContactPoint, 'id'>

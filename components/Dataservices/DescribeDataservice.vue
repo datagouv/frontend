@@ -88,7 +88,7 @@
           v-if="form.owned?.organization"
           :id="contactPointAccordionId"
           :title="$t('Define a point of contact')"
-          :state="accordionState('contact_point')"
+          :state="accordionState('contact_points')"
         >
           <p class="fr-m-0">
             {{ $t("Specify a contact point, such as an email or a link to a form, so users can reach you in case of issues or for questions.") }}
@@ -336,10 +336,19 @@
           <LinkedToAccordion
             class="fr-fieldset__element"
             :accordion="contactPointAccordionId"
-            @blur="touch('contact_point')"
+            @blur="touch('contact_points')"
           >
+            <template v-for="(contact_point, index) in form.contact_points">
+              <ContactPointSelect
+                v-if="contact_point.role == 'contact'"
+                :key="'id' in contact_point ? contact_point.id : index"
+                v-model="form.contact_points[index]"
+                :organization="form.owned?.organization"
+              />
+            </template>
             <ContactPointSelect
-              v-model="form.contact_point"
+              v-if="form.contact_points.length === 0"
+              v-model="form.contact_points[0]"
               :organization="form.owned?.organization"
             />
           </LinkedToAccordion>
