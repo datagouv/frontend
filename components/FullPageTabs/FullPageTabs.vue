@@ -1,0 +1,32 @@
+<template>
+  <div class="border-b border-gray-default">
+    <div class="container">
+      <div class=" inline-flex gap-2">
+        <NuxtLinkLocale
+          v-for="link in links"
+          :key="link.label"
+          class="bg-blue-action-low px-4 py-2 !bg-none font-bold aria-current-page:text-datagouv-dark aria-current-page:border-t-2 aria-current-page:border-t-datagouv-dark aria-current-page:bg-white aria-current-page:border-x aria-current-page:border-x-gray-default aria-current-page:shadow-[0 1px white] hover:aria-current-page:!bg-white active::aria-current-page:!bg-white hover:!bg-blue-action-low-hover active:!bg-blue-action-low-active"
+          :to="link.href"
+          :aria-current="isCurrent(link.href) ? 'page': false"
+        >
+          {{ link.label }}
+        </NuxtLinkLocale>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+defineProps<{
+  links: Array<{ href: string, label: string }>
+}>()
+
+const route = useRoute()
+const localePath = useLocalePath()
+
+function isCurrent(href: string) {
+  console.log(localePath(href))
+  console.log(route.fullPath)
+  return localePath(href) === route.fullPath
+}
+</script>

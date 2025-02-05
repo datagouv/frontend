@@ -49,10 +49,13 @@ export default {
         },
         defaultWarning: '#b32000',
         blue: {
-          light: '#e3e3fd',
-          lighter: '#EEF4F8',
-          tint: '#c1c1fd',
-          outline: '#0a76f6',
+          'light': '#e3e3fd',
+          'lighter': '#EEF4F8',
+          'action-low': '#DAE6FD',
+          'action-low-hover': '#a9c8fb',
+          'action-low-active': '#8ab8f9',
+          'tint': '#c1c1fd',
+          'outline': '#0a76f6',
         },
         secondary: {
           lightest: '#EEEEEE',
