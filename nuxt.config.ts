@@ -127,16 +127,6 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2024-04-03',
 
-  nitro: {
-    // only for production, dev is still using filesystem
-    storage: {
-      cache: {
-        driver: 'redis',
-        url: process.env.NUXT_REDIS_URL,
-      },
-    },
-  },
-
   vite: {
     server: {
       allowedHosts: ['dev.local'],
