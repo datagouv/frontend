@@ -37,11 +37,12 @@
           @change="setFiles"
         />
         <FileCard
-          v-for="(resource, index) in files"
+          v-for="(resourceForm, index) in resourceForms"
           :key="index"
-          v-model="files[index]"
+          v-model="resourceForms[index]"
           class="fr-mb-3v"
           :show-edit-and-warning="false"
+          :extensions
           @delete="removeFile(index)"
         />
         <p class="fr-hr-or text-transform-lowercase fr-text--regular text-mention-grey fr-mt-3v">
@@ -93,65 +94,59 @@ import { RiUploadLine } from '@remixicon/vue'
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import UploadGroup from '../UploadGroup/UploadGroup.vue'
-import type { NewDatasetFile } from '~/types/types'
+import type { ResourceForm } from '~/types/types'
 
 const { t } = useI18n()
 const formId = useId()
 
 defineProps<{
   errorText?: string | null
+  extensions: Array<string>
 }>()
 
 const emit = defineEmits<{
-  (e: 'newFiles', newFiles: Array<NewDatasetFile>): void
+  (e: 'newFiles', newFiles: Array<ResourceForm>): void
 }>()
 
 const url = ref('')
 
-const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
+const resourceForms = ref<Array<ResourceForm>>([])
 
-const files = ref<Array<NewDatasetFile>>([])
-const guessFormat = (file: File) => {
-  const formatFromMime = file.type.includes('/') ? file.type.split('/').pop() || '' : file.type
-  let guessedFormat = extensions.value.includes(formatFromMime) ? formatFromMime : ''
-  if (!guessedFormat) {
-    const formatFromName = file.name.includes('.') ? file.name.split('.').pop() || '' : file.name
-    guessedFormat = extensions.value.includes(formatFromName) ? formatFromName : ''
-  }
-  return guessedFormat
-}
 const setFiles = (newFiles: Array<File>) => {
   for (const file of newFiles) {
-    files.value.push({
-      file,
-      description: '',
-      format: guessFormat(file),
-      filesize: file.size,
+    resourceForms.value.push({
       filetype: 'file',
-      mime: file.type,
       title: file.name,
       type: 'main',
-      state: 'none',
+      description: '',
+      schema: null,
+      file: {
+        raw: file,
+        state: { status: 'waiting' },
+      },
+      resource: null,
     })
   }
 }
-const removeFile = (position: number) => files.value.splice(position, 1)
+const removeFile = (position: number) => resourceForms.value.splice(position, 1)
 const submit = (close: () => void) => {
   if (url.value) {
-    files.value.push({
-      description: '',
+    resourceForms.value.push({
       filetype: 'remote',
       title: '',
-      format: '',
-      mime: '',
       type: 'main',
+      description: '',
+      schema: null,
+
       url: url.value,
-      state: 'none',
+      format: '',
+      mime: null,
+      resource: null,
     })
   }
 
-  emit('newFiles', files.value)
-  files.value = []
+  emit('newFiles', resourceForms.value)
+  resourceForms.value = []
   close()
 }
 </script>

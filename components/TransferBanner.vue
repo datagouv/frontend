@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, type Dataservice, type Dataset, type DatasetV2, type Reuse } from '@datagouv/components'
+import type { Dataservice, Dataset, DatasetV2, Reuse } from '@datagouv/components'
 import type { Owned } from '@datagouv/components/ts'
 import { RiSendPlaneLine } from '@remixicon/vue'
 import BrandedButton from './BrandedButton/BrandedButton.vue'

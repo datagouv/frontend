@@ -140,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination } from '@datagouv/components'
+import { Pagination } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -155,7 +155,7 @@ import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 const { t } = useI18n()
 
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 

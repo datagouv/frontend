@@ -1,0 +1,38 @@
+name: Create a new Sentry release with source map
+run-name: new sentry release ${{ github.sha }}
+on:
+  push:
+    branches:
+      - main
+jobs:
+  sentry-release:
+    runs-on: ubuntu-latest
+    env:
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      SENTRY_URL: ${{ secrets.SENTRY_URL }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - run: npm run build
+
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ env.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ env.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ env.SENTRY_PROJECT }}
+          SENTRY_URL: ${{ env.SENTRY_URL }}
+        with:
+          inject: true
+          sourcemaps: ".nuxt/dist"
+          ignore_missing: true

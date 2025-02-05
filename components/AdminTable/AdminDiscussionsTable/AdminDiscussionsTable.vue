@@ -105,11 +105,12 @@
 </template>
 
 <script setup lang="ts">
-import { AvatarWithName, formatDate } from '@datagouv/components'
+import { AvatarWithName } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../Table/AdminTable.vue'
 import AdminTableTh from '../Table/AdminTableTh.vue'
-import type { Comment, DiscussionSortedBy, DiscussionSubjectTypes, SortDirection, Thread } from '~/types/types'
+import type { Comment, DiscussionSortedBy, DiscussionSubjectTypes, Thread } from '~/types/discussions'
+import type { SortDirection } from '~/types/types'
 import { getDiscussionUrl, getSubject, getSubjectTypeIcon, getSubjectTitle } from '~/utils/discussions'
 
 const props = defineProps<{

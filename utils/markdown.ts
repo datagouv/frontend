@@ -1,4 +1,3 @@
-import { RiLinksLine } from '@remixicon/vue'
 import type hast from 'hast'
 import behead from 'remark-behead'
 import remarkBreaks from 'remark-breaks'
@@ -13,7 +12,6 @@ import rehypeStringify from 'rehype-stringify'
 import { unified, type Processor, type Transformer } from 'unified'
 import type { Node } from 'unist'
 import { visit } from 'unist-util-visit'
-import { render } from 'vue'
 
 const prose = 'prose prose-neutral max-w-none prose-strong:text-gray-plain'
 const proseTable = 'prose-table:bg-neutral-200 prose-table:!overflow-visible first-of-type:prose-tr:!bg-neutral-200 first-of-type:prose-tr:border-b-2 first-of-type:prose-tr:border-black odd:prose-tr:bg-neutral-300 *:prose-th:m-0 *:prose-td:m-0 prose-th:p-4 prose-td:p-4'
@@ -45,13 +43,7 @@ function lazyLoadPlugin(this: Processor): Transformer {
 }
 
 export function formatMarkdown(md: string, minDepth = 3) {
-  let el: HTMLElement | string = ''
-  if (document) {
-    el = document.createElement('span')
-    render(h(RiLinksLine), el)
-  }
-
-  return unified()
+  const result = unified()
     // somehow this type is working when `minDepth` is required but not when it has a default value
     .use(behead, { minDepth })
     // Take Markdown as input and turn it into MD syntax tree
@@ -75,4 +67,6 @@ export function formatMarkdown(md: string, minDepth = 3) {
     .use(lazyLoadPlugin)
     // And finally, process the input
     .processSync(md)
+
+  return String(result)
 }

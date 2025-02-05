@@ -35,23 +35,13 @@
                 scope="col"
                 class="w-12"
               >
-                <Tooltip class="ml-auto">
-                  <RiDatabase2Line class="size-3.5" />
-                  <template #tooltip>
-                    {{ $t('Datasets') }}
-                  </template>
-                </Tooltip>
+                {{ $t("Datasets") }}
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
                 class="w-12"
               >
-                <Tooltip class="ml-auto">
-                  <RiRobot2Line class="size-3.5" />
-                  <template #tooltip>
-                    {{ $t('Dataservices') }}
-                  </template>
-                </Tooltip>
+                {{ $t('API') }}
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
@@ -117,8 +107,8 @@
               <td>
                 <JobBadge :job />
               </td>
-              <td>{{ job.started ? formatDate(job.started, 'LLL') : formatDate(job.created, 'LLL') }}</td>
-              <td>{{ job.ended ? formatDate(job.ended, 'LLL') : '—' }}</td>
+              <td>{{ job.started ? formatDate(job.started, { dateStyle: 'long', timeStyle: 'short' }) : formatDate(job.created, { dateStyle: 'long', timeStyle: 'short' }) }}</td>
+              <td>{{ job.ended ? formatDate(job.ended, { dateStyle: 'long', timeStyle: 'short' }) : '—' }}</td>
               <td class="!text-right font-mono">
                 {{ job.items.filter((i) => i.dataset).length }}
               </td>
@@ -160,21 +150,29 @@
       <p class="fr-text--bold fr-my-3v">
         {{ $t(`No job yet.`) }}
       </p>
+      <BrandedButton
+        color="primary"
+        size="xs"
+        :href="`/beta/admin/harvesters/${harvester.id}/configuration`"
+      >
+        {{ $t('Go to configuration') }}
+      </BrandedButton>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination } from '@datagouv/components'
-import { RiArchiveLine, RiCheckLine, RiCloseLine, RiDatabase2Line, RiEyeOffLine, RiRobot2Line } from '@remixicon/vue'
+import { Pagination } from '@datagouv/components'
+import { RiArchiveLine, RiCheckLine, RiCloseLine, RiEyeOffLine } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
+import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
 import JobBadge from '~/components/Harvesters/JobBadge.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
 import type { PaginatedArray } from '~/types/types'
 
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 
 const route = useRoute()
 const sourceUrl = computed(() => `/api/1/harvest/source/${route.params.id}`)

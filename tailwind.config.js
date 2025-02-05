@@ -24,6 +24,9 @@ export default {
       aria: {
         'current-page': 'current="page"',
       },
+      boxShadow: {
+        input: 'inset 0 -2px 0 0 var(--blue-cumulus-sun-368-moon-732)',
+      },
       fontFamily: {
         spectral: 'Spectral',
         gothic: 'URW Gothic',
@@ -47,6 +50,7 @@ export default {
         defaultWarning: '#b32000',
         blue: {
           light: '#e3e3fd',
+          lighter: '#EEF4F8',
           tint: '#c1c1fd',
           outline: '#0a76f6',
         },
@@ -90,6 +94,18 @@ export default {
           },
         },
       }),
+      // This animation are copy/paste from the `pulse` animation of TailwindCSS
+      // because the `pulse` animation inherit of a blue background from somewhere
+      // (DSFR? Wrong component not-scoped style?)
+      animation: {
+        'pulse-placeholder': 'pulse-placeholder 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        'pulse-placeholder': {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.5 },
+        },
+      },
     },
   },
   plugins: [

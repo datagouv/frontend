@@ -88,8 +88,6 @@ const loading = ref(false)
 
 const localePath = useLocalePath()
 
-const { setCurrentOrganization } = await useOrganizations()
-
 const { toast } = useToast()
 
 const { data: frequencies } = await useAPI<Array<Frequency>>('/api/1/datasets/frequencies', { lazy: true })
@@ -123,6 +121,7 @@ watchEffect(() => {
   }
 })
 
+const { setCurrentOrganization } = await useOrganizations()
 watchEffect(() => {
   if (dataset.value && dataset.value.organization) {
     setCurrentOrganization(dataset.value.organization)

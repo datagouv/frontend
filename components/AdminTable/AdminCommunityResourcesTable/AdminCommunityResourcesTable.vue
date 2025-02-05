@@ -72,7 +72,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '@datagouv/components'
 import type { CommunityResource } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'

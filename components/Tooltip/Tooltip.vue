@@ -23,6 +23,7 @@
         role="tooltip"
         aria-hidden="true"
         class="drop-shadow bg-white p-2 z-10 mt-2 whitespace-nowrap"
+        :class="tooltipClass"
         :style="floatingStyles"
       >
         <slot name="tooltip" />
@@ -34,12 +35,16 @@
 <script setup lang="ts">
 import { useFloating, autoUpdate, autoPlacement } from '@floating-ui/vue'
 
+defineProps<{
+  tooltipClass?: string
+}>()
+
 const id = useId()
 const show = ref(false)
 
-const reference = ref(null)
-const floating = ref(null)
-const { floatingStyles } = useFloating(reference, floating, {
+const referenceRef = useTemplateRef('reference')
+const floatingRef = useTemplateRef('floating')
+const { floatingStyles } = useFloating(referenceRef, floatingRef, {
   middleware: [autoPlacement({
     allowedPlacements: ['bottom-start', 'bottom', 'bottom-end'],
   })],

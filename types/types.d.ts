@@ -1,4 +1,4 @@
-import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema } from '@datagouv/components'
+import type { Dataset, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema, Resource } from '@datagouv/components'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 
@@ -8,6 +8,8 @@ export type Sort = {
   name: string
   key: string
 }
+
+export type RequestStatus = 'idle' | 'pending' | 'success' | 'error'
 
 export type DSFRFormDefaultState = 'default'
 
@@ -229,13 +231,30 @@ export type FileResourceFileType = 'file'
 
 export type ResourceFileType = RemoteResourceFileType | FileResourceFileType
 
-export type DatasetRemoteFile = { description?: string, filetype: RemoteResourceFileType, format: string, mime: { text: string } | null, schema?: RegisteredSchema, title: string, type: ResourceType, url: string }
+export type BaseResourceForm = {
+  resource: Resource | null // Use to know if we update an existing resource or create a new resource
+  title: string
+  type: ResourceType
+  description: string
+  schema: RegisteredSchema | null
+}
 
-export type DatasetLocalFile = { file: File, sha256?: string, description?: string, format: string, filesize: number | null, filetype: FileResourceFileType, mime: { text: string } | null, schema?: RegisteredSchema, title: string, type: ResourceType }
+export type ResourceFormRemote = BaseResourceForm & {
+  filetype: RemoteResourceFileType
+  url: string
+  mime: { text: string } | null
+  format: string
+}
 
-export type FileLoadingState = 'none' | 'loading' | 'failed' | 'loaded'
+export type FileLoadingState = { status: 'waiting' } | { status: 'loading' } | { status: 'failed', message: string } | { status: 'uploaded', resource: Resource }
+export type FileInfo = { raw: File, state: FileLoadingState }
 
-export type NewDatasetFile = (DatasetLocalFile | DatasetRemoteFile) & { state: FileLoadingState, errorMessage?: string }
+export type ResourceFormLocal = BaseResourceForm & {
+  filetype: FileResourceFileType
+  file: FileInfo | null
+}
+
+export type ResourceForm = ResourceFormRemote | ResourceFormLocal
 
 export type NewOrganization = {
   acronym: string | null

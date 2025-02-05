@@ -156,11 +156,10 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination, type Organization } from '@datagouv/components'
+import { Pagination, type Organization } from '@datagouv/components'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import JobBadge from './JobBadge.vue'
 import HarvesterBadge from './HarvesterBadge.vue'
 import type { PaginatedArray } from '~/types/types'
 import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
@@ -177,7 +176,7 @@ const config = useRuntimeConfig()
 const { $api } = useNuxtApp()
 
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 

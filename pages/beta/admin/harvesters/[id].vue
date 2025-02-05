@@ -68,7 +68,7 @@
             :loading
             @click="run"
           >
-            {{ $t('Run') }}
+            {{ $t('Schedule execution') }}
           </BrandedButton>
         </div>
 

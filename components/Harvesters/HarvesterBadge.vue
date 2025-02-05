@@ -44,6 +44,7 @@
 
 <script setup lang="ts">
 import AdminBadge from '../AdminBadge/AdminBadge.vue'
+import JobBadge from './JobBadge.vue'
 import type { HarvesterSource } from '~/types/harvesters'
 
 defineProps<{

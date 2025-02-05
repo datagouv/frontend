@@ -34,10 +34,11 @@
           v-for="(post, index) in posts.data"
           :key="post.id"
           :post
-          :class="page === 1 && index < 2 ? 'col-span-3' : 'col-span-2'"
+          :class="index < 2 ? 'col-span-3' : 'col-span-2'"
         />
       </div>
       <Pagination
+        :link="getLink"
         :page="posts.page"
         :page-size="posts.page_size"
         :total-results="posts.total"
@@ -48,13 +49,11 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination } from '@datagouv/components'
 import type { Post } from '~/types/posts'
 import type { PaginatedArray } from '~/types/types'
 
 const route = useRoute()
 const page = ref(route.query.page ?? 1)
-const pageSize = computed(() => page.value === 1 ? 14 : 15)
 
 watch(page, async () => {
   await navigateTo({
@@ -67,10 +66,10 @@ watch(page, async () => {
   document.children[0].scrollIntoView({ behavior: 'smooth', block: 'start' })
 })
 
-const { data: posts } = await useAPI<PaginatedArray<Post>>('api/1/posts', { params:
+const { data: posts } = await useAPI<PaginatedArray<Post>>('api/1/posts/', { params:
   {
     page,
-    page_size: pageSize,
+    page_size: 14,
     sort: '-published',
   },
 })

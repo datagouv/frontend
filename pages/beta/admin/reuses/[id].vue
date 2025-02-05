@@ -9,22 +9,32 @@
           {{ t('Administration') }}
         </NuxtLinkLocale>
       </li>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin/me/reuses"
-        >
-          {{ t('Reuses') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="reuse">
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ reuse.title }}
-        </a>
-      </li>
+      <template v-if="reuse">
+        <li v-if="reuse.organization">
+          <NuxtLinkLocale
+            class="fr-breadcrumb__link"
+            :to="`/beta/admin/organizations/${reuse.organization.id}/profile`"
+          >
+            {{ reuse.organization.name }}
+          </NuxtLinkLocale>
+        </li>
+        <li v-if="reuse.organization">
+          <NuxtLinkLocale
+            class="fr-breadcrumb__link"
+            :to="`/beta/admin/organizations/${reuse.organization.id}/reuses`"
+          >
+            {{ t('Reuses') }}
+          </NuxtLinkLocale>
+        </li>
+        <li v-if="reuse">
+          <a
+            class="fr-breadcrumb__link"
+            aria-current="page"
+          >
+            {{ reuse.title }}
+          </a>
+        </li>
+      </template>
     </Breadcrumb>
 
     <div v-if="reuse">
@@ -44,7 +54,7 @@
         class="mb-5"
         :links="[
           { href: getReuseAdminUrl(reuse), label: t('Metadata') },
-          { href: `${getReuseAdminUrl(reuse)}/datasets`, label: t('Associated datasets') },
+          { href: `${getReuseAdminUrl(reuse)}/datasets`, label: t('Datasets') },
         ]"
       />
 

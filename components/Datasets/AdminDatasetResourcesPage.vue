@@ -8,16 +8,18 @@
         {{ t('{n} files', resourcesPage.total) }}
       </h2>
       <UploadResourceModal
+        :extensions
         @new-files="addFiles"
       />
     </div>
 
     <!-- :key is here to force re-render when length change and then re-call onMounted -->
     <FileEditModal
-      v-if="newFiles.length"
-      :key="newFiles.length"
-      v-model="newFiles[0]"
+      v-if="resourceForms.length"
+      :key="resourceForms.length"
+      :resource="resourceForms[0]"
       open-on-mounted
+      :loading
       @submit="saveFirstNewFile"
       @cancel="removeFirstNewFile"
     />
@@ -91,10 +93,12 @@
             </td>
             <td>
               <FileEditModal
-                :model-value="resourceToForm(resource, schemas || [])"
+                :dataset
+                :loading
+                :resource="resourceToForm(resource, schemas || [])"
                 button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
-                @update:model-value="() => {}"
-                @submit="(file) => saveFile(index, resource, file)"
+                @submit="updateResource"
+                @delete="refreshResources"
               />
             </td>
           </tr>
@@ -112,26 +116,26 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate, Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
+import { Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'
 import UploadResourceModal from './UploadResourceModal.vue'
 import FileEditModal from './FileEditModal.vue'
-import type { AdminBadgeType, NewDatasetFile, PaginatedArray } from '~/types/types'
+import type { AdminBadgeType, PaginatedArray, ResourceForm } from '~/types/types'
 
 const route = useRoute()
 const { toast } = useToast()
 const { $api } = useNuxtApp()
-const { locale } = useI18n()
 
 const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
+const { data: extensions } = await useAPI<Array<string>>('/api/1/datasets/extensions/')
 
 const datasetUrl = computed(() => `/api/2/datasets/${route.params.id}`)
 const { data: dataset, status } = await useAPI<DatasetV2>(datasetUrl, { lazy: true })
 const resourcesPage = ref<PaginatedArray<Resource> | null>(null)
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 
 const resourcesUrl = computed(() => {
   if (!dataset.value) return
@@ -150,29 +154,41 @@ watchEffect(async () => await refreshResources())
 
 const { t } = useI18n()
 
-const newFiles = ref<Array<NewDatasetFile>>([])
+const resourceForms = ref<Array<ResourceForm>>([])
+const loading = ref(false)
 
-const addFiles = (files: Array<NewDatasetFile>) => {
-  newFiles.value = files
+const addFiles = (files: Array<ResourceForm>) => {
+  resourceForms.value = files
 }
 const removeFirstNewFile = () => {
-  newFiles.value = [...newFiles.value.slice(1)]
+  resourceForms.value = [...resourceForms.value.slice(1)]
 }
-const saveFirstNewFile = async () => {
-  await uploadFile(dataset.value, newFiles.value[0], 3)
+const saveFirstNewFile = async (closeModal: () => void, form: ResourceForm) => {
+  loading.value = true
+  try {
+    await saveResourceForm(dataset.value, form)
+    closeModal()
+  }
+  finally {
+    loading.value = false
+  }
   removeFirstNewFile()
 
   page.value = 1
   refreshResources()
 }
-const saveFile = async (index: number, resource: Resource, file: NewDatasetFile) => {
-  const updated = await $api<Resource>(`/api/1/datasets/${dataset.value.id}/resources/${resource.id}/`, {
-    method: 'PUT',
-    body: JSON.stringify(resourceToApi(file)),
-  })
-  if (resourcesPage.value) {
-    resourcesPage.value.data[index] = updated
+const updateResource = async (closeModal: () => void, resourceForm: ResourceForm) => {
+  loading.value = true
+
+  try {
+    await saveResourceForm(dataset.value, resourceForm)
+    await refreshResources()
+    closeModal()
   }
+  finally {
+    loading.value = false
+  }
+
   toast.success(t('Resource updated!'))
 }
 

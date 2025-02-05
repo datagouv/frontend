@@ -81,6 +81,13 @@
 
         <BannerNotif />
       </section>
+      <section>
+        <h2 class="!mb-3">
+          OrganizationNameWithCertificate
+        </h2>
+
+        <OrganizationNameWithCertificate />
+      </section>
     </div>
     <div class="space-y-8 py-8 pb-64">
       <h2 class="!mb-3">
@@ -118,4 +125,5 @@ import AdminBadge from '~/components/DesignSystem/AdminBadge.vue'
 import BannerAction from '~/components/DesignSystem/BannerAction.vue'
 import BannerNotif from '~/components/DesignSystem/BannerNotif.vue'
 import BrandedButton from '~/components/DesignSystem/BrandedButton.vue'
+import OrganizationNameWithCertificate from '~/components/DesignSystem/OrganizationNameWithCertificate.vue'
 </script>
