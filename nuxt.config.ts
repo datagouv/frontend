@@ -98,10 +98,10 @@ export default defineNuxtConfig({
       },
 
       // URL of your matomo host.
-      matomo_host: undefined,
+      matomoHost: undefined,
 
       // Matomo ID of your site. Check the Matomo backend for it
-      matomo_site_id: 1,
+      matomoSiteId: 1,
     },
   },
 

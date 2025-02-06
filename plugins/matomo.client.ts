@@ -4,10 +4,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   _paq.push(['trackPageView'])
   _paq.push(['enableLinkTracking']);
   (function () {
-    const u = nuxtApp.$config.public.matomo_host
+    const u = nuxtApp.$config.public.matomoHost
     if (u) {
       _paq.push(['setTrackerUrl', u + 'matomo.php'])
-      _paq.push(['setSiteId', nuxtApp.$config.public.matomo_site_id])
+      _paq.push(['setSiteId', nuxtApp.$config.public.matomoSiteId])
       const d = document,
         g = d.createElement('script'),
         s = d.getElementsByTagName('script')[0]
