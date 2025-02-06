@@ -110,13 +110,6 @@ watchEffect(() => {
   dataserviceForm.value = toForm(dataservice.value)
 })
 
-const { setCurrentOrganization } = await useOrganizations()
-watchEffect(() => {
-  if (dataservice.value && dataservice.value.organization) {
-    setCurrentOrganization(dataservice.value.organization)
-  }
-})
-
 async function save() {
   if (!dataserviceForm.value) throw new Error('No dataservice form')
 

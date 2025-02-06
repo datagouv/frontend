@@ -102,7 +102,7 @@ useHead({ title: 'Admin' })
 // Works only because we are using MongoDB and there is no
 // collision between orgs' IDs and users' IDs.
 
-const { organizations, currentOrganization } = await useOrganizations()
+const { organizations, currentOrganization } = useOrganizations()
 const defaultOpenId = ref<null | string>(currentOrganization.value?.id || null)
 
 const isSiteAdmin = computed(() => me.value.roles?.includes('admin') || false)

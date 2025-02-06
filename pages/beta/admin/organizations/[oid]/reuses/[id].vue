@@ -70,7 +70,7 @@ import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
 
-const { currentOrganization } = await useOrganizations()
+const { currentOrganization } = useOrganizations()
 
 const route = useRoute()
 const url = computed(() => `/api/1/reuses/${route.params.id}`)

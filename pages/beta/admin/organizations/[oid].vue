@@ -1,0 +1,19 @@
+<template>
+  <NuxtPage
+    :organization
+    @refresh="refresh"
+  />
+</template>
+
+<script setup lang="ts">
+import type { Organization } from '@datagouv/components'
+
+const { setCurrentOrganization } = useOrganizations()
+
+const route = useRoute()
+const { data: organization, refresh } = await useAPI<Organization>(`api/1/organizations/${route.params.oid}/`, { lazy: true })
+
+watchEffect(() => {
+  if (organization) setCurrentOrganization(organization.value)
+})
+</script>

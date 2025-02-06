@@ -96,7 +96,7 @@ const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${s
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
-const { currentOrganization } = await useOrganizations()
+const { currentOrganization } = useOrganizations()
 
 function sort(column: DiscussionSortedBy, newDirection: SortDirection) {
   sortedBy.value = column
