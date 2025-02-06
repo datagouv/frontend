@@ -17,7 +17,7 @@
     <component
       :is="icon"
       v-else-if="icon"
-      class="size-4"
+      :class="iconSize"
     />
     <span
       v-if="hasText"
@@ -96,6 +96,14 @@ const sizes = computed(() => {
     lg: `text-lg ${hasText.value ? 'px-6 py-2' : 'p-3'}`,
     sm: `text-sm leading-none ${hasText.value ? 'px-4 py-3' : 'p-2.5'}`,
     xs: `text-xs leading-[0.875rem] ${hasText.value ? 'px-4 py-2' : 'p-2'}`,
+  }[size.value]
+})
+
+const iconSize = computed(() => {
+  return {
+    lg: 'size-6',
+    sm: 'size-4',
+    xs: 'size-3',
   }[size.value]
 })
 

@@ -32,3 +32,7 @@
 .link {
   @apply !bg-none underline underline-offset-4 hover:decoration-2 text-datagouv-dark;
 }
+
+.input {
+  @apply block w-full rounded-t text-base leading-6 py-2 px-4 text-gray-default bg-gray-lower hover:bg-gray-lower-hover active:bg-gray-lower-active placeholder:opacity-100 placeholder:italic placeholder:text-gray-medium;
+}
