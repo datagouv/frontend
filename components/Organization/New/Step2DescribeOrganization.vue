@@ -40,7 +40,7 @@
           :state="state.business_number_id"
         >
           <p class="fr-m-0">
-            {{ t("A SIRET number will allow us to assign a type to your organization (administrations, collectivities, companies, etc.) and will facilitate your certification.") }} <br>
+            {{ t("A SIRET number will allow us to assign a type to your organization (administrations, local authorities, businesses, etc.) and will facilitate your certification. The number must have 14 digits.") }} <br>
             {{ t("Please note that all administrations have a SIRET number.") }} <br>
             {{ t("You can find your SIRET on ") }}<a
               class="text-decoration-underline"
