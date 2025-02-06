@@ -116,6 +116,13 @@
 
         <DesignSystemBannerSticky />
       </section>
+      <section>
+        <h2 class="!mb-3">
+          FullPageTabs
+        </h2>
+
+        <DesignSystemFullPageTabs />
+      </section>
     </div>
   </DevOnly>
 </template>
