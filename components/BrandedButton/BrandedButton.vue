@@ -40,7 +40,7 @@ import { bannerActionTypeKey } from '~/components/BannerAction.vue'
 
 import { NuxtLinkLocale } from '#components'
 
-type ColorType = 'primary' | 'primary-soft' | 'secondary' | 'warning' | 'danger'
+type ColorType = 'primary' | 'primary-soft' | 'secondary' | 'warning' | 'danger' | 'tertiary'
 
 const props = withDefaults(defineProps<{
   size?: 'xs' | 'sm' | 'lg'
@@ -88,6 +88,7 @@ const colors = computed(() => {
     'secondary': `text-gray-plain bg-white !border-gray-plain ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
     'warning': `text-warning-dark bg-white !border-warning-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
     'danger': `!text-danger-dark bg-white !border-danger-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+    'tertiary': `text-datagouv-dark bg-white ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
   }[color.value]
 })
 

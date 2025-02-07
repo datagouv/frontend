@@ -1,28 +1,27 @@
 <template>
   <form
-    class="fr-pt-3v"
+    class="pt-3"
     @submit.prevent="search"
   >
     <div
       ref="searchRef"
-      class="fr-grid-row fr-grid-row--middle justify-between"
+      class="flex flex-wrap items-center justify-between"
       data-cy="search"
     >
       <SearchInput
-        :value="queryString"
+        v-model="queryString"
         :placeholder="t('Ex. 2022 presidential election')"
-        @change="handleSearchChange"
       />
     </div>
-    <div class="fr-grid-row fr-mt-1w fr-mt-md-5v">
-      <div class="fr-col-12 fr-col-md-4 fr-col-lg-3">
+    <div class="grid grid-cols-12 mt-2 md:mt-5">
+      <div class="col-span-12 md:col-span-4 lg:col-span-3">
         <nav
           class="fr-sidemenu"
           aria-labelledby="fr-sidemenu-title"
         >
           <div class="fr-sidemenu__inner">
             <button
-              class="fr-sidemenu__btn fr-mt-1w"
+              class="fr-sidemenu__btn mt-2"
               hidden
               aria-controls="fr-sidemenu-wrapper"
               aria-expanded="false"
@@ -35,15 +34,12 @@
             >
               <div
                 id="fr-sidemenu-title"
-                class="fr-sidemenu__title fr-mb-3v"
+                class="fr-sidemenu__title mb-3"
               >
                 {{ t('Filters') }}
               </div>
-              <div class="fr-grid-row fr-grid-row--gutters">
-                <div
-                  v-if="!organization"
-                  class="fr-col-12"
-                >
+              <div class="space-y-4">
+                <div v-if="!organization">
                   <MultiSelect
                     :placeholder="t('Organizations')"
                     :search-placeholder="t('Search an organization...')"
@@ -65,7 +61,7 @@
                     @change="(value: string) => handleFacetChange('organization_badge', value)"
                   />
                 </div>
-                <div class="fr-col-12">
+                <div>
                   <MultiSelect
                     :placeholder="t('Tags')"
                     :search-placeholder="t('Search a tag...')"
@@ -77,7 +73,7 @@
                     @change="(value: string) => handleFacetChange('tag', value)"
                   />
                 </div>
-                <div class="fr-col-12">
+                <div>
                   <MultiSelect
                     :placeholder="t('Formats')"
                     :search-placeholder="t('Search a format...')"
@@ -88,7 +84,7 @@
                     @change="(value: string) => handleFacetChange('format', value)"
                   />
                 </div>
-                <div class="fr-col-12">
+                <div>
                   <MultiSelect
                     :placeholder="t('Licenses')"
                     :explanation="t('Licenses define reuse rules for published datasets. See page data.gouv.fr/licences')"
@@ -100,14 +96,14 @@
                     @change="(value: string) => handleFacetChange('license', value)"
                   />
                 </div>
-                <div class="fr-col-12">
+                <div>
                   <SchemaSelect
                     :values="facets.schema || ''"
                     :is-blue="true"
                     @change="(value: string) => handleFacetChange('schema', value)"
                   />
                 </div>
-                <div class="fr-col-12">
+                <div>
                   <MultiSelect
                     :placeholder="t('Spatial coverage')"
                     :explanation="t('Geographic areas covered by data and for which they are relevant.')"
@@ -120,7 +116,7 @@
                     @change="(value: string) => handleFacetChange('geozone', value)"
                   />
                 </div>
-                <div class="fr-col-12">
+                <div>
                   <MultiSelect
                     :placeholder="t('Spatial granularity')"
                     :explanation="t('Finest level of geographic detail covered by data.')"
@@ -134,22 +130,26 @@
                 </div>
                 <div
                   v-if="isFiltered || downloadLink"
-                  class="fr-col-12 fr-mb-3w text-align-center"
+                  class="mb-6 text-center"
                 >
-                  <button
+                  <BrandedButton
                     v-if="isFiltered"
-                    class="fr-btn fr-btn--secondary fr-icon-close-circle-line fr-btn--icon-left justify-center w-100"
+                    color="primary-soft"
+                    :icon="RiCloseCircleLine"
+                    class="w-full"
                     @click="resetFilters"
                   >
                     {{ t('Reset filters') }}
-                  </button>
-                  <a
+                  </BrandedButton>
+                  <BrandedButton
                     v-else-if="downloadLink"
-                    class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500 fr-icon-download-line fr-btn--icon-left justify-center w-100 matomo_download"
+                    :icon="RiDownloadLine"
+                    color="secondary"
+                    class="w-full"
                     :href="downloadLink"
                   >
                     {{ t('Download list as CSV') }}
-                  </a>
+                  </BrandedButton>
                 </div>
               </div>
             </div>
@@ -158,15 +158,15 @@
       </div>
       <section
         ref="resultsRef"
-        class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-mt-2w fr-mt-md-0 search-results"
+        class="col-span-12 md:col-span-8 lg:col-span-9 mt-4 md:mt-0 search-results"
         v-bind="$attrs"
       >
         <div
           v-if="totalResults"
-          class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle justify-between fr-pb-1w"
+          class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle justify-between pb-2"
         >
           <p
-            class="fr-col-auto fr-my-0"
+            class="fr-col-auto my-0"
             role="status"
           >
             {{ t("{count} results", totalResults) }}
@@ -174,7 +174,7 @@
           <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
             <label
               for="sort-search"
-              class="fr-col-auto fr-text--sm fr-m-0 fr-mr-1w"
+              class="fr-col-auto text-sm m-0 mr-2"
             >
               {{ t('Sort by:') }}
             </label>
@@ -205,7 +205,7 @@
             <Loader />
           </div>
           <div v-else-if="results.length">
-            <ul class="fr-mt-1w border-default-grey border-top relative z-2">
+            <ul class="mt-2 border-t border-gray-default relative z-2">
               <li
                 v-for="result in results"
                 :key="result.id"
@@ -218,19 +218,20 @@
               :page="currentPage"
               :page-size="pageSize"
               :total-results="totalResults"
-              class="fr-mt-2w"
+              class="mt-4"
+              :link="getLink"
               @change="changePage"
             />
-            <NoSearchResults
-              v-else
+            <SearchNoResults
+              v-else-if="!organization"
               @reset-filters="resetForm"
             />
           </div>
           <div
-            v-else
-            class="fr-mt-2w"
+            v-else-if="!organization"
+            class="mt-4"
           >
-            <NoSearchResults @reset-filters="resetForm" />
+            <SearchNoResults @reset-filters="resetForm" />
           </div>
         </transition>
       </section>
@@ -239,19 +240,19 @@
 </template>
 
 <script setup lang="ts">
-import { getOrganizationTypes, OTHER, Pagination, USER, type Dataset } from '@datagouv/components'
+import { getOrganizationTypes, OTHER, USER, type Dataset } from '@datagouv/components'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios, { type CancelTokenSource } from 'axios'
 import { useDebounceFn } from '@vueuse/core'
+import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'
 import Loader from '../../dataset/loader.vue'
 import SchemaSelect from '../../SchemaSelect/SchemaSelect.vue'
 import MultiSelect from '../../MultiSelect/MultiSelect.vue'
 import { getLicensesUrl } from '../../../api/licenses'
 import { getAllowedExtensionsUrl } from '../../../api/resources'
 import useSearchUrl from '../../../composables/useSearchUrl'
-import NoSearchResults from '../../Form/NoSearchResults.vue'
-import SearchInput from '~/components/Search/SearchInput.vue'
+import SearchInput from '~/layers/library/components/Search/SearchInput.vue'
 import type { MultiSelectOption } from '~/types/types'
 
 type Props = {
@@ -415,11 +416,10 @@ const search = useDebounceFn((saveToHistory = SAVE_TO_HISTORY) => {
 /**
  * Called when user type in search field
  */
-const handleSearchChange = (input: string) => {
-  queryString.value = input
-  currentPage.value = 1
+watch(queryString, () => {
+  page.value = 1
   search()
-}
+})
 
 /**
  * Called on every facet selector change, updates the `facets.xxx` object then searches with new values
