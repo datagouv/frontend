@@ -16,36 +16,17 @@
     </div>
     <div class="grid grid-cols-12 mt-2 md:mt-5">
       <div class="col-span-12 md:col-span-4 lg:col-span-3">
-        <nav
-          class="fr-sidemenu"
-          aria-labelledby="fr-sidemenu-title"
-        >
-          <div class="fr-sidemenu__inner">
-            <button
-              class="fr-sidemenu__btn mt-2"
-              hidden
-              aria-controls="fr-sidemenu-wrapper"
-              aria-expanded="false"
-            >
-              {{ t('Filter results') }}
-            </button>
-            <div
-              id="fr-sidemenu-wrapper"
-              class="fr-collapse"
-            >
-              <div
-                id="fr-sidemenu-title"
-                class="fr-sidemenu__title mb-3"
-              >
-                {{ t('Filters') }}
-              </div>
-              <div class="space-y-4">
-                <div v-if="!organization">
-                  <SearchOrganizationFacet
-                    :v-model="facets.organization"
-                  />
-                </div>
-                <!--   <MultiSelect
+        <Sidemenu :button-text="t('Filters')">
+          <template #title>
+            {{ t('Filters') }}
+          </template>
+          <div class="space-y-4">
+            <div v-if="!organization">
+              <SearchOrganizationFacet
+                :v-model="facets.organization"
+              />
+            </div>
+            <!--   <MultiSelect
                     :initial-options="organizationTypesPromise"
                     :placeholder="t('Organization type')"
                     :search-placeholder="t('Search an organization type...')"
@@ -122,33 +103,31 @@
                     @change="(value: string) => handleFacetChange('granularity', value)"
                   />
                 </div> -->
-                <div
-                  v-if="isFiltered || downloadLink"
-                  class="mb-6 text-center"
-                >
-                  <BrandedButton
-                    v-if="isFiltered"
-                    color="primary-soft"
-                    :icon="RiCloseCircleLine"
-                    class="w-full"
-                    @click="resetFilters"
-                  >
-                    {{ t('Reset filters') }}
-                  </BrandedButton>
-                  <BrandedButton
-                    v-else-if="downloadLink"
-                    :icon="RiDownloadLine"
-                    color="secondary"
-                    class="w-full"
-                    :href="downloadLink"
-                  >
-                    {{ t('Download list as CSV') }}
-                  </BrandedButton>
-                </div>
-              </div>
+            <div
+              v-if="isFiltered || downloadLink"
+              class="mb-6 text-center"
+            >
+              <BrandedButton
+                v-if="isFiltered"
+                color="primary-soft"
+                :icon="RiCloseCircleLine"
+                class="w-full"
+                @click="resetFilters"
+              >
+                {{ t('Reset filters') }}
+              </BrandedButton>
+              <BrandedButton
+                v-else-if="downloadLink"
+                :icon="RiDownloadLine"
+                color="secondary"
+                class="w-full"
+                :href="downloadLink"
+              >
+                {{ t('Download list as CSV') }}
+              </BrandedButton>
             </div>
           </div>
-        </nav>
+        </Sidemenu>
       </div>
       <section
         ref="resultsRef"
