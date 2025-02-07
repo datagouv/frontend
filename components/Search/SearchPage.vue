@@ -252,7 +252,7 @@ import MultiSelect from '../../MultiSelect/MultiSelect.vue'
 import { getLicensesUrl } from '../../../api/licenses'
 import { getAllowedExtensionsUrl } from '../../../api/resources'
 import useSearchUrl from '../../../composables/useSearchUrl'
-import SearchInput from '~/layers/library/components/Search/SearchInput.vue'
+import SearchInput from '~/components/Search/SearchInput.vue'
 import type { MultiSelectOption } from '~/types/types'
 
 type Props = {
