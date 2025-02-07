@@ -15,7 +15,7 @@
     <input
       :id="inputId"
       v-model.trim="q"
-      class="flex-1 px-4 py-2 bg-gray-lower rounded-tl shadow-input"
+      class="flex-1 px-4 py-2 bg-gray-lower rounded-tl shadow-input-blue"
       type="search"
       :placeholder="$t('Search...')"
     >
@@ -39,7 +39,7 @@
       <select
         :id="selectId"
         v-model="sort"
-        class="fr-select !shadow-input"
+        class="fr-select !shadow-input-blue"
       >
         <option value="">
           {{ $t('Relevance') }}

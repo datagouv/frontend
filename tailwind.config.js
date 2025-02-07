@@ -25,7 +25,8 @@ export default {
         'current-page': 'current="page"',
       },
       boxShadow: {
-        input: 'inset 0 -2px 0 0 var(--blue-cumulus-sun-368-moon-732)',
+        'input-blue': 'inset 0 -2px 0 0 #3558a2',
+        'input': 'inset 0 -2px 0 0 #3a3a3a',
       },
       fontFamily: {
         spectral: 'Spectral',

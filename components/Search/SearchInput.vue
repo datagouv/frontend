@@ -12,7 +12,7 @@
       v-model="q"
       type="search"
       name="q"
-      class="input max-h-12 m-0 rounded-tl shadow-input"
+      class="input max-h-12 m-0 rounded-tl shadow-input-blue"
       :aria-label="placeholder || $t('Search...')"
       :placeholder="placeholder || $t('Search...')"
     >

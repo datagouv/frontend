@@ -34,7 +34,7 @@
         >
           <ComboboxInput
             :id
-            class="input shadow-input !pr-10"
+            class="input shadow-input group-data-[input-color=blue]/form:shadow-input-blue !pr-10"
             :class="showClearButton ? '!pr-[4.5rem]' : '!pr-10'"
             :display-value="(option: ModelType) => option ? displayValue(option): null"
             :placeholder

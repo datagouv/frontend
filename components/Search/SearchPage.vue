@@ -1,6 +1,7 @@
 <template>
   <form
-    class="pt-3"
+    class="pt-3 group/form"
+    data-input-color="blue"
     @submit.prevent="search"
   >
     <div
@@ -40,7 +41,7 @@
               </div>
               <div class="space-y-4">
                 <div v-if="!organization">
-                  <OrganizationFacet
+                  <SearchOrganizationFacet
                     :v-model="facets.organization"
                   />
                 </div>
@@ -246,7 +247,6 @@ import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'
 // import { getAllowedExtensionsUrl } from '../../../api/resources'
 import SearchInput from '~/components/Search/SearchInput.vue'
 import type { PaginatedArray } from '~/types/types'
-import OrganizationFacet from './OrganizationFacet.vue'
 
 const props = withDefaults(defineProps<{
   downloadLink?: string
