@@ -34,7 +34,8 @@
         >
           <ComboboxInput
             :id
-            class="fr-input !pr-10"
+            class="input shadow-input !pr-10"
+            :class="showClearButton ? '!pr-[4.5rem]' : '!pr-10'"
             :display-value="(option: ModelType) => option ? displayValue(option): null"
             :placeholder
             @change="query = $event.target.value"
@@ -56,7 +57,7 @@
               class="w-full h-full hover:!bg-transparent"
             />
             <button
-              v-if="! required && ! multiple && model"
+              v-if="showClearButton"
               type="button"
               class="p-2"
               @click.prevent="model = null"
@@ -76,7 +77,7 @@
         >
           <ComboboxOptions
             ref="popover"
-            class="z-10 mt-1 absolute max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm pl-0"
+            class="z-10 mt-1 absolute max-h-60 min-w-80 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm pl-0"
           >
             <div
               v-if="!filteredAndGroupedOptions && query !== ''"
@@ -224,6 +225,8 @@ const ariaDescribedBy = computed(() => {
   if (props.errorText) return errorTextId
   return ''
 })
+
+const showClearButton = computed(() => !props.required && !props.multiple && model.value)
 
 const query = ref('')
 

@@ -40,18 +40,11 @@
               </div>
               <div class="space-y-4">
                 <div v-if="!organization">
-                  <MultiSelect
-                    :placeholder="t('Organizations')"
-                    :search-placeholder="t('Search an organization...')"
-                    :all-option="t('All organizations')"
-                    list-url="/organizations/?sort=-followers"
-                    suggest-url="/organizations/suggest/"
-                    entity-url="/organizations/"
-                    :values="facets.organization"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('organization', value)"
+                  <OrganizationFacet
+                    :v-model="facets.organization"
                   />
-                  <MultiSelect
+                </div>
+                <!--   <MultiSelect
                     :initial-options="organizationTypesPromise"
                     :placeholder="t('Organization type')"
                     :search-placeholder="t('Search an organization type...')"
@@ -127,7 +120,7 @@
                     :is-blue="true"
                     @change="(value: string) => handleFacetChange('granularity', value)"
                   />
-                </div>
+                </div> -->
                 <div
                   v-if="isFiltered || downloadLink"
                   class="mb-6 text-center"
@@ -162,14 +155,14 @@
         v-bind="$attrs"
       >
         <div
-          v-if="totalResults"
+          v-if="data?.total"
           class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle justify-between pb-2"
         >
           <p
             class="fr-col-auto my-0"
             role="status"
           >
-            {{ t("{count} results", totalResults) }}
+            {{ t("{count} results", data.total) }}
           </p>
           <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
             <label
@@ -202,22 +195,23 @@
         </div>
         <transition mode="out-in">
           <div v-if="loading">
-            <Loader />
+            <!-- <Loader /> -->
           </div>
-          <div v-else-if="results.length">
-            <ul class="mt-2 border-t border-gray-default relative z-2">
+          <div v-else-if="data?.data.length">
+            <ul class="mt-2 border-t border-gray-default relative z-2 list-none">
               <li
-                v-for="result in results"
+                v-for="result in data.data"
                 :key="result.id"
+                class="p-0"
               >
                 <DatasetCardLg :dataset="result" />
               </li>
             </ul>
             <Pagination
-              v-if="totalResults > pageSize"
+              v-if="data && data.total > pageSize"
               :page="currentPage"
               :page-size="pageSize"
-              :total-results="totalResults"
+              :total-results="data.total"
               class="mt-4"
               :link="getLink"
               @change="changePage"
@@ -240,35 +234,26 @@
 </template>
 
 <script setup lang="ts">
-import { getOrganizationTypes, OTHER, USER, type Dataset } from '@datagouv/components'
+import type { DatasetV2 } from '@datagouv/components'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import axios, { type CancelTokenSource } from 'axios'
 import { useDebounceFn } from '@vueuse/core'
 import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'
-import Loader from '../../dataset/loader.vue'
-import SchemaSelect from '../../SchemaSelect/SchemaSelect.vue'
-import MultiSelect from '../../MultiSelect/MultiSelect.vue'
-import { getLicensesUrl } from '../../../api/licenses'
-import { getAllowedExtensionsUrl } from '../../../api/resources'
-import useSearchUrl from '../../../composables/useSearchUrl'
+// import Loader from '../../dataset/loader.vue'
+// import SchemaSelect from '../../SchemaSelect/SchemaSelect.vue'
+// import MultiSelect from '../../MultiSelect/MultiSelect.vue'
+// import { getLicensesUrl } from '../../../api/licenses'
+// import { getAllowedExtensionsUrl } from '../../../api/resources'
 import SearchInput from '~/components/Search/SearchInput.vue'
-import type { MultiSelectOption } from '~/types/types'
+import type { PaginatedArray } from '~/types/types'
+import OrganizationFacet from './OrganizationFacet.vue'
 
-type Props = {
+const props = withDefaults(defineProps<{
   downloadLink?: string
-  disableFirstSearch?: boolean
   organization?: string
   sorts?: Array<{ label: string, order: string, value: string }>
-}
-
-defineOptions({
-  inheritAttrs: false,
-})
-
-const props = withDefaults(defineProps<Props>(), {
+}>(), {
   downloadLink: '',
-  disableFirstSearch: false,
   organization: '',
   sorts: () => ([]),
 })
@@ -285,23 +270,23 @@ type Facets = {
 }
 
 const { t } = useI18n()
-const { toast } = useToast()
+// const { toast } = useToast()
 const config = useRuntimeConfig()
 /**
  * Update search params from URL on page load for deep linking
  */
-const url = new URL(window.location.href)
+const url = useRequestURL()
 const params = new URLSearchParams(url.search)
 
-const allowedExtensionsUrl = getAllowedExtensionsUrl()
-const licensesUrl = getLicensesUrl()
-const organizationTypes: Array<MultiSelectOption> = getOrganizationTypes()
-  .filter(type => type.type !== OTHER && type.type !== USER)
-  .map(type => ({
-    label: type.label,
-    value: type.type,
-  }))
-const organizationTypesPromise = Promise.resolve(organizationTypes)
+// const allowedExtensionsUrl = getAllowedExtensionsUrl()
+// const licensesUrl = getLicensesUrl()
+// const organizationTypes: Array<MultiSelectOption> = getOrganizationTypes()
+//   .filter(type => type.type !== OTHER && type.type !== USER)
+//   .map(type => ({
+//     label: type.label,
+//     value: type.type,
+//   }))
+// const organizationTypesPromise = Promise.resolve(organizationTypes)
 /**
  * Search query
  */
@@ -310,22 +295,12 @@ const queryString = ref('')
 /**
  * Reuse url of the query
  */
-const { reuseUrl } = useSearchUrl(queryString)
+// const { reuseUrl } = useSearchUrl(queryString)
 
 /**
  * Query sort
  */
 const searchSort = ref('')
-
-/**
- * Search results
- */
-const results = ref<Array<Dataset>>([])
-
-/**
- * Count of search results
- */
-const totalResults = ref(0)
 
 /**
  * Current page of results
@@ -343,14 +318,9 @@ const pageSize = 20
 const facets = ref<Facets>({ organization: props.organization })
 
 /**
- * Search loading state
- */
-const loading = ref(false)
-
-/**
  * Current request if any to be cancelled if a new one comes
  */
-const currentRequest = ref<CancelTokenSource | null>(null)
+// const currentRequest = ref<CancelTokenSource | null>(null)
 
 /**
  * Vue ref to results HTML
@@ -363,88 +333,65 @@ const resultsRef = ref<HTMLElement | null>(null)
 const searchRef = ref<HTMLElement | null>(null)
 
 const SAVE_TO_HISTORY = true
-const DONT_SAVE_TO_HISTORY = false
 
-const updateUrl = (save = SAVE_TO_HISTORY) => {
-  // Update URL to match current search params value for deep linking
-  const url = new URL(window.location.href)
-  const urlParams = { ...searchParameters.value }
-  if (props.organization) {
-    delete urlParams.organization
-    delete urlParams.organization_badge
-  }
-  url.search = new URLSearchParams(urlParams).toString()
-  if (save) {
-    window.history.pushState(null, '', url)
-  }
-  const linksWithQuery = document.querySelectorAll('[data-q]') as NodeListOf<HTMLAnchorElement>
-  for (const link of linksWithQuery) {
-    link.href = reuseUrl.value
-  }
-}
+// const updateUrl = (save = SAVE_TO_HISTORY) => {
+//   // Update URL to match current search params value for deep linking
+//   const url = new URL(window.location.href)
+//   const urlParams = { ...searchParameters.value }
+//   if (props.organization) {
+//     delete urlParams.organization
+//     delete urlParams.organization_badge
+//   }
+//   url.search = new URLSearchParams(urlParams).toString()
+//   if (save) {
+//     window.history.pushState(null, '', url)
+//   }
+//   const linksWithQuery = document.querySelectorAll('[data-q]') as NodeListOf<HTMLAnchorElement>
+//   for (const link of linksWithQuery) {
+//     link.href = reuseUrl.value
+//   }
+// }
 
 /**
  * Search new dataset results
  */
-const search = useDebounceFn((saveToHistory = SAVE_TO_HISTORY) => {
-  loading.value = true
-  if (currentRequest.value) currentRequest.value.cancel()
-  currentRequest.value = generateCancelToken()
-  apiv2
-    .get('/datasets/search/', {
-      cancelToken: currentRequest.value.token,
-      params: {
-        ...searchParameters.value,
-        page_size: pageSize,
-      },
-    })
-    .then(res => res.data)
-    .then((result) => {
-      results.value = result.data
-      totalResults.value = result.total
-      loading.value = false
-      updateUrl(saveToHistory)
-    })
-    .catch((error) => {
-      if (!axios.isCancel(error)) {
-        toast.error(t('Error getting search results.'))
-        loading.value = false
-      }
-    })
+const search = useDebounceFn((_saveToHistory = SAVE_TO_HISTORY) => {
+  // TODO : handle cancel request and debounce
+  // if (currentRequest.value) currentRequest.value.cancel()
+  // currentRequest.value = generateCancelToken()
+  // updateUrl(saveToHistory)
+  // toast.error(t('Error getting search results.'))
 }, config.public.searchAutocompleteDebounce)
 
 /**
  * Called when user type in search field
  */
 watch(queryString, () => {
-  page.value = 1
-  search()
+  currentPage.value = 1
 })
 
 /**
  * Called on every facet selector change, updates the `facets.xxx` object then searches with new values
  */
-const handleFacetChange = (facet: keyof Facets, values: string) => {
-  if (values) {
-    facets.value[facet] = values
-  }
-  else {
-    facets.value[facet] = undefined
-  }
-  if (props.organization) {
-    facets.value.organization = props.organization
-    facets.value.organization_badge = undefined
-  }
-  currentPage.value = 1
-  search()
-}
+// const handleFacetChange = (facet: keyof Facets, values: string) => {
+//   if (values) {
+//     facets.value[facet] = values
+//   }
+//   else {
+//     facets.value[facet] = undefined
+//   }
+//   if (props.organization) {
+//     facets.value.organization = props.organization
+//     facets.value.organization_badge = undefined
+//   }
+//   currentPage.value = 1
+// }
 
 /**
  * Called when user change sort
  */
 const handleSortChange = () => {
   currentPage.value = 1
-  search()
 }
 
 /**
@@ -452,7 +399,6 @@ const handleSortChange = () => {
  */
 const changePage = (page: number) => {
   currentPage.value = page
-  search()
   scrollToTop()
 }
 
@@ -462,11 +408,10 @@ const scrollToTop = () => {
   }
 }
 
-const reloadFilters = ({ page = 1, sort = '', ...params }, saveToHistory = SAVE_TO_HISTORY) => {
+const reloadFilters = ({ page = 1, sort = '', ...params }) => {
   facets.value = { ...params, organization: props.organization || params.organization }
   currentPage.value = page
   searchSort.value = sort
-  search(saveToHistory)
 }
 
 const resetFilters = () => {
@@ -478,9 +423,9 @@ const resetForm = () => {
   scrollToTop()
 }
 
-const reloadForm = ({ q = '', ...params } = {}, saveToHistory = SAVE_TO_HISTORY) => {
+const reloadForm = ({ q = '', ...params } = {}) => {
   queryString.value = q
-  reloadFilters(params, saveToHistory)
+  reloadFilters(params)
 }
 
 /**
@@ -500,7 +445,9 @@ const sortOptions = computed(() => props.sorts.map(sort => ({
 })))
 
 const searchParameters = computed(() => {
-  const params: Record<string, string> = {}
+  const params: Record<string, string | number> = {
+    page_size: pageSize,
+  }
   let key: keyof Facets
   for (key in facets.value) {
     const facet = facets.value[key]
@@ -531,25 +478,14 @@ if (sort) {
 }
 
 facets.value = { ...Object.fromEntries(params), organization: props.organization || params.get('organization') || '' }
-if (props.disableFirstSearch) {
-  loading.value = true
-}
-else {
-  search()
-}
+
+const { data, status } = await useAPI<PaginatedArray<DatasetV2>>('/api/2/datasets/search/', {
+  params: searchParameters,
+})
+
+const loading = computed(() => status.value === 'pending')
 
 onMounted(() => {
-  if (props.disableFirstSearch && resultsRef.value) {
-    const total = resultsRef.value.dataset.totalResults
-    if (total && parseInt(total) > 0) {
-      const datasetResults = resultsRef.value.dataset.results
-      if (datasetResults) {
-        results.value = JSON.parse(datasetResults)
-      }
-      totalResults.value = JSON.parse(total)
-    }
-    loading.value = false
-  }
   addEventListener('popstate', () => {
     // Update URL to match current search params value for deep linking
     const url = new URL(window.location.href)
@@ -557,7 +493,7 @@ onMounted(() => {
     for (const [key, value] of url.searchParams) {
       params[key] = value
     }
-    reloadForm(params, DONT_SAVE_TO_HISTORY)
+    reloadForm(params)
   })
 })
 </script>

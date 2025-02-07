@@ -58,6 +58,9 @@
       <BannerNotif />
       <OrganizationNameWithCertificate />
       <SearchInput />
+      <div class="bg-white py-4 px-4 -mx-4">
+        <SearchPage />
+      </div>
     </div>
     <div class="space-y-8 py-8 pb-64">
       <h2 class="!mb-3">
