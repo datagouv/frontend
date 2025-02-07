@@ -3,7 +3,6 @@ const swrDuration = process.env.NUXT_TEMPLATE_CACHE_DURATION ? parseInt(process.
 export default defineNuxtConfig({
 
   modules: [
-    '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/icon',
     '@nuxt/image',
