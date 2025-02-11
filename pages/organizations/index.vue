@@ -1,6 +1,6 @@
 <template>
   <div class="container mb-16">
-    <AdminBreadcrumb>
+    <Breadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -18,7 +18,7 @@
           {{ $t('Organizations') }}
         </a>
       </li>
-    </AdminBreadcrumb>
+    </Breadcrumb>
     <OrganizationListPage
       :link="getLink"
       :organizations
