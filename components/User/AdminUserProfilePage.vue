@@ -11,7 +11,7 @@
       <div class="flex items-center">
         <div class="flex-none">
           <Avatar
-            :user="me"
+            :user="user"
             :rounded="true"
             :size="80"
           />
