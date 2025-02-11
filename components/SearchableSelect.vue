@@ -179,10 +179,8 @@ const props = withDefaults(defineProps<{
 
   required?: boolean
   multiple: Multiple
-  isBlue?: boolean
 }>(), {
   required: false,
-  isBlue: false,
   loading: false,
   displayValue: (_: ModelType): string => '',
   groupBy: (_: T): string => '',

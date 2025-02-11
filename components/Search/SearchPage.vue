@@ -2,7 +2,6 @@
   <form
     class="pt-3 group/form"
     data-input-color="blue"
-    @submit.prevent="search"
   >
     <div
       ref="searchRef"
@@ -21,88 +20,124 @@
             {{ t('Filters') }}
           </template>
           <div class="space-y-4">
-            <div v-if="!organization">
-              <SearchOrganizationFacet
-                :v-model="facets.organization"
-              />
-            </div>
-            <!--   <MultiSelect
-                    :initial-options="organizationTypesPromise"
-                    :placeholder="t('Organization type')"
-                    :search-placeholder="t('Search an organization type...')"
-                    :all-option="t('All types')"
-                    :values="facets.organization_badge"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('organization_badge', value)"
-                  />
-                </div>
-                <div>
-                  <MultiSelect
-                    :placeholder="t('Tags')"
-                    :search-placeholder="t('Search a tag...')"
-                    :all-option="t('All tags')"
-                    suggest-url="/tags/suggest/"
-                    :values="facets.tag"
-                    :minimum-character-before-suggest="2"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('tag', value)"
-                  />
-                </div>
-                <div>
-                  <MultiSelect
-                    :placeholder="t('Formats')"
-                    :search-placeholder="t('Search a format...')"
-                    :all-option="t('All formats')"
-                    :list-url="allowedExtensionsUrl"
-                    :values="facets.format"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('format', value)"
-                  />
-                </div>
-                <div>
-                  <MultiSelect
-                    :placeholder="t('Licenses')"
-                    :explanation="t('Licenses define reuse rules for published datasets. See page data.gouv.fr/licences')"
-                    :search-placeholder="t('Search a license...')"
-                    :all-option="t('All licenses')"
-                    :list-url="licensesUrl"
-                    :values="facets.license"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('license', value)"
-                  />
-                </div>
-                <div>
-                  <SchemaSelect
-                    :values="facets.schema || ''"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('schema', value)"
-                  />
-                </div>
-                <div>
-                  <MultiSelect
-                    :placeholder="t('Spatial coverage')"
-                    :explanation="t('Geographic areas covered by data and for which they are relevant.')"
-                    :search-placeholder="t('Search a spatial coverage...')"
-                    :all-option="t('All coverages')"
-                    suggest-url="/spatial/zones/suggest/"
-                    entity-url="/spatial/zone/"
-                    :values="facets.geozone"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('geozone', value)"
-                  />
-                </div>
-                <div>
-                  <MultiSelect
-                    :placeholder="t('Spatial granularity')"
-                    :explanation="t('Finest level of geographic detail covered by data.')"
-                    :search-placeholder="t('Search a granularity...')"
-                    :all-option="t('All granularities')"
-                    list-url="/spatial/granularities/"
-                    :values="facets.granularity"
-                    :is-blue="true"
-                    @change="(value: string) => handleFacetChange('granularity', value)"
-                  />
-                </div> -->
+            <template v-if="!organization">
+              <SearchableSelect
+                v-model="facets.organization"
+                :options="organizations.data"
+                :suggest="suggestOrganizations"
+                :label="t('Organizations')"
+                :placeholder="t('All organizations')"
+                :get-option-id="(option) => option.id"
+                :display-value="(option) => option.name"
+                :filter="(option, query) => (option.name).toLocaleLowerCase().includes(query.toLocaleLowerCase())"
+                :multiple="false"
+                :loading="organizationsStatus === 'pending'"
+              >
+                <template #option="{ option }">
+                  <div class="flex items-center space-x-2">
+                    <Placeholder
+                      type="organization"
+                      :src="'logo_thumbnail' in option ? option.logo_thumbnail : option.image_url"
+                      :size="32"
+                    />
+                    <span>{{ option.name }}</span>
+                  </div>
+                </template>
+              </SearchableSelect>
+              <SearchableSelect
+                v-model="facets.organizationType"
+                :options="organizationTypes"
+                :label="t('Organization type')"
+                :placeholder="t('All types')"
+                :get-option-id="(type) => type.type"
+                :display-value="(value) => value.label"
+                :multiple="false"
+              >
+                <template #option="{ option: type }">
+                  {{ type.label }}
+                </template>
+              </SearchableSelect>
+            </template>
+            <SearchableSelect
+              v-model="facets.tag"
+              :label="t('Tags')"
+              :placeholder="t('All tags')"
+              :get-option-id="(tag) => tag"
+              :display-value="(value) => value"
+              :suggest="suggestTags"
+              :multiple="false"
+            >
+              <template #option="{ option: tag }">
+                {{ tag }}
+              </template>
+            </SearchableSelect>
+            <SearchableSelect
+              v-model="facets.format"
+              :label="t('Formats')"
+              :placeholder="t('All formats')"
+              :options="allowedFormats"
+              :loading="allowedFormatsStatus === 'pending'"
+              :get-option-id="(format) => format"
+              :display-value="(value) => value"
+              :multiple="false"
+            >
+              <template #option="{ option: format }">
+                {{ format }}
+              </template>
+            </SearchableSelect>
+            <SearchableSelect
+              v-model="facets.license"
+              :label="t('Licenses')"
+              :explanation="t('Licenses define reuse rules for published datasets. See page data.gouv.fr/licences')"
+              :placeholder="t('All licenses')"
+              :options="licenses"
+              :loading="licensesStatus === 'pending'"
+              :multiple="false"
+            >
+              <template #option="{ option: license }">
+                {{ license }}
+              </template>
+            </SearchableSelect>
+            <SearchableSelect
+              v-model="facets.schema"
+              :label="t('Schema')"
+              :explanation="t('Data schemas describe data models: what are the fields, how are data shown, what are the available values, etc. See schema.data.gouv.fr')"
+              :placeholder="t('All schemas')"
+              :options="schemas"
+              :loading="schemasStatus === 'pending'"
+              :multiple="false"
+            >
+              <template #option="{ option: schema }">
+                {{ schema.name }}
+              </template>
+            </SearchableSelect>
+            <SearchableSelect
+              v-model="facets.geozone"
+              :label="t('Spatial coverage')"
+              :placeholder="t('All coverages')"
+              :suggest="suggestSpatialCoverages"
+              :get-option-id="(coverage) => coverage.id"
+              :display-value="(value) => value.name"
+              :multiple="false"
+            >
+              <template #option="{ option: format }">
+                {{ format }}
+              </template>
+            </SearchableSelect>
+            <SearchableSelect
+              v-model="facets.granularity"
+              :label="t('Spatial granularity')"
+              :placeholder="t('All granularities')"
+              :get-option-id="(coverage) => coverage.id"
+              :display-value="(value) => value.name"
+              :multiple="false"
+              :options="spatialGranularities"
+              :loading="spatialGranularitiesStatus === 'pending'"
+            >
+              <template #option="{ option: format }">
+                {{ format }}
+              </template>
+            </SearchableSelect>
             <div
               v-if="isFiltered || downloadLink"
               class="mb-6 text-center"
@@ -135,14 +170,14 @@
         v-bind="$attrs"
       >
         <div
-          v-if="data?.total"
+          v-if="searchResults?.total"
           class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle justify-between pb-2"
         >
           <p
             class="fr-col-auto my-0"
             role="status"
           >
-            {{ t("{count} results", data.total) }}
+            {{ t("{count} results", searchResults.total) }}
           </p>
           <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
             <label
@@ -155,9 +190,9 @@
               <select
                 id="sort-search"
                 v-model="searchSort"
-                class="fr-select fr-select--blue"
+                class="fr-select !shadow-input-blue"
                 name="sort"
-                @change="handleSortChange"
+                @change="currentPage = 1"
               >
                 <option value="">
                   {{ t('Relevance') }}
@@ -174,39 +209,42 @@
           </div>
         </div>
         <transition mode="out-in">
-          <div v-if="loading">
-            <!-- <Loader /> -->
-          </div>
-          <div v-else-if="data?.data.length">
-            <ul class="mt-2 border-t border-gray-default relative z-2 list-none">
-              <li
-                v-for="result in data.data"
-                :key="result.id"
-                class="p-0"
-              >
-                <DatasetCardLg :dataset="result" />
-              </li>
-            </ul>
-            <Pagination
-              v-if="data && data.total > pageSize"
-              :page="currentPage"
-              :page-size="pageSize"
-              :total-results="data.total"
-              class="mt-4"
-              :link="getLink"
-              @change="changePage"
-            />
-            <SearchNoResults
+          <LoadingBlock :status="searchResultsStatus">
+            <div v-if="searchResults.data.length">
+              <ul class="mt-2 border-t border-gray-default relative z-2 list-none">
+                <li
+                  v-for="result in searchResults.data"
+                  :key="result.id"
+                  class="p-0"
+                >
+                  <DatasetCardLg :dataset="result" />
+                </li>
+              </ul>
+              <Pagination
+                v-if="searchResults && searchResults.total > pageSize"
+                :page="currentPage"
+                :page-size="pageSize"
+                :total-results="searchResults.total"
+                class="mt-4"
+                :link="getLink"
+                @change="changePage"
+              />
+              <SearchNoResults
+                v-else-if="!organization"
+                :data-search-feedback-form-url
+                @reset-filters="resetForm"
+              />
+            </div>
+            <div
               v-else-if="!organization"
-              @reset-filters="resetForm"
-            />
-          </div>
-          <div
-            v-else-if="!organization"
-            class="mt-4"
-          >
-            <SearchNoResults @reset-filters="resetForm" />
-          </div>
+              class="mt-4"
+            >
+              <SearchNoResults
+                :data-search-feedback-form-url
+                @reset-filters="resetForm"
+              />
+            </div>
+          </LoadingBlock>
         </transition>
       </section>
     </div>
@@ -214,77 +252,76 @@
 </template>
 
 <script setup lang="ts">
-import type { DatasetV2 } from '@datagouv/components'
+import { getOrganizationTypes, OTHER, USER, type DatasetV2, type License, type Organization, type RegisteredSchema } from '@datagouv/components'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useDebounceFn } from '@vueuse/core'
 import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'
-// import Loader from '../../dataset/loader.vue'
-// import SchemaSelect from '../../SchemaSelect/SchemaSelect.vue'
-// import MultiSelect from '../../MultiSelect/MultiSelect.vue'
-// import { getLicensesUrl } from '../../../api/licenses'
-// import { getAllowedExtensionsUrl } from '../../../api/resources'
+import { debouncedRef } from '@vueuse/core'
 import SearchInput from '~/components/Search/SearchInput.vue'
-import type { PaginatedArray } from '~/types/types'
+import type { PaginatedArray, RequestStatus, SpatialGranularity, SpatialZone } from '~/types/types'
+import type { DatasetSearchParams, OrganizationOrSuggest } from '~/types/form'
 
 const props = withDefaults(defineProps<{
+  allowedFormats: Array<string>
+  allowedFormatsStatus: RequestStatus
+  dataSearchFeedbackFormUrl: string
+  licenses: Array<License>
+  licensesStatus: RequestStatus
+  organizations: PaginatedArray<Organization>
+  organizationsStatus: RequestStatus
+  schemas: Array<RegisteredSchema>
+  schemasStatus: RequestStatus
+  searchResults: PaginatedArray<DatasetV2>
+  searchResultsStatus: RequestStatus
+  spatialGranularities: Array<SpatialGranularity>
+  spatialGranularitiesStatus: RequestStatus
+  suggestOrganizations: (q: string) => Promise<Array<OrganizationOrSuggest>>
+  suggestSpatialCoverages: (q: string) => Promise<Array<SpatialZone>>
+  suggestTags: (q: string) => Promise<Array<string>>
   downloadLink?: string
-  organization?: string
+  organization?: Organization
   sorts?: Array<{ label: string, order: string, value: string }>
 }>(), {
   downloadLink: '',
-  organization: '',
   sorts: () => ([]),
 })
 
 type Facets = {
-  organization?: string
-  organization_badge?: string
+  organization?: OrganizationOrSuggest
+  organizationType?: ReturnType<typeof getOrganizationTypes>[number]
   tag?: string
-  license?: string
+  license?: License
   format?: string
-  geozone?: string
-  granularity?: string
-  schema?: string
+  geozone?: SpatialZone
+  granularity?: SpatialGranularity
+  schema?: RegisteredSchema
 }
 
 const { t } = useI18n()
-// const { toast } = useToast()
 const config = useRuntimeConfig()
-/**
- * Update search params from URL on page load for deep linking
- */
-const url = useRequestURL()
-const params = new URLSearchParams(url.search)
+const { toast } = useToast()
 
-// const allowedExtensionsUrl = getAllowedExtensionsUrl()
-// const licensesUrl = getLicensesUrl()
-// const organizationTypes: Array<MultiSelectOption> = getOrganizationTypes()
-//   .filter(type => type.type !== OTHER && type.type !== USER)
-//   .map(type => ({
-//     label: type.label,
-//     value: type.type,
-//   }))
-// const organizationTypesPromise = Promise.resolve(organizationTypes)
+const params = defineModel<DatasetSearchParams>('params', { required: true })
+
+const organizationTypes = getOrganizationTypes()
+  .filter(type => type.type !== OTHER && type.type !== USER)
+
 /**
  * Search query
  */
-const queryString = ref('')
+const queryString = ref(params.value.q ?? '')
 
-/**
- * Reuse url of the query
- */
-// const { reuseUrl } = useSearchUrl(queryString)
+const deboucedQuery = debouncedRef(queryString, config.public.searchAutocompleteDebounce)
 
 /**
  * Query sort
  */
-const searchSort = ref('')
+const searchSort = ref(params.value.sort ?? '')
 
 /**
  * Current page of results
  */
-const currentPage = ref(1)
+const currentPage = ref(params.value.page ? parseInt(params.value.page) : 1)
 
 /**
  * Search page size
@@ -297,11 +334,6 @@ const pageSize = 20
 const facets = ref<Facets>({ organization: props.organization })
 
 /**
- * Current request if any to be cancelled if a new one comes
- */
-// const currentRequest = ref<CancelTokenSource | null>(null)
-
-/**
  * Vue ref to results HTML
  */
 const resultsRef = ref<HTMLElement | null>(null)
@@ -311,67 +343,12 @@ const resultsRef = ref<HTMLElement | null>(null)
  */
 const searchRef = ref<HTMLElement | null>(null)
 
-const SAVE_TO_HISTORY = true
-
-// const updateUrl = (save = SAVE_TO_HISTORY) => {
-//   // Update URL to match current search params value for deep linking
-//   const url = new URL(window.location.href)
-//   const urlParams = { ...searchParameters.value }
-//   if (props.organization) {
-//     delete urlParams.organization
-//     delete urlParams.organization_badge
-//   }
-//   url.search = new URLSearchParams(urlParams).toString()
-//   if (save) {
-//     window.history.pushState(null, '', url)
-//   }
-//   const linksWithQuery = document.querySelectorAll('[data-q]') as NodeListOf<HTMLAnchorElement>
-//   for (const link of linksWithQuery) {
-//     link.href = reuseUrl.value
-//   }
-// }
-
-/**
- * Search new dataset results
- */
-const search = useDebounceFn((_saveToHistory = SAVE_TO_HISTORY) => {
-  // TODO : handle cancel request and debounce
-  // if (currentRequest.value) currentRequest.value.cancel()
-  // currentRequest.value = generateCancelToken()
-  // updateUrl(saveToHistory)
-  // toast.error(t('Error getting search results.'))
-}, config.public.searchAutocompleteDebounce)
-
 /**
  * Called when user type in search field
  */
-watch(queryString, () => {
+watch([deboucedQuery, facets], () => {
   currentPage.value = 1
-})
-
-/**
- * Called on every facet selector change, updates the `facets.xxx` object then searches with new values
- */
-// const handleFacetChange = (facet: keyof Facets, values: string) => {
-//   if (values) {
-//     facets.value[facet] = values
-//   }
-//   else {
-//     facets.value[facet] = undefined
-//   }
-//   if (props.organization) {
-//     facets.value.organization = props.organization
-//     facets.value.organization_badge = undefined
-//   }
-//   currentPage.value = 1
-// }
-
-/**
- * Called when user change sort
- */
-const handleSortChange = () => {
-  currentPage.value = 1
-}
+}, { deep: true })
 
 /**
  * Change current page
@@ -414,7 +391,7 @@ const reloadForm = ({ q = '', ...params } = {}) => {
 const isFiltered = computed(() => {
   const keys = Object.keys(facets.value) as Array<keyof Facets>
   return keys.some(
-    key => facets.value[key]?.length && (props.organization ? key !== 'organization' : true),
+    key => key in facets.value && facets.value[key] && (props.organization ? key !== 'organization' : true),
   )
 })
 
@@ -423,46 +400,53 @@ const sortOptions = computed(() => props.sorts.map(sort => ({
   label: sort.label,
 })))
 
-const searchParameters = computed(() => {
-  const params: Record<string, string | number> = {
-    page_size: pageSize,
+watchEffect(() => {
+  params.value.page_size = pageSize.toFixed()
+  if (props.organization) {
+    params.value.organization = props.organization.id
   }
-  let key: keyof Facets
-  for (key in facets.value) {
-    const facet = facets.value[key]
-    if (facet) {
-      params[key] = facet
+  else {
+    if (facets.value.organization?.id) {
+      params.value.organization = facets.value.organization.id
+    }
+    if (facets.value.organizationType?.type) {
+      params.value.type = facets.value.organizationType.type
     }
   }
-  if (currentPage.value > 1) params.page = currentPage.value.toString()
-  if (queryString.value) params.q = queryString.value
-  if (searchSort.value) params.sort = searchSort.value
+  if (facets.value.tag) {
+    params.value.tag = facets.value.tag
+  }
+  if (facets.value.format) {
+    params.value.format = facets.value.format
+  }
+  if (facets.value.organizationType) {
+    params.value.type = facets.value.organizationType.type
+  }
+  if (facets.value.license?.id) {
+    params.value.license = facets.value.license.id
+  }
+  if (facets.value.schema?.name) {
+    params.value.schema = facets.value.schema?.name
+  }
+  if (facets.value.geozone?.id) {
+    params.value.spatial_coverage = facets.value.geozone.id
+  }
+  if (facets.value.granularity?.id) {
+    params.value.spatial_granularity = facets.value.granularity.id
+  }
+  if (currentPage.value > 1) params.value.page = currentPage.value.toString()
+  if (deboucedQuery.value) params.value.q = deboucedQuery.value
+  if (searchSort.value) params.value.sort = searchSort.value
   return params
 })
 
-const q = params.get('q')
-if (q) {
-  queryString.value = q
-  params.delete('q')
-}
-const page = params.get('page')
-if (page) {
-  currentPage.value = parseInt(page)
-  params.delete('page')
-}
-const sort = params.get('sort')
-if (sort) {
-  searchSort.value = sort
-  params.delete('sort')
-}
+// facets.value = { ...Object.fromEntries(params.value), organization: props.organization || params.value.organization || '' }
 
-facets.value = { ...Object.fromEntries(params), organization: props.organization || params.get('organization') || '' }
-
-const { data, status } = await useAPI<PaginatedArray<DatasetV2>>('/api/2/datasets/search/', {
-  params: searchParameters,
+watch(() => props.searchResultsStatus, () => {
+  if (props.searchResultsStatus === 'error') {
+    toast.error(t(`The search request failed`))
+  }
 })
-
-const loading = computed(() => status.value === 'pending')
 
 onMounted(() => {
   addEventListener('popstate', () => {

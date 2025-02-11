@@ -59,7 +59,7 @@
       <OrganizationNameWithCertificate />
       <SearchInput />
       <div class="bg-white py-4 px-4 -mx-4">
-        <SearchPage />
+        <NuxtSearchPage />
       </div>
     </div>
     <div class="space-y-8 py-8 pb-64">
@@ -73,6 +73,7 @@
 </template>
 
 <script setup lang="ts">
+import NuxtSearchPage from '~/components/Search/NuxtSearchPage.vue'
 import AdminBadge from '~/design-system/AdminBadge.vue'
 import BannerAction from '~/design-system/BannerAction.vue'
 import BannerNotif from '~/design-system/BannerNotif.vue'
