@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AdminBreadcrumb>
+    <Breadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -27,7 +27,7 @@
           {{ t('Publishing form') }}
         </a>
       </li>
-    </AdminBreadcrumb>
+    </Breadcrumb>
 
     <Stepper
       :steps

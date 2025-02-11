@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AdminBreadcrumb>
+    <Breadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -25,7 +25,7 @@
           {{ t("Publishing form") }}
         </a>
       </li>
-    </AdminBreadcrumb>
+    </Breadcrumb>
 
     <Stepper
       :steps
@@ -51,6 +51,7 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import DescribePost from '~/components/Posts/DescribePost.vue'
 import PostContentForm from '~/components/Posts/PostContentForm.vue'
 import Stepper from '~/components/Stepper/Stepper.vue'

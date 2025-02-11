@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <AdminBreadcrumb>
+      <Breadcrumb>
         <li>
           <NuxtLinkLocale
             class="fr-breadcrumb__link"
@@ -19,7 +19,7 @@
             {{ $t('Posts') }}
           </a>
         </li>
-      </AdminBreadcrumb>
+      </Breadcrumb>
     </div>
     <div class="border-b border-grey-lowest">
       <div class="container">
@@ -49,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import type { Post } from '~/types/posts'
 import type { PaginatedArray } from '~/types/types'
 

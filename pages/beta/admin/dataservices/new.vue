@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AdminBreadcrumb>
+    <Breadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -25,7 +25,7 @@
           {{ t("Publishing form") }}
         </a>
       </li>
-    </AdminBreadcrumb>
+    </Breadcrumb>
 
     <Stepper
       :steps
@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import type { Dataservice, Dataset, DatasetV2 } from '@datagouv/components'
+import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'
 import Step2AddDatasets from '~/components/Dataservices/New/Step2AddDatasets.vue'
 import Step3CompletePublication from '~/components/Dataservices/New/Step3CompletePublication.vue'
