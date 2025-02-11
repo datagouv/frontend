@@ -104,10 +104,9 @@
                 :value="option"
               >
                 <li
-                  class="relative cursor-default select-none py-2 pr-4 list-none flex items-center gap-2"
+                  class="relative cursor-default select-none py-2 pr-4 list-none flex items-center gap-2 text-gray-900"
                   :class="{
-                    'bg-primary text-white': isActive(activeOption, option),
-                    'text-gray-900': !isActive(activeOption, option),
+                    'bg-gray-lower': isActive(activeOption, option),
                     'pl-2': comboboxSlot.selected,
                     'pl-6': !comboboxSlot.selected,
                   }"
@@ -118,7 +117,6 @@
                     <RiCheckLine
                       v-if="comboboxSlot.selected"
                       class="size-4 text-primary"
-                      :class="{ 'text-white': isActive(activeOption, option) }"
                     />
                   </div>
                   <slot

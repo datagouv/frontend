@@ -36,10 +36,17 @@ const config = useRuntimeConfig()
 const url = useRequestURL()
 const params = useUrlSearchParams<DatasetSearchParams>('history', {
   initialValue: Object.fromEntries(url.searchParams.entries()),
+  removeNullishValues: true,
+  removeFalsyValues: true,
+})
+
+const nonFalsyParams = computed(() => {
+  const filteredParams = Object.entries(toValue(params)).filter(([_k, v]) => v)
+  return Object.fromEntries(filteredParams)
 })
 
 const { data: searchResults, status: searchResultsStatus } = await useAPI<PaginatedArray<DatasetV2>>('/api/2/datasets/search/', {
-  params,
+  params: nonFalsyParams,
 })
 
 const { data: allowedFormats, status: allowedFormatsStatus } = await useAPI<Array<string>>('/api/1/datasets/extensions/')

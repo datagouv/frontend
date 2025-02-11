@@ -4,7 +4,7 @@
     data-input-color="blue"
   >
     <div
-      ref="searchRef"
+      ref="search"
       class="flex flex-wrap items-center justify-between"
       data-cy="search"
     >
@@ -102,6 +102,7 @@
               v-model="facets.schema"
               :label="t('Schema')"
               :explanation="t('Data schemas describe data models: what are the fields, how are data shown, what are the available values, etc. See schema.data.gouv.fr')"
+              :display-value="(value) => value.name"
               :placeholder="t('All schemas')"
               :options="schemas"
               :loading="schemasStatus === 'pending'"
@@ -116,12 +117,15 @@
               :label="t('Spatial coverage')"
               :placeholder="t('All coverages')"
               :suggest="suggestSpatialCoverages"
-              :get-option-id="(coverage) => coverage.id"
+              :get-option-id="(coverage) => coverage.code"
               :display-value="(value) => value.name"
               :multiple="false"
             >
-              <template #option="{ option: format }">
-                {{ format }}
+              <template #option="{ option: coverage }">
+                <div class="flex-1">
+                  {{ coverage.name }}
+                </div>
+                <code class="bg-gray-some text-gray-medium p-1">{{ coverage.code }}</code>
               </template>
             </SearchableSelect>
             <SearchableSelect
@@ -134,8 +138,8 @@
               :options="spatialGranularities"
               :loading="spatialGranularitiesStatus === 'pending'"
             >
-              <template #option="{ option: format }">
-                {{ format }}
+              <template #option="{ option: granularity }">
+                {{ granularity.name }}
               </template>
             </SearchableSelect>
             <div
@@ -146,7 +150,7 @@
                 v-if="isFiltered"
                 color="primary-soft"
                 :icon="RiCloseCircleLine"
-                class="w-full"
+                class="w-full justify-center"
                 @click="resetFilters"
               >
                 {{ t('Reset filters') }}
@@ -155,7 +159,7 @@
                 v-else-if="downloadLink"
                 :icon="RiDownloadLine"
                 color="secondary"
-                class="w-full"
+                class="w-full justify-center"
                 :href="downloadLink"
               >
                 {{ t('Download list as CSV') }}
@@ -165,7 +169,7 @@
         </Sidemenu>
       </div>
       <section
-        ref="resultsRef"
+        ref="results"
         class="col-span-12 md:col-span-8 lg:col-span-9 mt-4 md:mt-0 search-results"
         v-bind="$attrs"
       >
@@ -252,8 +256,8 @@
 </template>
 
 <script setup lang="ts">
-import { getOrganizationTypes, OTHER, USER, type DatasetV2, type License, type Organization, type RegisteredSchema } from '@datagouv/components'
-import { ref, onMounted, computed } from 'vue'
+import { getOrganizationTypes, OTHER, USER, type DatasetV2, type License, type Organization, type OrganizationTypes, type RegisteredSchema } from '@datagouv/components'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'
 import { debouncedRef } from '@vueuse/core'
@@ -287,8 +291,8 @@ const props = withDefaults(defineProps<{
 })
 
 type Facets = {
-  organization?: OrganizationOrSuggest
-  organizationType?: ReturnType<typeof getOrganizationTypes>[number]
+  organization?: { id: string }
+  organizationType?: { type: OrganizationTypes }
   tag?: string
   license?: License
   format?: string
@@ -328,20 +332,48 @@ const currentPage = ref(params.value.page ? parseInt(params.value.page) : 1)
  */
 const pageSize = 20
 
-/**
- * All other params are kept here as facets
- */
-const facets = ref<Facets>({ organization: props.organization })
+// Initialize facets from params
+const organizationFromParams = props.organizations.data.find(org => org.id === params.value.organization)
+
+let organizationFromSuggest: OrganizationOrSuggest | undefined
+if (!props.organization && !organizationFromParams && params.value.organization) {
+  const suggested = await props.suggestOrganizations(params.value.organization)
+  if (suggested && suggested.length > 0) {
+    organizationFromSuggest = suggested[0]
+  }
+}
+
+const organizationTypeFromParams = organizationTypes.find(type => type.type === params.value.type) as (Omit<ReturnType<typeof getOrganizationTypes>[number], 'type'> & { type: OrganizationTypes }) | undefined
+
+const licenseFromParams = props.licenses.find(license => license.id === params.value.license)
+
+const schemaFromParams = props.schemas.find(schema => schema.name === params.value.schema)
+
+let spatialCoverageFromSuggest: SpatialZone | undefined
+if (params.value.spatial_coverage) {
+  const suggested = await props.suggestSpatialCoverages(params.value.spatial_coverage)
+  if (suggested && suggested.length > 0) {
+    spatialCoverageFromSuggest = suggested[0]
+  }
+}
+
+const granularityFromParams = props.spatialGranularities.find(granularity => granularity.id === params.value.spatial_granularity)
+
+const facets = ref<Facets>({
+  organization: props.organization ?? organizationFromParams ?? organizationFromSuggest,
+  organizationType: organizationTypeFromParams,
+  tag: params.value.tag,
+  format: params.value.format,
+  license: licenseFromParams,
+  schema: schemaFromParams,
+  geozone: spatialCoverageFromSuggest,
+  granularity: granularityFromParams,
+})
 
 /**
  * Vue ref to results HTML
  */
-const resultsRef = ref<HTMLElement | null>(null)
-
-/**
- * Vue ref to results HTML
- */
-const searchRef = ref<HTMLElement | null>(null)
+const searchRef = useTemplateRef('search')
 
 /**
  * Called when user type in search field
@@ -400,63 +432,32 @@ const sortOptions = computed(() => props.sorts.map(sort => ({
   label: sort.label,
 })))
 
+// Update model params
 watchEffect(() => {
   params.value.page_size = pageSize.toFixed()
   if (props.organization) {
     params.value.organization = props.organization.id
   }
   else {
-    if (facets.value.organization?.id) {
-      params.value.organization = facets.value.organization.id
-    }
-    if (facets.value.organizationType?.type) {
-      params.value.type = facets.value.organizationType.type
-    }
+    params.value.organization = facets.value.organization?.id ?? undefined
+    params.value.type = facets.value.organizationType?.type ?? undefined
   }
-  if (facets.value.tag) {
-    params.value.tag = facets.value.tag
-  }
-  if (facets.value.format) {
-    params.value.format = facets.value.format
-  }
-  if (facets.value.organizationType) {
-    params.value.type = facets.value.organizationType.type
-  }
-  if (facets.value.license?.id) {
-    params.value.license = facets.value.license.id
-  }
-  if (facets.value.schema?.name) {
-    params.value.schema = facets.value.schema?.name
-  }
-  if (facets.value.geozone?.id) {
-    params.value.spatial_coverage = facets.value.geozone.id
-  }
-  if (facets.value.granularity?.id) {
-    params.value.spatial_granularity = facets.value.granularity.id
-  }
+  params.value.tag = facets.value.tag
+  params.value.format = facets.value.format
+  params.value.type = facets.value.organizationType?.type ?? undefined
+  params.value.license = facets.value.license?.id ?? undefined
+  params.value.schema = facets.value.schema?.name ?? undefined
+  params.value.spatial_coverage = facets.value.geozone?.code ?? undefined
+  params.value.spatial_granularity = facets.value.granularity?.id ?? undefined
   if (currentPage.value > 1) params.value.page = currentPage.value.toString()
-  if (deboucedQuery.value) params.value.q = deboucedQuery.value
-  if (searchSort.value) params.value.sort = searchSort.value
+  params.value.q = deboucedQuery.value ?? undefined
+  params.value.sort = searchSort.value ?? null
   return params
 })
-
-// facets.value = { ...Object.fromEntries(params.value), organization: props.organization || params.value.organization || '' }
 
 watch(() => props.searchResultsStatus, () => {
   if (props.searchResultsStatus === 'error') {
     toast.error(t(`The search request failed`))
   }
-})
-
-onMounted(() => {
-  addEventListener('popstate', () => {
-    // Update URL to match current search params value for deep linking
-    const url = new URL(window.location.href)
-    const params: Record<string, string> = {}
-    for (const [key, value] of url.searchParams) {
-      params[key] = value
-    }
-    reloadForm(params)
-  })
 })
 </script>
