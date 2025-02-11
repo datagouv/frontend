@@ -1,23 +1,9 @@
 <template>
   <div>
     <AdminBreadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Organizations') }}
-        </a>
-      </li>
+      <BreadcrumbItem>{{ t('Organizations') }}</BreadcrumbItem>
     </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Organizations") }}
     </h1>

@@ -3,6 +3,7 @@
     <AdminBreadcrumb>
       <BreadcrumbItem>{{ t('Community Resources') }}</BreadcrumbItem>
     </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Community Resources") }}
     </h1>

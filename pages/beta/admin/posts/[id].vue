@@ -1,32 +1,12 @@
 <template>
   <div>
     <AdminBreadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/site/posts`"
-        >
-          {{ t('Posts') }}
-        </NuxtLinkLocale>
-      </li>
-      <template v-if="post">
-        <li>
-          <a
-            class="fr-breadcrumb__link"
-            aria-current="page"
-          >
-            {{ post.name }}
-          </a>
-        </li>
-      </template>
+      <BreadcrumbItem :to="`/beta/admin/site/posts`">
+        {{ t('Posts') }}
+      </BreadcrumbItem>
+      <BreadcrumbItem v-if="post">
+        {{ post.name }}
+      </BreadcrumbItem>
     </AdminBreadcrumb>
 
     <div v-if="post">
@@ -56,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import TabLinks from '~/components/TabLinks.vue'
 import type { Post } from '~/types/posts'
 

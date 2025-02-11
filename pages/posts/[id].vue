@@ -28,7 +28,7 @@
             {{ post.name }}
           </a>
         </li>
-      </AdminBreadcrumb>
+      </Breadcrumb>
       <div v-if="isAdmin(me)">
         <EditButton
           :id="post.id"

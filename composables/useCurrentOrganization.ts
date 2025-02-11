@@ -22,7 +22,7 @@ export function useOrganizations() {
   })
 
   const currentUser = computed(() => {
-    if (!route.params.id || Array.isArray(route.params.id)) {
+    if (!route.params.uid || Array.isArray(route.params.uid)) {
       if (!currentOwnedId.value) return null
       if (!('user' in currentOwnedId.value)) return null
 
@@ -30,7 +30,7 @@ export function useOrganizations() {
     }
 
     currentOwnedId.value = null // fallback to route
-    return users.value[route.params.id] || null
+    return users.value[route.params.uid] || null
   })
 
   const setCurrentOrganization = (organization: Organization) => {

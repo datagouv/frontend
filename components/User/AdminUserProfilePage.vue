@@ -1,15 +1,9 @@
 <template>
   <div>
     <AdminBreadcrumb>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ $t('Profile') }}
-        </a>
-      </li>
+      <BreadcrumbItem>{{ $t('Profile') }}</BreadcrumbItem>
     </AdminBreadcrumb>
+
     <h1 class="fr-h3 !mb-5">
       {{ $t("Profile") }}
     </h1>
@@ -281,6 +275,8 @@
 <script setup lang="ts">
 import { Avatar, CopyButton, type User } from '@datagouv/components'
 import { RiDeleteBin6Line, RiEditLine, RiEyeLine, RiRecycleLine, RiSaveLine } from '@remixicon/vue'
+import AdminBreadcrumb from '../Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '../Breadcrumbs/BreadcrumbItem.vue'
 import { uploadProfilePicture } from '~/api/users'
 
 const props = defineProps<{

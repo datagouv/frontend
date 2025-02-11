@@ -1,32 +1,27 @@
 <template>
-  <AdminBreadcrumb>
+  <Breadcrumb>
     <BreadcrumbItem to="/beta/admin">
       {{ $t('Administration') }}
-    </BreadCrumbItem>
+    </BreadcrumbItem>
     <BreadcrumbItem
-      v-if="organization"
-      :to="`/beta/admin/organizations/${organization.id}/profile`"
+      v-if="currentOrganization"
+      :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
     >
-      {{ organization.name }}
-    </BreadCrumbItem>
+      {{ currentOrganization.name }}
+    </BreadcrumbItem>
     <BreadcrumbItem
-      v-if="user && user.id !== me.id"
-      :to="`/beta/admin/users/${user.id}/profile`"
+      v-if="currentUser"
+      :to="`/beta/admin/users/${currentUser.id}/profile`"
     >
-      {{ user.first_name }} {{ user.last_name }}
-    </BreadCrumbItem>
+      {{ currentUser.first_name }} {{ currentUser.last_name }}
+    </BreadcrumbItem>
     <slot />
-  </AdminBreadcrumb>
+  </Breadcrumb>
 </template>
 
 <script setup lang="ts">
-import type { Organization, User } from '@datagouv/components'
+import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import BreadcrumbItem from './BreadcrumbItem.vue'
 
-defineProps<{
-  organization?: Organization | null
-  user?: User | null
-}>()
-
-const me = useMe()
+const { currentOrganization, currentUser } = useOrganizations()
 </script>

@@ -1,15 +1,9 @@
 <template>
   <div>
     <AdminBreadcrumb>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Discussions') }}
-        </a>
-      </li>
+      <BreadcrumbItem>{{ t('Discussions') }}</BreadcrumbItem>
     </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Discussions") }}
     </h1>

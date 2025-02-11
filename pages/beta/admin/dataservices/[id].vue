@@ -1,23 +1,15 @@
 <template>
   <div>
     <AdminBreadcrumb>
-      
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/dataservices`"
-        >
-          {{ t('Dataservices') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="dataservice">
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ dataservice.title }}
-        </a>
-      </li>
+      <BreadcrumbItem
+        v-if="currentOrganization"
+        :to="`/beta/admin/organizations/${currentOrganization.id}/dataservices`"
+      >
+        {{ t('Dataservices') }}
+      </BreadcrumbItem>
+      <BreadcrumbItem v-if="dataservice">
+        {{ dataservice.title }}
+      </BreadcrumbItem>
     </AdminBreadcrumb>
 
     <div v-if="dataservice">
@@ -51,6 +43,8 @@
 
 <script setup lang="ts">
 import type { Dataservice } from '@datagouv/components'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
