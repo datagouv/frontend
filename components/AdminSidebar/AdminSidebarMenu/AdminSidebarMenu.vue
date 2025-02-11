@@ -187,8 +187,6 @@ const props = defineProps<{
    * An organization, to show a menu with its logo and name
    */
   organization?: Organization
-
-  defaultOpen: boolean
 }>()
 
 defineEmits<{
@@ -199,9 +197,14 @@ const me = useMe()
 
 const id = useId()
 const { isOpen, open, toggle, unregister } = inject(key) as AccordionRegister
+const { currentUser, currentOrganization } = useOrganizations()
 
-onMounted(() => {
-  if (props.defaultOpen) {
+watchEffect(() => {
+  if (currentUser.value && props.user && currentUser.value.id === props.user.id) {
+    open(id)
+  }
+
+  if (currentOrganization.value && props.organization && currentOrganization.value.id === props.organization.id) {
     open(id)
   }
 })

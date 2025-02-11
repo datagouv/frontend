@@ -27,17 +27,14 @@
                   v-for="user in users"
                   :key="user.id"
                   :user
-                  :default-open="defaultOpenId === user.id"
                 />
                 <AdminSidebarMenu
                   v-for="organization in organizations"
                   :key="organization.id"
                   :organization="organization"
-                  :default-open="defaultOpenId === organization.id"
                 />
                 <AdminSidebarMenu
                   v-if="isSiteAdmin"
-                  :default-open="false"
                 />
               </AccordionGroup>
             </DisclosurePanel>
@@ -101,12 +98,7 @@ const config = useRuntimeConfig()
 
 useHead({ title: 'Admin' })
 
-// Works only because we are using MongoDB and there is no
-// collision between orgs' IDs and users' IDs.
-
-const { organizations, users, currentOrganization } = useOrganizations()
-const defaultOpenId = ref<null | string>(currentOrganization.value?.id || null)
-
+const { organizations, users } = useOrganizations()
 const isSiteAdmin = computed(() => me.value.roles?.includes('admin') || false)
 
 if (route.name === localeRoute('/beta/admin/')?.name) {
@@ -117,18 +109,6 @@ if (route.name === localeRoute('/beta/admin/')?.name) {
     await navigateTo(localePath('/beta/admin/me/datasets'), { replace: true })
   }
 }
-
-watchEffect(() => {
-  if (currentOrganization.value) {
-    defaultOpenId.value = currentOrganization.value.id
-  }
-  else if (route.path.includes('/me')) {
-    defaultOpenId.value = me.value.id
-  }
-  else {
-    defaultOpenId.value = null
-  }
-})
 </script>
 
 <style>

@@ -21,8 +21,8 @@ export function useAPI<T, U = T>(
         setCurrentOrganization(data.organization as Organization)
       }
 
-      if (data && typeof data === 'object' && 'owned' in data && data.owned) {
-        setCurrentUser(data.owned as User)
+      if (data && typeof data === 'object' && 'owner' in data && data.owner) {
+        setCurrentUser(data.owner as User)
       }
 
       // This allow to remove the `null` variant from `useFetch`
