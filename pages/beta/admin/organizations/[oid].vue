@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import type { Organization } from '@datagouv/components'
 
-const { setCurrentOrganization } = useOrganizations()
+const { setCurrentOrganization } = useCurrentOwned()
 
 const route = useRoute()
 const { data: organization, refresh } = await useAPI<Organization>(`api/1/organizations/${route.params.oid}/`, { lazy: true })

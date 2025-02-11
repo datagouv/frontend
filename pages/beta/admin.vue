@@ -98,7 +98,7 @@ const config = useRuntimeConfig()
 
 useHead({ title: 'Admin' })
 
-const { organizations, users } = useOrganizations()
+const { organizations, users } = useCurrentOwned()
 const isSiteAdmin = computed(() => me.value.roles?.includes('admin') || false)
 
 if (route.name === localeRoute('/beta/admin/')?.name) {

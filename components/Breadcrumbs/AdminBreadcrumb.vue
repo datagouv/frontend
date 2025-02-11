@@ -23,5 +23,5 @@
 import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import BreadcrumbItem from './BreadcrumbItem.vue'
 
-const { currentOrganization, currentUser } = useOrganizations()
+const { currentOrganization, currentUser } = useCurrentOwned()
 </script>

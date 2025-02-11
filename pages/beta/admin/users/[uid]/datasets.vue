@@ -5,5 +5,5 @@
 <script setup lang="ts">
 import AdminDatasetsPage from '~/components/Datasets/AdminDatasetsPage.vue'
 
-const { currentUser: user } = useOrganizations()
+const { currentUser: user } = useCurrentOwned()
 </script>

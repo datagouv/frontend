@@ -163,7 +163,7 @@ const { $api } = useNuxtApp()
 const { toast } = useToast()
 
 const me = useMe()
-const { currentOrganization } = useOrganizations()
+const { currentOrganization } = useCurrentOwned()
 const isGlobalAdmin = computed(() => isAdmin(me.value))
 
 const route = useRoute()

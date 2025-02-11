@@ -197,7 +197,7 @@ const me = useMe()
 
 const id = useId()
 const { isOpen, open, toggle, unregister } = inject(key) as AccordionRegister
-const { currentUser, currentOrganization } = useOrganizations()
+const { currentUser, currentOrganization } = useCurrentOwned()
 
 watchEffect(() => {
   if (currentUser.value && props.user && currentUser.value.id === props.user.id) {

@@ -1,7 +1,7 @@
 import type { Organization, User } from '@datagouv/components'
 import { keyBy } from 'lodash-es'
 
-export function useOrganizations() {
+export function useCurrentOwned() {
   const me = useMe()
   const route = useRoute()
 

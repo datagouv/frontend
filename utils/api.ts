@@ -7,7 +7,7 @@ export function useAPI<T, U = T>(
   url: MaybeRefOrGetter<string>,
   options?: UseFetchOptions<T, U>,
 ) {
-  const { setCurrentOrganization, setCurrentUser } = useOrganizations()
+  const { setCurrentOrganization, setCurrentUser } = useCurrentOwned()
 
   return useFetch(url, {
     ...options,

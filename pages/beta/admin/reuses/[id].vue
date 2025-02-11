@@ -49,7 +49,7 @@ import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
 
-const { currentOrganization } = useOrganizations()
+const { currentOrganization } = useCurrentOwned()
 const route = useRoute()
 const url = computed(() => `/api/1/reuses/${route.params.id}`)
 const { data: reuse } = await useAPI<Reuse>(url, { lazy: true })

@@ -5,5 +5,5 @@
 <script setup lang="ts">
 import AdminCommunityResourcesPage from '~/components/CommunityResources/AdminCommunityResourcesPage.vue'
 
-const { currentUser: user } = useOrganizations()
+const { currentUser: user } = useCurrentOwned()
 </script>
