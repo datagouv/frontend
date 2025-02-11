@@ -10,27 +10,36 @@ export function useCurrentOwned() {
   const currentOwnedId = useState<{ organization: string } | { user: string } | null>('currentOrganizationId', () => null)
 
   const currentOrganization = computed(() => {
-    if (!route.params.oid || Array.isArray(route.params.oid)) {
-      if (!currentOwnedId.value) return null
-      if (!('organization' in currentOwnedId.value)) return null
+    if (route.params.oid) {
+      if (Array.isArray(route.params.oid)) throw new Error('oid param cannot be an array')
 
-      return organizations.value[currentOwnedId.value.organization] || null
+      currentOwnedId.value = null // fallback to route
+      return organizations.value[route.params.oid] || null
     }
 
-    currentOwnedId.value = null // fallback to route
-    return organizations.value[route.params.oid] || null
+    if (!currentOwnedId.value) return null
+    if (!('organization' in currentOwnedId.value)) return null
+
+    return organizations.value[currentOwnedId.value.organization] || null
   })
 
   const currentUser = computed(() => {
-    if (!route.params.uid || Array.isArray(route.params.uid)) {
-      if (!currentOwnedId.value) return null
-      if (!('user' in currentOwnedId.value)) return null
+    if (route.params.uid) {
+      if (Array.isArray(route.params.uid)) throw new Error('uid param cannot be an array')
 
-      return users.value[currentOwnedId.value.user] || null
+      currentOwnedId.value = null // fallback to route
+      return users.value[route.params.uid] || null
     }
 
-    currentOwnedId.value = null // fallback to route
-    return users.value[route.params.uid] || null
+    if (route.fullPath.includes('/beta/admin/me/')) {
+      currentOwnedId.value = null // fallback to route
+      return me.value
+    }
+
+    if (!currentOwnedId.value) return null
+    if (!('user' in currentOwnedId.value)) return null
+
+    return users.value[currentOwnedId.value.user] || null
   })
 
   const setCurrentOrganization = (organization: Organization) => {

@@ -11,7 +11,7 @@
     </BreadcrumbItem>
     <BreadcrumbItem
       v-if="currentUser"
-      :to="`/beta/admin/users/${currentUser.id}/profile`"
+      :to="currentUser.id === me.id ? `/beta/admin/me/profile` : `/beta/admin/users/${currentUser.id}/profile`"
     >
       {{ currentUser.first_name }} {{ currentUser.last_name }}
     </BreadcrumbItem>
@@ -24,4 +24,5 @@ import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import BreadcrumbItem from './BreadcrumbItem.vue'
 
 const { currentOrganization, currentUser } = useCurrentOwned()
+const me = useMe()
 </script>
