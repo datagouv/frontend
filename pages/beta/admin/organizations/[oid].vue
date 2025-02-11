@@ -14,6 +14,6 @@ const route = useRoute()
 const { data: organization, refresh } = await useAPI<Organization>(`api/1/organizations/${route.params.oid}/`, { lazy: true })
 
 watchEffect(() => {
-  if (organization) setCurrentOrganization(organization.value)
+  if (organization.value) setCurrentOrganization(organization.value)
 })
 </script>

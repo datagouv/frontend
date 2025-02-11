@@ -1,22 +1,7 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
+    <AdminBreadcrumb>
+      
       <li v-if="currentOrganization">
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -33,7 +18,7 @@
           {{ dataservice.title }}
         </a>
       </li>
-    </Breadcrumb>
+    </AdminBreadcrumb>
 
     <div v-if="dataservice">
       <div class="flex items-center justify-between mb-5">

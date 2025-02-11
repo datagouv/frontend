@@ -1,4 +1,4 @@
-import type { Organization } from '@datagouv/components'
+import type { Organization, User } from '@datagouv/components'
 import type { UseFetchOptions } from 'nuxt/app'
 /*
   Example : const { data: datasets } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets')
@@ -7,7 +7,7 @@ export function useAPI<T, U = T>(
   url: MaybeRefOrGetter<string>,
   options?: UseFetchOptions<T, U>,
 ) {
-  const { setCurrentOrganization } = useOrganizations()
+  const { setCurrentOrganization, setCurrentUser } = useOrganizations()
 
   return useFetch(url, {
     ...options,
@@ -19,6 +19,10 @@ export function useAPI<T, U = T>(
       const data = toValue(response.data)
       if (data && typeof data === 'object' && 'organization' in data && data.organization) {
         setCurrentOrganization(data.organization as Organization)
+      }
+
+      if (data && typeof data === 'object' && 'owned' in data && data.owned) {
+        setCurrentUser(data.owned as User)
       }
 
       // This allow to remove the `null` variant from `useFetch`

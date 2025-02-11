@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumb>
+    <AdminBreadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -53,7 +53,7 @@
           </a>
         </li>
       </template>
-    </Breadcrumb>
+    </AdminBreadcrumb>
 
     <div v-if="harvester && !job">
       <div class="mb-5">

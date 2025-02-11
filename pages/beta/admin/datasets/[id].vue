@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumb>
+    <AdminBreadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -35,7 +35,7 @@
           </a>
         </li>
       </template>
-    </Breadcrumb>
+    </AdminBreadcrumb>
 
     <div v-if="dataset">
       <div class="mb-5">

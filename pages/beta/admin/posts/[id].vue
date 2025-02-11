@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumb>
+    <AdminBreadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -27,7 +27,7 @@
           </a>
         </li>
       </template>
-    </Breadcrumb>
+    </AdminBreadcrumb>
 
     <div v-if="post">
       <div class="flex items-center justify-between mb-5">

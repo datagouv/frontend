@@ -18,7 +18,8 @@
             :rounded="true"
           />
           <p class="mx-2">
-            {{ $t('My Profil') }}
+            <span v-if="me.id === user.id">{{ $t('My Profil') }}</span>
+            <span v-else>{{ user.first_name }} {{ user.last_name }}</span>
           </p>
         </template>
         <template v-else-if="organization">
@@ -49,27 +50,27 @@
             <AdminSidebarLink
               :icon="RiDatabase2Line"
               :label="$t('Datasets')"
-              to="/beta/admin/me/datasets"
+              :to="me.id === user.id ? `/beta/admin/me/datasets` : `/beta/admin/users/${user.id}/datasets`"
             />
             <AdminSidebarLink
               :icon="RiRobot2Line"
               :label="$t('Dataservices')"
-              to="/beta/admin/me/dataservices"
+              :to="me.id === user.id ? `/beta/admin/me/dataservices` : `/beta/admin/users/${user.id}/dataservices`"
             />
             <AdminSidebarLink
               :icon="RiLineChartLine"
               :label="$t('Reuses')"
-              to="/beta/admin/me/reuses"
+              :to="me.id === user.id ? `/beta/admin/me/reuses` : `/beta/admin/users/${user.id}/reuses`"
             />
             <AdminSidebarLink
               :icon="RiGitPullRequestLine"
               :label="$t('Community Resources')"
-              to="/beta/admin/me/community-resources"
+              :to="me.id === user.id ? `/beta/admin/me/community-resources` : `/beta/admin/users/${user.id}/community-resources`"
             />
             <AdminSidebarLink
               :icon="RiUserLine"
               :label="$t('Profile')"
-              to="/beta/admin/me/profile"
+              :to="me.id === user.id ? `/beta/admin/me/profile` : `/beta/admin/users/${user.id}/profile`"
             />
           </template>
           <template v-else-if="organization">
@@ -193,6 +194,8 @@ const props = defineProps<{
 defineEmits<{
   click: []
 }>()
+
+const me = useMe()
 
 const id = useId()
 const { isOpen, open, toggle, unregister } = inject(key) as AccordionRegister

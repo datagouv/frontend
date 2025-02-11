@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <Breadcrumb>
+      <AdminBreadcrumb>
         <li>
           <NuxtLinkLocale
             class="fr-breadcrumb__link"
@@ -19,7 +19,7 @@
             {{ $t('Posts') }}
           </a>
         </li>
-      </Breadcrumb>
+      </AdminBreadcrumb>
     </div>
     <div class="border-b border-grey-lowest">
       <div class="container">

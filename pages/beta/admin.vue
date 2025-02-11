@@ -24,8 +24,10 @@
                 as="ul"
               >
                 <AdminSidebarMenu
-                  :user="me"
-                  :default-open="defaultOpenId === me.id"
+                  v-for="user in users"
+                  :key="user.id"
+                  :user
+                  :default-open="defaultOpenId === user.id"
                 />
                 <AdminSidebarMenu
                   v-for="organization in organizations"
@@ -102,7 +104,7 @@ useHead({ title: 'Admin' })
 // Works only because we are using MongoDB and there is no
 // collision between orgs' IDs and users' IDs.
 
-const { organizations, currentOrganization } = useOrganizations()
+const { organizations, users, currentOrganization } = useOrganizations()
 const defaultOpenId = ref<null | string>(currentOrganization.value?.id || null)
 
 const isSiteAdmin = computed(() => me.value.roles?.includes('admin') || false)

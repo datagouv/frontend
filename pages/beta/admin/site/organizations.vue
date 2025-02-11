@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumb>
+    <AdminBreadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -17,7 +17,7 @@
           {{ t('Organizations') }}
         </a>
       </li>
-    </Breadcrumb>
+    </AdminBreadcrumb>
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Organizations") }}
     </h1>
@@ -78,11 +78,13 @@
                     :size="20"
                   />
                   <AdminContentWithTooltip>
-                    <TextClamp
-                      :text="organization.name"
-                      :auto-resize="true"
-                      :max-lines="2"
-                    />
+                    <NuxtLinkLocale :to="`/beta/admin/organizations/${organization.id}/profile`">
+                      <TextClamp
+                        :text="organization.name"
+                        :auto-resize="true"
+                        :max-lines="2"
+                      />
+                    </NuxtLinkLocale>
                   </AdminContentWithTooltip>
                 </div>
               </td>
@@ -156,7 +158,8 @@ import { useI18n } from 'vue-i18n'
 import { RiSearchLine } from '@remixicon/vue'
 import type { DiscussionSortedBy } from '~/types/discussions'
 import type { PaginatedArray, SortDirection } from '~/types/types'
-import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import Placeholder from '~/components/Placeholder/Placeholder.vue'

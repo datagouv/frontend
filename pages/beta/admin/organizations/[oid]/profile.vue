@@ -1,6 +1,6 @@
 <template>
   <div class="fr-container--fluid">
-    <Breadcrumb>
+    <AdminBreadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -25,7 +25,7 @@
           {{ t('Profile') }}
         </a>
       </li>
-    </Breadcrumb>
+    </AdminBreadcrumb>
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Profile") }}
     </h1>
@@ -136,7 +136,8 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiDeleteBin6Line } from '@remixicon/vue'
 import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
-import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import PaddedContainer from '~/components/PaddedContainer/PaddedContainer.vue'
 import DescribeOrganizationFrom from '~/components/Organization/New/Step2DescribeOrganization.vue'
 import { updateOrganization, uploadLogo } from '~/api/organizations'

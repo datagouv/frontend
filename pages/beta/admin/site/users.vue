@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Breadcrumb>
+    <AdminBreadcrumb>
       <li>
         <NuxtLinkLocale
           class="fr-breadcrumb__link"
@@ -17,7 +17,7 @@
           {{ t('Users') }}
         </a>
       </li>
-    </Breadcrumb>
+    </AdminBreadcrumb>
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Users") }}
     </h1>
@@ -66,7 +66,9 @@
             >
               <td>
                 <p class="fr-text--bold fr-m-0">
-                  {{ user.first_name }} {{ user.last_name }}
+                  <NuxtLinkLocale :to="`/beta/admin/users/${user.id}/profile`">
+                    {{ user.first_name }} {{ user.last_name }}
+                  </NuxtLinkLocale>
                 </p>
                 <p class="fr-m-0 fr-text--xs text-mention-grey f-italic inline-flex items-center">
                   <RiMailLine class="size-3" />
@@ -130,7 +132,8 @@ import { useI18n } from 'vue-i18n'
 import { RiMailLine, RiSearchLine } from '@remixicon/vue'
 import type { DiscussionSortedBy } from '~/types/discussions'
 import type { PaginatedArray, SortDirection } from '~/types/types'
-import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import AdminInput from '~/components/AdminInput.vue'
