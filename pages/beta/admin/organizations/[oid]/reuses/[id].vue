@@ -1,39 +1,10 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/reuses`"
-        >
-          {{ t('Reuses') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="reuse">
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ reuse.title }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem v-if="reuse">
+        {{ reuse.title }}
+      </BreadcrumbItem>
+    </AdminBreadcrumb>
 
     <div v-if="reuse">
       <div class="flex items-center justify-between mb-5">
@@ -66,11 +37,13 @@
 
 <script setup lang="ts">
 import type { Reuse } from '@datagouv/components'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
 
-const { currentOrganization } = await useOrganizations()
+const { currentOrganization } = useCurrentOwned()
 
 const route = useRoute()
 const url = computed(() => `/api/1/reuses/${route.params.id}`)

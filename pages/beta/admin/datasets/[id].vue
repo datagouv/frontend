@@ -1,41 +1,16 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <template v-if="dataset">
-        <li v-if="dataset.organization">
-          <NuxtLinkLocale
-            class="fr-breadcrumb__link"
-            :to="`/beta/admin/organizations/${dataset.organization.id}/profile`"
-          >
-            {{ dataset.organization.name }}
-          </NuxtLinkLocale>
-        </li>
-        <li v-if="dataset.organization">
-          <NuxtLinkLocale
-            class="fr-breadcrumb__link"
-            :to="`/beta/admin/organizations/${dataset.organization.id}/datasets`"
-          >
-            {{ t('Datasets') }}
-          </NuxtLinkLocale>
-        </li>
-        <li>
-          <a
-            class="fr-breadcrumb__link"
-            aria-current="page"
-          >
-            {{ dataset.title }}
-          </a>
-        </li>
-      </template>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem
+        v-if="currentOrganization"
+        :to="`/beta/admin/organizations/${currentOrganization.id}/datasets`"
+      >
+        {{ t('Datasets') }}
+      </BreadcrumbItem>
+      <BreadcrumbItem v-if="dataset">
+        {{ dataset.title }}
+      </BreadcrumbItem>
+    </AdminBreadcrumb>
 
     <div v-if="dataset">
       <div class="mb-5">
@@ -117,10 +92,14 @@
 <script setup lang="ts">
 import { QualityScore, summarize, type Dataset } from '@datagouv/components'
 import { RiDownloadLine, RiEyeLine, RiInformationLine, RiLineChartLine, RiPriceTag3Line } from '@remixicon/vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import QualityScoreTooltipContent from '~/components/dataset/QualityScore/QualityScoreTooltipContent/QualityScoreTooltipContent.vue'
 import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
+
+const { currentOrganization } = useCurrentOwned()
 
 const route = useRoute()
 const url = computed(() => `/api/1/datasets/${route.params.id}`)

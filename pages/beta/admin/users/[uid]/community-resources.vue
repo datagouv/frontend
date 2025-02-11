@@ -1,9 +1,9 @@
 <template>
-  <AdminCommunityResourcesPage :organization />
+  <AdminCommunityResourcesPage :user />
 </template>
 
 <script setup lang="ts">
 import AdminCommunityResourcesPage from '~/components/CommunityResources/AdminCommunityResourcesPage.vue'
 
-const { currentOrganization: organization } = useCurrentOwned()
+const { currentUser: user } = useCurrentOwned()
 </script>

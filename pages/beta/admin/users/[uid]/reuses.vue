@@ -1,9 +1,9 @@
 <template>
-  <AdminReusesPage :organization />
+  <AdminReusesPage :user />
 </template>
 
 <script setup lang="ts">
 import AdminReusesPage from '~/components/Reuses/AdminReusesPage.vue'
 
-const { currentOrganization: organization } = useCurrentOwned()
+const { currentUser: user } = useCurrentOwned()
 </script>

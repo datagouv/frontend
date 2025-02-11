@@ -70,6 +70,7 @@ import Step4CompletePublication from '~/components/Datasets/New/Step4CompletePub
 import Stepper from '~/components/Stepper/Stepper.vue'
 import type { DatasetForm, EnrichedLicense, ResourceForm, SpatialGranularity, SpatialZone, Tag } from '~/types/types'
 import { toApi } from '~/utils/datasets'
+import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()

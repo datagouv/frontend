@@ -1,9 +1,12 @@
 <template>
-  <AdminUserProfilePage :user="me" />
+  <AdminUserProfilePage
+    v-if="user"
+    :user
+  />
 </template>
 
 <script setup lang="ts">
 import AdminUserProfilePage from '~/components/User/AdminUserProfilePage.vue'
 
-const me = useMe()
+const { currentUser: user } = useCurrentOwned()
 </script>

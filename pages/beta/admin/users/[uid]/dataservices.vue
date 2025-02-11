@@ -1,9 +1,9 @@
 <template>
-  <AdminDataservicesPage :organization />
+  <AdminDataservicesPage :user />
 </template>
 
 <script setup lang="ts">
 import AdminDataservicesPage from '~/components/Dataservices/AdminDataservicesPage.vue'
 
-const { currentOrganization: organization } = useCurrentOwned()
+const { currentUser: user } = useCurrentOwned()
 </script>
