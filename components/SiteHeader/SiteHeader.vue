@@ -307,6 +307,7 @@
                   <NuxtLinkLocale
                     class="fr-btn items-center"
                     to="/login"
+                    :external="true"
                   >
                     <RiLockLine class="inline mr-2 size-4" />
                     {{ $t("Log in") }}
@@ -316,6 +317,7 @@
                   <NuxtLinkLocale
                     class="fr-btn"
                     to="/register"
+                    :external="true"
                   >
                     <RiAccountCircleLine class="inline mr-2 size-4" />
                     {{ $t("Register") }}
