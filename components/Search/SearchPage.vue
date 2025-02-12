@@ -36,9 +36,11 @@
                 <template #option="{ option }">
                   <div class="flex items-center space-x-2">
                     <Placeholder
+                      :lazy="false"
                       type="organization"
                       :src="'logo_thumbnail' in option ? option.logo_thumbnail : option.image_url"
                       :size="32"
+                      class="flex-none"
                     />
                     <span>{{ option.name }}</span>
                   </div>
@@ -90,12 +92,13 @@
               :label="t('Licenses')"
               :explanation="t('Licenses define reuse rules for published datasets. See page data.gouv.fr/licences')"
               :placeholder="t('All licenses')"
+              :display-value="(value) => value.title"
               :options="licenses"
               :loading="licensesStatus === 'pending'"
               :multiple="false"
             >
               <template #option="{ option: license }">
-                {{ license }}
+                {{ license.title }}
               </template>
             </SearchableSelect>
             <SearchableSelect
@@ -103,6 +106,7 @@
               :label="t('Schema')"
               :explanation="t('Data schemas describe data models: what are the fields, how are data shown, what are the available values, etc. See schema.data.gouv.fr')"
               :display-value="(value) => value.name"
+              :get-option-id="(option) => option.name"
               :placeholder="t('All schemas')"
               :options="schemas"
               :loading="schemasStatus === 'pending'"
@@ -132,7 +136,7 @@
               v-model="facets.granularity"
               :label="t('Spatial granularity')"
               :placeholder="t('All granularities')"
-              :get-option-id="(coverage) => coverage.id"
+              :get-option-id="(granularity) => granularity.id"
               :display-value="(value) => value.name"
               :multiple="false"
               :options="spatialGranularities"
@@ -151,6 +155,7 @@
                 color="primary-soft"
                 :icon="RiCloseCircleLine"
                 class="w-full justify-center"
+                type="button"
                 @click="resetFilters"
               >
                 {{ t('Reset filters') }}
@@ -264,6 +269,7 @@ import { debouncedRef } from '@vueuse/core'
 import SearchInput from '~/components/Search/SearchInput.vue'
 import type { PaginatedArray, RequestStatus, SpatialGranularity, SpatialZone } from '~/types/types'
 import type { DatasetSearchParams, OrganizationOrSuggest } from '~/types/form'
+import { values } from 'lodash'
 
 const props = withDefaults(defineProps<{
   allowedFormats: Array<string>
