@@ -269,7 +269,6 @@ import { debouncedRef } from '@vueuse/core'
 import SearchInput from '~/components/Search/SearchInput.vue'
 import type { PaginatedArray, RequestStatus, SpatialGranularity, SpatialZone } from '~/types/types'
 import type { DatasetSearchParams, OrganizationOrSuggest } from '~/types/form'
-import { values } from 'lodash'
 
 const props = withDefaults(defineProps<{
   allowedFormats: Array<string>
@@ -432,11 +431,12 @@ const isFiltered = computed(() => {
     key => key in facets.value && facets.value[key] && (props.organization ? key !== 'organization' : true),
   )
 })
-
-const sortOptions = computed(() => props.sorts.map(sort => ({
-  value: sort.order == 'asc' ? sort.value : '-' + sort.value,
-  label: sort.label,
-})))
+const sortOptions = [
+  { label: t('Creation date'), value: '-created' },
+  { label: t('Last update'), value: '-last_update' },
+  { label: t('Number of followers'), value: '-followers' },
+  { label: t('Number of reuses'), value: '-reuses' },
+]
 
 // Update model params
 watchEffect(() => {
