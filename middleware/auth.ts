@@ -5,6 +5,6 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
   if (to.path !== '/en/login' && !me.value) {
     // console.log('-> redirecting to login…')
     const localePath = useLocalePath()
-    return navigateTo(localePath('/login'))
+    return navigateTo(localePath('/login'), { external: true })
   }
 })

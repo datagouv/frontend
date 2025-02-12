@@ -109,8 +109,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/*/login': { prerender: true },
-    '/*/register': { ssr: true },
     '/*/organizations/': { swr: swrDuration },
     '/*/posts/': { swr: swrDuration },
     '/*/posts/**': { swr: swrDuration },

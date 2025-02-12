@@ -35,7 +35,7 @@ export default defineNuxtPlugin({
         },
         async onResponseError({ response }) {
           if (response.status === 401) {
-            await nuxtApp.runWithContext(() => navigateTo(localePath('/login')))
+            await nuxtApp.runWithContext(() => navigateTo(localePath('/login'), { external: true }))
           }
 
           let message
