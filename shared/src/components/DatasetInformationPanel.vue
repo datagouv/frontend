@@ -141,8 +141,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { Dataset, DatasetV2 } from '../../types/datasets'
-import CopyButton from '../CopyButton/CopyButton.vue'
 import { formatDate } from '../../helpers/index'
 import { getGranularity, fetchGranularities } from '../../api/granularity'
 import { getFrequencies, fetchFrequencies } from '../../api/frequency'
@@ -152,6 +150,8 @@ import type { Frequencies } from '../../types/frequency'
 import type { Granularities } from '../../types/granularity'
 import type { License } from '../../types/licenses'
 import ExtraAccordion from '../ExtraAccordion/ExtraAccordion.vue'
+import CopyButton from './CopyButton.vue'
+import type { Dataset, DatasetV2 } from '@/types/datasets'
 
 const props = defineProps<{
   dataset: DatasetV2 | Dataset

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./src/main.ts",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",

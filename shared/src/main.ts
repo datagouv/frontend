@@ -12,6 +12,8 @@ import type { CommunityResource, FileResourceFileType, RemoteResourceFileType, R
 import type { Weight, WellType } from './types/ui'
 import type { User } from './types/users'
 
+import CopyButton from './components/CopyButton.vue'
+
 export type {
   Badge,
   Badges,
@@ -46,4 +48,8 @@ export type {
   User,
   Weight,
   WellType,
+}
+
+export {
+  CopyButton,
 }
