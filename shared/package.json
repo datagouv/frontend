@@ -1,6 +1,6 @@
 {
-  "name": "@datagouv/components",
-  "version": "0.0.0",
+  "name": "@datagouv/components-next",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "main": "./src/main.ts",

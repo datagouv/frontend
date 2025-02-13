@@ -1,15 +1,15 @@
 <template>
   <button
     type="button"
-    class="fr-text--sm fr-mb-0 whitespace-nowrap relative fr-p-1v text-mention-grey line-height-1"
-    :class="{ 'border bg-white rounded-xxs text-grey-500': hideLabel }"
+    class="fr-text--sm fr-mb-0 whitespace-nowrap relative fr-p-1v line-height-1 !text-red-500"
+    :class="{ 'border bg-white rounded-xxs': hideLabel }"
     @click="copy"
   >
     <span
       v-if="copied"
       style="color: #3558a2;"
     >
-      <RiCheckLine class="size-4" />
+      <RiCheckLine class="size-4 inline" />
       <span
         class="fr-ml-1v copy-label"
         :class="{ 'fr-sr-only': hideLabel }"
@@ -18,12 +18,12 @@
     <span v-if="!copied">
       <component
         :is="hideLabel ? RiClipboardLine : RiFileCopyLine"
-        class="size-4"
+        class="size-4 inline"
       />
       <span
         class="fr-ml-1v copy-link copy-label"
         :class="{ 'fr-sr-only': hideLabel }"
-      >{{ label }}</span>
+      >{{ label }} Toto</span>
     </span>
   </button>
 </template>
