@@ -2,8 +2,8 @@
   <footer role="contentinfo">
     <div class="bg-white py-6 md:py-8 border-t border-t-gray-default">
       <div class="fr-container">
-        <div class="flex divide-x divide-gray-default">
-          <div class="w-full md:pr-[6%] md:w-2/3 flex">
+        <div class="flex flex-wrap divide-y md:divide-y-0 md:divide-x divide-gray-default">
+          <div class="w-full md:pr-[6%] md:w-2/3 flex flex-wrap">
             <div class="flex-none flex items-center fr-mr-5v">
               <NuxtImg
                 src="/img/newspaper.svg"
@@ -12,7 +12,7 @@
                 height="55"
               />
             </div>
-            <div class="fr-follow__newsletter !flex-1">
+            <div class="w-full !flex-none sm:!flex-1">
               <div>
                 <p class="font-extrabold text-2xl text-gray-title leading-8 mb-1">
                   {{ $t("Subscribe to our newsletter") }}
@@ -24,9 +24,9 @@
                   }}
                 </p>
               </div>
-              <div>
+              <div class="flex flex-wrap gap-4">
                 <NuxtLinkLocale
-                  class="fr-btn mr-4"
+                  class="fr-btn"
                   :title="$t('Subscribe to our newsletter')"
                   :to="config.public.newsletterSubscriptionUrl"
                   :external="true"
@@ -44,23 +44,13 @@
               </div>
             </div>
           </div>
-          <div class="w-full md:pl-[6%] md:w-1/3">
+          <div class="w-full mt-6 pt-6 md:mt-0 md:pt-0 md:pl-[6%] md:w-1/3">
             <div class="flex flex-col items-start justify-between h-full">
               <p class="font-extrabold text-2xl leading-8 text-gray-title">
                 {{ $t("Follow us") }}
                 <br> {{ $t("on social media") }}
               </p>
               <ul class="flex justify-between list-none m-0 p-0 *:p-0 -ml-4">
-                <li>
-                  <a
-                    class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
-                    :title="$t('Twitter - new tab')"
-                    href="https://twitter.com/datagouvfr"
-                    target="_blank"
-                  >
-                    <RiTwitterLine />
-                  </a>
-                </li>
                 <li>
                   <a
                     class="link !inline-flex after:!content-none mx-2 !p-2 min-h-10 mh-10 mw-10 !no-underline hover:!bg-gray-some"
