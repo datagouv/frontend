@@ -13,8 +13,7 @@
       </div>
       <p class="mb-0 font-bold">
         <NuxtLinkLocale
-          :to="organization.page"
-          :external="true"
+          :to="`/organizations/${organization.slug}`"
         >
           <OrganizationNameWithCertificate
             :show-type="false"

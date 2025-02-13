@@ -4,9 +4,9 @@
       v-if="showType"
       :type="type"
     />
-    <p class="mb-0 overflow-hidden text-ellipsis whitespace-nowrap">
+    <div class="mb-0 overflow-hidden text-ellipsis whitespace-nowrap">
       {{ organization.name }}
-    </p>
+    </div>
     <RiCheckboxCircleLine
       v-if="organizationCertified"
       class="size-5 flex-none"

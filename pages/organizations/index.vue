@@ -1,23 +1,15 @@
 <template>
   <div class="container mb-16">
     <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :external="true"
-          to="/"
-        >
-          {{ $t('Home') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ $t('Organizations') }}
-        </a>
-      </li>
+      <BreadcrumbItem
+        to="/"
+        :external="true"
+      >
+        {{ $t('Home') }}
+      </BreadcrumbItem>
+      <BreadcrumbItem>
+        {{ $t('Organizations') }}
+      </BreadcrumbItem>
     </Breadcrumb>
     <OrganizationListPage
       :link="getLink"
@@ -32,7 +24,6 @@
 <script setup lang="ts">
 import type { Organization } from '@datagouv/components'
 import type { LocationQueryValue } from 'vue-router'
-import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
 import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import type { PaginatedArray } from '~/types/types'
 

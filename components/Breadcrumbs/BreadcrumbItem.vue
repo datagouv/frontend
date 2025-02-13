@@ -10,7 +10,8 @@
     <NuxtLinkLocale
       v-else
       class="fr-breadcrumb__link"
-      :to="to"
+      :to
+      :external
     >
       <slot />
     </NuxtLinkLocale>
@@ -20,6 +21,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   to?: string
+  external?: boolean
 }>()
 
 const route = useRoute()

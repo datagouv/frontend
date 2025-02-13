@@ -1,7 +1,7 @@
 <template>
   <BrandedButton
     color="danger"
-    :href="`/beta/admin/${type}/${id}/`"
+    :href="link"
     :icon="RiEdit2Line"
     size="xs"
   >
@@ -12,8 +12,22 @@
 <script setup lang="ts">
 import { RiEdit2Line } from '@remixicon/vue'
 
-defineProps<{
-  type: 'posts'
+const props = defineProps<{
+  type: 'organizations' | 'posts'
   id: string
 }>()
+
+const { t } = useI18n()
+
+const link = computed(() => {
+  const base = `/beta/admin/${props.type}/${props.id}/`
+  switch (props.type) {
+    case 'organizations':
+      return `${base}profile`
+    case 'posts':
+      return base
+    default:
+      return throwOnNever(props.type as never, t('No other type defined'))
+  }
+})
 </script>
