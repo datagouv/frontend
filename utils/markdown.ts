@@ -13,7 +13,7 @@ import { unified, type Processor, type Transformer } from 'unified'
 import type { Node } from 'unist'
 import { visit } from 'unist-util-visit'
 
-const prose = 'prose prose-neutral max-w-none prose-strong:text-gray-plain'
+const prose = 'prose prose-p:!text-sm prose-sm prose-neutral max-w-none prose-strong:text-gray-plain'
 const proseTable = 'prose-table:bg-neutral-200 prose-table:!overflow-visible first-of-type:prose-tr:!bg-neutral-200 first-of-type:prose-tr:border-b-2 first-of-type:prose-tr:border-black odd:prose-tr:bg-neutral-300 *:prose-th:m-0 *:prose-td:m-0 prose-th:p-4 prose-td:p-4'
 const proseHeading = 'prose-h2:!text-2xl prose-h2:!leading-7 prose-h3:!text-xl prose-h3:!leading-6 prose-h4:!text-base prose-h5:!text-sm prose-h5:!leading-6 prose-headings:!font-extrabold'
 const proseList = 'prose-ul:list-disc'

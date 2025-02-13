@@ -50,14 +50,20 @@
       <FullPageTabs
         class="mt-12"
         :links="[
-          { label: $t('Presentation'), href: `/organizations/${route.params.id}/` },
-          { label: $t('Datasets'), href: `/organizations/${route.params.id}/datasets`, count: organization.metrics.datasets },
-          { label: $t('Dataservices'), href: `/organizations/${route.params.id}/dataservices`, count: organization.metrics.dataservices },
-          { label: $t('Reuses'), href: `/organizations/${route.params.id}/reuses`, count: organization.metrics.reuses },
-          { label: $t('Information'), href: `/organizations/${route.params.id}/information` },
+          { label: $t('Presentation'), href: `/organizations/${route.params.oid}/` },
+          { label: $t('Datasets'), href: `/organizations/${route.params.oid}/datasets`, count: organization.metrics.datasets },
+          { label: $t('Dataservices'), href: `/organizations/${route.params.oid}/dataservices`, count: organization.metrics.dataservices },
+          { label: $t('Reuses'), href: `/organizations/${route.params.oid}/reuses`, count: organization.metrics.reuses },
+          { label: $t('Information'), href: `/organizations/${route.params.oid}/information` },
         ]"
       />
-      <NuxtPage />
+      <div class="bg-white py-5">
+        <NuxtPage
+          v-if="organization"
+          class="container"
+          :organization
+        />
+      </div>
     </LoadingBlock>
   </div>
 </template>
@@ -71,8 +77,10 @@ import Placeholder from '~/components/Placeholder/Placeholder.vue'
 const config = useRuntimeConfig()
 const route = useRoute()
 const me = useMaybeMe()
-const url = computed(() => `/api/1/organizations/${route.params.id}/`)
+
+const url = computed(() => `/api/1/organizations/${route.params.oid}/`)
 const { data: organization, status } = await useAPI<Organization>(url)
+
 const { type } = useOrganizationType(organization)
 const isMember = computed(() => organization.value.members.some(member => member.user.id === me.value?.id))
 </script>
