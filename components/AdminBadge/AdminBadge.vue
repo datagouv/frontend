@@ -1,6 +1,6 @@
 <template>
   <span
-    class="inline-flex items-center space-x-1 font-bold  uppercase"
+    class="inline-flex items-center space-x-1 font-bold uppercase"
     :class="[colors, sizes]"
   >
     <component
@@ -31,6 +31,7 @@ const colors = computed(() => {
     success: 'text-success-dark bg-success-lightest',
     warning: 'text-warning2-dark bg-warning2-lightest',
     danger: 'text-danger-dark bg-danger-lightest',
+    default: 'text-gray-plain bg-gray-lower',
   }[props.type]
 })
 
