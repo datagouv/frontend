@@ -47,6 +47,70 @@
       :title="$t('Members')"
       :button-text="$t('See members')"
     >
+      <template #buttons>
+        <ModalWithButton
+          v-if="!alreadyMember"
+          size="lg"
+          :title="$t('Ask to join the organization')"
+        >
+          <template #button="{ attrs, listeners }">
+            <div>
+              <BrandedButton
+                color="secondary"
+                size="xs"
+                :icon="RiTeamLine"
+                v-bind="attrs"
+                v-on="listeners"
+              >
+                {{ $t('Ask to join the organization') }}
+              </BrandedButton>
+            </div>
+          </template>
+          <p class="!mb-4">
+            {{ $t('Organization administrator will have to accept your request.') }}
+          </p>
+          <p class="flex items-center gap-2 !mb-4 text-sm">
+            <Placeholder
+              :src="organization.logo_thumbnail"
+              type="organization"
+              :size="28"
+              class=" flex-none p-1 border rounded-sm border-gray-default"
+            />
+            <OrganizationNameWithCertificate
+              :organization
+              :certifier="config.public.title"
+              :show-type="false"
+              class="truncate"
+              size="sm"
+            />
+          </p>
+          <InputGroup
+            v-model="reason"
+            :label="$t('Request reason')"
+            :placeholder="$t('Specify your role in the organization and why you want to join it.')"
+            type="textarea"
+            :required="true"
+          />
+          <template #footer="{ close }">
+            <div class="w-full flex gap-4 justify-end">
+              <BrandedButton
+                color="secondary"
+                size="sm"
+                @click="close"
+              >
+                {{ $t('Cancel') }}
+              </BrandedButton>
+              <BrandedButton
+                color="primary"
+                size="sm"
+                @click="sendRequest(reason, close)"
+              >
+                {{ $t('Send your request') }}
+              </BrandedButton>
+            </div>
+          </template>
+        </ModalWithButton>
+      </template>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div
           v-for="(member, index) in organization.members"
@@ -112,18 +176,28 @@
 
 <script setup lang="ts">
 import { Avatar, CopyButton, StatBox, type Organization } from '@datagouv/components'
-import { RiDownloadLine } from '@remixicon/vue'
+import { RiDownloadLine, RiTeamLine } from '@remixicon/vue'
 
 const props = defineProps<{
   organization: Organization
 }>()
 
+const { t } = useI18n()
+
+const config = useRuntimeConfig()
+const { $api } = useNuxtApp()
+const { toast } = useToast()
+const me = useMaybeMe()
+const alreadyMember = computed(() => me.value?.organizations.find(organization => organization.id === props.organization.id))
 const metricsViews = ref<null | Record<string, number>>(null)
 const metricsViewsTotal = ref<null | number>(null)
 const metricsDownloads = ref<null | Record<string, number>>(null)
 const metricsDownloadsTotal = ref<null | number>(null)
 const metricsReuses = ref<null | Record<string, number>>(null)
 const metricsReusesTotal = ref<null | number>(null)
+
+const reason = ref('')
+
 watchEffect(async () => {
   const metrics = await getOrganizationMetrics(props.organization.id)
   metricsDownloads.value = metrics.downloads
@@ -141,4 +215,19 @@ const downloadStatsUrl = computed(() => {
 
   return createOrganizationMetricsUrl(metricsViews.value, metricsDownloads.value, metricsReuses.value)
 })
+
+async function sendRequest(comment: string, closeModal: () => void) {
+  try {
+    await $api(`/api/1/organizations/${props.organization.id}/membership/`, {
+      method: 'POST',
+      body: {
+        comment,
+      },
+    })
+    closeModal()
+  }
+  catch {
+    toast.error(t('An error occured while sending your request'))
+  }
+}
 </script>

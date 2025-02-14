@@ -9,7 +9,7 @@
       <h2 class="!text-sm uppercase !mb-0 w-full flex-none md:flex-1">
         {{ title }}
       </h2>
-      <div class="flex-none flex flex-wrap">
+      <div class="flex-none flex flex-wrap items-center">
         <slot name="buttons" />
         <DisclosureButton class="flex items-center text-sm gap-1 rounded-full font-medium !bg-none py-3 px-4 hover:!bg-gray-some">
           <RiArrowUpSLine
