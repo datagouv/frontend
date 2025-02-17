@@ -150,8 +150,8 @@ import type { Frequencies } from '../../types/frequency'
 import type { Granularities } from '../../types/granularity'
 import type { License } from '../../types/licenses'
 import ExtraAccordion from '../ExtraAccordion/ExtraAccordion.vue'
+import type { Dataset, DatasetV2 } from '../types/datasets'
 import CopyButton from './CopyButton.vue'
-import type { Dataset, DatasetV2 } from '@/types/datasets'
 
 const props = defineProps<{
   dataset: DatasetV2 | Dataset

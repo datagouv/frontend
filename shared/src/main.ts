@@ -13,6 +13,8 @@ import type { Weight, WellType } from './types/ui'
 import type { User } from './types/users'
 
 import CopyButton from './components/CopyButton.vue'
+import ReadMore from './components/ReadMore.vue'
+import OrganizationNameWithCertificate from './components/OrganizationNameWithCertificate.vue'
 
 export type {
   Badge,
@@ -52,4 +54,6 @@ export type {
 
 export {
   CopyButton,
+  ReadMore,
+  OrganizationNameWithCertificate,
 }

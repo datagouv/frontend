@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { findOrganizationType, type OrganizationTypes, type UserType } from '@/functions/organizations'
+import { findOrganizationType, type OrganizationTypes, type UserType } from '../functions/organizations'
 
 const props = defineProps<{
   type: OrganizationTypes | UserType
