@@ -81,14 +81,14 @@
           </dd>
         </div>
         <div
-          v-if="props.dataset.spatial?.granularity"
+          v-if="props.dataset.spatial?.granularity_label"
           class="fr-col-12 fr-col-sm-6 fr-col-md-4"
         >
           <dt class="subtitle fr-mb-0">
             {{ $t('Granularity of territorial coverage') }}
           </dt>
           <dd class="fr-text--sm fr-m-0 text-mention-grey fr-p-0">
-            {{ granularity }}
+            {{ props.dataset.spatial?.granularity_label }}
           </dd>
         </div>
       </dl>
@@ -141,7 +141,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { formatDate } from '../../helpers/index'
+import { formatDate } from '../functions/dates'
 import { getGranularity, fetchGranularities } from '../../api/granularity'
 import { getFrequencies, fetchFrequencies } from '../../api/frequency'
 import { fetchZone } from '../../api/zones'

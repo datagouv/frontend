@@ -13,8 +13,15 @@ import type { Weight, WellType } from './types/ui'
 import type { User } from './types/users'
 
 import CopyButton from './components/CopyButton.vue'
-import ReadMore from './components/ReadMore.vue'
+import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
 import OrganizationNameWithCertificate from './components/OrganizationNameWithCertificate.vue'
+import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
+import Pagination from './components/Pagination.vue'
+import ReadMore from './components/ReadMore.vue'
+
+export * from './functions/dates'
+export * from './functions/organizations'
+export * from './functions/owned'
 
 export type {
   Badge,
@@ -54,6 +61,9 @@ export type {
 
 export {
   CopyButton,
-  ReadMore,
+  DatasetInformationPanel,
   OrganizationNameWithCertificate,
+  OwnerTypeIcon,
+  Pagination,
+  ReadMore,
 }
