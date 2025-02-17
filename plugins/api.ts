@@ -16,6 +16,9 @@ export default defineNuxtPlugin({
           }
           options.headers.set('Accept', 'application/json')
           options.credentials = 'include'
+          if (config.public.devApiKey) {
+            options.headers.set('X-API-KEY', config.public.devApiKey)
+          }
           if (token.value) {
             options.headers.set('Authentication-Token', token.value)
           }
@@ -32,7 +35,7 @@ export default defineNuxtPlugin({
         },
         async onResponseError({ response }) {
           if (response.status === 401) {
-            await nuxtApp.runWithContext(() => navigateTo(localePath('/login')))
+            await nuxtApp.runWithContext(() => navigateTo(localePath('/login'), { external: true }))
           }
 
           let message

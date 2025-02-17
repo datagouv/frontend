@@ -1,31 +1,9 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Discussions') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem>{{ t('Discussions') }}</BreadcrumbItem>
+    </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Discussions") }}
     </h1>
@@ -83,7 +61,8 @@ import { useI18n } from 'vue-i18n'
 import type { DiscussionSortedBy, Thread } from '~/types/discussions'
 import type { PaginatedArray, SortDirection } from '~/types/types'
 import AdminDiscussionsTable from '~/components/AdminTable/AdminDiscussionsTable/AdminDiscussionsTable.vue'
-import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
@@ -96,7 +75,7 @@ const sortDirection = computed(() => `${direction.value === 'asc' ? '' : '-'}${s
 const q = ref('')
 const qDebounced = refDebounced(q, 500) // TODO add 500 in config
 
-const { currentOrganization } = await useOrganizations()
+const { currentOrganization } = useCurrentOwned()
 
 function sort(column: DiscussionSortedBy, newDirection: SortDirection) {
   sortedBy.value = column

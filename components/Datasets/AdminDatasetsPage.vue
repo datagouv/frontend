@@ -1,31 +1,9 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="organization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${organization.id}/profile`"
-        >
-          {{ organization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Datasets') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem>{{ t('Datasets') }}</BreadcrumbItem>
+    </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Datasets") }}
     </h1>
@@ -124,8 +102,9 @@ import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiSearchLine } from '@remixicon/vue'
-import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
 import TransferRequestList from '../TransferRequestList.vue'
+import AdminBreadcrumb from '../Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '../Breadcrumbs/BreadcrumbItem.vue'
 import DatasetsMetrics from './DatasetsMetrics.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
 import type { DatasetSortedBy, PaginatedArray, SortDirection } from '~/types/types'

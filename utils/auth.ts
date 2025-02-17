@@ -54,6 +54,9 @@ export const loadMe = async (meState: Ref<Me | null | undefined>) => {
     // console.log('Token is set to ' + token.value)
     headers['Authentication-Token'] = token.value
   }
+  if (config.public.devApiKey) {
+    headers['X-API-KEY'] = config.public.devApiKey
+  }
 
   try {
     meState.value = await $fetch<Me | null>('/api/1/me/', {

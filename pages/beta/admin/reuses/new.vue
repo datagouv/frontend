@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import type { Dataset, DatasetV2, Reuse } from '@datagouv/components'
+import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import DescribeReuse from '~/components/Reuses/DescribeReuse.vue'
 import Step2AddDatasets from '~/components/Reuses/New/Step2AddDatasets.vue'
 import Step3CompletePublication from '~/components/Reuses/New/Step3CompletePublication.vue'

@@ -1,31 +1,9 @@
 <template>
   <div class="fr-container--fluid">
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Profile') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem>{{ t('Profile') }}</BreadcrumbItem>
+    </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Profile") }}
     </h1>
@@ -136,10 +114,18 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiDeleteBin6Line } from '@remixicon/vue'
 import AdminLoader from '~/components/AdminLoader/AdminLoader.vue'
-import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import PaddedContainer from '~/components/PaddedContainer/PaddedContainer.vue'
 import DescribeOrganizationFrom from '~/components/Organization/New/Step2DescribeOrganization.vue'
 import { updateOrganization, uploadLogo } from '~/api/organizations'
+
+const props = defineProps<{
+  organization: Organization | null
+}>()
+const emit = defineEmits<{
+  refresh: []
+}>()
 
 const { t } = useI18n()
 const { toast } = useToast()
@@ -149,48 +135,32 @@ const oid = route.params.oid as string
 const localPath = useLocalePath()
 const form = ref<InstanceType<typeof DescribeOrganizationFrom> | null>(null)
 
-const { currentOrganization } = await useOrganizations()
+const { currentOrganization } = useCurrentOwned()
 
 const errors = ref([])
 
-const { data: organization, status, refresh: refreshOrganization } = await useAPI<Organization>(`api/1/organizations/${oid}/`, { lazy: true })
+const loading = computed(() => !props.organization)
 
-const loading = computed(() => status.value === 'pending')
-
-const { organizationCertified } = useOrganizationCertified(organization)
+const { organizationCertified } = useOrganizationCertified(props.organization)
 
 async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
-    try {
-      await $api(`api/1/organizations/${oid}/`, { method: 'DELETE' })
-      reloadNuxtApp({
-        path: localPath('/beta/admin/me/profile'),
-      })
-    }
-    catch (e) {
-      toast.error(t('An error occured when deleting the organization.'))
-    }
+    await $api(`api/1/organizations/${oid}/`, { method: 'DELETE' })
+    reloadNuxtApp({
+      path: localPath('/beta/admin/me/profile'),
+    })
   }
 }
 
 async function updateCurrentOrganization(updatedOrganization: NewOrganization | Organization, logo_file: File | null) {
-  try {
-    await updateOrganization(updatedOrganization as Organization)
-    refreshOrganization()
-    toast.success(t('Organization updated !'))
-    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+  await updateOrganization(updatedOrganization as Organization)
+  if (logo_file && props.organization) {
+    await uploadLogo(props.organization.id, logo_file)
   }
-  catch (e) {
-    toast.error(t('An error occured when updating the organization.'))
-  }
-  if (logo_file && organization.value) {
-    try {
-      const resp = await uploadLogo(organization.value.id, logo_file)
-      organization.value.logo_thumbnail = resp.image
-    }
-    catch (e) {
-      toast.error(t('Failed to upload logo, you can upload it again in your management panel'))
-    }
-  }
+
+  emit('refresh')
+  toast.success(t('Organization updated !'))
+
+  window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
 }
 </script>

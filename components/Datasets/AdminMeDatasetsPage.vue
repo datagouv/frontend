@@ -1,23 +1,9 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Datasets') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem>{{ t('Datasets') }}</BreadcrumbItem>
+    </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Datasets") }}
     </h1>
@@ -72,7 +58,8 @@
 import type { Dataset } from '@datagouv/components'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Breadcrumb from '../Breadcrumb/Breadcrumb.vue'
+import AdminBreadcrumb from '../Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '../Breadcrumbs/BreadcrumbItem.vue'
 import AdminDatasetsTable from '~/components/AdminTable/AdminDatasetsTable/AdminDatasetsTable.vue'
 import type { TransferRequest } from '~/types/types'
 

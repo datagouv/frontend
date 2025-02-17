@@ -38,6 +38,15 @@ yarn dev
 bun run dev
 ```
 
+### Working without `udata` backend
+
+You can work on `front-end` without a local `udata` backend by pointing to https://demo.data.gouv.fr directly. To do this, create a `.env` file at the root of the project:
+
+```
+NUXT_PUBLIC_API_BASE=https://demo.data.gouv.fr
+NUXT_PUBLIC_DEV_API_KEY=your_api_key_from_demo
+```
+
 ## Production
 
 Build the application for production:

@@ -1,31 +1,8 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Members') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem>{{ t('Members') }}</BreadcrumbItem>
+    </AdminBreadcrumb>
 
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Members") }}
@@ -280,6 +257,8 @@ import SelectGroup from '~/components/Form/SelectGroup/SelectGroup.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
 import AdminMembershipRequest from '~/components/AdminMembershipRequest/AdminMembershipRequest.vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 
 const config = useRuntimeConfig()
 const { t } = useI18n()
@@ -287,7 +266,7 @@ const { $api } = useNuxtApp()
 
 const me = useMe()
 
-const { currentOrganization } = await useOrganizations()
+const { currentOrganization } = useCurrentOwned()
 
 const url = computed(() => {
   if (!currentOrganization.value) {

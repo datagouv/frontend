@@ -5,5 +5,5 @@
 <script setup lang="ts">
 import AdminHarvestersPage from '~/components/Harvesters/AdminHarvestersPage.vue'
 
-const { currentOrganization: organization } = await useOrganizations()
+const { currentOrganization: organization } = useCurrentOwned()
 </script>

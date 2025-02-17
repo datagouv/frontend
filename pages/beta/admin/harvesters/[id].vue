@@ -1,59 +1,27 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
+    <AdminBreadcrumb>
+      <BreadcrumbItem
+        v-if="currentOrganization"
+        :to="`/beta/admin/organizations/${currentOrganization.id}/datasets`"
+      >
+        {{ t('Datasets') }}
+      </BreadcrumbItem>
+      <template v-if="job">
+        <BreadcrumbItem
+          v-if="harvester"
+          :to="getHarvesterAdminUrl(harvester)"
         >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <template v-if="harvester">
-        <li v-if="harvester.organization">
-          <NuxtLinkLocale
-            class="fr-breadcrumb__link"
-            :to="`/beta/admin/organizations/${harvester.organization.id}/profile`"
-          >
-            {{ harvester.organization.name }}
-          </NuxtLinkLocale>
-        </li>
-        <li v-if="harvester.organization">
-          <NuxtLinkLocale
-            class="fr-breadcrumb__link"
-            :to="`/beta/admin/organizations/${harvester.organization.id}/harvesters`"
-          >
-            {{ t('Harvesters') }}
-          </NuxtLinkLocale>
-        </li>
-        <template v-if="job">
-          <li>
-            <NuxtLinkLocale
-              class="fr-breadcrumb__link"
-              :to="getHarvesterAdminUrl(harvester)"
-            >
-              {{ harvester.name }}
-            </NuxtLinkLocale>
-          </li>
-          <li>
-            <a
-              class="fr-breadcrumb__link"
-              aria-current="page"
-            >
-              {{ job.id }}
-            </a>
-          </li>
-        </template>
-        <li v-else>
-          <a
-            class="fr-breadcrumb__link"
-            aria-current="page"
-          >
-            {{ harvester.name }}
-          </a>
-        </li>
+          {{ harvester.name }}
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          {{ job.id }}
+        </BreadcrumbItem>
       </template>
-    </Breadcrumb>
+      <BreadcrumbItem v-else-if="harvester">
+        {{ harvester.name }}
+      </BreadcrumbItem>
+    </AdminBreadcrumb>
 
     <div v-if="harvester && !job">
       <div class="mb-5">
@@ -183,6 +151,8 @@
 <script setup lang="ts">
 import { RiCalendarEventLine, RiCheckboxCircleLine, RiLink, RiPlayLargeLine, RiToolsLine } from '@remixicon/vue'
 import BrandedButton from '~/components/BrandedButton/BrandedButton.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import HarvesterBadge from '~/components/Harvesters/HarvesterBadge.vue'
 import TabLinks from '~/components/TabLinks.vue'
 import type { HarvesterJob, HarvesterSource } from '~/types/harvesters'
@@ -193,6 +163,7 @@ const { $api } = useNuxtApp()
 const { toast } = useToast()
 
 const me = useMe()
+const { currentOrganization } = useCurrentOwned()
 const isGlobalAdmin = computed(() => isAdmin(me.value))
 
 const route = useRoute()

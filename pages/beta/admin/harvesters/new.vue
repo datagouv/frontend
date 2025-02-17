@@ -64,6 +64,7 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import CompletePublicationStep from '~/components/Harvesters/CompletePublicationStep.vue'
 import DescribeHarvester from '~/components/Harvesters/DescribeHarvester.vue'
 import PreviewStep from '~/components/Harvesters/PreviewStep.vue'

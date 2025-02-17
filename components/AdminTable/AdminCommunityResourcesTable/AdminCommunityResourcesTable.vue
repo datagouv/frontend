@@ -30,9 +30,18 @@
       >
         {{ t("Modified at") }}
       </AdminTableTh>
+      <AdminTableTh
+        class="w-32"
+        scope="col"
+      >
+        {{ t("Action") }}
+      </AdminTableTh>
     </thead>
     <tbody>
-      <tr v-for="communityResource in communityResources">
+      <tr
+        v-for="communityResource in communityResources"
+        :key="communityResource.id"
+      >
         <td>
           <AdminContentWithTooltip class="fr-text--bold">
             <a
@@ -66,19 +75,30 @@
         </td>
         <td>{{ formatDate(communityResource.created_at) }}</td>
         <td>{{ formatDate(communityResource.last_modified) }}</td>
+        <td>
+          <FileEditModal
+            :dataset="communityResource.dataset"
+            :loading
+            :resource="resourceToForm(communityResource, schemas || [])"
+            button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+            @submit="(closeModal, resourceForm) => updateResource(communityResource, closeModal, resourceForm)"
+            @delete="$emit('refresh')"
+          />
+        </td>
       </tr>
     </tbody>
   </AdminTable>
 </template>
 
 <script setup lang="ts">
-import type { CommunityResource } from '@datagouv/components'
+import type { CommunityResource, SchemaResponseData } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../../../components/AdminTable/Table/AdminTableTh.vue'
 import AdminContentWithTooltip from '../../../components/AdminContentWithTooltip/AdminContentWithTooltip.vue'
-import type { AdminBadgeType, CommunityResourceSortedBy, SortDirection } from '~/types/types'
+import type { AdminBadgeType, CommunityResourceSortedBy, ResourceForm, SortDirection } from '~/types/types'
+import FileEditModal from '~/components/Datasets/FileEditModal.vue'
 
 const props = defineProps<{
   communityResources: Array<CommunityResource>
@@ -86,12 +106,16 @@ const props = defineProps<{
   sortDirection: SortDirection
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   (event: 'sort', column: CommunityResourceSortedBy, direction: SortDirection): void
+  (event: 'refresh'): void
 }>()
 
 const config = useRuntimeConfig()
 const { t } = useI18n()
+const { toast } = useToast()
+
+const { data: schemas } = await useAPI<SchemaResponseData>('/api/1/datasets/schemas/')
 
 function sorted(column: CommunityResourceSortedBy) {
   if (props.sortedBy === column) {
@@ -124,5 +148,21 @@ function getStatus(communityResource: CommunityResource): { label: string, type:
       type: 'secondary',
     }
   }
+}
+
+const loading = ref(false)
+const updateResource = async (communityResource: CommunityResource, closeModal: () => void, resourceForm: ResourceForm) => {
+  loading.value = true
+
+  try {
+    await saveResourceForm(communityResource.dataset, resourceForm)
+    emit('refresh')
+    closeModal()
+  }
+  finally {
+    loading.value = false
+  }
+
+  toast.success(t('Community resource updated!'))
 }
 </script>
