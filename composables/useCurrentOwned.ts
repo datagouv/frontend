@@ -2,11 +2,11 @@ import type { Organization, User } from '@datagouv/components'
 import { keyBy } from 'lodash-es'
 
 export function useCurrentOwned() {
-  const me = useMe()
+  const me = useMaybeMe()
   const route = useRoute()
 
-  const organizations = useState('organizations', () => keyBy(me.value.organizations, org => org.id))
-  const users = useState<Record<string, User | Me>>('users', () => ({ [me.value.id]: me.value }))
+  const organizations = useState('organizations', () => keyBy(me.value?.organizations, org => org.id))
+  const users = useState<Record<string, User | Me>>('users', () => (me.value?.id ? { [me.value.id]: me.value } : {}))
   const currentOwnedId = useState<{ organization: string } | { user: string } | null>('currentOrganizationId', () => null)
 
   const currentOrganization = computed(() => {

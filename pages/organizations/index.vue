@@ -32,8 +32,6 @@
 <script setup lang="ts">
 import type { Organization } from '@datagouv/components'
 import type { LocationQueryValue } from 'vue-router'
-import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
-import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import type { PaginatedArray } from '~/types/types'
 
 const route = useRoute()
