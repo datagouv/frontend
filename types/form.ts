@@ -30,7 +30,7 @@ export type DatasetSearchParams = {
   format?: string
   license?: string
   schema?: string
-  spatial_coverage?: string
-  spatial_granularity?: string
+  geozone?: string
+  granularity?: string
   page_size?: string
 }

@@ -121,7 +121,7 @@
               :label="t('Spatial coverage')"
               :placeholder="t('All coverages')"
               :suggest="suggestSpatialCoverages"
-              :get-option-id="(coverage) => coverage.code"
+              :get-option-id="(coverage) => coverage.id"
               :display-value="(value) => value.name"
               :multiple="false"
             >
@@ -355,14 +355,14 @@ const licenseFromParams = props.licenses.find(license => license.id === params.v
 const schemaFromParams = props.schemas.find(schema => schema.name === params.value.schema)
 
 let spatialCoverageFromSuggest: SpatialZone | undefined
-if (params.value.spatial_coverage) {
-  const suggested = await props.suggestSpatialCoverages(params.value.spatial_coverage)
+if (params.value.geozone) {
+  const suggested = await props.suggestSpatialCoverages(params.value.geozone)
   if (suggested && suggested.length > 0) {
     spatialCoverageFromSuggest = suggested[0]
   }
 }
 
-const granularityFromParams = props.spatialGranularities.find(granularity => granularity.id === params.value.spatial_granularity)
+const granularityFromParams = props.spatialGranularities.find(granularity => granularity.id === params.value.granularity)
 
 const facets = ref<Facets>({
   organization: props.organization ?? organizationFromParams ?? organizationFromSuggest,
@@ -453,8 +453,8 @@ watchEffect(() => {
   params.value.type = facets.value.organizationType?.type ?? undefined
   params.value.license = facets.value.license?.id ?? undefined
   params.value.schema = facets.value.schema?.name ?? undefined
-  params.value.spatial_coverage = facets.value.geozone?.code ?? undefined
-  params.value.spatial_granularity = facets.value.granularity?.id ?? undefined
+  params.value.geozone = facets.value.geozone?.code ?? undefined
+  params.value.granularity = facets.value.granularity?.id ?? undefined
   if (currentPage.value > 1) params.value.page = currentPage.value.toString()
   params.value.q = deboucedQuery.value ?? undefined
   params.value.sort = searchSort.value ?? null

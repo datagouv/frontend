@@ -902,5 +902,10 @@
   "Search...": "Search...",
   "Search among {count} organizations on {site}": "Search among {count} organizations on {site}",
   "Bluesky - new tab": "Bluesky - new tab",
+  "Organization type": "Organization type",
+  "Creation date": "Creation date",
+  "Number of followers": "Number of followers",
+  "Number of reuses": "Number of reuses",
+  "All types": "All types",
   "": ""
 }
