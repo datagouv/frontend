@@ -924,5 +924,14 @@
   "Search...": "Rechercher...",
   "Search among {count} organizations on {site}": "Rechercher parmi les {count} organisations sur {site}",
   "Bluesky - new tab": "Bluesky - nouvel onglet",
+  "Statistics from the last 12 months": "Statistiques générales des 12 derniers mois",
+  "See members": "Voir les membres",
+  "Technical information": "Informations techniques",
+  "See technical information": "Voir les informations techniques",
+  "Download statistics as CSV": "Télécharger les statistiques au format CSV",
+  "Presentation": "Présentation",
+  "Information": "Informations",
+  "Organization description": "Description de l'organisation",
+  "Organization reuses": "Réutilisations de l'organisation",
   "": ""
 }
