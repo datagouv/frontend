@@ -30,8 +30,7 @@ const props = defineProps<{
   organization: Organization
 }>()
 
-// Change to another endpoint without draft reuses
-const { data: reuses, status } = await useAPI<PaginatedArray<Reuse>>('/api/1/reuses/', {
+const { data: reuses, status } = await useAPI<PaginatedArray<Reuse>>('/api/2/reuses/search/', {
   params: { organization: props.organization.id, page_size: 15 },
 })
 </script>
