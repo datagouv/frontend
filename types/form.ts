@@ -25,7 +25,7 @@ export type DatasetSearchParams = {
   sort?: string
   organization?: string
   page?: string
-  type?: string
+  organization_badge?: string
   tag?: string
   format?: string
   license?: string

@@ -446,7 +446,7 @@ watchEffect(() => {
   }
   else {
     params.value.organization = facets.value.organization?.id ?? undefined
-    params.value.type = facets.value.organizationType?.type ?? undefined
+    params.value.organization_badge = facets.value.organizationType?.type ?? undefined
   }
   params.value.tag = facets.value.tag
   params.value.format = facets.value.format
