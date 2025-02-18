@@ -5,14 +5,17 @@
     </h2>
     <div class="fr-text--sm fr-m-0">
       <dl class="fr-grid-row fr-grid-row--gutters">
-        <div class="fr-col-12 fr-col-sm-6 fr-col-md-4">
+        <div
+          v-if="license"
+          class="fr-col-12 fr-col-sm-6 fr-col-md-4"
+        >
           <dt class="subtitle fr-mb-0">
             {{ $t('License') }}
           </dt>
           <dd class="fr-text--sm fr-m-0 text-mention-grey fr-p-0">
             <code class="bg-alt-grey fr-px-1v text-grey-380">
-              <a :href="props.license.url">
-                {{ props.license.title }}
+              <a :href="license.url">
+                {{ license.title }}
               </a>
             </code>
           </dd>
@@ -22,7 +25,7 @@
             ID
           </dt>
           <dd class="fr-text--sm fr-m-0 text-mention-grey fr-p-0">
-            {{ props.dataset.id }}
+            {{ dataset.id }}
           </dd>
         </div>
       </dl>
@@ -39,15 +42,18 @@
             {{ $t('Creation') }}
           </dt>
           <dd class="fr-text--sm fr-m-0 text-mention-grey fr-p-0">
-            {{ formatDate(props.dataset.created_at) }}
+            {{ formatDate(dataset.created_at) }}
           </dd>
         </div>
-        <div class="fr-col-12 fr-col-sm-6 fr-col-md-4">
+        <div
+          v-if="frequency"
+          class="fr-col-12 fr-col-sm-6 fr-col-md-4"
+        >
           <dt class="subtitle fr-mb-0">
             {{ $t('Frequency') }}
           </dt>
           <dd class="fr-text--sm fr-m-0 text-mention-grey fr-p-0">
-            {{ frequency }}
+            {{ frequency.label }}
           </dd>
         </div>
       </dl>
@@ -70,25 +76,25 @@
     <div class="fr-text--sm fr-m-0">
       <dl class="fr-grid-row fr-grid-row--gutters">
         <div
-          v-if="zone"
+          v-if="zonesLabels.length"
           class="fr-col-12 fr-col-sm-6 fr-col-md-4"
         >
           <dt class="subtitle fr-mb-0">
             {{ $t('Territorial coverage') }}
           </dt>
           <dd class="fr-text--sm fr-m-0 text-mention-grey fr-p-0">
-            {{ zone }}
+            {{ zonesLabels.join(', ') }}
           </dd>
         </div>
         <div
-          v-if="props.dataset.spatial?.granularity_label"
+          v-if="granularity"
           class="fr-col-12 fr-col-sm-6 fr-col-md-4"
         >
           <dt class="subtitle fr-mb-0">
             {{ $t('Granularity of territorial coverage') }}
           </dt>
           <dd class="fr-text--sm fr-m-0 text-mention-grey fr-p-0">
-            {{ props.dataset.spatial?.granularity_label }}
+            {{ granularity.name }}
           </dd>
         </div>
       </dl>
@@ -139,29 +145,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { formatDate } from '../functions/dates'
-import { getGranularity, fetchGranularities } from '../../api/granularity'
-import { getFrequencies, fetchFrequencies } from '../../api/frequency'
-import { fetchZone } from '../../api/zones'
-import useOEmbed from '../../composables/useOEmbed'
-import type { Frequencies } from '../../types/frequency'
-import type { Granularities } from '../../types/granularity'
-import type { License } from '../../types/licenses'
-import ExtraAccordion from '../ExtraAccordion/ExtraAccordion.vue'
+// import useOEmbed from '../../composables/useOEmbed'
+// import ExtraAccordion from '../ExtraAccordion/ExtraAccordion.vue'
 import type { Dataset, DatasetV2 } from '../types/datasets'
+import type { Granularity } from '../types/granularity'
+import type { Frequency } from '../types/frequency'
+import type { License } from '../types/licenses'
+import { useFetch } from '../functions/api'
 import CopyButton from './CopyButton.vue'
 
 const props = defineProps<{
   dataset: DatasetV2 | Dataset
-  license: License
+  // license: License
+  // granularities: Array<Granularity>
+  // zones: Array<{ id: string, type: string, features: Array<{ id: string, type: string, geometry: { type: string, coordinates: unknown }, properties: unknown }> }>
+  // frequencies: Array<Frequency>
 }>()
 const { t } = useI18n()
-const embedText = useOEmbed('dataset', props.dataset.id)
-const granularity = ref<string | null>(null)
-const frequency = ref<string | null>(null)
-const zone = ref<string | null>(null)
+// const embedText = useOEmbed('dataset', props.dataset.id)
 const textAreaRef = ref<HTMLTextAreaElement | null>(null)
 
 const hasExtras = computed(() => Object.keys(props.dataset.extras).length > 0)
@@ -172,25 +176,38 @@ function selectContent() {
   }
 };
 
-function setZone() {
-  if (props.dataset.spatial?.zones && props.dataset.spatial?.zones?.length > 0) {
-    fetchZone(props.dataset.spatial.zones[0]).then(foundZone => zone.value = foundZone)
-  }
-};
+const { data: allLicenses } = await useFetch<Array<License>>('/api/1/datasets/licenses')
+const license = computed(() => {
+  if (!props.dataset.license) return null
+  if (!allLicenses.value) return null
 
-function setGranularity(granularities: Granularities) {
-  if (props.dataset.spatial?.granularity) {
-    granularity.value = getGranularity(granularities, props.dataset.spatial?.granularity)
-  }
-};
+  return allLicenses.value.find(license => license.id === props.dataset.license)
+})
 
-function setFrequency(frequencies: Frequencies) {
-  frequency.value = getFrequencies(frequencies, props.dataset.frequency)
-};
+const { data: frequencies } = await useFetch<Array<Frequency>>('/api/1/dataset/frequencies')
+const frequency = computed(() => {
+  if (!props.dataset.frequency) return null
+  if (!frequencies.value) return null
 
-onMounted(() => {
-  fetchGranularities().then(foundGranularities => setGranularity(foundGranularities))
-  fetchFrequencies().then(foundFrequencies => setFrequency(foundFrequencies))
-  setZone()
+  return frequencies.value.find(frequency => frequency.id === props.dataset.frequency)
+})
+
+const zonesUrl = computed(() => {
+  if (!props.dataset.spatial?.zones || !props.dataset.spatial.zones.length) return null
+
+  return `/api/1/spatial/zones/${props.dataset.spatial.zones.join(',')}`
+})
+const { data: zones } = await useFetch<Array<any>>(zonesUrl)
+const zonesLabels = computed(() => {
+  if (!zones.value) return []
+  return zones.value.map(zone => zone.features[0].properties.name)
+})
+
+const { data: granularities } = await useFetch<Array<Granularity>>('/api/1/dataset/granularities')
+const granularity = computed(() => {
+  if (!props.dataset.spatial?.granularity) return null
+  if (!granularities.value) return null
+
+  return granularities.value.find(granularity => granularity.id === props.dataset.spatial?.granularity)
 })
 </script>

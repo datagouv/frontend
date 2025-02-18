@@ -68,6 +68,10 @@
         </BannerAction>
       </div>
     </DescribeDataset>
+
+    <div>
+      <!-- <DatasetInformationPanel :dataset /> -->
+    </div>
   </div>
 </template>
 
@@ -78,6 +82,7 @@ import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import type { DatasetForm, EnrichedLicense, SpatialGranularity } from '~/types/types'
 import { toForm, toApi } from '~/utils/datasets'
+import DatasetInformationPanel from '~/shared/src/components/DatasetInformationPanel.vue'
 
 const { t } = useI18n()
 const { $api } = useNuxtApp()
