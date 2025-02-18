@@ -161,8 +161,8 @@ export default defineNuxtConfig({
       },
     ],
     lazy: true,
-    defaultLocale: 'en',
-    strategy: 'prefix',
+    defaultLocale: 'fr',
+    strategy: 'prefix_and_default',
     trailingSlash: true,
   },
   image: {
