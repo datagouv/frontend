@@ -55,7 +55,7 @@ export default defineNuxtConfig({
       supportUrl: 'https://support.data.gouv.fr/',
       catalogUrl: 'https://guides.data.gouv.fr/autres-ressources-utiles/catalogage-de-donnees-grist',
 
-      dataSearchFeedbackFormUrl: 'https://tally.so/r/mDKv1N',
+      forumUrl: 'https://forum.data.gouv.fr/',
       feedbackFormUrl: 'https://tally.so/r/mOld5R',
       betaAdminFeedbackUrl: 'https://tally.so/r/nP25OB',
       publishingDatasetFeedbackUrl: 'https://tally.so/r/nGo0yO',

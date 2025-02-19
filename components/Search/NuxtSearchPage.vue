@@ -3,7 +3,7 @@
     v-model:params="params"
     :allowed-formats
     :allowed-formats-status
-    :data-search-feedback-form-url="config.public.dataSearchFeedbackFormUrl"
+    :forum-url="config.public.forumUrl"
     :licenses
     :licenses-status
     :organizations

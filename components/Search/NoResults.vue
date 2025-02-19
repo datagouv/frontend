@@ -17,9 +17,9 @@
         {{ t("Reset filters") }}
       </BrandedButton>
       <BrandedButton
-        v-if="dataSearchFeedbackFormUrl"
+        v-if="forumUrl"
         color="tertiary"
-        :href="dataSearchFeedbackFormUrl"
+        :href="forumUrl"
         :icon="RiLightbulbLine"
         class="ml-2"
       >
@@ -36,7 +36,7 @@ import { RiLightbulbLine } from '@remixicon/vue'
 const { t } = useI18n()
 
 defineProps<{
-  dataSearchFeedbackFormUrl: string
+  forumUrl: string
 }>()
 
 defineEmits<{

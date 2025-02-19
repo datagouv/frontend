@@ -273,7 +273,7 @@ import type { DatasetSearchParams, OrganizationOrSuggest } from '~/types/form'
 const props = withDefaults(defineProps<{
   allowedFormats: Array<string>
   allowedFormatsStatus: RequestStatus
-  dataSearchFeedbackFormUrl: string
+  forumUrl: string
   licenses: Array<License>
   licensesStatus: RequestStatus
   organizations: PaginatedArray<Organization>
