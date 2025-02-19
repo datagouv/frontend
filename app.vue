@@ -12,10 +12,21 @@ import '@gouvfr/dsfr/dist/utility/utility.css'
 import '@datagouv/components/dist/style.css'
 import '~/assets/css/overrides.css'
 import { setupComponents, setupI18nWithExistingInstance } from '@datagouv/components'
+import { datagouv } from '@datagouv/components-next'
+import type { UseFetchFunction } from '@datagouv/components-next'
 
 const app = useNuxtApp()
 
 const i18nHead = useLocaleHead()
+const runtimeConfig = useRuntimeConfig()
+
+app.vueApp.use(datagouv, {
+  baseUrl: runtimeConfig.public.i18n.baseUrl, // Maybe do not use i18n config here?
+  apiBase: runtimeConfig.public.apiBase,
+  devApiKey: runtimeConfig.public.devApiKey,
+  staticUrl: runtimeConfig.public.staticUrl,
+  customUseFetch: useAPI as UseFetchFunction, // Why this `as` is required?
+})
 
 setupComponents({
   default_lang: app.$i18n.locale.value,

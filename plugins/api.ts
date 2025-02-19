@@ -1,10 +1,7 @@
 import type { NuxtApp } from '#app'
-import { customUseFetch } from '~/shared/src/functions/api'
 
 export default defineNuxtPlugin({
   async setup(nuxtApp) {
-    customUseFetch.value = useAPI
-
     const config = useRuntimeConfig()
     const token = useToken()
     const cookie = useRequestHeader('cookie')

@@ -1,3 +1,4 @@
+import type { App, InjectionKey, Plugin } from 'vue'
 import type { Badge, Badges } from './types/badges'
 import type { Dataset, DatasetV2, NewDataset, Quality, Rel } from './types/datasets'
 import type { NewDataservice, Dataservice } from './types/dataservices'
@@ -18,12 +19,14 @@ import OrganizationNameWithCertificate from './components/OrganizationNameWithCe
 import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
 import Pagination from './components/Pagination.vue'
 import ReadMore from './components/ReadMore.vue'
+import type { UseFetchFunction } from './functions/api'
 
 export * from './functions/dates'
 export * from './functions/organizations'
 export * from './functions/owned'
 
 export type {
+  UseFetchFunction,
   Badge,
   Badges,
   CommunityResource,
@@ -59,7 +62,25 @@ export type {
   WellType,
 }
 
+export type PluginConfig = {
+  baseUrl: string
+  apiBase: string
+  devApiKey: string
+  staticUrl: string
+  customUseFetch?: UseFetchFunction
+}
+
+export const configKey = Symbol() as InjectionKey<PluginConfig>
+
+// Vue Plugin
+const datagouv: Plugin<PluginConfig> = {
+  install(app: App, options) {
+    app.provide(configKey, options)
+  },
+}
+
 export {
+  datagouv,
   CopyButton,
   DatasetInformationPanel,
   OrganizationNameWithCertificate,

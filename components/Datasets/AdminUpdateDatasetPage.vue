@@ -70,7 +70,7 @@
     </DescribeDataset>
 
     <div>
-      <!-- <DatasetInformationPanel :dataset /> -->
+      <DatasetInformationPanel :dataset />
     </div>
   </div>
 </template>

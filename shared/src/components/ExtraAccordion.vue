@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Disclosure v-slot="{ open }">
     <header
       class="fr-grid-row fr-grid-row--middle fr-pb-3w fr-mb-3w border-bottom border-default-grey"
     >
@@ -12,25 +12,20 @@
         </component>
       </div>
       <div class="fr-col-auto">
-        <button
-          role="button"
-          :aria-expanded="expanded"
-          :aria-controls="accordionId"
+        <DisclosureButton
           class="fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left fr-btn--secondary-grey-500"
-          :class="{ 'fr-icon-arrow-up-s-line': expanded, 'fr-icon-arrow-down-s-line': !expanded }"
-          data-testid="button"
-          @click="expand"
+          :class="{ 'fr-icon-arrow-up-s-line': open, 'fr-icon-arrow-down-s-line': !open }"
         >
-          <template v-if="expanded">
+          <template v-if="open">
             {{ $t('Close details') }}
           </template>
           <template v-else>
             {{ buttonText }}
           </template>
-        </button>
+        </DisclosureButton>
       </div>
     </header>
-    <div
+    <DisclosurePanel
       :id="accordionId"
       class="accordion-content"
     >
@@ -53,22 +48,24 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </DisclosurePanel>
+  </Disclosure>
 </template>
 
 <script setup lang="ts">
 import { useId } from 'vue'
-import useAccordion from '../../composables/useAccordion'
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from '@headlessui/vue'
 
 const accordionId = useId()
-
-const { expanded, expand } = useAccordion(accordionId)
 
 defineProps<{
   buttonText: string
   titleText: string
-  extra: Record<string, any>
+  extra: Record<string, unknown>
   titleLevel: 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div'
 }>()
 </script>

@@ -34,6 +34,7 @@ export default defineNuxtConfig({
       },
 
       apiBase: 'http://dev.local:7000',
+      staticUrl: 'https://static.data.gouv.fr/static/',
       devApiKey: undefined,
 
       qualityDescriptionLength: 100,

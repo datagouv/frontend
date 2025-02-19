@@ -112,13 +112,13 @@
           :label="$t('Copy embed')"
           :copied-label="$t('Embed copied')"
           class="fr-my-1w fr-mr-1w"
-          :text="embedText"
+          :text="getDatasetOEmbedHtml('dataset', dataset.id)"
         />
       </h3>
       <div class="embed-wrapper">
         <textarea
           ref="textAreaRef"
-          v-model="embedText"
+          :value="getDatasetOEmbedHtml('dataset', dataset.id)"
           readonly="true"
           rows="1"
           @click="selectContent"
@@ -149,20 +149,17 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { formatDate } from '../functions/dates'
 // import useOEmbed from '../../composables/useOEmbed'
-// import ExtraAccordion from '../ExtraAccordion/ExtraAccordion.vue'
 import type { Dataset, DatasetV2 } from '../types/datasets'
 import type { Granularity } from '../types/granularity'
 import type { Frequency } from '../types/frequency'
 import type { License } from '../types/licenses'
 import { useFetch } from '../functions/api'
+import getDatasetOEmbedHtml from '../functions/datasets'
+import ExtraAccordion from './ExtraAccordion.vue'
 import CopyButton from './CopyButton.vue'
 
 const props = defineProps<{
   dataset: DatasetV2 | Dataset
-  // license: License
-  // granularities: Array<Granularity>
-  // zones: Array<{ id: string, type: string, features: Array<{ id: string, type: string, geometry: { type: string, coordinates: unknown }, properties: unknown }> }>
-  // frequencies: Array<Frequency>
 }>()
 const { t } = useI18n()
 // const embedText = useOEmbed('dataset', props.dataset.id)
@@ -176,7 +173,7 @@ function selectContent() {
   }
 };
 
-const { data: allLicenses } = await useFetch<Array<License>>('/api/1/datasets/licenses')
+const { data: allLicenses } = await useFetch<Array<License>>('/api/1/datasets/licenses/')
 const license = computed(() => {
   if (!props.dataset.license) return null
   if (!allLicenses.value) return null
@@ -184,7 +181,7 @@ const license = computed(() => {
   return allLicenses.value.find(license => license.id === props.dataset.license)
 })
 
-const { data: frequencies } = await useFetch<Array<Frequency>>('/api/1/dataset/frequencies')
+const { data: frequencies } = await useFetch<Array<Frequency>>('/api/1/dataset/frequencies/')
 const frequency = computed(() => {
   if (!props.dataset.frequency) return null
   if (!frequencies.value) return null
@@ -195,15 +192,15 @@ const frequency = computed(() => {
 const zonesUrl = computed(() => {
   if (!props.dataset.spatial?.zones || !props.dataset.spatial.zones.length) return null
 
-  return `/api/1/spatial/zones/${props.dataset.spatial.zones.join(',')}`
+  return `/api/1/spatial/zones/${props.dataset.spatial.zones.join(',')}/`
 })
-const { data: zones } = await useFetch<Array<any>>(zonesUrl)
+const { data: zones } = await useFetch<{ features: Array<{ properties: { name: string } }> }>(zonesUrl)
 const zonesLabels = computed(() => {
   if (!zones.value) return []
-  return zones.value.map(zone => zone.features[0].properties.name)
+  return zones.value.features.map(feature => feature.properties.name)
 })
 
-const { data: granularities } = await useFetch<Array<Granularity>>('/api/1/dataset/granularities')
+const { data: granularities } = await useFetch<Array<Granularity>>('/api/1/references/spatial/granularities/')
 const granularity = computed(() => {
   if (!props.dataset.spatial?.granularity) return null
   if (!granularities.value) return null
