@@ -34,3 +34,11 @@ export type DatasetSearchParams = {
   granularity?: string
   page_size?: string
 }
+
+export type DataserviceSearchParams = {
+  q?: string
+  sort?: string
+  organization?: string
+  page?: string
+  page_size?: string
+}

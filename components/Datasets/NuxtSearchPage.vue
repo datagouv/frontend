@@ -6,6 +6,7 @@
     :forum-url="config.public.forumUrl"
     :licenses
     :licenses-status
+    :organization
     :organizations
     :organizations-status
     :schemas
@@ -29,6 +30,10 @@ import type { PaginatedArray, SpatialGranularity, SpatialZone, Tag } from '~/typ
 const { $api } = useNuxtApp()
 
 const config = useRuntimeConfig()
+
+defineProps<{
+  organization?: Organization
+}>()
 
 /**
  * Update search params from URL on page load for deep linking
