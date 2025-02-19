@@ -90,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset } from '@datagouv/components'
+import type { Dataset, DatasetV2 } from '@datagouv/components'
 import { RiAddLine, RiDeleteBinLine, RiDraggable } from '@remixicon/vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import CardLg from '~/components/dataset/card-lg.vue'
@@ -100,7 +100,7 @@ import type { DatasetSuggest } from '~/types/types'
 const sortableRootRef = useTemplateRef('sortableRoot')
 const datasetsById = ref<Record<string, Dataset>>({})
 
-const selectedDatasetsSuggest = defineModel<Array<Dataset | DatasetSuggest>>({ required: true })
+const selectedDatasetsSuggest = defineModel<Array<Dataset | DatasetV2 | DatasetSuggest>>({ required: true })
 const datasetUrl = ref('')
 const datasetUrlError = ref<string | null>(null)
 useSortable(sortableRootRef, selectedDatasetsSuggest)

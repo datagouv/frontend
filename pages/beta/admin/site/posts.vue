@@ -1,23 +1,9 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ t('Posts') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem>{{ t('Posts') }}</BreadcrumbItem>
+    </AdminBreadcrumb>
+
     <h1 class="fr-h3 fr-mb-5v">
       {{ t("Posts") }}
     </h1>
@@ -146,7 +132,8 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiAddLine, RiSearchLine } from '@remixicon/vue'
 import type { AdminBadgeType, PaginatedArray } from '~/types/types'
-import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'
 import type { Post } from '~/types/posts'

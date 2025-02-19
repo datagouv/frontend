@@ -92,13 +92,6 @@ watchEffect(() => {
   reuseForm.value = toForm(reuse.value, types.value || [], topics.value || [])
 })
 
-const { setCurrentOrganization } = await useOrganizations()
-watchEffect(() => {
-  if (reuse.value && reuse.value.organization) {
-    setCurrentOrganization(reuse.value.organization)
-  }
-})
-
 const save = async () => {
   if (!reuseForm.value) throw new Error('No reuse form')
 

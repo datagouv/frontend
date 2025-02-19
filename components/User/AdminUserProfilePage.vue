@@ -1,23 +1,9 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ $t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li>
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ $t('Profile') }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem>{{ $t('Profile') }}</BreadcrumbItem>
+    </AdminBreadcrumb>
+
     <h1 class="fr-h3 !mb-5">
       {{ $t("Profile") }}
     </h1>
@@ -25,20 +11,20 @@
       <div class="flex items-center">
         <div class="flex-none">
           <Avatar
-            :user="me"
+            :user="user"
             :rounded="true"
             :size="80"
           />
         </div>
         <h2 class="flex-1 !ml-3 !mb-0 fr-h3">
-          {{ me.first_name }} {{ me.last_name }}
+          {{ user.first_name }} {{ user.last_name }}
         </h2>
         <div class="flex-none">
           <BrandedButton
             size="xs"
             color="secondary"
             as="a"
-            :href="me.page"
+            :href="user.page"
             :icon="RiEyeLine"
           >
             {{ $t('See public profile') }}
@@ -52,7 +38,7 @@
     <PaddedContainer class="!p-5">
       <fieldset class="fr-grid-row fr-grid-row--gutters">
         <InputGroup
-          v-model="me.first_name"
+          v-model="form.first_name"
           class="fr-col"
           autocomplete="given-name"
           :label="$t('First name')"
@@ -60,7 +46,7 @@
           :spellcheck="false"
         />
         <InputGroup
-          v-model="me.last_name"
+          v-model="form.last_name"
           class="fr-col"
           autocomplete="family-name"
           :label="$t('Last name')"
@@ -69,13 +55,13 @@
         />
       </fieldset>
       <InputGroup
-        v-model="me.about"
+        v-model="form.about"
         class="fr-col"
         :label="$t('Biography')"
         type="markdown"
       />
       <InputGroup
-        v-model="me.website"
+        v-model="form.website"
         class="fr-col"
         :label="$t('Website')"
         type="url"
@@ -104,12 +90,15 @@
           size="xs"
           :disabled="loading"
           :icon="RiSaveLine"
-          @click="updateMe"
+          @click="updateUser"
         >
           {{ $t('Save') }}
         </BrandedButton>
       </div>
-      <div class="fr-input-group">
+      <div
+        v-if="user.id === me.id"
+        class="fr-input-group"
+      >
         <label
           class="fr-label"
           :for="apiKeyId"
@@ -124,17 +113,17 @@
             <div class="fr-input-wrap relative">
               <input
                 :id="apiKeyId"
-                v-model="me.apikey"
+                v-model="user.apikey"
                 class="fr-input !pr-12"
                 disabled
                 type="text"
               >
               <CopyButton
-                v-if="me.apikey"
+                v-if="user.apikey"
                 class="absolute right-1 top-1 !mt-0.5 !mr-0.5"
                 :label="$t('Copy API key')"
                 :copied-label="$t('API key copied')"
-                :text="me.apikey"
+                :text="user.apikey"
                 :hide-label="true"
               />
             </div>
@@ -165,7 +154,10 @@
           </div>
         </div>
       </div>
-      <div class="fr-input-group">
+      <div
+        v-if="user.id === me.id"
+        class="fr-input-group"
+      >
         <label
           class="fr-label mb-2"
           :for="emailId"
@@ -177,7 +169,7 @@
             <div class="fr-input-wrap relative">
               <input
                 :id="emailId"
-                v-model="me.email"
+                v-model="form.email"
                 class="fr-input"
                 disabled
                 type="text"
@@ -197,7 +189,10 @@
           </div>
         </div>
       </div>
-      <div class="fr-input-group">
+      <div
+        v-if="user.id === me.id"
+        class="fr-input-group"
+      >
         <label
           class="fr-label mb-2"
           :for="passwordId"
@@ -232,6 +227,7 @@
       <BannerAction
         type="danger"
         :title="$t('Delete the account')"
+        class="mt-4"
       >
         {{ $t("Be careful, this action can't be reverse.") }}
 
@@ -277,9 +273,15 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, CopyButton } from '@datagouv/components'
+import { Avatar, CopyButton, type User } from '@datagouv/components'
 import { RiDeleteBin6Line, RiEditLine, RiEyeLine, RiRecycleLine, RiSaveLine } from '@remixicon/vue'
+import AdminBreadcrumb from '../Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '../Breadcrumbs/BreadcrumbItem.vue'
 import { uploadProfilePicture } from '~/api/users'
+
+const props = defineProps<{
+  user: User
+}>()
 
 const me = useMe()
 const config = useNuxtApp().$config
@@ -295,9 +297,11 @@ const loading = ref(false)
 
 const profilePicture = ref<File | null>(null)
 
+const { form } = useForm(props.user, {}, {})
 watchEffect(() => {
-  if (me.value.about === null) {
-    me.value.about = ''
+  // Why this is needed?
+  if (form.value.about === null) {
+    form.value.about = ''
   }
 })
 
@@ -311,7 +315,7 @@ const imagePreview = computed(() => {
   return URL.createObjectURL(profilePicture.value)
 })
 
-async function updateMe() {
+async function updateUser() {
   loading.value = true
   if (profilePicture.value) {
     try {
@@ -322,13 +326,13 @@ async function updateMe() {
     }
   }
   try {
-    me.value = await $api<Me>('/api/1/me/', {
+    await $api(`/api/1/users/${props.user.id}`, {
       method: 'PUT',
       body: {
-        first_name: me.value.first_name,
-        last_name: me.value.last_name,
-        about: me.value.about,
-        website: me.value.website,
+        first_name: form.value.first_name,
+        last_name: form.value.last_name,
+        about: form.value.about,
+        website: form.value.website,
       },
     })
     toast.success(t('Profile updated !'))
@@ -342,10 +346,10 @@ async function updateMe() {
 async function regenerateApiKey() {
   loading.value = true
   try {
-    const res = await $api<{ apikey: string }>('/api/1/me/apikey', {
+    await $api<{ apikey: string }>('/api/1/me/apikey', {
       method: 'POST',
     })
-    me.value.apikey = res.apikey
+    loadMe(me)
   }
   finally {
     loading.value = false
@@ -358,20 +362,28 @@ async function deleteApiKey() {
     await $api('/api/1/me/apikey', {
       method: 'DELETE',
     })
-    me.value.apikey = null
+    loadMe(me)
   }
   finally {
     loading.value = false
   }
 }
 
+const localePath = useLocalePath()
+
 async function deleteUser() {
   loading.value = true
   try {
-    await $api('/api/1/me/', {
+    await $api(props.user.id === me.value.id ? '/api/1/me/' : `/api/1/users/${props.user.id}`, {
       method: 'DELETE',
     })
-    navigateTo(`${config.public.apiBase}/en/logout`, { external: true })
+    if (props.user.id === me.value.id) {
+      navigateTo(`${config.public.apiBase}/en/logout`, { external: true })
+    }
+    else {
+      toast.success(t('User deleted!'))
+      await navigateTo(localePath(`/beta/admin/site/users`), { replace: true })
+    }
   }
   finally {
     loading.value = false

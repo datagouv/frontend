@@ -1,4 +1,4 @@
-import type { Dataservice, Dataset } from '@datagouv/components'
+import type { Dataservice, Dataset, DatasetV2 } from '@datagouv/components'
 import type { ContactPoint, DataserviceForm, DatasetSuggest, NewDataserviceForApi } from '~/types/types'
 
 export function getDataserviceAdminUrl(dataservice: Dataservice): string {
@@ -24,7 +24,7 @@ export function toForm(dataservice: Dataservice): DataserviceForm {
   }
 }
 
-export function toApi(form: DataserviceForm, overrides: { archived_at?: string | null, datasets?: Array<Dataset | DatasetSuggest>, private?: boolean } = {}): NewDataserviceForApi {
+export function toApi(form: DataserviceForm, overrides: { archived_at?: string | null, datasets?: Array<Dataset | DatasetV2 | DatasetSuggest>, private?: boolean } = {}): NewDataserviceForApi {
   const contactPoints = form.contact_points?.filter(cp => 'id' in cp).map(cp => cp.id) ?? []
   return {
     organization: form.owned?.organization?.id,

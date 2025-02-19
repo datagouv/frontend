@@ -5,5 +5,5 @@
 <script setup lang="ts">
 import AdminReusesPage from '~/components/Reuses/AdminReusesPage.vue'
 
-const { currentOrganization: organization } = await useOrganizations()
+const { currentOrganization: organization } = useCurrentOwned()
 </script>

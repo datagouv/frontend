@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataservice, Dataset } from '@datagouv/components'
+import type { Dataservice, Dataset, DatasetV2 } from '@datagouv/components'
 import type { DatasetSuggest, PaginatedArray } from '~/types/types'
 
 const { t } = useI18n()
@@ -28,7 +28,7 @@ const { toast } = useToast()
 const route = useRoute()
 const url = computed(() => `/api/1/dataservices/${route.params.id}`)
 const { data: dataservice } = await useAPI<Dataservice>(url, { lazy: true })
-const datasets = ref<Array<Dataset | DatasetSuggest>>([])
+const datasets = ref<Array<Dataset | DatasetV2 | DatasetSuggest>>([])
 const datasetsPage = ref<PaginatedArray<Dataset> | null>(null)
 watchEffect(async () => {
   if (!dataservice.value) return

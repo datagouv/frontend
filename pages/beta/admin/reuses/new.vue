@@ -66,7 +66,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, Reuse } from '@datagouv/components'
+import type { Dataset, DatasetV2, Reuse } from '@datagouv/components'
+import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import DescribeReuse from '~/components/Reuses/DescribeReuse.vue'
 import Step2AddDatasets from '~/components/Reuses/New/Step2AddDatasets.vue'
 import Step3CompletePublication from '~/components/Reuses/New/Step3CompletePublication.vue'
@@ -102,6 +103,7 @@ const reuseForm = useState(
       description: '',
       tags: [],
       image: null,
+      private: true,
     } as ReuseForm),
 )
 
@@ -110,7 +112,15 @@ const loading = useState<boolean>(
   () => false,
 )
 
-const datasets = useState<Array<Dataset | DatasetSuggest>>(
+onMounted(async () => {
+  if (!route.query.dataset_id) return
+
+  const dataset = await $api<DatasetV2>(`/api/2/datasets/${route.query.dataset_id}/`)
+  if (!datasets.value.some(d => d.id === dataset.id))
+    datasets.value.push(dataset)
+})
+
+const datasets = useState<Array<Dataset | DatasetV2 | DatasetSuggest>>(
   REUSE_DATASET_STATE,
   () => [],
 )

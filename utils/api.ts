@@ -1,5 +1,5 @@
+import type { Organization, User } from '@datagouv/components'
 import type { UseFetchOptions } from 'nuxt/app'
-
 /*
   Example : const { data: datasets } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets')
 */
@@ -7,11 +7,24 @@ export function useAPI<T, U = T>(
   url: MaybeRefOrGetter<string>,
   options?: UseFetchOptions<T, U>,
 ) {
+  const { setCurrentOrganization, setCurrentUser } = useCurrentOwned()
+
   return useFetch(url, {
     ...options,
     $fetch: useNuxtApp().$api,
   })
     .then((response) => {
+      // Check the response to see if an `organization` is present
+      // to add this organization to the menu.
+      const data = toValue(response.data)
+      if (data && typeof data === 'object' && 'organization' in data && data.organization) {
+        setCurrentOrganization(data.organization as Organization)
+      }
+
+      if (data && typeof data === 'object' && 'owner' in data && data.owner) {
+        setCurrentUser(data.owner as User)
+      }
+
       // This allow to remove the `null` variant from `useFetch`
       // response. I think the `null` variant is here for `DELETE`
       // responses (without body) but in our case this helper is intended

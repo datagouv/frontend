@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, Reuse } from '@datagouv/components'
+import type { Dataset, DatasetV2, Reuse } from '@datagouv/components'
 import type { DatasetSuggest } from '~/types/types'
 
 const { t } = useI18n()
@@ -28,7 +28,7 @@ const { toast } = useToast()
 const route = useRoute()
 const url = computed(() => `/api/1/reuses/${route.params.id}`)
 const { data: reuse } = await useAPI<Reuse>(url, { lazy: true })
-const datasets = ref<Array<Dataset | DatasetSuggest>>([])
+const datasets = ref<Array<Dataset | DatasetV2 | DatasetSuggest>>([])
 watchEffect(async () => {
   if (!reuse.value) return
   datasets.value = reuse.value.datasets

@@ -3,7 +3,6 @@ const swrDuration = process.env.NUXT_TEMPLATE_CACHE_DURATION ? parseInt(process.
 export default defineNuxtConfig({
 
   modules: [
-    '@nuxt/content',
     '@nuxt/eslint',
     '@nuxt/icon',
     '@nuxt/image',
@@ -32,7 +31,10 @@ export default defineNuxtConfig({
       i18n: {
         baseUrl: 'https://www.data.gouv.fr/', // NUXT_PUBLIC_I18N_BASE_URL
       },
+
       apiBase: 'http://dev.local:7000',
+      devApiKey: undefined,
+
       qualityDescriptionLength: 100,
       searchAutocompleteDebounce: 200,
       searchSirenUrl: 'https://recherche-entreprises.api.gouv.fr/search',
@@ -107,8 +109,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/*/login': { prerender: true },
-    '/*/register': { ssr: true },
     '/*/organizations/': { swr: swrDuration },
     '/*/posts/': { swr: swrDuration },
     '/*/posts/**': { swr: swrDuration },

@@ -32,7 +32,6 @@
 <script setup lang="ts">
 import type { Organization } from '@datagouv/components'
 import type { LocationQueryValue } from 'vue-router'
-import Breadcrumb from '~/components/Breadcrumb/Breadcrumb.vue'
 import type { PaginatedArray } from '~/types/types'
 
 const route = useRoute()

@@ -1,4 +1,4 @@
-import type { Dataset, Reuse, ReuseType } from '@datagouv/components'
+import type { Dataset, DatasetV2, Reuse, ReuseType } from '@datagouv/components'
 import type { DatasetSuggest, NewReuseForApi, ReuseForm, ReuseTopic } from '~/types/types'
 
 export function getReuseAdminUrl(reuse: Reuse): string {
@@ -19,7 +19,7 @@ export function toForm(reuse: Reuse, types: Array<ReuseType>, topics: Array<Reus
   }
 }
 
-export function toApi(form: ReuseForm, overrides: { datasets?: Array<Dataset | DatasetSuggest>, private?: boolean } = {}): NewReuseForApi {
+export function toApi(form: ReuseForm, overrides: { datasets?: Array<Dataset | DatasetV2 | DatasetSuggest>, private?: boolean } = {}): NewReuseForApi {
   return {
     organization: form.owned?.organization?.id,
     owner: form.owned?.owner?.id,

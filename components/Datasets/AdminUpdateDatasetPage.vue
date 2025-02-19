@@ -121,13 +121,6 @@ watchEffect(() => {
   }
 })
 
-const { setCurrentOrganization } = await useOrganizations()
-watchEffect(() => {
-  if (dataset.value && dataset.value.organization) {
-    setCurrentOrganization(dataset.value.organization)
-  }
-})
-
 async function save() {
   if (!datasetForm.value) throw new Error('No dataset form')
 

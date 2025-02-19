@@ -1,39 +1,16 @@
 <template>
   <div>
-    <Breadcrumb>
-      <li>
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          to="/beta/admin"
-        >
-          {{ t('Administration') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/profile`"
-        >
-          {{ currentOrganization.name }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="currentOrganization">
-        <NuxtLinkLocale
-          class="fr-breadcrumb__link"
-          :to="`/beta/admin/organizations/${currentOrganization.id}/dataservices`"
-        >
-          {{ t('Dataservices') }}
-        </NuxtLinkLocale>
-      </li>
-      <li v-if="dataservice">
-        <a
-          class="fr-breadcrumb__link"
-          aria-current="page"
-        >
-          {{ dataservice.title }}
-        </a>
-      </li>
-    </Breadcrumb>
+    <AdminBreadcrumb>
+      <BreadcrumbItem
+        v-if="currentOrganization"
+        :to="`/beta/admin/organizations/${currentOrganization.id}/dataservices`"
+      >
+        {{ t('Dataservices') }}
+      </BreadcrumbItem>
+      <BreadcrumbItem v-if="dataservice">
+        {{ dataservice.title }}
+      </BreadcrumbItem>
+    </AdminBreadcrumb>
 
     <div v-if="dataservice">
       <div class="flex items-center justify-between mb-5">
@@ -66,12 +43,14 @@
 
 <script setup lang="ts">
 import type { Dataservice } from '@datagouv/components'
+import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
+import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import TabLinks from '~/components/TabLinks.vue'
 
 const { t } = useI18n()
 
 const route = useRoute()
-const { currentOrganization } = await useOrganizations()
+const { currentOrganization } = useCurrentOwned()
 const url = computed(() => `/api/1/dataservices/${route.params.id}`)
 const { data: dataservice } = await useAPI<Dataservice>(url, { lazy: true })
 </script>

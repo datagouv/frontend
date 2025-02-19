@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Dataset } from '@datagouv/components'
+import { Well, type Dataset, type DatasetV2 } from '@datagouv/components'
 import type { DatasetSuggest } from '~/types/types'
 
 defineProps<{ loading: boolean }>()
@@ -52,7 +52,7 @@ defineEmits<{
   next: []
 }>()
 
-const datasets = defineModel<Array<Dataset | DatasetSuggest>>({ required: true })
+const datasets = defineModel<Array<Dataset | DatasetV2 | DatasetSuggest>>({ required: true })
 
 const { t } = useI18n()
 </script>
