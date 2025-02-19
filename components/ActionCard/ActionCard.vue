@@ -19,8 +19,8 @@
         <div class="mb-2">
           <component
             :is="heading"
-            class="m-0 mb-2"
-            :class="{ 'font-bold text-base': isPrimary, 'fr--h5': !isPrimary }"
+            class="!m-0 !mb-2"
+            :class="{ '!font-bold !text-base': isPrimary, 'fr--h5': !isPrimary }"
           >
             {{ title }}
           </component>
