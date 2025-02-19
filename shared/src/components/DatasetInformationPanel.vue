@@ -181,7 +181,7 @@ const license = computed(() => {
   return allLicenses.value.find(license => license.id === props.dataset.license)
 })
 
-const { data: frequencies } = await useFetch<Array<Frequency>>('/api/1/dataset/frequencies/')
+const { data: frequencies } = await useFetch<Array<Frequency>>('/api/1/datasets/frequencies/')
 const frequency = computed(() => {
   if (!props.dataset.frequency) return null
   if (!frequencies.value) return null
@@ -200,7 +200,7 @@ const zonesLabels = computed(() => {
   return zones.value.features.map(feature => feature.properties.name)
 })
 
-const { data: granularities } = await useFetch<Array<Granularity>>('/api/1/references/spatial/granularities/')
+const { data: granularities } = await useFetch<Array<Granularity>>('/api/1/spatial/granularities/')
 const granularity = computed(() => {
   if (!props.dataset.spatial?.granularity) return null
   if (!granularities.value) return null

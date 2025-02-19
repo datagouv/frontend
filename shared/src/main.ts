@@ -65,9 +65,9 @@ export type {
 export type PluginConfig = {
   baseUrl: string
   apiBase: string
-  devApiKey: string
+  devApiKey?: string | null
   staticUrl: string
-  customUseFetch?: UseFetchFunction
+  customUseFetch?: UseFetchFunction | null
 }
 
 export const configKey = Symbol() as InjectionKey<PluginConfig>
