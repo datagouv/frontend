@@ -125,7 +125,7 @@ export function toForm(dataset: Dataset, licenses: Array<License>, frequencies: 
 }
 
 export function toApi(form: DatasetForm, overrides: { private?: boolean, archived?: string | null } = {}): NewDatasetForApi {
-  const contactPoints = form.contact_points?.filter(cp => 'id' in cp).map(cp => cp.id) ?? []
+  const contactPoints = form.contact_points?.filter(cp => cp !== null && 'id' in cp).map(cp => cp.id) ?? []
   return {
     organization: form.owned?.organization?.id,
     owner: form.owned?.owner?.id,

@@ -129,7 +129,7 @@ export type DatasetForm = {
   description: string
   tags: Array<Tag>
   license: License | null
-  contact_points: Array<NewContactPoint | ContactPoint>
+  contact_points: Array<NewContactPoint | ContactPoint | null>
   temporal_coverage: { start: null | string, end: null | string }
   frequency: Frequency | null
   spatial_zones: Array<SpatialZone>
@@ -191,7 +191,7 @@ export type DataserviceForm = {
   title: string
   acronym: string
   description: string
-  contact_points: Array<NewContactPoint | ContactPoint>
+  contact_points: Array<NewContactPoint | ContactPoint | null>
   is_restricted: boolean
   has_token: boolean
   base_api_url: string
