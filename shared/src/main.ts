@@ -1,4 +1,4 @@
-import type { App, InjectionKey, Plugin } from 'vue'
+import type { App, Component, InjectionKey, Plugin } from 'vue'
 import type { Badge, Badges } from './types/badges'
 import type { Dataset, DatasetV2, NewDataset, Quality, Rel } from './types/datasets'
 import type { NewDataservice, Dataservice } from './types/dataservices'
@@ -68,6 +68,7 @@ export type PluginConfig = {
   devApiKey?: string | null
   staticUrl: string
   customUseFetch?: UseFetchFunction | null
+  textClamp?: string | Component | null
 }
 
 export const configKey = Symbol() as InjectionKey<PluginConfig>
@@ -75,6 +76,11 @@ export const configKey = Symbol() as InjectionKey<PluginConfig>
 // Vue Plugin
 const datagouv: Plugin<PluginConfig> = {
   install(app: App, options) {
+    if (!options.textClamp) {
+      app.component('runtime-text-clamp', () => import('vue3-text-clamp'))
+      options.textClamp = 'runtime-text-clamp'
+    }
+
     app.provide(configKey, options)
   },
 }

@@ -4,12 +4,17 @@
       v-if="showType"
       :type="getOrganizationType(organization)"
     />
-    <TextClamp
+    <component
+      :is="config.textClamp"
+      v-if="config && config.textClamp"
       class="fr-mx-1v"
       :auto-resize="true"
       :text="organization.name"
       :max-lines="1"
     />
+    <p>
+      {{ organization.name }}
+    </p>
     <RiCheckboxCircleLine
       v-if="isOrganizationCertified(organization)"
       class="size-5 flex-none"
@@ -22,10 +27,13 @@
 <script setup lang="ts">
 import { RiCheckboxCircleLine } from '@remixicon/vue'
 import { useI18n } from 'vue-i18n'
-import TextClamp from 'vue3-text-clamp'
+import { inject } from 'vue'
 import { getOrganizationType, isOrganizationCertified } from '../functions/organizations'
 import type { Organization } from '../types/organizations'
+import { configKey } from '../main'
 import OwnerTypeIcon from './OwnerTypeIcon.vue'
+
+const config = inject(configKey)
 
 const { t } = useI18n()
 withDefaults(defineProps<{
