@@ -1,5 +1,5 @@
 <template>
-  <SearchPage
+  <DatasetsSearchPage
     v-model:params="params"
     :allowed-formats
     :allowed-formats-status

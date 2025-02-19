@@ -240,7 +240,7 @@
               />
               <SearchNoResults
                 v-else-if="!organization"
-                :data-search-feedback-form-url
+                :forum-url
                 @reset-filters="resetForm"
               />
             </div>
@@ -249,7 +249,7 @@
               class="mt-4"
             >
               <SearchNoResults
-                :data-search-feedback-form-url
+                :forum-url
                 @reset-filters="resetForm"
               />
             </div>

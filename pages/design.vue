@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import NuxtSearchPage from '~/components/Search/NuxtSearchPage.vue'
+import NuxtSearchPage from '~/components/Datasets/NuxtSearchPage.vue'
 import AdminBadge from '~/design-system/AdminBadge.vue'
 import BannerAction from '~/design-system/BannerAction.vue'
 import BannerNotif from '~/design-system/BannerNotif.vue'
