@@ -1,4 +1,8 @@
-@import "tailwindcss";
+@import "@gouvfr/dsfr/dist/dsfr.css";
+@import "@gouvfr/dsfr/dist/utility/utility.css";
+@import "@datagouv/components/dist/style.css";
+
+@import "tailwindcss" important;
 @plugin "@tailwindcss/typography";
 
 @config '../../tailwind.config.js';

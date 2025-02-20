@@ -29,7 +29,7 @@
     </div>
     <button
       v-if="selectorShown === null"
-      class="rangepicker__button w-100 text-align-left"
+      class="rangepicker__button w-full text-align-left"
       type="button"
       @click.prevent="showStartSelector"
     >
