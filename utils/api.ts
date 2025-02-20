@@ -15,15 +15,17 @@ export function useAPI<T, U = T>(
     $fetch: useNuxtApp().$api,
   })
     .then((response) => {
-      // Check the response to see if an `organization` is present
-      // to add this organization to the menu.
-      const data = toValue(response.data)
-      if (data && typeof data === 'object' && 'organization' in data && data.organization) {
-        setCurrentOrganization(data.organization as Organization)
-      }
+      if (me.value && isAdmin(me.value)) {
+        // Check the response to see if an `organization` is present
+        // to add this organization to the menu.
+        const data = toValue(response.data)
+        if (data && typeof data === 'object' && 'organization' in data && data.organization) {
+          setCurrentOrganization(data.organization as Organization)
+        }
 
-      if (me.value && isAdmin(me.value) && data && typeof data === 'object' && 'owner' in data && data.owner) {
-        setCurrentUser(data.owner as User)
+        if (data && typeof data === 'object' && 'owner' in data && data.owner) {
+          setCurrentUser(data.owner as User)
+        }
       }
 
       // This allow to remove the `null` variant from `useFetch`
