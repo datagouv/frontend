@@ -1,6 +1,6 @@
 <template>
   <form
-    class="pt-3 group/form"
+    class="group/form"
     data-input-color="blue"
   >
     <div
@@ -20,33 +20,41 @@
             {{ t('Filters') }}
           </template>
           <div class="space-y-4">
-            <template v-if="!organization">
-              <SearchableSelect
-                v-model="facets.organization"
-                :options="organizations.data"
-                :suggest="suggestOrganizations"
-                :label="t('Organizations')"
-                :placeholder="t('All organizations')"
-                :get-option-id="(option) => option.id"
-                :display-value="(option) => option.name"
-                :filter="(option, query) => (option.name).toLocaleLowerCase().includes(query.toLocaleLowerCase())"
-                :multiple="false"
-                :loading="organizationsStatus === 'pending'"
-              >
-                <template #option="{ option }">
-                  <div class="flex items-center space-x-2">
-                    <Placeholder
-                      :lazy="false"
-                      type="organization"
-                      :src="'logo_thumbnail' in option ? option.logo_thumbnail : option.image_url"
-                      :size="32"
-                      class="flex-none"
-                    />
-                    <span>{{ option.name }}</span>
-                  </div>
-                </template>
-              </SearchableSelect>
-            </template>
+            <SearchableSelect
+              v-if="!organization"
+              v-model="facets.organization"
+              :options="organizations ? organizations.data : []"
+              :suggest="suggestOrganizations"
+              :label="t('Organizations')"
+              :placeholder="t('All organizations')"
+              :get-option-id="(option) => option.id"
+              :display-value="(option) => option.name"
+              :filter="(option, query) => (option.name).toLocaleLowerCase().includes(query.toLocaleLowerCase())"
+              :multiple="false"
+              :loading="organizationsStatus === 'pending'"
+            >
+              <template #option="{ option }">
+                <div class="flex items-center space-x-2">
+                  <Placeholder
+                    :lazy="false"
+                    type="organization"
+                    :src="'logo_thumbnail' in option ? option.logo_thumbnail : option.image_url"
+                    :size="32"
+                    class="flex-none"
+                  />
+                  <span>{{ option.name }}</span>
+                </div>
+              </template>
+            </SearchableSelect>
+            <SelectGroup
+              v-model="facets.isRestricted"
+              :label="t('Access')"
+              :options="[
+                { value: undefined, label: t('All access terms') },
+                { value: false, label: t('Open APIs to everyone') },
+                { value: true, label: t('Restricted access APIs') },
+              ]"
+            />
             <div
               v-if="isFiltered || downloadLink"
               class="mb-6 text-center"
@@ -120,8 +128,8 @@
         </div>
         <transition mode="out-in">
           <LoadingBlock :status="searchResultsStatus">
-            <div v-if="searchResults.data.length">
-              <ul class="mt-2 border-t border-gray-default relative z-2 list-none">
+            <div v-if="searchResults && searchResults.data.length">
+              <ul class="mt-2 p-0 border-t border-gray-default relative z-2 list-none">
                 <li
                   v-for="result in searchResults.data"
                   :key="result.id"
@@ -165,16 +173,17 @@
 import type { Dataservice, Organization } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'
-import { debouncedRef } from '@vueuse/core'
+import { computedAsync, debouncedRef } from '@vueuse/core'
 import SearchInput from '~/components/Search/SearchInput.vue'
 import type { PaginatedArray, RequestStatus } from '~/types/types'
 import type { DataserviceSearchParams, OrganizationOrSuggest } from '~/types/form'
+import SelectGroup from '~/components/Form/SelectGroup/SelectGroup.vue'
 
 const props = withDefaults(defineProps<{
   forumUrl: string
-  organizations: PaginatedArray<Organization>
+  organizations: PaginatedArray<Organization> | null
   organizationsStatus: RequestStatus
-  searchResults: PaginatedArray<Dataservice>
+  searchResults: PaginatedArray<Dataservice> | null
   searchResultsStatus: RequestStatus
   suggestOrganizations: (q: string) => Promise<Array<OrganizationOrSuggest>>
   downloadLink?: string
@@ -186,7 +195,8 @@ const props = withDefaults(defineProps<{
 })
 
 type Facets = {
-  organization?: { id: string }
+  isRestricted?: boolean
+  organization?: { id: string } | null
 }
 
 const { t } = useI18n()
@@ -218,18 +228,25 @@ const currentPage = ref(params.value.page ? parseInt(params.value.page) : 1)
 const pageSize = 20
 
 // Initialize facets from params
-const organizationFromParams = props.organizations.data.find(org => org.id === params.value.organization)
+const organizationFromParams = computed(() => props.organizations?.data.find(org => org.id === params.value.organization))
 
-let organizationFromSuggest: OrganizationOrSuggest | undefined
-if (!props.organization && !organizationFromParams && params.value.organization) {
-  const suggested = await props.suggestOrganizations(params.value.organization)
-  if (suggested && suggested.length > 0) {
-    organizationFromSuggest = suggested[0]
+const organizationFromSuggest = computedAsync<OrganizationOrSuggest | null>(async () => {
+  if (!props.organization && !organizationFromParams.value && params.value.organization) {
+    const suggested = await props.suggestOrganizations(params.value.organization)
+    if (suggested && suggested.length > 0) {
+      return suggested[0]
+    }
   }
-}
+  return null
+}, null)
 
 const facets = ref<Facets>({
-  organization: props.organization ?? organizationFromParams ?? organizationFromSuggest,
+  organization: null,
+  isRestricted: params.value.is_restricted,
+})
+
+watchEffect(() => {
+  facets.value.organization = props.organization ?? organizationFromParams.value ?? organizationFromSuggest.value
 })
 
 /**
@@ -258,24 +275,21 @@ const scrollToTop = () => {
   }
 }
 
-const reloadFilters = ({ page = 1, sort = '', ...params }) => {
-  facets.value = { ...params, organization: props.organization || params.organization }
-  currentPage.value = page
-  searchSort.value = sort
+function reloadFilters() {
+  facets.value.organization = props.organization
+  facets.value.isRestricted = undefined
+  currentPage.value = 1
+  searchSort.value = ''
 }
 
 const resetFilters = () => {
-  reloadFilters({})
+  reloadFilters()
 }
 
 const resetForm = () => {
-  reloadForm()
+  queryString.value = ''
+  reloadFilters()
   scrollToTop()
-}
-
-const reloadForm = ({ q = '', ...params } = {}) => {
-  queryString.value = q
-  reloadFilters(params)
 }
 
 /**
@@ -285,7 +299,7 @@ const reloadForm = ({ q = '', ...params } = {}) => {
 const isFiltered = computed(() => {
   const keys = Object.keys(facets.value) as Array<keyof Facets>
   return keys.some(
-    key => key in facets.value && facets.value[key] && (props.organization ? key !== 'organization' : true),
+    key => key in facets.value && (facets.value[key] || facets.value[key] === false) && (props.organization ? key !== 'organization' : true),
   )
 })
 const sortOptions = [
@@ -298,12 +312,10 @@ const sortOptions = [
 // Update model params
 watchEffect(() => {
   params.value.page_size = pageSize.toFixed()
-  if (props.organization) {
-    params.value.organization = props.organization.id
-  }
-  else {
+  if (!props.organization) {
     params.value.organization = facets.value.organization?.id ?? undefined
   }
+  params.value.is_restricted = facets.value.isRestricted
   if (currentPage.value > 1) params.value.page = currentPage.value.toString()
   params.value.q = deboucedQuery.value ?? undefined
   params.value.sort = searchSort.value ?? null

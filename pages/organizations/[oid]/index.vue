@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-28">
+  <div class="pb-14">
     <h2 class="!text-sm !mb-2.5">
       {{ $t('Organization description') }}
     </h2>

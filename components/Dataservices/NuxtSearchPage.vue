@@ -2,6 +2,7 @@
   <DataservicesSearchPage
     v-model:params="params"
     :forum-url="config.public.forumUrl"
+    :organization
     :organizations
     :organizations-status
     :search-results
@@ -16,7 +17,7 @@ import { useUrlSearchParams } from '@vueuse/core'
 import type { DatasetSearchParams, OrganizationSuggest } from '~/types/form'
 import type { PaginatedArray } from '~/types/types'
 
-defineProps<{
+const props = defineProps<{
   organization: Organization
 }>()
 
@@ -31,20 +32,20 @@ const url = useRequestURL()
 const params = useUrlSearchParams<DatasetSearchParams>('history', {
   initialValue: Object.fromEntries(url.searchParams.entries()),
   removeNullishValues: true,
-  removeFalsyValues: true,
 })
 
 const nonFalsyParams = computed(() => {
-  const filteredParams = Object.entries(toValue(params)).filter(([_k, v]) => v)
-  return Object.fromEntries(filteredParams)
+  const filteredParams = Object.entries(toValue(params)).filter(([_k, v]) => v !== undefined && v !== '')
+  const propsParams = props.organization ? { organization: props.organization.id } : {}
+  return { ...propsParams, ...Object.fromEntries(filteredParams) }
 })
 
 const { data: searchResults, status: searchResultsStatus } = await useAPI<PaginatedArray<Dataservice>>('/api/2/dataservices/search/', {
   params: nonFalsyParams,
+  lazy: true,
 })
-watchEffect(() => console.log(searchResultsStatus.value))
 
-const { data: organizations, status: organizationsStatus } = await useAPI<PaginatedArray<Organization>>('/api/1/organizations/?sort=-followers')
+const { data: organizations, status: organizationsStatus } = await useAPI<PaginatedArray<Organization>>('/api/1/organizations/?sort=-followers', { lazy: true })
 
 async function suggestOrganizations(q: string) {
   return await $api<Array<OrganizationSuggest>>('/api/1/organizations/suggest/', {
