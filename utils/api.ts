@@ -7,6 +7,7 @@ export function useAPI<T, U = T>(
   url: MaybeRefOrGetter<string>,
   options?: UseFetchOptions<T, U>,
 ) {
+  const me = useMaybeMe()
   const { setCurrentOrganization, setCurrentUser } = useCurrentOwned()
 
   return useFetch(url, {
@@ -21,7 +22,7 @@ export function useAPI<T, U = T>(
         setCurrentOrganization(data.organization as Organization)
       }
 
-      if (data && typeof data === 'object' && 'owner' in data && data.owner) {
+      if (me.value && isAdmin(me.value) && data && typeof data === 'object' && 'owner' in data && data.owner) {
         setCurrentUser(data.owner as User)
       }
 
