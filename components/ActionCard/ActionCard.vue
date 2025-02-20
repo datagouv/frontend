@@ -9,7 +9,7 @@
     >
       <div class="flex-none">
         <NuxtImg
-          class="w-full"
+          class="w-20"
           :src="icon"
           loading="lazy"
           alt=""
