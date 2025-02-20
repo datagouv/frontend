@@ -16,8 +16,8 @@ export function useAPI<T, U = T>(
   })
     .then((response) => {
       if (me.value && isAdmin(me.value)) {
-        // Check the response to see if an `organization` is present
-        // to add this organization to the menu.
+        // Check the response to see if an `organization` or an `owner` is present
+        // to add this organization/user to the menu.
         const data = toValue(response.data)
         if (data && typeof data === 'object' && 'organization' in data && data.organization) {
           setCurrentOrganization(data.organization as Organization)
