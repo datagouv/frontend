@@ -470,6 +470,7 @@ import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import ContactPointSelect from '~/components/ContactPointSelect.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
+import SimpleBanner from '~/shared/src/components/SimpleBanner.vue'
 import type { DataserviceForm, Owned } from '~/types/types'
 
 const props = defineProps<{

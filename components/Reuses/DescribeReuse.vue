@@ -352,6 +352,7 @@ import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
+import SimpleBanner from '~/shared/src/components/SimpleBanner.vue'
 import type { ReuseForm, Owned, ReuseTopic } from '~/types/types'
 
 const reuseForm = defineModel<ReuseForm>({ required: true })

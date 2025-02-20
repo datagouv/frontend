@@ -19,6 +19,7 @@ import OrganizationNameWithCertificate from './components/OrganizationNameWithCe
 import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
 import Pagination from './components/Pagination.vue'
 import ReadMore from './components/ReadMore.vue'
+import SimpleBanner from './components/SimpleBanner.vue'
 import type { UseFetchFunction } from './functions/api'
 
 export * from './functions/dates'
@@ -101,4 +102,5 @@ export {
   OwnerTypeIcon,
   Pagination,
   ReadMore,
+  SimpleBanner,
 }

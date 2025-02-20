@@ -181,6 +181,7 @@
 import { Well } from '@datagouv/components'
 import UploadResourceModal from '../UploadResourceModal.vue'
 import type { ResourceForm } from '~/types/types'
+import SimpleBanner from '~/shared/src/components/SimpleBanner.vue'
 
 const props = defineProps<{
   loading: boolean

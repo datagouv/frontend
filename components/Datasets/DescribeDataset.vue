@@ -562,6 +562,7 @@ import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import SearchableSelect from '~/components/SearchableSelect.vue'
+import SimpleBanner from '~/shared/src/components/SimpleBanner.vue'
 import type { DatasetForm, EnrichedLicense, SpatialGranularity, SpatialZone } from '~/types/types'
 
 const datasetForm = defineModel<DatasetForm>({ required: true })

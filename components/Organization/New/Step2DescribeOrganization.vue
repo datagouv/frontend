@@ -317,6 +317,7 @@ import UploadGroup from '~/components/UploadGroup/UploadGroup.vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import type { PublishingFormAccordionState } from '~/types/form'
 import Sidemenu from '~/components/Sidemenu/Sidemenu.vue'
+import SimpleBanner from '~/shared/src/components/SimpleBanner.vue'
 
 const props = withDefaults(defineProps<{
   type: 'create' | 'update'
