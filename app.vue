@@ -14,7 +14,7 @@ import '~/assets/css/overrides.css'
 import { setupComponents, setupI18nWithExistingInstance } from '@datagouv/components'
 import { datagouv } from '@datagouv/components-next'
 import type { UseFetchFunction } from '@datagouv/components-next'
-import { TextClamp } from '#components'
+import { NuxtLinkLocale, TextClamp } from '#components'
 
 const app = useNuxtApp()
 
@@ -28,6 +28,7 @@ app.vueApp.use(datagouv, {
   staticUrl: runtimeConfig.public.staticUrl,
   customUseFetch: useAPI as UseFetchFunction, // Why this `as` is required?
   textClamp: TextClamp,
+  appLink: NuxtLinkLocale,
 })
 
 setupComponents({

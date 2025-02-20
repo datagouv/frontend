@@ -69,6 +69,7 @@ export type PluginConfig = {
   staticUrl: string
   customUseFetch?: UseFetchFunction | null
   textClamp?: string | Component | null
+  appLink?: Component | null
 }
 
 export const configKey = Symbol() as InjectionKey<PluginConfig>
