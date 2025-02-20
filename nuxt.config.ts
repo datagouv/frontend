@@ -130,6 +130,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
 
   vite: {
+    plugins: [tailwindcss()],
     server: {
       allowedHosts: ['dev.local'],
     },
@@ -137,12 +138,6 @@ export default defineNuxtConfig({
 
   typescript: {
     typeCheck: false,
-  },
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
   },
   eslint: {
     config: {
