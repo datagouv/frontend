@@ -19,7 +19,6 @@
           <OrganizationNameWithCertificate
             :show-type="false"
             :organization
-            :certifier="config.public.title"
           />
         </NuxtLinkLocale>
       </p>

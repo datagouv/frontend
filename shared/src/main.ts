@@ -1,4 +1,4 @@
-import type { App, Component, InjectionKey, Plugin } from 'vue'
+import { inject, type App, type Component, type InjectionKey, type Plugin } from 'vue'
 import type { Badge, Badges } from './types/badges'
 import type { Dataset, DatasetV2, NewDataset, Quality, Rel } from './types/datasets'
 import type { NewDataservice, Dataservice } from './types/dataservices'
@@ -63,6 +63,7 @@ export type {
 }
 
 export type PluginConfig = {
+  name: string // Name of the application (ex: data.gouv.fr)
   baseUrl: string
   apiBase: string
   devApiKey?: string | null
@@ -84,6 +85,12 @@ const datagouv: Plugin<PluginConfig> = {
 
     app.provide(configKey, options)
   },
+}
+
+export function useComponentsConfig(): PluginConfig {
+  const config = inject(configKey)
+  if (!config) throw new Error('Calling `useConfig` outside @datagouv/components')
+  return config
 }
 
 export {

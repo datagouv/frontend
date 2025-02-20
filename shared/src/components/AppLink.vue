@@ -1,7 +1,7 @@
 <template>
   <component
     :is="config?.appLink"
-    v-if="config && config.appLink"
+    v-if="config.appLink"
     :to
   >
     <slot />
@@ -19,12 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { configKey } from '../main'
+import { useComponentsConfig } from '../main'
 
-const config = inject(configKey)
+const config = useComponentsConfig()
 const { locale } = useI18n()
 
 const props = defineProps<{
@@ -34,7 +34,7 @@ const props = defineProps<{
 const isExternal = computed(() => props.to.startsWith('http'))
 const to = computed(() => {
   // If the `appLink` component is override, the override is responsible of the locale management
-  if (config && config.appLink) return props.to
+  if (config.appLink) return props.to
 
   // If it's an external link, no locale management needed.
   if (isExternal.value) return props.to

@@ -1,7 +1,7 @@
 import { inject, ref, toValue, watchEffect, type ComputedRef, type Ref, type WatchSource } from 'vue'
 import { ofetch } from 'ofetch'
 import { useI18n } from 'vue-i18n'
-import { configKey } from '../main'
+import { configKey, useComponentsConfig } from '../main'
 
 type UseFetchOptions<DataT> = {
   key?: string
@@ -47,8 +47,7 @@ export async function useFetch<DataT, ErrorT = never>(
   url: string | Request | Ref<string | Request> | ComputedRef<string | null> | (() => string | Request),
   options?: UseFetchOptions<DataT>,
 ): Promise<AsyncData<DataT, ErrorT>> {
-  const config = inject(configKey)
-  if (!config) throw new Error('Call `useFetch` outside @datagouv/components')
+  const config = useComponentsConfig()
 
   const { t, locale } = useI18n()
 

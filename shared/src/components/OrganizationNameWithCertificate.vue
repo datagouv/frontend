@@ -18,7 +18,7 @@
     <RiCheckboxCircleLine
       v-if="isOrganizationCertified(organization)"
       class="size-5 flex-none"
-      :title="t('The identity of this public service is certified by {certifier}', { certifier })"
+      :title="t('The identity of this public service is certified by {certifier}', { certifier: config.name })"
       aria-hidden="true"
     />
   </div>
@@ -27,19 +27,17 @@
 <script setup lang="ts">
 import { RiCheckboxCircleLine } from '@remixicon/vue'
 import { useI18n } from 'vue-i18n'
-import { inject } from 'vue'
 import { getOrganizationType, isOrganizationCertified } from '../functions/organizations'
 import type { Organization } from '../types/organizations'
-import { configKey } from '../main'
+import { useComponentsConfig } from '../main'
 import OwnerTypeIcon from './OwnerTypeIcon.vue'
 
-const config = inject(configKey)
+const config = useComponentsConfig()
 
 const { t } = useI18n()
 withDefaults(defineProps<{
   organization: Organization
   showType?: boolean
-  certifier: string
 }>(), {
   showType: true,
 })

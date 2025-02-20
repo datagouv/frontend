@@ -22,6 +22,7 @@ const i18nHead = useLocaleHead()
 const runtimeConfig = useRuntimeConfig()
 
 app.vueApp.use(datagouv, {
+  name: runtimeConfig.public.title,
   baseUrl: runtimeConfig.public.i18n.baseUrl, // Maybe do not use i18n config here?
   apiBase: runtimeConfig.public.apiBase,
   devApiKey: runtimeConfig.public.devApiKey,
