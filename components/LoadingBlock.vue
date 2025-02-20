@@ -18,7 +18,6 @@ const props = defineProps<{
 }>()
 
 const loading = computed(() => {
-  console.log(props.status)
   return props.status === 'idle' || props.status === 'pending'
 })
 </script>

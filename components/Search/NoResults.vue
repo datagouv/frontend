@@ -12,6 +12,7 @@
     <template #actions>
       <BrandedButton
         color="primary-soft"
+        type="button"
         @click="$emit('resetFilters')"
       >
         {{ t("Reset filters") }}

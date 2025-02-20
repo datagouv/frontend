@@ -57,7 +57,7 @@
           { label: $t('Information'), href: `/organizations/${route.params.oid}/information` },
         ]"
       />
-      <div class="bg-white py-5">
+      <div class="bg-white pt-5 pb-8 lg:pb-24">
         <NuxtPage
           v-if="organization"
           class="container"
