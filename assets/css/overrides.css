@@ -1,5 +1,5 @@
-@import "fonts.css";
-@import "forms.css";
+@import './fonts.css';
+@import './forms.css';
 
 :root {
   --blue-france-975-75: var(--blue-cumulus-975-75);
