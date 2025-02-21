@@ -138,7 +138,7 @@ export function toApi(form: DatasetForm, overrides: { private?: boolean, archive
     license: form.license?.id || '',
     contact_points: form.contact_points && contactPoints.length ? contactPoints : undefined,
     frequency: form.frequency?.id || '',
-    temporal_coverage: (form.temporal_coverage.start && form.temporal_coverage.end) ? form.temporal_coverage as { start: string, end: string } : undefined,
+    temporal_coverage: form.temporal_coverage.start ? form.temporal_coverage : undefined,
     spatial: (form.spatial_granularity || form.spatial_zones)
       ? {
           zones: form.spatial_zones.length ? form.spatial_zones.map(z => z.id) : undefined,
