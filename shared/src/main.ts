@@ -78,10 +78,10 @@ export const configKey = Symbol() as InjectionKey<PluginConfig>
 
 // Vue Plugin
 const datagouv: Plugin<PluginConfig> = {
-  install(app: App, options) {
+  async install(app: App, options) {
     if (!options.textClamp) {
-      app.component('runtime-text-clamp', () => import('vue3-text-clamp'))
-      options.textClamp = 'runtime-text-clamp'
+      const textClamp = await import('vue3-text-clamp')
+      options.textClamp = textClamp.default
     }
 
     app.provide(configKey, options)
