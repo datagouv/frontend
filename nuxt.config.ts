@@ -111,7 +111,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/*/organizations/': { ssr: true },
     '/*/posts/': { ssr: true },
     '/*/posts/**': { ssr: true },
     // Admin dashboard renders only on server-side
