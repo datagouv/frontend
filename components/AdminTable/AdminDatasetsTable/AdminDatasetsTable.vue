@@ -9,7 +9,10 @@
         >
           {{ t('Title of the dataset') }}
         </AdminTableTh>
-        <AdminTableTh class="w-20" scope="col">
+        <AdminTableTh
+          class="w-20"
+          scope="col"
+        >
           {{ t("Status") }}
         </AdminTableTh>
         <AdminTableTh
@@ -28,13 +31,22 @@
         >
           {{ t('Updated at') }}
         </AdminTableTh>
-        <AdminTableTh class="w-16" scope="col">
+        <AdminTableTh
+          class="w-16"
+          scope="col"
+        >
           {{ t('Files') }}
         </AdminTableTh>
-        <AdminTableTh class="w-36" scope="col">
+        <AdminTableTh
+          class="w-36"
+          scope="col"
+        >
           {{ t('Score') }}
         </AdminTableTh>
-        <AdminTableTh class="w-16" scope="col">
+        <AdminTableTh
+          class="w-16"
+          scope="col"
+        >
           <Tooltip>
             <span
               class="fr-icon--sm fr-icon-chat-3-line"
@@ -61,7 +73,10 @@
             </template>
           </Tooltip>
         </AdminTableTh>
-        <AdminTableTh class="w-16" scope="col">
+        <AdminTableTh
+          class="w-16"
+          scope="col"
+        >
           <Tooltip>
             <span
               class="fr-icon--sm fr-icon-download-line"
@@ -145,7 +160,7 @@
         <td>
           <Tooltip>
             <QualityScore
-              class="w-100"
+              class="w-full"
               :score="dataset.quality.score"
             />
             <template #tooltip>

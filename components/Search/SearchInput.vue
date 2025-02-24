@@ -1,5 +1,5 @@
 <template>
-  <section class="fr-search-bar fr-search-bar--lg w-100">
+  <section class="fr-search-bar fr-search-bar--lg w-full">
     <label
       class="sr-only"
       :for="id"

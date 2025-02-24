@@ -13,7 +13,7 @@
     </legend>
     <div
       ref="sortableRoot"
-      class="w-100 mb-8"
+      class="w-full mb-8"
     >
       <div
         v-for="(dataset, index) in selectedDatasets"
@@ -63,7 +63,7 @@
           </div>
         </template>
       </SearchableSelect>
-      <p class="fr-hr-or w-100 text-transform-lowercase fr-text--regular">
+      <p class="fr-hr-or w-full text-transform-lowercase fr-text--regular">
         <span class="fr-hr-or-text">{{ t('or') }}</span>
       </p>
       <form
@@ -76,7 +76,7 @@
           :placeholder="'https://...'"
           :has-error="!!datasetUrlError"
           :error-text="datasetUrlError"
-          class="w-100 !mb-0"
+          class="w-full !mb-0"
         />
         <BrandedButton
           type="submit"
