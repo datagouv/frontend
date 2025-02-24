@@ -12,9 +12,6 @@
       :text="organization.name"
       :max-lines="1"
     />
-    <p>
-      {{ organization.name }}
-    </p>
     <RiCheckboxCircleLine
       v-if="isOrganizationCertified(organization)"
       class="size-5 flex-none"
