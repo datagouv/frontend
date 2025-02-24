@@ -23,7 +23,7 @@
 
 #__nuxt,
 #__nuxt > div {
-  @apply h-full;
+  height: 100%;
 }
 
 .link {
