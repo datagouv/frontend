@@ -148,7 +148,7 @@ export type NewDatasetForApi = {
   tags: Array<string>
   license?: string
   contact_points?: Array<string> | null
-  temporal_coverage?: { start: string, end: string }
+  temporal_coverage?: { start: string, end: string | null }
   frequency?: string
   spatial?: {
     granularity?: string

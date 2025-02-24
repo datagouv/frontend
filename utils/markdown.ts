@@ -2,7 +2,6 @@ import type hast from 'hast'
 import behead from 'remark-behead'
 import remarkBreaks from 'remark-breaks'
 import rehypeHighlight from 'rehype-highlight'
-import remarkMDC from 'remark-mdc'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
@@ -49,8 +48,6 @@ export function formatMarkdown(md: string, minDepth = 3) {
     // Take Markdown as input and turn it into MD syntax tree
     .use(remarkParse, { fragment: true })
     .use(remarkBreaks)
-    // Use `remark-mdc` plugin to parse MDC syntax
-    .use(remarkMDC)
     // Switch from MD syntax tree to HTML syntax tree (remakr -> rehype)
     .use(remarkRehype, {
     // Necessary for support HTML embeds (see next plugin)

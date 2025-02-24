@@ -129,6 +129,7 @@
                             <NuxtLinkLocale
                               class="fr-btn items-center !justify-start !p-3 !mb-0 !text-sm"
                               to="/login"
+                              :external="true"
                             >
                               <RiLockLine class="inline mr-2 size-4" />
                               {{ $t("Log in") }}
@@ -138,6 +139,7 @@
                             <NuxtLinkLocale
                               class="fr-btn !justify-start !p-3 !mb-0 !text-sm"
                               to="/register"
+                              :external="true"
                             >
                               <RiAccountCircleLine class="inline mr-2 size-4" />
                               {{ $t("Register") }}
@@ -305,6 +307,7 @@
                   <NuxtLinkLocale
                     class="fr-btn items-center"
                     to="/login"
+                    :external="true"
                   >
                     <RiLockLine class="inline mr-2 size-4" />
                     {{ $t("Log in") }}
@@ -314,6 +317,7 @@
                   <NuxtLinkLocale
                     class="fr-btn"
                     to="/register"
+                    :external="true"
                   >
                     <RiAccountCircleLine class="inline mr-2 size-4" />
                     {{ $t("Register") }}
@@ -462,7 +466,7 @@ const menu = [
   { label: t('Data'), link: '/datasets/', external: true },
   { label: t('API'), link: '/dataservices/', external: true },
   { label: t('Reuses'), link: '/reuses/', external: true },
-  { label: t('Organizations'), link: '/organizations/' },
+  { label: t('Organizations'), link: '/organizations/', external: true },
   { label: t('Getting started on {site}', { site: config.public.title }), items: [
     { label: t('What is {site}?', { site: config.public.title }), link: '/pages/about/a-propos_data-gouv/', external: true },
     { label: t('How to publish data?'), link: '/pages/onboarding/producteurs/', external: true },

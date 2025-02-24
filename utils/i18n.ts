@@ -1,19 +1,5 @@
-import { enUS, es as esES, fr as frFR } from 'date-fns/locale'
 import type { Composer } from 'vue-i18n'
 import { createI18nMessage, minLength as vMinLength, required as vRequired } from '@vuelidate/validators'
-
-const dateLocales = { frFR, enUS, esES }
-
-const isLangKey = (value: string): value is keyof typeof dateLocales => {
-  return Object.keys(dateLocales).includes(value)
-}
-
-export function getDatepickerLocale(lang: keyof typeof dateLocales | string) {
-  if (isLangKey(lang)) {
-    return dateLocales[lang]
-  }
-  return undefined
-}
 
 // Re-export from `shared` to simplify migration, TODO change?
 export { formatDate, formatFromNow, formatRelativeIfRecentDate } from '@datagouv/components-next'

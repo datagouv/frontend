@@ -394,15 +394,26 @@
             class="fr-fieldset__element"
             @blur="touch('temporal_coverage')"
           >
-            <InputGroup
-              v-model="form.temporal_coverage"
-              :label="$t('Temporal coverage')"
-              type="range"
-
-              :has-error="!!getFirstError('temporal_coverage')"
-              :has-warning="!!getFirstWarning('temporal_coverage')"
-              :error-text="getFirstError('temporal_coverage')"
-            />
+            <p class="!mb-2">
+              {{ $t('Temporal coverage') }}
+            </p>
+            <div class="grid lg:grid-cols-2 gap-4">
+              <InputGroup
+                v-model="form.temporal_coverage.start"
+                :label="$t('start')"
+                type="date"
+                :show-label-inside="true"
+                :has-error="!!getFirstError('temporal_coverage')"
+                :has-warning="!!getFirstWarning('temporal_coverage')"
+                :error-text="getFirstError('temporal_coverage')"
+              />
+              <InputGroup
+                v-model="form.temporal_coverage.end"
+                :label="$t('end')"
+                type="date"
+                :show-label-inside="true"
+              />
+            </div>
           </LinkedToAccordion>
         </fieldset>
         <fieldset

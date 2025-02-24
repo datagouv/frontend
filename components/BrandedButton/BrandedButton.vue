@@ -17,7 +17,7 @@
     <component
       :is="icon"
       v-else-if="icon"
-      class="size-4"
+      :class="iconSize"
     />
     <span
       v-if="hasText"
@@ -40,7 +40,7 @@ import { bannerActionTypeKey } from '~/components/BannerAction.vue'
 
 import { NuxtLinkLocale } from '#components'
 
-type ColorType = 'primary' | 'primary-soft' | 'secondary' | 'warning' | 'danger'
+type ColorType = 'primary' | 'primary-soft' | 'secondary' | 'warning' | 'danger' | 'tertiary'
 
 const props = withDefaults(defineProps<{
   size?: 'xs' | 'sm' | 'lg'
@@ -84,10 +84,11 @@ const isDisabled = computed(() => props.disabled || props.loading)
 const colors = computed(() => {
   return {
     'primary': `text-white bg-datagouv-dark !border-datagouv-dark ${!isDisabled.value ? 'hover:!bg-datagouv-hover hover:!border-datagouv-hover' : ''}`,
-    'primary-soft': `text-datagouv-dark bg-white !border-datagouv-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+    'primary-soft': `text-datagouv-dark bg-transparent !border-datagouv-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
     'secondary': `text-gray-plain bg-white !border-gray-plain ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
     'warning': `text-warning-dark bg-white !border-warning-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
     'danger': `!text-danger-dark bg-white !border-danger-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
+    'tertiary': `!border-none bg-transparent text-datagouv-dark ${!isDisabled.value ? '[&&]:hover:!bg-gray-some' : ''}`,
   }[color.value]
 })
 
@@ -96,6 +97,14 @@ const sizes = computed(() => {
     lg: `text-lg ${hasText.value ? 'px-6 py-2' : 'p-3'}`,
     sm: `text-sm leading-none ${hasText.value ? 'px-4 py-3' : 'p-2.5'}`,
     xs: `text-xs leading-[0.875rem] ${hasText.value ? 'px-4 py-2' : 'p-2'}`,
+  }[size.value]
+})
+
+const iconSize = computed(() => {
+  return {
+    lg: 'size-6',
+    sm: 'size-4',
+    xs: 'size-3',
   }[size.value]
 })
 
