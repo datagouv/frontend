@@ -1,3 +1,5 @@
+import tailwindcss from '@tailwindcss/vite'
+
 // const swrDuration = process.env.NUXT_TEMPLATE_CACHE_DURATION ? parseInt(process.env.NUXT_TEMPLATE_CACHE_DURATION) : 60
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -7,7 +9,6 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxtjs/i18n',
-    '@nuxtjs/tailwindcss',
     '@sentry/nuxt/module',
   ],
   devtools: { enabled: true, componentInspector: false },
@@ -25,6 +26,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+  css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
     public: {
@@ -129,6 +131,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
 
   vite: {
+    plugins: [tailwindcss()],
     server: {
       allowedHosts: ['dev.local'],
     },
