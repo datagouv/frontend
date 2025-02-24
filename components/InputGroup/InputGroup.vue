@@ -5,7 +5,7 @@
   >
     <label
       v-if="!hideLabel"
-      class="fr-label"
+      :class="showLabelInside ? 'absolute uppercase font-bold text-xs text-gray-medium py-3 pl-3' : 'fr-label'"
       :for="id"
     >
       {{ label }}
@@ -31,28 +31,6 @@
       :spellcheck
       @change="change"
     />
-    <div
-      v-else-if="type === 'date'"
-      class="fr-mt-1w"
-    >
-      <DatePickerClient
-        :id="id"
-        class="fr-input"
-        :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid }"
-        :aria-describedby="ariaDescribedBy"
-        :disabled="disabled"
-        :model-value="(modelValue as Date | undefined)"
-        :locale="dateLocale"
-        input-format="P"
-        @change="change"
-      />
-    </div>
-    <ClientOnly v-else-if="type === 'range'">
-      <RangePicker
-        :model-value="modelValue"
-        @change="change"
-      />
-    </ClientOnly>
     <MarkdownEditor
       v-else-if="type === 'markdown'"
       :id="id"
@@ -69,7 +47,7 @@
       v-else
       :id="id"
       class="fr-input"
-      :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid }"
+      :class="{ 'fr-input--error': hasError, 'fr-input--valid': isValid, '!pl-14': showLabelInside }"
       :aria-describedby="ariaDescribedBy"
       :autocomplete
       :disabled
@@ -99,14 +77,12 @@
 
 <script setup lang="ts" generic="T">
 import { computed, type InputTypeHTMLAttribute } from 'vue'
-import DatePickerClient from '../DatePicker.client.vue'
 import MarkdownEditor from '~/components/MarkdownEditor/MarkdownEditor.vue'
-import RangePicker from '~/components/RangePicker/RangePicker.vue'
 import Required from '~/components/Required/Required.vue'
 
 export type InputValue = string | undefined | null
 
-export type AllowedInputType = 'date' | 'markdown' | 'range' | 'textarea' | InputTypeHTMLAttribute
+export type AllowedInputType = 'markdown' | 'textarea' | InputTypeHTMLAttribute
 
 const emit = defineEmits<{
   'change': [value: InputValue]
@@ -124,7 +100,8 @@ const props = withDefaults(defineProps<{
   isValid?: boolean
   label: string
   hideLabel?: boolean
-  modelValue?: string | Date | { start: string | null, end: string | null }
+  showLabelInside?: boolean
+  modelValue?: string | Date | null
   placeholder?: string
   required?: boolean
   spellcheck?: boolean
@@ -150,8 +127,6 @@ const props = withDefaults(defineProps<{
 
 const id = useId()
 
-const nuxtApp = useNuxtApp()
-
 const formInfo = inject<FormInfo<T> | null>('formInfo', null)
 const formKey = inject<KeysOfUnion<T> | null>('formKey', null)
 
@@ -175,14 +150,13 @@ const ariaDescribedBy = computed(() => {
 
 const inputGroupClass = computed(() => {
   return {
+    'relative': props.showLabelInside,
     'fr-input-group--disabled': props.disabled,
     'fr-input-group--error': hasError.value,
     'fr-input-group--warning': !hasError.value && hasWarning.value,
     'fr-input-group--valid': props.isValid,
   }
 })
-
-const dateLocale = getDatepickerLocale(nuxtApp.$i18n.locale)
 
 function change(event: Event | string | null) {
   let value: InputValue

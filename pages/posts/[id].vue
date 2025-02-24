@@ -39,30 +39,41 @@
     <h1 class="text-4.5xl font-extrabold !mb-0">
       {{ post.name }}
     </h1>
-    <p
-      v-if="post.published"
-      class="text-xs mb-0"
-    >
-      {{ $t('Published the {date}', { date: formatDate(post.published) }) }}
-    </p>
-    <p class="mt-4 mb-6">
-      {{ post.headline }}
-    </p>
-    <img
-      v-if="post.image"
-      :src="post.image"
-      class="w-full h-auto"
-    >
-    <MarkdownViewer
-      v-if="post.body_type === 'markdown'"
-      :content="post.content"
-      :min-heading="2"
-    />
-    <div
-      v-else
-      :class="markdownClasses"
-      v-html="post.content"
-    />
+    <template v-if="post.published || isAdmin(me)">
+      <p
+        v-if="post.published"
+        class="text-xs mb-0"
+      >
+        {{ $t('Published the {date}', { date: formatDate(post.published) }) }}
+      </p>
+      <p
+        v-else
+        class="text-xs mb-0"
+      >
+        {{ $t('Not published yet') }}
+      </p>
+      <p class="mt-4 mb-6">
+        {{ post.headline }}
+      </p>
+      <img
+        v-if="post.image"
+        :src="post.image"
+        class="w-full h-auto"
+      >
+      <MarkdownViewer
+        v-if="post.body_type === 'markdown'"
+        :content="post.content"
+        :min-heading="2"
+      />
+      <div
+        v-else
+        :class="markdownClasses"
+        v-html="post.content"
+      />
+    </template>
+    <template v-else>
+      {{ $t('This post is not published yet !') }}
+    </template>
   </div>
 </template>
 
