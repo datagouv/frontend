@@ -13,6 +13,8 @@ import type { CommunityResource, FileResourceFileType, RemoteResourceFileType, R
 import type { Weight, WellType } from './types/ui'
 import type { User } from './types/users'
 
+import fr_FR from '../assets/fr-FR'
+
 import CopyButton from './components/CopyButton.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
 import OrganizationNameWithCertificate from './components/OrganizationNameWithCertificate.vue'
@@ -83,6 +85,8 @@ const datagouv: Plugin<PluginConfig> = {
       const textClamp = await import('vue3-text-clamp')
       options.textClamp = textClamp.default
     }
+
+    options.i18n.global.mergeLocaleMessage('fr', fr_FR)
 
     app.provide(configKey, options)
   },

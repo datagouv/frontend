@@ -161,7 +161,7 @@ export default defineNuxtConfig({
       {
         code: 'fr',
         language: 'fr',
-        file: 'fr-FR.json',
+        files: ['fr-FR.json', '../../shared/src/locales/fr-FR.json'],
       },
     ],
     lazy: true,
