@@ -335,8 +335,8 @@
             id="description-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
-              {{ t("Contact Point") }}
+            <h2 class="subtitle subtitle--uppercase !m-0">
+              {{ t("Attributions") }}
             </h2>
           </legend>
           <LinkedToAccordion
@@ -344,14 +344,13 @@
             :accordion="contactPointAccordionId"
             @blur="touch('contact_points')"
           >
-            <template v-for="(contact_point, index) in form.contact_points">
-              <ContactPointSelect
-                v-if="contact_point.role == 'contact'"
-                :key="'id' in contact_point ? contact_point.id : index"
-                v-model="form.contact_points[index]"
-                :organization="form.owned?.organization"
-              />
-            </template>
+            <ContactPointSelect
+              v-for="(contact_point, index) in form.contact_points"
+              :key="'id' in contact_point ? contact_point.id : index"
+              v-model="form.contact_points[index]"
+              class="mt-3"
+              :organization="form.owned?.organization"
+            />
             <ContactPointSelect
               v-if="form.contact_points.length === 0"
               v-model="form.contact_points[0]"
