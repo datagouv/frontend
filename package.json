@@ -42,7 +42,6 @@
     "@vueuse/integrations": "^12.0",
     "@vueuse/nuxt": "^12.0",
     "axios": "^1.7.7",
-    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
@@ -67,7 +66,6 @@
     "vue": "^3.5",
     "vue-content-loader": "^2.0.1",
     "vue-router": "^4.4",
-    "vue3-datepicker": "^0.4.0",
     "vue3-text-clamp": "^0.1.2"
   },
   "devDependencies": {
