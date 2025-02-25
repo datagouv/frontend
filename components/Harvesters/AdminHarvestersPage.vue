@@ -56,12 +56,14 @@
               <AdminTableTh
                 scope="col"
                 class="w-24"
+                align="right"
               >
                 {{ t("Datasets") }}
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
                 class="w-24"
+                align="right"
               >
                 {{ t("Dataservices") }}
               </AdminTableTh>
@@ -99,10 +101,10 @@
                   {{ t('Not yet') }}
                 </template>
               </td>
-              <td>
+              <td class="font-mono text-right">
                 {{ getHarvesterDatasets(harvester) }}
               </td>
-              <td>
+              <td class="font-mono text-right">
                 {{ getHarvesterDataservices(harvester) }}
               </td>
             </tr>

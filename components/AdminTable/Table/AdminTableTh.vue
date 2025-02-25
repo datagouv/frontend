@@ -1,6 +1,14 @@
 <template>
   <th class="font-bold">
-    <div class="flex items-center justify-between whitespace-nowrap">
+    <div
+      class="flex items-center whitespace-nowrap"
+      :class="{
+        'justify-between': !align,
+        'justify-start': align === 'left',
+        'justify-center': align === 'center',
+        'justify-end': align === 'right',
+      }"
+    >
       <slot />
       <button
         v-if="sortable"
@@ -11,8 +19,8 @@
           'text-grey-500': sorted,
           'text-mention-grey': !sorted,
         }"
-        @click="toggleSort"
         :title="t('Sort')"
+        @click="toggleSort"
       >
         {{ t("Sort") }}
       </button>
@@ -21,31 +29,32 @@
 </template>
 
 <script lang="ts">
-import { computed } from "vue";
-import type { SortDirection } from "~/types/types";
-export type AdminTableThProps = {
-  sorted?: SortDirection | null;
-};
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import type { SortDirection } from '~/types/types'
 </script>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+export type AdminTableThProps = {
+  sorted?: SortDirection | null
+  align?: 'left' | 'center' | 'right'
+}
 
-const props = defineProps<AdminTableThProps>();
+const props = defineProps<AdminTableThProps>()
 
 const emit = defineEmits<{
   (event: 'sort', direction: SortDirection): void
-}>();
+}>()
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const sortable = computed(() => props.sorted !== undefined);
+const sortable = computed(() => props.sorted !== undefined)
 
 function toggleSort() {
-  if(props.sorted === "desc") {
-    return emit("sort", "asc");
+  if (props.sorted === 'desc') {
+    return emit('sort', 'asc')
   }
-  return emit("sort", "desc");
+  return emit('sort', 'desc')
 }
 </script>
 
