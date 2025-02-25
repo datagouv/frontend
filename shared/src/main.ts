@@ -13,7 +13,7 @@ import type { CommunityResource, FileResourceFileType, RemoteResourceFileType, R
 import type { Weight, WellType } from './types/ui'
 import type { User } from './types/users'
 
-import fr_FR from '../assets/fr-FR'
+import fr_FR from '../assets/fr-FR.js'
 
 import CopyButton from './components/CopyButton.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
@@ -74,6 +74,11 @@ export type PluginConfig = {
   customUseFetch?: UseFetchFunction | null
   textClamp?: string | Component | null
   appLink?: Component | null
+  i18n?: {
+    global: {
+      mergeLocaleMessage: (locale: string, messages: unknown) => void
+    }
+  }
 }
 
 export const configKey = Symbol() as InjectionKey<PluginConfig>
@@ -86,7 +91,9 @@ const datagouv: Plugin<PluginConfig> = {
       options.textClamp = textClamp.default
     }
 
-    options.i18n.global.mergeLocaleMessage('fr', fr_FR)
+    if (options.i18n) {
+      options.i18n.global.mergeLocaleMessage('fr', fr_FR)
+    }
 
     app.provide(configKey, options)
   },
