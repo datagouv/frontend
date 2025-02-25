@@ -1,4 +1,5 @@
 import { inject, type App, type Component, type InjectionKey, type Plugin } from 'vue'
+import fr_FR from '../assets/fr-FR.js'
 import type { Badge, Badges } from './types/badges'
 import type { Dataset, DatasetV2, NewDataset, Quality, Rel } from './types/datasets'
 import type { NewDataservice, Dataservice } from './types/dataservices'
@@ -12,8 +13,6 @@ import type { NewReuse, Reuse, ReuseType } from './types/reuses'
 import type { CommunityResource, FileResourceFileType, RemoteResourceFileType, ResourceFileType, ResourceType, Resource } from './types/resources'
 import type { Weight, WellType } from './types/ui'
 import type { User } from './types/users'
-
-import fr_FR from '../assets/fr-FR.js'
 
 import CopyButton from './components/CopyButton.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
@@ -101,7 +100,7 @@ const datagouv: Plugin<PluginConfig> = {
 
 export function useComponentsConfig(): PluginConfig {
   const config = inject(configKey)
-  if (!config) throw new Error('Calling `useConfig` outside @datagouv/components')
+  if (!config) throw new Error('Calling `useComponentsConfig` outside @datagouv/components')
   return config
 }
 
