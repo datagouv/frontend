@@ -78,6 +78,16 @@ Nuxt is responsible for building the JSON file to the correct `vue-i18n` JS fo
 
 2. If the user is not using Nuxt, it should provide the i18n object to the `datagouv` Vue plugin. The plugin will then merge the already built messages's files. Note @dev, the messages's files should be built with `npm run i18n` before publishing the package to NPM.
 
+### `Supense`
+
+To work with Nuxt, some components are doing HTTP requests during the `setup` function (Nuxt can then do SSR for these requests: doing these requests server-side). These components need to be wrapped in a [`<Suspense>`](https://vuejs.org/guide/built-ins/suspense) wrapper (you can even provide a `#fallback`). You can either wrap individual components inside `<Suspense>` or wrap you're entire application/layout in `<Suspense>`
+
+```html
+<Suspense>
+    <DatasetInformationPanel v-if="dataset" :dataset="dataset" />
+</Suspense>
+```
+
 ## Development
 
 ### Config
