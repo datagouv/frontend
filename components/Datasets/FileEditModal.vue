@@ -23,9 +23,9 @@
         :id="formId"
         @submit.prevent="submit(close)"
       >
-        <div class="fr-grid-row">
+        <div class="flex">
           <Sidemenu
-            class="fr-col-12 fr-col-md-5"
+            class="w-5/12 hidden lg:block"
             :button-text="$t('Help')"
             :on-right="true"
             :show-border="false"
@@ -141,7 +141,7 @@
               </Accordion>
             </AccordionGroup>
           </Sidemenu>
-          <div class="fr-col-12 fr-col-md-7">
+          <div class="w-full lg:w-7/12">
             <PaddedContainer class="overflow-auto">
               <fieldset
                 class="fr-fieldset min-width-0"
@@ -151,7 +151,7 @@
                   id="description-legend"
                   class="fr-fieldset__legend"
                 >
-                  <h2 class="subtitle subtitle--uppercase !mb-3">
+                  <h2 class="text-sm font-bold uppercase mb-3">
                     {{ $t("File metadata") }}
                   </h2>
                 </legend>

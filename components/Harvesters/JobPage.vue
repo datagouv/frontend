@@ -71,7 +71,7 @@
       v-if="job.errors.length"
       class="mb-4"
     >
-      <h2 class="subtitle subtitle--uppercase !mb-2.5">
+      <h2 class="text-sm font-bold uppercase mb-2.5">
         {{ $t('Errors') }}
       </h2>
 
@@ -102,7 +102,7 @@
 
     <div>
       <div class="mb-2.5">
-        <h2 class="inline subtitle subtitle--uppercase !mb-0">
+        <h2 class="inline text-sm font-bold uppercase mb-0">
           {{ $t('{n} items', job.items.length) }}
         </h2>
         <span
