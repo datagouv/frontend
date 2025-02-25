@@ -1,61 +1,111 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-import { type Resource } from '../../types/resources';
-import CopyButton from '../CopyButton/CopyButton.vue';
-import DescriptionDetails from '../DescriptionList/DescriptionDetails.vue';
-import DescriptionList from '../DescriptionList/DescriptionList.vue';
-import DescriptionTerm from '../DescriptionList/DescriptionTerm.vue';
-import { filesize, formatDate, getResourceLabel } from "../../helpers";
-import ExtraAccordion from '../ExtraAccordion/ExtraAccordion.vue';
-import { computed } from 'vue';
-import TextClamp from 'vue3-text-clamp';
-import { getResourceTitleId } from '../../helpers/resources';
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+import type { Resource } from '../../types/resources'
+import CopyButton from '../CopyButton.vue'
+import DescriptionDetails from '../DescriptionDetails.vue'
+import DescriptionList from '../DescriptionList.vue'
+import DescriptionTerm from '../DescriptionTerm.vue'
+import { formatDate } from '../../functions/dates'
+import { filesize } from '../../functions/helpers'
+import ExtraAccordion from '../ExtraAccordion.vue'
+import { getResourceTitleId, getResourceLabel } from '../../functions/resources'
+import { useComponentsConfig } from '../../main'
 
 const props = defineProps<{
-  resource: Resource;
-}>();
+  resource: Resource
+}>()
 
-const hasExtras = computed(() => Object.keys(props.resource.extras).length);
-const resourceTitleId = computed(() => getResourceTitleId(props.resource));
+const hasExtras = computed(() => Object.keys(props.resource.extras).length)
+const resourceTitleId = computed(() => getResourceTitleId(props.resource))
 
-const { t } = useI18n();
+const { t } = useI18n()
+const config = useComponentsConfig()
 </script>
+
 <template>
   <div>
     <div class="flex gap-3rem flex-col-on-small">
       <DescriptionList class="flex-1">
-        <DescriptionTerm>{{ t('URL') }}
-          <CopyButton :label="$t('Copy URL')" :copied-label="$t('URL copied!')" :text="resource.url" :aria-describedby="resourceTitleId" />
+        <DescriptionTerm>
+          {{ t('URL') }}
+          <CopyButton
+            :label="$t('Copy URL')"
+            :copied-label="$t('URL copied!')"
+            :text="resource.url"
+            :aria-describedby="resourceTitleId"
+          />
         </DescriptionTerm>
         <DescriptionDetails :with-ellipsis="false">
           <code class="code">
-            <a :href="resource.url"><TextClamp :max-lines="1" :autoresize="true" :text="resource.url" /></a>
+            <a :href="resource.url"><component
+              :is="config.textClamp"
+              v-if="config && config.textClamp"
+              :max-lines="1"
+              :autoresize="true"
+              :text="resource.url"
+            /></a>
           </code>
         </DescriptionDetails>
-        <DescriptionTerm>{{ t('Stable URL') }}
-          <CopyButton :label="$t('Copy stable URL')" :copied-label="$t('Stable URL copied!')" :text="resource.latest" :aria-describedby="resourceTitleId" />
+        <DescriptionTerm>
+          {{ t('Stable URL') }}
+          <CopyButton
+            :label="$t('Copy stable URL')"
+            :copied-label="$t('Stable URL copied!')"
+            :text="resource.latest"
+            :aria-describedby="resourceTitleId"
+          />
         </DescriptionTerm>
         <DescriptionDetails :with-ellipsis="false">
           <code class="code">
-            <a :href="resource.latest"><TextClamp :max-lines="1" :autoresize="true" :text="resource.latest" /></a>
+            <a :href="resource.latest"><component
+              :is="config.textClamp"
+              v-if="config && config.textClamp"
+              :max-lines="1"
+              :autoresize="true"
+              :text="resource.latest"
+            /></a>
           </code>
         </DescriptionDetails>
-        <DescriptionTerm>{{ t('Identifier') }}
-          <CopyButton :label="$t('Copy ID')" :copied-label="$t('ID copied!')" :text="resource.id" :aria-describedby="resourceTitleId"/>
+        <DescriptionTerm>
+          {{ t('Identifier') }}
+          <CopyButton
+            :label="$t('Copy ID')"
+            :copied-label="$t('ID copied!')"
+            :text="resource.id"
+            :aria-describedby="resourceTitleId"
+          />
         </DescriptionTerm>
         <DescriptionDetails :with-ellipsis="false">
           <code class="code">
-            <TextClamp :max-lines="1" :autoresize="true" :text="resource.id" />
+            <component
+              :is="config.textClamp"
+              v-if="config && config.textClamp"
+              :max-lines="1"
+              :autoresize="true"
+              :text="resource.id"
+            />
           </code>
         </DescriptionDetails>
         <template v-if="resource.checksum">
-          <DescriptionTerm>{{ resource.checksum.type }}
-            <CopyButton :label="$t('Copy checksum')" :copied-label="$t('Checksum copied!')"
-              :text="resource.checksum.value" :aria-describedby="resourceTitleId" />
+          <DescriptionTerm>
+            {{ resource.checksum.type }}
+            <CopyButton
+              :label="$t('Copy checksum')"
+              :copied-label="$t('Checksum copied!')"
+              :text="resource.checksum.value"
+              :aria-describedby="resourceTitleId"
+            />
           </DescriptionTerm>
           <DescriptionDetails :with-ellipsis="false">
             <code class="code">
-              <TextClamp :max-lines="1" :autoresize="true" :text="resource.checksum.value" />
+              <component
+                :is="config.textClamp"
+                v-if="config && config.textClamp"
+                :max-lines="1"
+                :autoresize="true"
+                :text="resource.checksum.value"
+              />
             </code>
           </DescriptionDetails>
         </template>
@@ -92,11 +142,18 @@ const { t } = useI18n();
       </DescriptionList>
     </div>
     <div>
-      <ExtraAccordion class="fr-pt-3w fr-mt-3w border-top border-default-grey" :button-text="t('See extras')"
-        :title-text="t('Resource Extras')" title-level="h5" :extra="resource.extras" v-if="hasExtras" />
+      <ExtraAccordion
+        v-if="hasExtras"
+        class="fr-pt-3w fr-mt-3w border-top border-default-grey"
+        :button-text="t('See extras')"
+        :title-text="t('Resource Extras')"
+        title-level="h5"
+        :extra="resource.extras"
+      />
     </div>
   </div>
 </template>
+
 <style scoped>
 .gap-3rem {
   gap: 3rem;

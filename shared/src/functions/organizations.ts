@@ -1,7 +1,7 @@
 import { useI18n } from 'vue-i18n'
 import type { Component } from 'vue'
 import { RiBankLine, RiBuilding2Line, RiCommunityLine, RiGovernmentLine, RiUserLine } from '@remixicon/vue'
-import type { Organization } from '@/types/organizations'
+import type { Organization } from '../types/organizations'
 
 export const CERTIFIED = 'certified'
 export const PUBLIC_SERVICE = 'public-service'

@@ -78,7 +78,10 @@ export type PluginConfig = {
   devApiKey?: string | null
   staticUrl: string
   datasetQualityGuideUrl?: string
+  schemaValidataUrl: string
+  schemaDocumentationUrl: string
   tabularApiUrl?: string
+  tabularApiPageSize?: number
   tabularAllowRemote?: boolean
   customUseFetch?: UseFetchFunction | null
   textClamp?: string | Component | null

@@ -9,20 +9,22 @@
 </template>
 
 <script setup lang="ts">
-import { config } from "../../config";
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n'
+import { useComponentsConfig } from '../../main'
 
 type Props = {
-  datasetId: string,
-  isCommunityResource?: boolean,
-  resourceId: string,
-};
+  datasetId: string
+  isCommunityResource?: boolean
+  resourceId: string
+}
 
 const props = withDefaults(defineProps<Props>(), {
   isCommunityResource: false,
-});
+})
 
-const { t } = useI18n();
-const resourceType = props.isCommunityResource ? 'community-resource' : 'resource';
-const adminUrl = `${config.admin_root}dataset/${props.datasetId}/${resourceType}/${props.resourceId}`;
+const config = useComponentsConfig()
+
+const { t } = useI18n()
+const resourceType = props.isCommunityResource ? 'community-resource' : 'resource'
+const adminUrl = `${config.baseUrl}/dataset/${props.datasetId}/${resourceType}/${props.resourceId}`
 </script>

@@ -158,12 +158,12 @@ import { summarize } from '../functions/helpers'
 import { formatRelativeIfRecentDate } from '../functions/dates'
 import { getOwnerName } from '../functions/owned'
 import { removeMarkdown } from '../functions/markdown'
+import { useComponentsConfig } from '../main'
 import DatasetQualityInline from './DatasetQualityInline.vue'
 import Avatar from './Avatar.vue'
 import Placeholder from './Placeholder.vue'
 import OrganizationNameWithCertificate from './OrganizationNameWithCertificate.vue'
 import AppLink from './AppLink.vue'
-import { useComponentsConfig } from '@/main'
 
   type Props = {
     dataset: Dataset | DatasetV2

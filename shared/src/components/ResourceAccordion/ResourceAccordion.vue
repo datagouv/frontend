@@ -28,7 +28,9 @@
                 :class="{
                   'font-bold': open,
                 }"
-              ><TextClamp
+              ><component
+                :is="config.textClamp"
+                v-if="config && config.textClamp"
                 :max-lines="1"
                 :text="resource.title || t('Nameless file')"
               /></span>
@@ -225,7 +227,9 @@
                       rel="ugc nofollow noopener"
                       target="_blank"
                     >
-                      <TextClamp
+                      <component
+                        :is="config.textClamp"
+                        v-if="config && config.textClamp"
                         :auto-resize="true"
                         :max-lines="1"
                         :text="resource.url"
@@ -233,7 +237,7 @@
                         <template #after>
                           <span class="fr-ml-1v fr-icon-external-link-line fr-icon--sm" />
                         </template>
-                      </TextClamp>
+                      </component>
                     </a>
                   </span>
                   <span v-else>
@@ -298,7 +302,6 @@
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
-import TextClamp from 'vue3-text-clamp'
 import { RiFileCopyLine } from '@remixicon/vue'
 import OrganizationNameWithCertificate from '../OrganizationNameWithCertificate.vue'
 import { filesize, summarize } from '../../functions/helpers'
@@ -318,8 +321,8 @@ import Metadata from './Metadata.vue'
 import SchemaBadge from './SchemaBadge.vue'
 import ResourceIcon from './ResourceIcon.vue'
 import EditButton from './EditButton.vue'
-import DataStructure from './DataStructure/DataStructure.vue'
-import Preview from './Preview/Preview.vue'
+import DataStructure from './DataStructure.vue'
+import Preview from './Preview.vue'
 
 const OGC_SERVICES_FORMATS = ['ogc:wfs', 'ogc:wms', 'wfs', 'wms']
 
