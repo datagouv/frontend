@@ -66,7 +66,7 @@ app.vueApp.use(datagouv, {
 
 1. If the user is using Nuxt, it can simply add the locales files in the `nuxt.config.ts`
 
-```json
+```ts
 {
     code: 'fr',
     language: 'fr',
