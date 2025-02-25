@@ -1,6 +1,6 @@
 import type { Owned } from '../types/owned'
 
-export default function getOwnerName(owned: Owned): string {
+export function getOwnerName(owned: Owned): string {
   if (owned.organization) {
     return owned.organization.name
   }

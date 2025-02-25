@@ -21,12 +21,17 @@ import OrganizationNameWithCertificate from './components/OrganizationNameWithCe
 import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
 import Pagination from './components/Pagination.vue'
 import ReadMore from './components/ReadMore.vue'
+import ResourceIcon from './components/ResourceAccordion/ResourceIcon.vue'
 import SimpleBanner from './components/SimpleBanner.vue'
 import type { UseFetchFunction } from './functions/api'
 
 export * from './functions/dates'
 export * from './functions/organizations'
+export * from './functions/resources'
 export * from './functions/owned'
+export * from './functions/helpers'
+export * from './functions/matomo'
+export * from './functions/markdown'
 
 export type {
   UseFetchFunction,
@@ -72,6 +77,8 @@ export type PluginConfig = {
   devApiKey?: string | null
   staticUrl: string
   datasetQualityGuideUrl?: string
+  tabularApiUrl?: string
+  tabularAllowRemote?: boolean
   customUseFetch?: UseFetchFunction | null
   textClamp?: string | Component | null
   appLink?: Component | null
@@ -115,5 +122,6 @@ export {
   OwnerTypeIcon,
   Pagination,
   ReadMore,
+  ResourceIcon,
   SimpleBanner,
 }

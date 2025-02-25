@@ -3,9 +3,9 @@
     <div class="fr-grid-row fr-grid-row--middle no-wrap wrap-md justify-between">
       <div class="fr-col-auto min-width-0">
         <div class="flex items-center mb-1">
-          <component
-            :is="(resourceForm.filetype === 'remote' ? getResourceFormatIcon(resourceForm.format) : null) || File"
-            class="size-4 text-gray-800 shrink-0 mr-1"
+          <ResourceIcon
+            :resource="resourceForm"
+            class="size-4 mr-1"
           />
           <h4 class="fr-m-0 text-base/6 overflow-wrap-anywhere text-overflow-ellipsis">
             {{ resourceForm.title || $t('Nameless resource') }}
@@ -146,7 +146,7 @@
 import { computed } from 'vue'
 import { filesize as formatFilesize } from '@datagouv/components'
 import { RiCodeSSlashLine, RiInformationLine, RiLink, RiMapPin2Line } from '@remixicon/vue'
-import File from '../Icons/File.vue'
+import { ResourceIcon } from '@datagouv/components-next'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
 import type { ResourceForm } from '~/types/types'
