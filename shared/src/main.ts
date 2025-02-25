@@ -16,6 +16,7 @@ import type { User } from './types/users'
 
 import CopyButton from './components/CopyButton.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
+import DatasetQuality from './components/DatasetQuality.vue'
 import OrganizationNameWithCertificate from './components/OrganizationNameWithCertificate.vue'
 import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
 import Pagination from './components/Pagination.vue'
@@ -70,6 +71,7 @@ export type PluginConfig = {
   apiBase: string
   devApiKey?: string | null
   staticUrl: string
+  datasetQualityGuideUrl?: string
   customUseFetch?: UseFetchFunction | null
   textClamp?: string | Component | null
   appLink?: Component | null
@@ -108,6 +110,7 @@ export {
   datagouv,
   CopyButton,
   DatasetInformationPanel,
+  DatasetQuality,
   OrganizationNameWithCertificate,
   OwnerTypeIcon,
   Pagination,
