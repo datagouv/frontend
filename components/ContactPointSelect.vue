@@ -26,7 +26,7 @@
             </template>
           </span>
           <span v-else>
-            {{ t('New contact') }}
+            {{ t('New {type}', { type: role.label.toLocaleLowerCase() }) }}
           </span>
         </template>
       </SearchableSelect>
@@ -89,7 +89,7 @@
       @click="contact = newContactForm"
     >
       <RiAddLine class="size-4" />
-      <span>{{ $t('New contact') }}</span>
+      <span>{{ t('New {type}', { type: role.label.toLocaleLowerCase() }) }}</span>
     </button>
   </div>
 </template>
