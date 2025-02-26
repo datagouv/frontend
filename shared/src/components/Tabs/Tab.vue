@@ -1,18 +1,23 @@
 <template>
-      <Tab as="template" v-slot="{ selected }">
-        <button
-            class="fr-segmented__element"
-            :class="{ 'selected': selected }"
-        >
-            <div class="inner">
-                <slot></slot>
-            </div>
-        </button>
-      </Tab>
+  <Tab
+    v-slot="{ selected }"
+    as="template"
+  >
+    <button
+      class="fr-segmented__element"
+      :class="{ selected: selected }"
+    >
+      <div class="inner">
+        <slot />
+      </div>
+    </button>
+  </Tab>
 </template>
+
 <script setup lang="ts">
 import { Tab } from '@headlessui/vue'
 </script>
+
 <style scoped>
 button {
     display: inline-flex;

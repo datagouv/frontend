@@ -58,7 +58,7 @@ export async function getCatalog(): Promise<SchemaResponseData> {
     return catalogRequest
   }
 
-  return await ofetch('datasets/schemas/', {
+  return await ofetch('api/1/datasets/schemas/', {
     baseURL: config.apiBase,
   })
 }

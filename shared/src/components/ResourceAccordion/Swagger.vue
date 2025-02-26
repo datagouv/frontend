@@ -1,26 +1,24 @@
 <template>
-  <div id="swagger-ui"></div>
+  <div id="swagger-ui" />
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import SwaggerUI from 'swagger-ui';
-import 'swagger-ui/dist/swagger-ui.css';
-import 'swagger-themes/themes/newspaper.css';
+import { onMounted } from 'vue'
+import SwaggerUI from 'swagger-ui'
+import 'swagger-ui/dist/swagger-ui.css'
+import 'swagger-themes/themes/newspaper.css'
 
 const props = defineProps<{
-    url: string;
-}>();
+  url: string
+}>()
 
 onMounted(async () => {
   SwaggerUI({
     dom_id: '#swagger-ui',
     url: props.url,
-  });
-});
-
+  })
+})
 </script>
-
 
 <style>
 /** Taken from newsletter theme */
