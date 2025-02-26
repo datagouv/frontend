@@ -1,5 +1,8 @@
 <template>
-  <Disclosure v-slot="{ open }">
+  <Disclosure
+    v-slot="{ open }"
+    as="div"
+  >
     <header
       class="fr-grid-row fr-grid-row--middle fr-pb-3w fr-mb-3w border-bottom border-default-grey"
     >
