@@ -33,8 +33,6 @@ const props = defineProps<{
 }>()
 
 const isExternal = computed(() => {
-  console.log(props.to)
-
   if (typeof props.to !== 'string') return false
   return props.to && props.to.startsWith('http')
 })

@@ -13,7 +13,7 @@
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
     "css": "tailwindcss -i ./assets/main.css -o ./assets/dist.css --minify --optimize",
-    "i18n": "intlify compile --source ./src/locales/fr-FR.json --output ./assets"
+    "i18n": "intlify compile --source ./src/locales/**/*.json --output ./assets"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",

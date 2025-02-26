@@ -1,5 +1,6 @@
 import { inject, type App, type Component, type InjectionKey, type Plugin } from 'vue'
-import fr_FR from '../assets/fr-FR.js'
+import frMessages from '../assets/fr.js'
+import enMessages from '../assets/en.js'
 import type { Badge, Badges } from './types/badges'
 import type { Dataset, DatasetV2, NewDataset, Quality, Rel } from './types/datasets'
 import type { NewDataservice, Dataservice } from './types/dataservices'
@@ -105,7 +106,8 @@ const datagouv: Plugin<PluginConfig> = {
     }
 
     if (options.i18n) {
-      options.i18n.global.mergeLocaleMessage('fr', fr_FR)
+      options.i18n.global.mergeLocaleMessage('en', enMessages)
+      options.i18n.global.mergeLocaleMessage('fr', frMessages)
     }
 
     app.provide(configKey, options)

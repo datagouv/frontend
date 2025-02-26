@@ -161,7 +161,7 @@ export default defineNuxtConfig({
       {
         code: 'fr',
         language: 'fr',
-        files: ['fr-FR.json', '../../node_modules/@datagouv/components-next/src/locales/fr-FR.json'],
+        files: ['fr-FR.json', '../../node_modules/@datagouv/components-next/src/locales/fr.json'],
       },
     ],
     lazy: true,
