@@ -27,7 +27,7 @@
       <span
         class="fr-ml-1v copy-link copy-label"
         :class="{ 'fr-sr-only': hideLabel }"
-      >{{ label }} Toto</span>
+      >{{ label }}</span>
     </span>
   </button>
 </template>
