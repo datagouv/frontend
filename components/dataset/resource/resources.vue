@@ -7,7 +7,7 @@
         </h2>
       </div>
       <div class="fr-col-auto" v-if="isCommunityResources">
-        <a class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-icon-add-line fr-btn--icon-left"
+        <a class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-gray-500 fr-icon-add-line fr-btn--icon-left"
           :href="newResourceAdminPath"
         >
           {{ t('Add a community resource') }}

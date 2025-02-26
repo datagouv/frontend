@@ -13,7 +13,7 @@
       </div>
       <div class="fr-col-auto">
         <DisclosureButton
-          class="fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left fr-btn--secondary-grey-500"
+          class="fr-btn fr-btn--tertiary-no-outline fr-btn--icon-left fr-btn--secondary-gray-500"
           :class="{ 'fr-icon-arrow-up-s-line': open, 'fr-icon-arrow-down-s-line': !open }"
         >
           <template v-if="open">

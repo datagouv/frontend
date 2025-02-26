@@ -1,12 +1,12 @@
 <template>
-  <div class="fr-my-2w fr-p-2w border border-default-grey fr-enlarge-link">
+  <div class="fr-my-2w fr-p-2w border border-default-grey relative hover:bg-gray-some">
     <div
       v-if="dataset.private || dataset.archived"
       class="absolute top-0 fr-grid-row fr-grid-row--middle fr-mt-n3v fr-ml-n1v"
     >
       <p
         v-if="dataset.private"
-        class="fr-badge fr-badge--sm fr-badge--mention-grey text-grey-380 fr-mr-1w"
+        class="fr-badge fr-badge--sm fr-badge--mention-grey text-gray-380 fr-mr-1w"
       >
         <span
           class="fr-icon-lock-line fr-icon--sm"
@@ -16,7 +16,7 @@
       </p>
       <p
         v-if="dataset.archived"
-        class="fr-badge fr-badge--sm fr-badge--mention-grey text-grey-380 fr-mr-1w"
+        class="fr-badge fr-badge--sm fr-badge--mention-grey text-gray-380 fr-mr-1w"
       >
         <span
           class="fr-icon-archive-line fr-icon--sm"
@@ -27,7 +27,7 @@
     </div>
     <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--top">
       <div class="fr-col-auto">
-        <div class="logo">
+        <div class="flex justify-center items-center p-3 border border-gray-lower bg-[#fff]">
           <Placeholder
             v-if="dataset.organization"
             type="dataset"
@@ -56,7 +56,7 @@
           >
             <AppLink
               :to="datasetUrl"
-              class="text-grey-500 fr-grid-row"
+              class="text-gray-800 text-base bg-none fr-grid-row"
             >
               <component
                 :is="config.textClamp"
@@ -70,6 +70,7 @@
                 v-if="dataset.acronym"
                 class="fr-col-auto fr-ml-1w"
               >{{ dataset.acronym }}</small>
+              <span class="absolute inset-0" />
             </AppLink>
           </slot>
         </h4>
@@ -78,10 +79,10 @@
           class="fr-text--sm fr-m-0 inline-flex"
         >
           <template v-if="dataset.organization">
-            <span class="not-enlarged fr-mr-1v">
+            <span class="fr-mr-1v">
               <AppLink
                 v-if="organizationUrl"
-                class="fr-link not-enlarged fr-text--sm inline-flex items-center"
+                class="fr-link fr-text--sm inline-flex items-center relative z-20"
                 :to="organizationUrl"
               >
                 <OrganizationNameWithCertificate :organization="dataset.organization" />
@@ -95,7 +96,7 @@
           <component
             :is="config.textClamp"
             v-else-if="config && config.textClamp"
-            class="not-enlarged fr-mr-1v"
+            class="fr-mr-1v"
             :auto-resize="true"
             :text="ownerName"
             :max-lines="1"
@@ -103,7 +104,7 @@
           <span class="text-mention-grey dash-before-sm whitespace-nowrap">{{ $t('Updated {date}', { date: formatRelativeIfRecentDate(dataset.last_update) }) }}</span>
         </div>
         <div class="fr-mx-0 fr-mb-n1v fr-grid-row fr-grid-row--middle fr-text--sm text-mention-grey">
-          <div class="fr-hidden flex-sm dash-after-sm text-grey-500">
+          <div class="fr-hidden flex-sm dash-after-sm text-gray-500">
             <DatasetQualityInline :quality="dataset.quality" />
           </div>
           <div class="fr-grid-row fr-grid-row--middle fr-mr-1v">

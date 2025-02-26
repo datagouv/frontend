@@ -1,7 +1,7 @@
 <template>
   <div class="fr-grid-row fr-grid-row--middle fr-ml-n1v">
     <Toggletip
-      class="fr-btn--secondary-grey-500"
+      class="fr-btn--secondary-gray-500"
       icon="fr-icon-info-line"
       size="md"
     >

@@ -69,7 +69,7 @@
           <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--right">
             <div class="fr-col-auto">
               <button
-                class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+                class="fr-btn fr-btn--secondary fr-btn--secondary-gray-500"
                 type="button"
                 :disabled="loading"
                 @click="close"

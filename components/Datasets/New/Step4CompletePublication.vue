@@ -28,7 +28,7 @@
       <a
         v-if="config.public.publishingDatasetFeedbackUrl"
         :href="config.public.publishingDatasetFeedbackUrl"
-        class="fr-btn fr-btn--tertiary-no-outline fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-lightbulb-line"
+        class="fr-btn fr-btn--tertiary-no-outline fr-btn--secondary-gray-500 fr-btn--icon-left fr-icon-lightbulb-line"
         target="_blank"
       >
         {{ $t('Give us your feedback on the publishing form') }}

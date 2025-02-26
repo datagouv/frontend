@@ -28,7 +28,7 @@
       <a
         v-if="config.public.publishingDataserviceFeedbackUrl"
         :href="config.public.publishingDataserviceFeedbackUrl"
-        class="fr-btn fr-btn--tertiary-no-outline fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-lightbulb-line"
+        class="fr-btn fr-btn--tertiary-no-outline fr-btn--secondary-gray-500 fr-btn--icon-left fr-icon-lightbulb-line"
       >
         {{ $t('Give us your feedback on the publishing form') }}
       </a>

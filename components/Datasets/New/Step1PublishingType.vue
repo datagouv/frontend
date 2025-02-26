@@ -51,7 +51,7 @@
         >
           <template #actions>
             <a
-              class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+              class="fr-btn fr-btn--secondary fr-btn--secondary-gray-500"
               :href="config.public.schemaPublishingUrl"
             >
               {{ $t("Use our dedicated tool") }}

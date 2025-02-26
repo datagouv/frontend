@@ -37,7 +37,7 @@
       <button
         type="button"
         :disabled="disabled"
-        class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+        class="fr-btn fr-btn--secondary fr-btn--secondary-gray-500"
         :title="$t('Browse')"
         :aria-controls="id"
         @click="open"

@@ -45,7 +45,7 @@
             class="z-2"
           />
         </div>
-        <div class="text-grey-380 subheaders-infos">
+        <div class="text-gray-380 subheaders-infos">
           <SchemaBadge
             :resource
             class="dash-after"
@@ -69,7 +69,7 @@
         </div>
         <p
           v-if="communityResource"
-          class="fr-mb-0 fr-mt-1v fr-text--xs text-grey-380"
+          class="fr-mb-0 fr-mt-1v fr-text--xs text-gray-380"
         >
           {{ t('From') }}
           <a

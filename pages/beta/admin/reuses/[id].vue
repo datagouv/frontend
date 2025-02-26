@@ -19,7 +19,7 @@
         </h1>
         <a
           :href="reuse.page"
-          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-eye-line"
+          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-gray-500 fr-btn--icon-left fr-icon-eye-line"
         >
           {{ t('See the reuse page') }}
         </a>

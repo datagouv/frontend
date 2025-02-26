@@ -78,7 +78,7 @@
               <td>{{ formatDate(post.last_modified) }}</td>
               <td>
                 <NuxtLinkLocale
-                  class="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+                  class="fr-btn fr-btn--sm fr-btn--secondary-gray-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
                   :to="`/beta/admin/posts/${post.id}`"
                 >
                   {{ t("Edit") }}

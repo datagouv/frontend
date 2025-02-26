@@ -35,8 +35,8 @@ withDefaults(defineProps<{
 
 .fr-table table :deep(tbody tr:nth-child(even)) {
   background-color: var(--background-alt-grey);
-  --hover: var(--background-alt-grey-hover);
-  --active: var(--background-alt-grey-active);
+  --hover: var(--background-alt-gray-hover);
+  --active: var(--background-alt-gray-active);
 }
 
 .fr-table table :deep(td) {
@@ -53,7 +53,7 @@ withDefaults(defineProps<{
 
 .fr-table :deep(tbody), .fr-table :deep(thead) {
   background-color: var(--background-default-grey);
-  --hover: var(--background-default-grey-hover);
-  --active: var(--background-default-grey-active);
+  --hover: var(--background-default-gray-hover);
+  --active: var(--background-default-gray-active);
 }
 </style>

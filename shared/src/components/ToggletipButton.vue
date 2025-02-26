@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="`fr-btn fr-btn--tertiary-no-outline text-grey-380 fr-btn--darker-hover align-middle ${sizeClass} ${icon}`"
+    :class="`fr-btn fr-btn--tertiary-no-outline text-gray-380 fr-btn--darker-hover align-middle ${sizeClass} ${icon}`"
   />
 </template>
 

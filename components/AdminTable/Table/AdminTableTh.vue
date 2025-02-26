@@ -8,7 +8,7 @@
         :class="{
           'fr-icon-arrow-down-line': !sorted || sorted === 'asc',
           'fr-icon-arrow-up-line': sorted === 'desc',
-          'text-grey-500': sorted,
+          'text-gray-500': sorted,
           'text-mention-grey': !sorted,
         }"
         @click="toggleSort"

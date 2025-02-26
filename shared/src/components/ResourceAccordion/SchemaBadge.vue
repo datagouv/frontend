@@ -73,7 +73,7 @@
         </div>
       </template>
     </Toggletip>
-    <span class="fr-mr-1v text-grey-380">{{ t("Schema:") }}</span>
+    <span class="fr-mr-1v text-gray-380">{{ t("Schema:") }}</span>
     <span class="flex items-center bg-error-950 rounded-sm">
       <span class="fr-tag fr-tag--sm">{{ title }}</span>
       <span

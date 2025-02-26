@@ -54,7 +54,7 @@
                   <button
                     class="fr-btn fr-btn--sm fr-btn--tertiary-no-outline fr-my-n1w"
                     :class="{
-                      'fr-btn--secondary-grey-500': !isSortedBy(col),
+                      'fr-btn--secondary-gray-500': !isSortedBy(col),
                       'fr-btn--icon-right': isSortedBy(col),
                       'fr-icon-arrow-down-line': isSortedBy(col) && sortConfig && sortConfig.type == 'desc',
                       'fr-icon-arrow-up-line': isSortedBy(col) && sortConfig && sortConfig.type == 'asc',
