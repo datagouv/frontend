@@ -139,7 +139,7 @@ const { data: rolesList, status: rolesStatus } = await useAPI<Array<ContactType>
 const loading = computed(() => status.value === 'pending' || rolesStatus.value === 'pending')
 
 watchEffect(() => {
-  role.value = rolesList.value.find(r => r.id === contact.value?.role)
+  role.value = rolesList.value?.find(r => r.id === contact.value?.role)
 })
 
 const contactsWithNewOption = computed<Array<ContactPointInForm>>(() => {
