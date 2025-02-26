@@ -7,6 +7,7 @@
   >
     <span
       v-if="copied"
+      class="flex items-center"
       style="color: #3558a2;"
     >
       <RiCheckLine class="size-4 inline" />
@@ -15,7 +16,10 @@
         :class="{ 'fr-sr-only': hideLabel }"
       >{{ copiedLabel }}</span>
     </span>
-    <span v-if="!copied">
+    <span
+      v-if="!copied"
+      class="flex items-center"
+    >
       <component
         :is="hideLabel ? RiClipboardLine : RiFileCopyLine"
         class="size-4 inline"

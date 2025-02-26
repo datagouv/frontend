@@ -15,14 +15,14 @@
           >
             <button
               type="button"
-              class="fr-p-0 flex items-center"
+              class="fr-p-0 flex items-baseline text-base leading-none font-normal"
               data-testid="expand-button"
               :aria-expanded="open"
               @click="toggle"
             >
               <ResourceIcon
                 :resource
-                class="fr-icon--xs fr-mr-1v"
+                class="size-3.5 mr-1"
               />
               <span
                 :class="{
