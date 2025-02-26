@@ -2,8 +2,7 @@
   <div class="relative">
     <div
       ref="readMoreRef"
-      class="read-more"
-      :class="{ expand: expanded }"
+      class="overflow-hidden"
       :style="{ height: containerHeight + 'px' }"
     >
       <div ref="containerRef">
@@ -12,13 +11,18 @@
     </div>
     <div
       v-if="readMoreRequired"
-      class="read-more__bottom"
+      class=" bottom-0 w-full cursor-pointer text-center"
+      :class="{
+        'relative pt-2.5': expanded,
+        'absolute pt-20 bg-linear-to-b from-white/0 via-70% via-white/100 to-white/100': !expanded,
+      }"
       @click.prevent="toggle"
     >
       <button
+        type="button"
         role="button"
-        class="fr-btn fr-btn--tertiary-no-outline"
-        @click.prevent.stop="toggle"
+        class="fr-btn fr-btn--tertiary-no-outline rounded-4xl"
+        @click="toggle"
       >
         <template v-if="expanded">
           {{ $t("Read less") }}
