@@ -7,10 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import '@gouvfr/dsfr/dist/dsfr.css'
-import '@gouvfr/dsfr/dist/utility/utility.css'
-import '@datagouv/components/dist/style.css'
-import '~/assets/css/overrides.css'
 import { setupComponents, setupI18nWithExistingInstance } from '@datagouv/components'
 
 const app = useNuxtApp()

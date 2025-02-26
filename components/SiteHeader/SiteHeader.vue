@@ -466,7 +466,7 @@ const menu = [
   { label: t('Data'), link: '/datasets/', external: true },
   { label: t('API'), link: '/dataservices/', external: true },
   { label: t('Reuses'), link: '/reuses/', external: true },
-  { label: t('Organizations'), link: '/organizations/' },
+  { label: t('Organizations'), link: '/organizations/', external: true },
   { label: t('Getting started on {site}', { site: config.public.title }), items: [
     { label: t('What is {site}?', { site: config.public.title }), link: '/pages/about/a-propos_data-gouv/', external: true },
     { label: t('How to publish data?'), link: '/pages/onboarding/producteurs/', external: true },

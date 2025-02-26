@@ -1,7 +1,7 @@
 <template>
   <div
-    :class="{ 'order-md-2': onRight }"
-    class="fr-mb-2w fr-mb-md-0"
+    :class="{ 'md:order-2': onRight }"
+    class="mb-4 md:mb-0"
   >
     <nav
       class="fr-sidemenu"
@@ -22,7 +22,7 @@
         <DisclosurePanel>
           <div
             :id="titleId"
-            class="fr-sidemenu__title fr-text--sm"
+            class="fr-sidemenu__title !text-sm !mb-3"
           >
             <slot name="title" />
           </div>

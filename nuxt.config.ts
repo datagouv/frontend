@@ -1,4 +1,6 @@
-const swrDuration = process.env.NUXT_TEMPLATE_CACHE_DURATION ? parseInt(process.env.NUXT_TEMPLATE_CACHE_DURATION) : 60
+import tailwindcss from '@tailwindcss/vite'
+
+// const swrDuration = process.env.NUXT_TEMPLATE_CACHE_DURATION ? parseInt(process.env.NUXT_TEMPLATE_CACHE_DURATION) : 60
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 
@@ -7,7 +9,6 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@nuxtjs/i18n',
-    '@nuxtjs/tailwindcss',
     '@sentry/nuxt/module',
   ],
   devtools: { enabled: true, componentInspector: false },
@@ -25,6 +26,7 @@ export default defineNuxtConfig({
       ],
     },
   },
+  css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
     public: {
@@ -55,6 +57,7 @@ export default defineNuxtConfig({
       supportUrl: 'https://support.data.gouv.fr/',
       catalogUrl: 'https://guides.data.gouv.fr/autres-ressources-utiles/catalogage-de-donnees-grist',
 
+      dataSearchFeedbackFormUrl: 'https://tally.so/r/mDKv1N',
       feedbackFormUrl: 'https://tally.so/r/mOld5R',
       betaAdminFeedbackUrl: 'https://tally.so/r/nP25OB',
       publishingDatasetFeedbackUrl: 'https://tally.so/r/nGo0yO',
@@ -108,9 +111,8 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/*/organizations/': { swr: swrDuration },
-    '/*/posts/': { swr: swrDuration },
-    '/*/posts/**': { swr: swrDuration },
+    '/*/posts/': { ssr: true },
+    '/*/posts/**': { ssr: true },
     // Admin dashboard renders only on server-side
     '/*/beta/admin/**': { ssr: true },
   },
@@ -128,6 +130,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
 
   vite: {
+    plugins: [tailwindcss()],
     server: {
       allowedHosts: ['dev.local'],
     },

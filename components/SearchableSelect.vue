@@ -34,7 +34,8 @@
         >
           <ComboboxInput
             :id
-            class="fr-input !pr-10"
+            class="input shadow-input group-data-[input-color=blue]/form:shadow-input-blue !pr-10"
+            :class="showClearButton ? '!pr-[4.5rem]' : '!pr-10'"
             :display-value="(option: ModelType) => option ? displayValue(option): null"
             :placeholder
             @change="query = $event.target.value"
@@ -56,7 +57,7 @@
               class="w-full h-full hover:!bg-transparent"
             />
             <button
-              v-if="! required && ! multiple && model"
+              v-if="showClearButton"
               type="button"
               class="p-2"
               @click.prevent="model = null"
@@ -76,7 +77,7 @@
         >
           <ComboboxOptions
             ref="popover"
-            class="z-10 mt-1 absolute max-h-60 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm pl-0"
+            class="z-10 mt-1 absolute max-h-60 min-w-80 w-full overflow-auto rounded-md bg-white text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm pl-0"
           >
             <div
               v-if="!filteredAndGroupedOptions && query !== ''"
@@ -103,10 +104,9 @@
                 :value="option"
               >
                 <li
-                  class="relative cursor-default select-none py-2 pr-4 list-none flex items-center gap-2"
+                  class="relative cursor-default select-none py-2 pr-4 list-none flex items-center gap-2 text-gray-900"
                   :class="{
-                    'bg-primary text-white': isActive(activeOption, option),
-                    'text-gray-900': !isActive(activeOption, option),
+                    'bg-gray-lower': isActive(activeOption, option),
                     'pl-2': comboboxSlot.selected,
                     'pl-6': !comboboxSlot.selected,
                   }"
@@ -117,7 +117,6 @@
                     <RiCheckLine
                       v-if="comboboxSlot.selected"
                       class="size-4 text-primary"
-                      :class="{ 'text-white': isActive(activeOption, option) }"
                     />
                   </div>
                   <slot
@@ -178,10 +177,8 @@ const props = withDefaults(defineProps<{
 
   required?: boolean
   multiple: Multiple
-  isBlue?: boolean
 }>(), {
   required: false,
-  isBlue: false,
   loading: false,
   displayValue: (_: ModelType): string => '',
   groupBy: (_: T): string => '',
@@ -224,6 +221,8 @@ const ariaDescribedBy = computed(() => {
   if (props.errorText) return errorTextId
   return ''
 })
+
+const showClearButton = computed(() => !props.required && !props.multiple && model.value)
 
 const query = ref('')
 
