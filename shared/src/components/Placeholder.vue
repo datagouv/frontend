@@ -20,9 +20,10 @@ const props = defineProps<{
   size: number
 }>()
 const placeholderUrl = async () => {
-  const module = await import(`../../assets/img/placeholders/${props.type}.png`)
+  const module = await import(`../../assets/placeholders/${props.type}.png`)
   return props.src ? props.src : module.default
 }
+
 const alternativeTextForDefinedImageOnly = computed(() => props.src ? props.alt : '')
 const path = computedAsync(() => placeholderUrl())
 </script>

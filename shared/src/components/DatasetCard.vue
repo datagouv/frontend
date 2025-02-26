@@ -81,7 +81,7 @@
             <span class="not-enlarged fr-mr-1v">
               <AppLink
                 v-if="organizationUrl"
-                class="fr-link fr-text--sm inline-flex items-center"
+                class="fr-link not-enlarged fr-text--sm inline-flex items-center"
                 :to="organizationUrl"
               >
                 <OrganizationNameWithCertificate :organization="dataset.organization" />

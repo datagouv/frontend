@@ -18,8 +18,6 @@
       :title="t('The identity of this public service is certified by {certifier}', { certifier: config.name })"
       aria-hidden="true"
     />
-    {{ $t('AAA') }}
-    {{ t('AAA') }}
   </div>
 </template>
 
