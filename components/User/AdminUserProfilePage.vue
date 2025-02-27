@@ -272,7 +272,7 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, type User } from '@datagouv/components'
+import { Avatar, type User } from '@datagouv/components-next'
 import { CopyButton } from '@datagouv/components-next'
 import { RiDeleteBin6Line, RiEditLine, RiEyeLine, RiRecycleLine, RiSaveLine } from '@remixicon/vue'
 import AdminBreadcrumb from '../Breadcrumbs/AdminBreadcrumb.vue'

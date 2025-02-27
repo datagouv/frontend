@@ -15,6 +15,7 @@ import type { CommunityResource, FileResourceFileType, RemoteResourceFileType, R
 import type { Weight, WellType } from './types/ui'
 import type { User } from './types/users'
 
+import Avatar from './components/Avatar.vue'
 import CopyButton from './components/CopyButton.vue'
 import DatasetCard from './components/DatasetCard.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
@@ -125,6 +126,7 @@ export function useComponentsConfig(): PluginConfig {
 
 export {
   datagouv,
+  Avatar,
   CopyButton,
   DatasetCard,
   DatasetInformationPanel,

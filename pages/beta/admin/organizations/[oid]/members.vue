@@ -244,7 +244,7 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, getUserAvatar, type Member, type Organization } from '@datagouv/components'
+import { Avatar, getUserAvatar, type Member, type Organization } from '@datagouv/components-next'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiAddLine, RiLogoutBoxRLine, RiMailLine } from '@remixicon/vue'

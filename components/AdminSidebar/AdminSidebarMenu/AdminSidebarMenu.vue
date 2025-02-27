@@ -172,7 +172,7 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar } from '@datagouv/components'
+import { Avatar } from '@datagouv/components-next'
 import type { Organization, User } from '@datagouv/components-next'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { RiArticleLine, RiBuilding2Line, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiGroup3Line, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
