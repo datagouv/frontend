@@ -23,6 +23,7 @@ import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
 import DatasetQuality from './components/DatasetQuality.vue'
 import DatasetQualityScore from './components/DatasetQualityScore.vue'
 import OrganizationNameWithCertificate from './components/OrganizationNameWithCertificate.vue'
+import OwnerType from './components/OwnerType.vue'
 import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
 import Pagination from './components/Pagination.vue'
 import ReadMore from './components/ReadMore.vue'
@@ -135,6 +136,7 @@ export {
   DatasetQuality,
   DatasetQualityScore,
   OrganizationNameWithCertificate,
+  OwnerType,
   OwnerTypeIcon,
   Pagination,
   ReadMore,

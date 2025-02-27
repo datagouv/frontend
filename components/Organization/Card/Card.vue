@@ -45,7 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { AsyncTextClamp, OwnerType, removeMarkdown, useOrganizationType, type Organization } from '@datagouv/components'
+import { AsyncTextClamp } from '@datagouv/components'
+import { OwnerType, removeMarkdown, getOrganizationType, type Organization } from '@datagouv/components-next'
 import { RiLineChartLine, RiDatabase2Line, RiTerminalLine } from '@remixicon/vue'
 
 const props = defineProps<{
@@ -54,5 +55,5 @@ const props = defineProps<{
 
 const config = useRuntimeConfig()
 
-const { type } = useOrganizationType(props.organization)
+const type = computed(() => getOrganizationType(props.organization))
 </script>

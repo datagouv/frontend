@@ -305,7 +305,7 @@
 
 <script setup lang="ts">
 import { ASSOCIATION, COMPANY, LOCAL_AUTHORITY, PUBLIC_SERVICE, SimpleBanner, type NewOrganization, type Organization, type OrganizationTypes } from '@datagouv/components-next'
-import { OwnerType } from '@datagouv/components'
+import { OwnerType } from '@datagouv/components-next'
 import { url } from '@vuelidate/validators'
 import { computed, reactive, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'

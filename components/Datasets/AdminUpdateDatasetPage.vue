@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, Frequency, License } from '@datagouv/components'
+import type { Dataset, Frequency, License } from '@datagouv/components-next'
 import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
