@@ -140,7 +140,7 @@ const reuseType = computed(() => {
 })
 </script>
 
-  <style scoped lang="less">
+  <style scoped>
 .fr-card__img img.reuse-ratio {
     aspect-ratio: 1.4;
     object-fit: cover;
