@@ -127,7 +127,7 @@ type ContactType = { id: string, label: string }
 
 const role = ref<ContactType>()
 
-onMounted(() => {
+watchEffect(() => {
   if (contact.value && !('id' in contact.value)) {
     contact.value = newContactForm.value
   }

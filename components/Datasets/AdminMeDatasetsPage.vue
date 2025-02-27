@@ -24,7 +24,7 @@
       <div class="fr-col">
         <h2
           v-if="pageData && pageData.length"
-          class="subtitle subtitle--uppercase fr-m-0"
+          class="text-sm font-bold uppercase m-0"
         >
           {{ t('{n} datasets', pageData.length) }}
         </h2>
