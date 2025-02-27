@@ -239,14 +239,14 @@
                 @change="changePage"
               />
               <SearchNoResults
-                v-else-if="!organization"
+                v-else-if="!organization && searchResultsStatus !== 'pending'"
                 class="mt-4"
                 :forum-url
                 @reset-filters="resetForm"
               />
             </div>
             <SearchNoResults
-              v-else
+              v-else-if="searchResultsStatus !== 'pending'"
               :forum-url
               @reset-filters="resetForm"
             />

@@ -1,5 +1,6 @@
 <template>
   <ReuseCard
+    :certifier="config.public.title"
     :reuse
     :style
     :show-description
@@ -9,8 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { ReuseCard, type Reuse } from '@datagouv/components'
+import type { Reuse } from '@datagouv/components'
 import type { StyleValue } from 'vue'
+import ReuseCard from '~/components/Reuses/Card/ReuseCard.vue'
 
 withDefaults(defineProps<{
   reuse: Reuse
@@ -21,4 +23,5 @@ withDefaults(defineProps<{
 })
 
 const localePath = useLocalePath()
+const config = useRuntimeConfig()
 </script>

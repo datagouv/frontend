@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import type { Organization, Reuse } from '@datagouv/components'
-import Card from '~/components/Reuses/Card/Card.vue'
+import Card from '~/components/Reuses/Card/NuxtCard.vue'
 import type { PaginatedArray } from '~/types/types'
 
 const props = defineProps<{
