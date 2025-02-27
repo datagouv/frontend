@@ -21,6 +21,7 @@ import CopyButton from './components/CopyButton.vue'
 import DatasetCard from './components/DatasetCard.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
 import DatasetQuality from './components/DatasetQuality.vue'
+import DatasetQualityItem from './components/DatasetQualityItem.vue'
 import DatasetQualityScore from './components/DatasetQualityScore.vue'
 import OrganizationNameWithCertificate from './components/OrganizationNameWithCertificate.vue'
 import OwnerType from './components/OwnerType.vue'
@@ -134,6 +135,7 @@ export {
   DatasetCard,
   DatasetInformationPanel,
   DatasetQuality,
+  DatasetQualityItem,
   DatasetQualityScore,
   OrganizationNameWithCertificate,
   OwnerType,
