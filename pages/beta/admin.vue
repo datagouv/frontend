@@ -68,21 +68,6 @@
             </a>
           </div>
         </div>
-        <div class="space-x-4">
-          <a
-            class="fr-link fr-link--external"
-            :href="config.public.betaAdminFeedbackUrl"
-            target="_blank"
-          >
-            {{ $t('Give your opinion') }}
-          </a>
-          <a
-            class="fr-link fr-link--external"
-            :href="`/${locale}/admin`"
-          >
-            {{ $t('Go back to the old admin') }}
-          </a>
-        </div>
       </SimpleBanner>
       <NuxtPage
         :page-key="route => route.fullPath"
