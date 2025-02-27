@@ -1,8 +1,7 @@
 <template>
   <div class="fr-p-3w bg-white">
-    <Well
-      color="blue-cumulus"
-      weight="regular"
+    <SimpleBanner
+      type="primary"
       class="mb-6"
     >
       <div class="fr-grid-row">
@@ -22,7 +21,7 @@
           </p>
         </div>
       </div>
-    </Well>
+    </SimpleBanner>
     <DatasetCardLg :dataset="publicDataset" />
     <div class="fr-grid-row justify-between">
       <a
@@ -55,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Dataset } from '@datagouv/components'
+import { SimpleBanner, type Dataset } from '@datagouv/components-next'
 
 const props = defineProps<{
   dataset: Dataset

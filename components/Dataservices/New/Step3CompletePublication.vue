@@ -1,8 +1,7 @@
 <template>
   <div class="fr-p-3w bg-white">
-    <Well
-      color="blue-cumulus"
-      weight="regular"
+    <SimpleBanner
+      type="primary"
       class="mb-6"
     >
       <div class="fr-grid-row">
@@ -22,7 +21,7 @@
           </p>
         </div>
       </div>
-    </Well>
+    </SimpleBanner>
     <DataserviceCard :dataservice />
     <div class="fr-grid-row justify-between">
       <a
@@ -53,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Dataservice } from '@datagouv/components'
+import { SimpleBanner, type Dataservice } from '@datagouv/components-next'
 import DataserviceCard from '~/components/Dataservices/Card/Card.vue'
 
 defineProps<{

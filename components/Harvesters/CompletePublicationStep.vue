@@ -1,8 +1,7 @@
 <template>
   <div class="fr-p-3w bg-white">
-    <Well
-      color="blue-cumulus"
-      weight="regular"
+    <SimpleBanner
+      type="primary"
       class="mb-6"
     >
       <div class="fr-grid-row">
@@ -22,7 +21,7 @@
           </p>
         </div>
       </div>
-    </Well>
+    </SimpleBanner>
     <div class="flex justify-between">
       <a
         v-if="config.public.publishingHarvesterFeedbackUrl"
@@ -52,8 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
-import { RiExternalLinkLine } from '@remixicon/vue'
+import { SimpleBanner } from '@datagouv/components-next'
 import type { HarvesterSource } from '~/types/harvesters'
 
 defineProps<{

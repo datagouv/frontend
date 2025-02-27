@@ -1,8 +1,7 @@
 <template>
   <PaddedContainer>
-    <Well
-      color="blue-cumulus"
-      weight="regular"
+    <SimpleBanner
+      type="primary"
       class="-mb-3"
     >
       <div class="flex flex-wrap gap-3">
@@ -23,7 +22,7 @@
           </p>
         </div>
       </div>
-    </Well>
+    </SimpleBanner>
     <article class="my-6 p-6 !border border-neutral-200 fr-enlarge-link">
       <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--top">
         <div class="fr-col-auto">
@@ -105,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { removeMarkdown, Well, type Organization } from '@datagouv/components'
+import { removeMarkdown, SimpleBanner, type Organization } from '@datagouv/components-next'
 
 defineProps<{
   organization: Organization
