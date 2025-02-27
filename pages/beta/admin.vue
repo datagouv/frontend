@@ -43,33 +43,30 @@
       </nav>
     </div>
     <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full !px-4 sm:!px-10 pb-64">
-      <Well
-        color="blue-cumulus"
-        weight="regular"
-        class="mt-6"
+      <SimpleBanner
+        type="primary"
+        class="mt-6 flex space-x-8"
       >
-        <div class="flex space-x-8">
-          <div class="flex items-center space-x-2">
-            <RiInformationLine class="size-6 -mt-0.5" />
-            <div>{{ t("You're on the new admin interface in beta.") }}</div>
-          </div>
-          <div class="space-x-4">
-            <a
-              class="fr-link fr-link--external"
-              :href="config.public.betaAdminFeedbackUrl"
-              target="_blank"
-            >
-              {{ $t('Give your opinion') }}
-            </a>
-            <a
-              class="fr-link fr-link--external"
-              :href="`/${locale}/admin`"
-            >
-              {{ $t('Go back to the old admin') }}
-            </a>
-          </div>
+        <div class="flex items-center space-x-2">
+          <RiInformationLine class="size-6 -mt-0.5" />
+          <div>{{ t("You're on the new admin interface in beta.") }}</div>
         </div>
-      </Well>
+        <div class="space-x-4">
+          <a
+            class="fr-link fr-link--external"
+            :href="config.public.betaAdminFeedbackUrl"
+            target="_blank"
+          >
+            {{ $t('Give your opinion') }}
+          </a>
+          <a
+            class="fr-link fr-link--external"
+            :href="`/${locale}/admin`"
+          >
+            {{ $t('Go back to the old admin') }}
+          </a>
+        </div>
+      </SimpleBanner>
       <NuxtPage
         :page-key="route => route.fullPath"
       />
@@ -78,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { SimpleBanner } from '@datagouv/components-next'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { RiInformationLine } from '@remixicon/vue'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'
