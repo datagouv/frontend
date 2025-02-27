@@ -27,10 +27,10 @@ export default defineNuxtPlugin({
           }
           const i18n = nuxtApp.$i18n as NuxtApp['$i18n']
           if (i18n.locale.value) {
-            if (!options.params) {
-              options.params = {}
+            if (!options.query) {
+              options.query = {}
             }
-            options.params['lang'] = i18n.locale.value
+            options.query['lang'] = i18n.locale.value
           }
         },
         async onResponseError({ response }) {

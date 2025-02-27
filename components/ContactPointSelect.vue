@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-if="role">
     <div>
       <SearchableSelect
         v-model="contact"
         :options="contactsWithNewOption"
-        :label="t('Choose the contact point with which you want to publish')"
+        :label="t('Choose the {type} with which you want to publish', { type: role.label.toLocaleLowerCase() })"
         :placeholder="t('Select a contact point')"
         :display-value="(option) => 'id' in option ? (option.name || option.email || $t('Unknown')) : t('New contact')"
         :get-option-id="(option) => 'id' in option ? option.id : 'new'"
@@ -26,15 +26,14 @@
             </template>
           </span>
           <span v-else>
-            {{ t('New contact') }}
+            {{ t('New {type}', { type: role.label.toLocaleLowerCase() }) }}
           </span>
         </template>
       </SearchableSelect>
     </div>
-    <br>
     <div
       v-if="contact && !('id' in contact)"
-      class="fr-fieldset__element"
+      class="fr-fieldset__element mt-2"
     >
       <InputGroup
         v-model="newContactForm.name"
@@ -66,7 +65,10 @@
         @blur="touch('contact_form')"
       />
     </div>
-    <div v-else>
+    <div
+      v-else
+      class="mt-2"
+    >
       <div
         v-if="contact?.email"
         class="fr-fieldset__element"
@@ -87,7 +89,7 @@
       @click="contact = newContactForm"
     >
       <RiAddLine class="size-4" />
-      <span>{{ $t('New contact') }}</span>
+      <span>{{ t('New {type}', { type: role.label.toLocaleLowerCase() }) }}</span>
     </button>
   </div>
 </template>
@@ -121,6 +123,10 @@ const props = defineProps<{
   warningText?: string | null
 }>()
 
+type ContactType = { id: string, label: string }
+
+const role = ref<ContactType>()
+
 watchEffect(() => {
   if (contact.value && !('id' in contact.value)) {
     contact.value = newContactForm.value
@@ -129,7 +135,13 @@ watchEffect(() => {
 
 const contactsUrl = computed(() => `/api/1/organizations/${props.organization.id}/contacts/`)
 const { data: contacts, status } = await useAPI<PaginatedArray<ContactPoint>>(contactsUrl, { lazy: true })
-const loading = computed(() => status.value === 'pending')
+const { data: rolesList, status: rolesStatus } = await useAPI<Array<ContactType>>('/api/1/contacts/roles/', { lazy: true })
+const loading = computed(() => status.value === 'pending' || rolesStatus.value === 'pending')
+
+watchEffect(() => {
+  role.value = rolesList.value?.find(r => r.id === contact.value?.role)
+})
+
 const contactsWithNewOption = computed<Array<ContactPointInForm>>(() => {
   return [
     ...contacts.value?.data || [],
