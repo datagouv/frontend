@@ -35,8 +35,9 @@
         </div>
       </div>
       <p class="mt-2 mb-0">
-        <AsyncTextClamp
-          :text="removeMarkdown(organization.description)"
+        <TextClamp
+          v-if="description"
+          :text="description"
           :max-lines="3"
         />
       </p>
@@ -45,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import { AsyncTextClamp } from '@datagouv/components'
 import { OwnerType, removeMarkdown, getOrganizationType, type Organization } from '@datagouv/components-next'
 import { RiLineChartLine, RiDatabase2Line, RiTerminalLine } from '@remixicon/vue'
 
@@ -53,7 +53,10 @@ const props = defineProps<{
   organization: Organization
 }>()
 
-const config = useRuntimeConfig()
-
 const type = computed(() => getOrganizationType(props.organization))
+
+const description = ref('')
+watchEffect(async () => {
+  description.value = await removeMarkdown(props.organization.description)
+})
 </script>
