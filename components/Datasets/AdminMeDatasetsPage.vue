@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset } from '@datagouv/components'
+import type { Dataset } from '@datagouv/components-next'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import AdminBreadcrumb from '../Breadcrumbs/AdminBreadcrumb.vue'

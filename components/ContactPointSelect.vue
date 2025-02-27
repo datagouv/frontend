@@ -95,7 +95,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { Organization } from '@datagouv/components'
+import type { Organization } from '@datagouv/components-next'
 import { RiAddLine } from '@remixicon/vue'
 import InputGroup from './InputGroup/InputGroup.vue'
 import type { ContactPoint, ContactPointInForm, NewContactPoint, PaginatedArray } from '~/types/types'

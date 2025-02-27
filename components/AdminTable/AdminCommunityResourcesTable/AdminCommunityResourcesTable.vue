@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import type { CommunityResource, SchemaResponseData } from '@datagouv/components'
+import type { CommunityResource, SchemaResponseData } from '@datagouv/components-next'
 import { useI18n } from 'vue-i18n'
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'

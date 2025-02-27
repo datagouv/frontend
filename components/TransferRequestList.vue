@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Organization, User } from '@datagouv/components'
+import type { Organization, User } from '@datagouv/components-next'
 import type { TransferRequest } from '~/types/types'
 
 const props = defineProps<{

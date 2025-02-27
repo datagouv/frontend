@@ -1,4 +1,4 @@
-import type { Organization, User } from '@datagouv/components'
+import type { Organization, User } from '@datagouv/components-next'
 import { keyBy } from 'lodash-es'
 
 export function useCurrentOwned() {

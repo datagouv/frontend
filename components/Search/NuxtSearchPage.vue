@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import type { DatasetV2, License, Organization, RegisteredSchema } from '@datagouv/components'
+import type { DatasetV2, License, Organization, RegisteredSchema } from '@datagouv/components-next'
 import { useUrlSearchParams } from '@vueuse/core'
 import type { DatasetSearchParams, OrganizationSuggest } from '~/types/form'
 import type { PaginatedArray, SpatialGranularity, SpatialZone, Tag } from '~/types/types'

@@ -144,9 +144,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { filesize as formatFilesize } from '@datagouv/components'
+import { filesize as formatFilesize, ResourceIcon } from '@datagouv/components-next'
 import { RiCodeSSlashLine, RiInformationLine, RiLink, RiMapPin2Line } from '@remixicon/vue'
-import { ResourceIcon } from '@datagouv/components-next'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
 import type { ResourceForm } from '~/types/types'

@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Reuse } from '@datagouv/components'
+import type { Reuse } from '@datagouv/components-next'
 import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
 import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import TabLinks from '~/components/TabLinks.vue'

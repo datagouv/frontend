@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Organization } from '@datagouv/components'
+import type { Organization } from '@datagouv/components-next'
 import { uploadLogo } from '~/api/organizations'
 import Stepper from '~/components/Stepper/Stepper.vue'
 import { loadMe } from '~/utils/auth'

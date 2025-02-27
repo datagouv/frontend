@@ -1,4 +1,4 @@
-import type { Dataset, Reuse, User } from '@datagouv/components'
+import type { Dataset, Reuse, User } from '@datagouv/components-next'
 
 export type Post = {
   body_type: 'markdown' | 'html'

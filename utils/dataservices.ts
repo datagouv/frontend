@@ -1,4 +1,4 @@
-import type { Dataservice, Dataset, DatasetV2 } from '@datagouv/components'
+import type { Dataservice, Dataset, DatasetV2 } from '@datagouv/components-next'
 import type { ContactPoint, DataserviceForm, DatasetSuggest, NewDataserviceForApi } from '~/types/types'
 
 export function getDataserviceAdminUrl(dataservice: Dataservice): string {

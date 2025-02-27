@@ -189,8 +189,9 @@
 </template>
 
 <script setup lang="ts">
-import { QualityScore, summarize } from '@datagouv/components'
-import type { Dataset, DatasetV2 } from '@datagouv/components'
+import { summarize } from '@datagouv/components-next'
+import { QualityScore } from '@datagouv/components'
+import type { Dataset, DatasetV2 } from '@datagouv/components-next'
 import { useI18n } from 'vue-i18n'
 import QualityScoreTooltipContent from '../../dataset/QualityScore/QualityScoreTooltipContent/QualityScoreTooltipContent.vue'
 import AdminBadge from '../../AdminBadge/AdminBadge.vue'

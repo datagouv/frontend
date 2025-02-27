@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { COMPANY, type Organization } from '@datagouv/components'
+import { COMPANY, type Organization } from '@datagouv/components-next'
 import { OrganizationNameWithCertificate } from '@datagouv/components-next'
 
 const certifiedOrganization: Organization = {

@@ -31,9 +31,11 @@ import type { UseFetchFunction } from './functions/api'
 export * from './functions/dates'
 export * from './functions/organizations'
 export * from './functions/resources'
+export * from './functions/users'
 export * from './functions/owned'
 export * from './functions/helpers'
 export * from './functions/matomo'
+export * from './functions/schemas'
 export * from './functions/markdown'
 
 export type {

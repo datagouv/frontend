@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, DatasetV2 } from '@datagouv/components'
+import type { Dataset, DatasetV2 } from '@datagouv/components-next'
 import { QualityItem } from '@datagouv/components'
 import { useI18n } from 'vue-i18n'
 

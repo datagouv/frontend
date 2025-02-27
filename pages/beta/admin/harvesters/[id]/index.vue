@@ -162,7 +162,7 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination } from '@datagouv/components'
+import { Pagination } from '@datagouv/components-next'
 import { RiArchiveLine, RiCheckLine, RiCloseLine, RiEyeOffLine } from '@remixicon/vue'
 import AdminTable from '~/components/AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '~/components/AdminTable/Table/AdminTableTh.vue'

@@ -90,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, DatasetV2 } from '@datagouv/components'
+import type { Dataset, DatasetV2 } from '@datagouv/components-next'
 import { RiAddLine, RiDeleteBinLine, RiDraggable } from '@remixicon/vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import CardLg from '~/components/dataset/card-lg.vue'

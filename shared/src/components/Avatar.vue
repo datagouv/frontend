@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import getUserAvatar from '../functions/users'
+import { getUserAvatar } from '../functions/users'
 import type { User } from '../types/users'
 
 type Props = {

@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataservice, Dataset, DatasetV2 } from '@datagouv/components'
+import type { Dataservice, Dataset, DatasetV2 } from '@datagouv/components-next'
 import type { DatasetSuggest, PaginatedArray } from '~/types/types'
 
 const { t } = useI18n()

@@ -120,8 +120,8 @@
 </template>
 
 <script setup lang="ts">
-import { summarize } from '@datagouv/components'
-import type { Reuse } from '@datagouv/components'
+import { summarize } from '@datagouv/components-next'
+import type { Reuse } from '@datagouv/components-next'
 import { useI18n } from 'vue-i18n'
 import AdminBadge from '../../../components/AdminBadge/AdminBadge.vue'
 import AdminTable from '../../../components/AdminTable/Table/AdminTable.vue'

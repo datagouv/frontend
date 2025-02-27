@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination, type Dataservice, type Organization, type User } from '@datagouv/components'
+import { Pagination, type Dataservice, type Organization, type User } from '@datagouv/components-next'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'

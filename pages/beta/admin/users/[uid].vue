@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '@datagouv/components'
+import type { User } from '@datagouv/components-next'
 
 const { setCurrentUser } = useCurrentOwned()
 
