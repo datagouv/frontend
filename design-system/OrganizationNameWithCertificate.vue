@@ -3,28 +3,24 @@
     <OrganizationNameWithCertificate
       :show-type="false"
       :organization="certifiedOrganization"
-      :certifier="config.public.title"
     />
     <OrganizationNameWithCertificate
       :organization="certifiedOrganization"
-      :certifier="config.public.title"
     />
     <OrganizationNameWithCertificate
       :show-type="false"
       :organization="nonCertifiedOrganization"
-      :certifier="config.public.title"
     />
     <OrganizationNameWithCertificate
       :organization="nonCertifiedOrganization"
-      :certifier="config.public.title"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { COMPANY, type Organization } from '@datagouv/components'
+import { COMPANY, type Organization } from '@datagouv/components-next'
+import { OrganizationNameWithCertificate } from '@datagouv/components-next'
 
-const config = useRuntimeConfig()
 const certifiedOrganization: Organization = {
   id: '646b7187b50b2a93b1ae3d45',
   name: 'data.gouv.fr',

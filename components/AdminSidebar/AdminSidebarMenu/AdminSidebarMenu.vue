@@ -172,7 +172,8 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, type Organization, type User } from '@datagouv/components'
+import { Avatar } from '@datagouv/components-next'
+import type { Organization, User } from '@datagouv/components-next'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { RiArticleLine, RiBuilding2Line, RiChat3Line, RiDatabase2Line, RiGitPullRequestLine, RiGroup3Line, RiLineChartLine, RiParentLine, RiPlanetLine, RiRobot2Line, RiServerLine, RiUserLine } from '@remixicon/vue'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
@@ -220,11 +221,11 @@ onUnmounted(() => unregister(id))
 }
 
 .fr-sidemenu__btn:hover {
-  background-color: var(--background-alt-grey-hover);
+  background-color: var(--background-alt-gray-hover);
 }
 
 .fr-sidemenu__btn:active {
-  background-color: var(--background-alt-grey-active);
+  background-color: var(--background-alt-gray-active);
 }
 
 .fr-sidemenu__btn[aria-current]:not([aria-current=false]) {

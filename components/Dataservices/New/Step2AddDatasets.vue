@@ -1,24 +1,14 @@
 <template>
   <div class="fr-p-3w bg-white">
-    <Well
-      color="blue-cumulus"
-      weight="regular"
-      class="fr-mb-2w"
+    <SimpleBanner
+      type="primary"
+      class="mb-4 flex items-center space-x-2"
     >
-      <div class="fr-grid-row">
-        <div class="fr-col-auto fr-mr-3v">
-          <span
-            class="fr-icon-info-line"
-            aria-hidden="true"
-          />
-        </div>
-        <div class="fr-col">
-          <p class="fr-m-0 fr-text--xs">
-            {{ t('It is important to associate all the datasets used, as this allows to understand the cross-references and improve the visibility of your reuse.') }}
-          </p>
-        </div>
-      </div>
-    </Well>
+      <RiInformationLine class="shink-0 size-6" />
+      <p class="w-full mb-0">
+        {{ t('It is important to associate all the datasets used, as this allows to understand the cross-references and improve the visibility of your reuse.') }}
+      </p>
+    </SimpleBanner>
     <DatasetsSelect v-model="datasets" />
     <div class="fr-grid-row justify-between">
       <BrandedButton
@@ -39,7 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Dataset, type DatasetV2 } from '@datagouv/components'
+import { SimpleBanner, type Dataset, type DatasetV2 } from '@datagouv/components-next'
+import { RiInformationLine } from '@remixicon/vue'
 import type { DatasetSuggest } from '~/types/types'
 
 defineProps<{

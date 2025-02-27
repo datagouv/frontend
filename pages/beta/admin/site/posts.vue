@@ -78,7 +78,7 @@
               <td>{{ formatDate(post.last_modified) }}</td>
               <td>
                 <NuxtLinkLocale
-                  class="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+                  class="fr-btn fr-btn--sm fr-btn--secondary-gray-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
                   :to="`/beta/admin/posts/${post.id}`"
                 >
                   {{ t("Edit") }}
@@ -126,7 +126,7 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination } from '@datagouv/components'
+import { Pagination } from '@datagouv/components-next'
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'

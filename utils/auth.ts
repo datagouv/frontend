@@ -1,4 +1,4 @@
-import type { Organization, User } from '@datagouv/components'
+import type { Organization, User } from '@datagouv/components-next'
 
 export type Me = User & {
   about: string | null

@@ -41,13 +41,13 @@
             <p class="fr-m-0">
               {{ t('Please indicate the type under which to categorize the reuse (API, application, news article, visualization, etc.).') }}
             </p>
-            <Well
+            <SimpleBanner
               v-if="getFirstWarning('type')"
-              class="fr-mt-1w"
-              color="orange-terre-battue"
+              class="font-bold mt-2"
+              type="warning"
             >
               {{ getFirstWarning("type") }}
-            </Well>
+            </SimpleBanner>
           </div>
         </Accordion>
         <Accordion
@@ -58,13 +58,13 @@
           <p class="fr-m-0">
             {{ t("Choose the theme associated with your reuse.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('topic')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("topic") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addDescriptionAccordionId"
@@ -74,13 +74,13 @@
           <p class="fr-m-0">
             {{ t("You can provide information about the method of creating the reuse, what the reuse allows to do or show, or tell more about yourself and the context of this reuse. It is preferable to maintain a neutral tone: if the reuse resembles too much like a promotional message, we may delete it.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('description')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("description") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addTagsAccordionId"
@@ -90,13 +90,13 @@
           <p class="fr-m-0">
             {{ t("Keywords appear on the presentation page and improve search engine optimization when a user is searching. From each keyword, you can obtain a list of reuses for which the keyword has also been assigned.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('tags')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("tags") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addImageAccordionId"
@@ -106,13 +106,13 @@
           <p class="fr-m-0">
             {{ t(`If your reuse takes the form of a graphical representation, you can provide a preview to other users through an image or screenshot. This image will appear in the "Reuses" section of the associated dataset page. When relevant, screenshots are more effective in conveying what the reuse is about, so they are preferable to logos or illustrations, for example.`) }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('image')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("image") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
@@ -347,7 +347,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type ReuseType } from '@datagouv/components'
+import { SimpleBanner, type ReuseType } from '@datagouv/components-next'
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'

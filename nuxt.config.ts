@@ -35,6 +35,7 @@ export default defineNuxtConfig({
       },
 
       apiBase: 'http://dev.local:7000',
+      staticUrl: 'https://static.data.gouv.fr/static/',
       devApiKey: undefined,
 
       qualityDescriptionLength: 100,
@@ -160,7 +161,7 @@ export default defineNuxtConfig({
       {
         code: 'fr',
         language: 'fr',
-        file: 'fr-FR.json',
+        files: ['fr-FR.json', '../../node_modules/@datagouv/components-next/src/locales/fr.json'],
       },
     ],
     lazy: true,

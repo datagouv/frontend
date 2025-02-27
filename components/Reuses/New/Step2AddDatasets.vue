@@ -1,8 +1,7 @@
 <template>
   <div class="fr-p-3w bg-white">
-    <Well
-      color="blue-cumulus"
-      weight="regular"
+    <SimpleBanner
+      type="primary"
       class="fr-mb-2w"
     >
       <div class="fr-grid-row">
@@ -18,7 +17,7 @@
           </p>
         </div>
       </div>
-    </Well>
+    </SimpleBanner>
 
     <DatasetsSelect v-model="datasets" />
 
@@ -42,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Dataset, type DatasetV2 } from '@datagouv/components'
+import { SimpleBanner, type Dataset, type DatasetV2 } from '@datagouv/components-next'
 import type { DatasetSuggest } from '~/types/types'
 
 defineProps<{ loading: boolean }>()

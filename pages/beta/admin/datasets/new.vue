@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, Frequency, Owned } from '@datagouv/components'
+import type { Dataset, Frequency, Owned } from '@datagouv/components-next'
 import Step1PublishingType from '~/components/Datasets/New/Step1PublishingType.vue'
 import DescribeDataset from '~/components/Datasets/DescribeDataset.vue'
 import Step3AddResources from '~/components/Datasets/New/Step3AddResources.vue'

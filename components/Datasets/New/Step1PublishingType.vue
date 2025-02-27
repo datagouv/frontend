@@ -3,9 +3,8 @@
     <h1 class="text-sm font-bold uppercase">
       {{ $t("Publishing type") }}
     </h1>
-    <Well
-      color="blue-cumulus"
-      weight="regular"
+    <SimpleBanner
+      type="primary"
       class="fr-mb-3w"
     >
       <span
@@ -20,7 +19,7 @@
           <a :href="config.public.demoServer.url">{{ config.public.demoServer.name }}</a>
         </template>
       </i18n-t>
-    </Well>
+    </SimpleBanner>
 
     <div class="fr-grid-row fr-grid-row--gutters">
       <div class="fr-col-12 fr-col-md-6">
@@ -51,7 +50,7 @@
         >
           <template #actions>
             <a
-              class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+              class="fr-btn fr-btn--secondary fr-btn--secondary-gray-500"
               :href="config.public.schemaPublishingUrl"
             >
               {{ $t("Use our dedicated tool") }}
@@ -128,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { SimpleBanner } from '@datagouv/components-next'
 import ActionCard from '~/components/ActionCard/ActionCard.vue'
 
 defineEmits<{

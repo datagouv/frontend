@@ -57,13 +57,13 @@
           <p class="fr-m-0">
             {{ t("Please indicate here what your organization does and what mission it fulfills. Add any information that will allow users to contact you: email address, mailing address, Twitter account, etc.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="fieldHasWarning('description')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getWarningText("description") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addWebsiteAccordionId"
@@ -82,13 +82,13 @@
           <p class="fr-m-0">
             {{ t(`If your organization has a logo or a profile picture, please upload it here. To upload a logo, click on the "Choose a file from your computer" button. The following image formats are accepted: png, jpg/jpeg.`) }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="fieldHasWarning('frequency')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getWarningText("frequency") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
@@ -304,7 +304,8 @@
 </template>
 
 <script setup lang="ts">
-import { ASSOCIATION, COMPANY, LOCAL_AUTHORITY, OwnerType, PUBLIC_SERVICE, Well, type NewOrganization, type Organization, type OrganizationTypes } from '@datagouv/components'
+import { ASSOCIATION, COMPANY, LOCAL_AUTHORITY, PUBLIC_SERVICE, SimpleBanner, type NewOrganization, type Organization, type OrganizationTypes } from '@datagouv/components-next'
+import { OwnerType } from '@datagouv/components-next'
 import { url } from '@vuelidate/validators'
 import { computed, reactive, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'

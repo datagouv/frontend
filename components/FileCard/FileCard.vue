@@ -3,15 +3,15 @@
     <div class="fr-grid-row fr-grid-row--middle no-wrap wrap-md justify-between">
       <div class="fr-col-auto min-width-0">
         <div class="flex items-center mb-1">
-          <component
-            :is="(resourceForm.filetype === 'remote' ? getResourceFormatIcon(resourceForm.format) : null) || File"
-            class="size-4 text-gray-800 shrink-0 mr-1"
+          <ResourceIcon
+            :resource="resourceForm"
+            class="size-4 mr-1"
           />
           <h4 class="fr-m-0 text-base/6 overflow-wrap-anywhere text-overflow-ellipsis">
             {{ resourceForm.title || $t('Nameless resource') }}
           </h4>
         </div>
-        <div class="fr-my-0 text-grey-380 fr-grid-row fr-grid-row--middle">
+        <div class="fr-my-0 text-gray-380 fr-grid-row fr-grid-row--middle">
           <div
             v-if="resourceForm.schema?.name"
             class="flex items-center space-x-1 text-sm fr-m-0 overflow-wrap-anywhere text-overflow-ellipsis dash-after"
@@ -76,7 +76,7 @@
           <p class="fr-col-auto fr-m-0">
             <button
               type="button"
-              class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500 fr-icon-delete-line fr-icon--sm"
+              class="fr-btn fr-btn--secondary fr-btn--secondary-gray-500 fr-icon-delete-line fr-icon--sm"
               @click="$emit('delete')"
             >
               {{ $t("Remove file") }}
@@ -144,9 +144,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { filesize as formatFilesize } from '@datagouv/components'
+import { filesize as formatFilesize, ResourceIcon } from '@datagouv/components-next'
 import { RiCodeSSlashLine, RiInformationLine, RiLink, RiMapPin2Line } from '@remixicon/vue'
-import File from '../Icons/File.vue'
 import FileEditModal from '../Datasets/FileEditModal.vue'
 import FileLoader from './FileLoader.vue'
 import type { ResourceForm } from '~/types/types'

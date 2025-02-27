@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, User } from '@datagouv/components'
+import type { Dataset, User } from '@datagouv/components-next'
 import { RiCheckLine, RiCloseLine, RiSendPlaneLine } from '@remixicon/vue'
 
 const { data: user } = await useAPI<User>(`/api/1/users/antonin-garrone`)

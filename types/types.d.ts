@@ -1,4 +1,4 @@
-import type { Dataset, CommunityResource, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema, Resource } from '@datagouv/components'
+import type { Dataset, CommunityResource, Dataservice, Reuse, User, Frequency, Organization, License, ReuseType, RegisteredSchema, Resource } from '@datagouv/components-next'
 
 export type AxisAlignment = 'start' | 'center' | 'end'
 

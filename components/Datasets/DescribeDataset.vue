@@ -57,13 +57,13 @@
               <li>{{ $t("Dataset maintenance ;") }}</li>
               <li>{{ $t("Legal and ethical considerations.") }}</li>
             </ul>
-            <Well
+            <SimpleBanner
               v-if="getFirstWarning('description')"
-              class="fr-mt-1w"
-              color="orange-terre-battue"
+              class="font-bold mt-2"
+              type="warning"
             >
               {{ getFirstWarning("description") }}
-            </Well>
+            </SimpleBanner>
           </div>
         </Accordion>
         <Accordion
@@ -74,13 +74,13 @@
           <p class="fr-m-0">
             {{ $t("Tags characterize your dataset. They are public and improve the dataset's search engine optimization during a user search.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('tags')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("tags") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="selectLicenseAccordionId"
@@ -90,13 +90,13 @@
           <p class="fr-m-0">
             {{ $t("Licenses define the rules for reuse. By choosing a reuse license, you ensure that the published dataset will be reused according to the usage conditions you have defined.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('license')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning('license') }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           v-if="form.owned?.organization"
@@ -116,13 +116,13 @@
           <p class="fr-m-0">
             {{ $t("The update frequency corresponds to how often you plan to update the published data. This update frequency is only indicative.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('frequency')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("frequency") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addTemporalCoverageAccordionId"
@@ -133,13 +133,13 @@
             {{ $t("The temporal coverage indicates the time range of the published data.") }} <br>
             {{ $t("For example : from 2012 to 2015.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('temporal_coverage')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("temporal_coverage") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addSpatialInformationAccordionId"
@@ -151,13 +151,13 @@
             {{ $t("The spatial granularity indicates the finest geographical level of detail that your data can cover.") }} <br>
             {{ $t("For example: at the department or municipality scale.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('spatial_granularity')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("spatial_granularity") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
@@ -566,7 +566,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well, type Frequency, type License } from '@datagouv/components'
+import { SimpleBanner, type Frequency, type License } from '@datagouv/components-next'
 import { RiStarFill } from '@remixicon/vue'
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'

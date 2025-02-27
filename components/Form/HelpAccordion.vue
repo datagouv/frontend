@@ -27,13 +27,13 @@
     >
       <slot />
 
-      <Well
+      <SimpleBanner
         v-if="warning"
-        class="fr-mt-1w"
-        color="orange-terre-battue"
+        class="font-bold mt-2"
+        type="warning"
       >
         {{ warning }}
-      </Well>
+      </SimpleBanner>
     </DisclosurePanel>
   </Disclosure>
 </template>
@@ -42,7 +42,7 @@
 import { computed } from 'vue'
 import { RiCloseLine, RiErrorWarningLine, RiSubtractLine } from '@remixicon/vue'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { Well } from '@datagouv/components'
+import { SimpleBanner } from '@datagouv/components-next'
 import { key, type AccordionRegister } from '~/components/Accordion/injectionKey'
 
 defineProps<{

@@ -1,4 +1,4 @@
-import type { Dataset, DatasetV2, Reuse, ReuseType } from '@datagouv/components'
+import type { Dataset, DatasetV2, Reuse, ReuseType } from '@datagouv/components-next'
 import type { DatasetSuggest, NewReuseForApi, ReuseForm, ReuseTopic } from '~/types/types'
 
 export function getReuseAdminUrl(reuse: Reuse): string {

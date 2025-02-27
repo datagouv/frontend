@@ -1,4 +1,4 @@
-import type { Dataservice, Dataset, Owned, User } from '@datagouv/components'
+import type { Dataservice, Dataset, Owned, User } from '@datagouv/components-next'
 
 export type HarvesterValidation = {
   state: 'accepted' | 'refused' | 'pending'

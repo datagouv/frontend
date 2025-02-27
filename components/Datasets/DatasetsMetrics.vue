@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { StatBox, type Organization } from '@datagouv/components'
+import { StatBox, type Organization } from '@datagouv/components-next'
 
 const props = defineProps<{
   organization: Organization

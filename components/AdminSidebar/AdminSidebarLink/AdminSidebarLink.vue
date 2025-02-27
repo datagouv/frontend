@@ -41,10 +41,10 @@ defineProps<{
 }
 
 .fr-sidemenu__link:has(> [aria-current]):hover {
-  background-color: var(--background-alt-grey-hover);
+  background-color: var(--background-alt-gray-hover);
 }
 
 .fr-sidemenu__link:has(> [aria-current]):active {
-  background-color: var(--background-alt-grey-active);
+  background-color: var(--background-alt-gray-active);
 }
 </style>

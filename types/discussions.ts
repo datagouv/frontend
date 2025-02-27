@@ -1,4 +1,4 @@
-import type { Dataservice, Dataset, Reuse, User } from '@datagouv/components'
+import type { Dataservice, Dataset, Reuse, User } from '@datagouv/components-next'
 import type { Post } from './posts'
 
 export type DiscussionSortedBy = 'title' | 'created' | 'closed'

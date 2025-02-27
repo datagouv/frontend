@@ -116,13 +116,13 @@
                     <li>{{ $t("a description of major changes.") }}</li>
                   </ul>
                 </div>
-                <Well
+                <SimpleBanner
                   v-if="getFirstWarning('description')"
-                  class="fr-mt-1w"
-                  color="orange-terre-battue"
+                  class="font-bold mt-2"
+                  type="warning"
                 >
                   {{ getFirstWarning("description") }}
-                </Well>
+                </SimpleBanner>
               </Accordion>
               <Accordion
                 :id="selectASchemaAccordionId"
@@ -391,7 +391,7 @@
 </template>
 
 <script setup lang="ts">
-import { getResourceLabel, RESOURCE_TYPE, Well, type Dataset, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
+import { getResourceLabel, RESOURCE_TYPE, SimpleBanner, type Dataset, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components-next'
 import { cloneDeep } from 'lodash-es'
 import { RiDeleteBin6Line } from '@remixicon/vue'
 import ModalWithButton from '../Modal/ModalWithButton.vue'

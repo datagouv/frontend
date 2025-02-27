@@ -96,7 +96,7 @@
                 :dataset
                 :loading
                 :resource="resourceToForm(resource, schemas || [])"
-                button-classes="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+                button-classes="fr-btn fr-btn--sm fr-btn--secondary-gray-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
                 @submit="updateResource"
                 @delete="refreshResources"
               />
@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components'
+import { Pagination, type DatasetV2, type Resource, type SchemaResponseData } from '@datagouv/components-next'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../AdminTable/Table/AdminTable.vue'
 import AdminTableTh from '../AdminTable/Table/AdminTableTh.vue'

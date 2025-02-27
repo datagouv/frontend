@@ -1,79 +1,8 @@
-import type { Dataset, DatasetV2, Frequency, License, RegisteredSchema, Resource } from '@datagouv/components'
+import type { Dataset, DatasetV2, Frequency, License, RegisteredSchema, Resource, CommunityResource } from '@datagouv/components-next'
 import type { FetchError } from 'ofetch'
-import type { Component } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
-import type { CommunityResource } from '@datagouv/components/ts'
-import Archive from '~/components/Icons/Archive.vue'
-import Code from '~/components/Icons/Code.vue'
-import Documentation from '~/components/Icons/Documentation.vue'
-import Image from '~/components/Icons/Image.vue'
-import Link from '~/components/Icons/Link.vue'
-import Table from '~/components/Icons/Table.vue'
-import type { DatasetForm, FileInfo, NewDatasetForApi, ResourceForm, SpatialGranularity, SpatialZone } from '~/types/types'
 
-export function getResourceFormatIcon(format: string): Component | null {
-  switch (format?.trim()?.toLowerCase()) {
-    case 'txt':
-    case 'pdf':
-    case 'rtf':
-    case 'odt':
-    case 'doc':
-    case 'docx':
-    case 'epub':
-      return Documentation
-    case 'json':
-    case 'sql':
-    case 'xml':
-    case 'xsd':
-    case 'shp':
-    case 'kml':
-    case 'kmz':
-    case 'gpx':
-    case 'shx':
-    case 'ovr':
-    case 'geojson':
-    case 'gpkg':
-    case 'grib2':
-    case 'dbf':
-    case 'prj':
-    case 'sqlite':
-    case 'db':
-    case 'sbn':
-    case 'sbx':
-    case 'cpg':
-    case 'lyr':
-    case 'owl':
-    case 'dxf':
-    case 'ics':
-    case 'rdf':
-    case 'ttl':
-    case 'n3':
-      return Code
-    case 'tar':
-    case 'gz':
-    case 'tgz':
-    case 'rar':
-    case 'zip':
-    case '7z':
-    case 'xz':
-    case 'bz2':
-      return Archive
-    case 'url':
-      return Link
-    case 'csv':
-    case 'ods':
-    case 'xls':
-    case 'xlsx':
-    case 'parquet':
-      return Table
-    case 'png':
-    case 'jpg':
-    case 'jpeg':
-      return Image
-    default:
-      return null
-  }
-}
+import type { DatasetForm, FileInfo, NewDatasetForApi, ResourceForm, SpatialGranularity, SpatialZone } from '~/types/types'
 
 export function useResourceForm(file: MaybeRef<ResourceForm>) {
   const isRemote = computed(() => toValue(file).filetype === 'remote')

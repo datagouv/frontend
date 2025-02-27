@@ -1,8 +1,7 @@
 <template>
   <PaddedContainer>
-    <Well
-      color="blue-cumulus"
-      weight="regular"
+    <SimpleBanner
+      type="primary"
       class="-mb-3"
     >
       <div class="flex flex-wrap gap-3">
@@ -23,7 +22,7 @@
           </p>
         </div>
       </div>
-    </Well>
+    </SimpleBanner>
     <article class="my-6 p-6 !border border-neutral-200 fr-enlarge-link">
       <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--top">
         <div class="fr-col-auto">
@@ -44,7 +43,7 @@
           <h4 class="fr-mb-1v fr-grid-row">
             <a
               :href="organization.page"
-              class="text-grey-500"
+              class="text-gray-500"
             >
               {{ organization.name }}
               <small v-if="organization.acronym">{{ organization.acronym }}</small>
@@ -64,7 +63,7 @@
     <div class="fr-grid-row fr-grid-row--right gap-3">
       <NuxtLinkLocale
         :to="`/beta/admin/organizations/${organization.id}/profile`"
-        class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+        class="fr-btn fr-btn--secondary fr-btn--secondary-gray-500"
       >
         {{ $t("Manage the organization") }}
       </NuxtLinkLocale>
@@ -105,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { removeMarkdown, Well, type Organization } from '@datagouv/components'
+import { removeMarkdown, SimpleBanner, type Organization } from '@datagouv/components-next'
 
 defineProps<{
   organization: Organization

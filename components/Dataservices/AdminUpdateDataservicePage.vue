@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataservice } from '@datagouv/components'
+import type { Dataservice } from '@datagouv/components-next'
 import { RiArchiveLine, RiDeleteBin6Line } from '@remixicon/vue'
 import BrandedButton from '../BrandedButton/BrandedButton.vue'
 import DescribeDataservice from '~/components/Dataservices/DescribeDataservice.vue'

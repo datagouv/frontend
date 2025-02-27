@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Organization } from '@datagouv/components'
+import type { Organization } from '@datagouv/components-next'
 
 const { setCurrentOrganization } = useCurrentOwned()
 

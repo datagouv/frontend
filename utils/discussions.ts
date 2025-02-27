@@ -1,4 +1,4 @@
-import type { Dataservice, Dataset, Reuse } from '@datagouv/components'
+import type { Dataservice, Dataset, Reuse } from '@datagouv/components-next'
 import { RiArticleLine, RiDatabase2Line, RiLineChartLine, RiTerminalLine } from '@remixicon/vue'
 import type { $Fetch } from 'ofetch'
 import type { DiscussionSubject, DiscussionSubjectTypes } from '~/types/discussions'

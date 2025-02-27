@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { DataserviceCard, type Dataservice } from '@datagouv/components'
+import { DataserviceCard, type Dataservice } from '@datagouv/components-next'
 import type { StyleValue } from 'vue'
 
 withDefaults(defineProps<{

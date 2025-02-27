@@ -33,7 +33,7 @@
             <RiPriceTag3Line class="inline size-3" />
             <span>{{ $t('Metadata:') }}</span>
             <Tooltip>
-              <QualityScore
+              <DatasetQualityScore
                 class="w-32"
                 :score="dataset.quality.score"
               />
@@ -92,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { QualityScore, summarize, type Dataset } from '@datagouv/components'
+import { DatasetQualityScore, summarize, type Dataset } from '@datagouv/components-next'
 import { RiDownloadLine, RiEyeLine, RiInformationLine, RiLineChartLine, RiPriceTag3Line } from '@remixicon/vue'
 import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
 import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'

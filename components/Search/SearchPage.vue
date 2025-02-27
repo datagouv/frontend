@@ -261,7 +261,7 @@
 </template>
 
 <script setup lang="ts">
-import { getOrganizationTypes, OTHER, USER, type DatasetV2, type License, type Organization, type OrganizationTypes, type RegisteredSchema } from '@datagouv/components'
+import { getOrganizationTypes, OTHER, USER, type DatasetV2, type License, type Organization, type OrganizationTypes, type RegisteredSchema } from '@datagouv/components-next'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'

@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataset, DatasetV2, Reuse } from '@datagouv/components'
+import type { Dataset, DatasetV2, Reuse } from '@datagouv/components-next'
 import type { DatasetSuggest } from '~/types/types'
 
 const { t } = useI18n()

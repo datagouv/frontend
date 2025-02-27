@@ -7,17 +7,25 @@
 </template>
 
 <script setup lang="ts">
-import { setupComponents, setupI18nWithExistingInstance } from '@datagouv/components'
+import { datagouv } from '@datagouv/components-next'
+import type { UseFetchFunction } from '@datagouv/components-next'
+import { NuxtLinkLocale, TextClamp } from '#components'
 
 const app = useNuxtApp()
 
 const i18nHead = useLocaleHead()
+const runtimeConfig = useRuntimeConfig()
 
-setupComponents({
-  default_lang: app.$i18n.locale.value,
+app.vueApp.use(datagouv, {
+  name: runtimeConfig.public.title,
+  baseUrl: runtimeConfig.public.i18n.baseUrl, // Maybe do not use i18n config here?
+  apiBase: runtimeConfig.public.apiBase,
+  devApiKey: runtimeConfig.public.devApiKey,
+  staticUrl: runtimeConfig.public.staticUrl,
+  customUseFetch: useAPI as UseFetchFunction, // Why this `as` is required?
+  textClamp: TextClamp,
+  appLink: NuxtLinkLocale,
 })
-
-setupI18nWithExistingInstance({ global: app.$i18n })
 
 useHeadSafe({
   htmlAttrs: {

@@ -12,7 +12,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@datagouv/components": "^2.0.4",
+    "@datagouv/components": "^2.0.5",
+    "@datagouv/components-next": "file:shared",
     "@datagouv/select-a11y": "^3.6.1",
     "@datagouv/vue-toaster": "^2.4.5",
     "@floating-ui/vue": "^1.1.6",

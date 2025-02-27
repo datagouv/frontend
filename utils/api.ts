@@ -1,4 +1,4 @@
-import type { Organization, User } from '@datagouv/components'
+import type { Organization, User } from '@datagouv/components-next'
 import type { UseFetchOptions } from 'nuxt/app'
 /*
   Example : const { data: datasets } = await useAPI<PaginatedArray<Dataset>>('/api/1/datasets')

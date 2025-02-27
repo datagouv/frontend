@@ -43,9 +43,8 @@
       </nav>
     </div>
     <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 md:h-full !px-4 sm:!px-10 pb-8 md:pb-16 lg:pb-64">
-      <Well
-        color="blue-cumulus"
-        weight="regular"
+      <SimpleBanner
+        type="primary"
         class="mt-6"
       >
         <div class="flex flex-wrap space-x-8">
@@ -69,7 +68,7 @@
             </a>
           </div>
         </div>
-      </Well>
+      </SimpleBanner>
       <NuxtPage
         :page-key="route => route.fullPath"
       />
@@ -78,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { SimpleBanner } from '@datagouv/components-next'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { RiInformationLine } from '@remixicon/vue'
 import AdminSidebarMenu from '~/components/AdminSidebar/AdminSidebarMenu/AdminSidebarMenu.vue'

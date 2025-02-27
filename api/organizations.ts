@@ -1,4 +1,4 @@
-import type { Organization } from '@datagouv/components'
+import type { Organization } from '@datagouv/components-next'
 
 type UploadLogoResponse = {
   image: string

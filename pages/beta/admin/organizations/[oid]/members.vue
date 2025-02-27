@@ -95,7 +95,7 @@
           <template #footer="{ close }">
             <div class="fr-btns-group fr-btns-group--right fr-btns-group--sm fr-btns-group--inline-lg fr-btns-group--icon-left">
               <button
-                class="fr-btn fr-btn--secondary fr-btn--secondary-grey-500"
+                class="fr-btn fr-btn--secondary fr-btn--secondary-gray-500"
                 type="button"
                 :disabled="loading"
                 @click="close"
@@ -192,7 +192,7 @@
               >
                 <template #button="{ attrs, listeners }">
                   <button
-                    class="fr-btn fr-btn--sm fr-btn--secondary-grey-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
+                    class="fr-btn fr-btn--sm fr-btn--secondary-gray-500 fr-btn--tertiary-no-outline fr-icon-pencil-line"
                     v-bind="attrs"
                     v-on="listeners"
                   >
@@ -244,7 +244,7 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar, getUserAvatar, type Member, type Organization } from '@datagouv/components'
+import { Avatar, getUserAvatar, type Member, type Organization } from '@datagouv/components-next'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiAddLine, RiLogoutBoxRLine, RiMailLine } from '@remixicon/vue'

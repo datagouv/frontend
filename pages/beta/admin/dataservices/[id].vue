@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Dataservice } from '@datagouv/components'
+import type { Dataservice } from '@datagouv/components-next'
 import { RiEyeLine } from '@remixicon/vue'
 import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
 import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'

@@ -40,13 +40,13 @@
           <p class="fr-m-0">
             {{ t("Write a clear and precise description of the API. Users need to understand the purpose of the API, the data provided, the scope covered (is the data exhaustive, are there any gaps?), the frequency of data updates, as well as the parameters with which they can make a call.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('description')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("description") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addBaseUrlAccordionId"
@@ -102,13 +102,13 @@
           <p class="fr-m-0">
             {{ $t("Choose the access type (open or restricted). Select open if the data is open data.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('is_restricted')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("is_restricted") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="selectHasTokenAccordionId"
@@ -118,13 +118,13 @@
           <p class="fr-m-0">
             {{ $t("Please indicate whether the dataservice is freely accessible or whether a user requires a token to access the data.") }}
           </p>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('has_token')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("has_token") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addAuthorizationUrlAccordionId"
@@ -464,7 +464,7 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { SimpleBanner } from '@datagouv/components-next'
 import { computed } from 'vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import AccordionGroup from '~/components/Accordion/AccordionGroup.vue'

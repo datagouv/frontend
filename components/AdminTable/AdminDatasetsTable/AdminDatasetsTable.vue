@@ -159,7 +159,7 @@
         </td>
         <td>
           <Tooltip>
-            <QualityScore
+            <DatasetQualityScore
               class="w-full"
               :score="dataset.quality.score"
             />
@@ -189,8 +189,8 @@
 </template>
 
 <script setup lang="ts">
-import { QualityScore, summarize } from '@datagouv/components'
-import type { Dataset, DatasetV2 } from '@datagouv/components'
+import { summarize, DatasetQualityScore } from '@datagouv/components-next'
+import type { Dataset, DatasetV2 } from '@datagouv/components-next'
 import { useI18n } from 'vue-i18n'
 import QualityScoreTooltipContent from '../../dataset/QualityScore/QualityScoreTooltipContent/QualityScoreTooltipContent.vue'
 import AdminBadge from '../../AdminBadge/AdminBadge.vue'

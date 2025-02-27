@@ -271,6 +271,7 @@ import InputGroup from '../InputGroup/InputGroup.vue'
 import ToggleSwitch from '../Form/ToggleSwitch.vue'
 import ProducerSelect from '~/components/ProducerSelect.vue'
 import type { HarvestBackend, HarvesterForm } from '~/types/harvesters'
+import SimpleBanner from '~/shared/src/components/SimpleBanner.vue'
 
 const props = defineProps<{
   type: 'create' | 'update'

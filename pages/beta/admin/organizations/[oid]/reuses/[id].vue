@@ -13,7 +13,7 @@
         </h1>
         <a
           :href="reuse.page"
-          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-eye-line"
+          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-gray-500 fr-btn--icon-left fr-icon-eye-line"
         >
           {{ t('See the reuse page') }}
         </a>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Reuse } from '@datagouv/components'
+import type { Reuse } from '@datagouv/components-next'
 import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
 import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import TabLinks from '~/components/TabLinks.vue'
