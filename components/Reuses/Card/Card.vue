@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ReuseCard, type Reuse } from '@datagouv/components'
+import { ReuseCard, type Reuse } from '@datagouv/components-next'
 import type { StyleValue } from 'vue'
 
 withDefaults(defineProps<{

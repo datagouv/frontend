@@ -28,9 +28,11 @@ import OrganizationNameWithCertificate from './components/OrganizationNameWithCe
 import OwnerType from './components/OwnerType.vue'
 import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
 import Pagination from './components/Pagination.vue'
+import Placeholder from './components/Placeholder.vue'
 import ReadMore from './components/ReadMore.vue'
 import ResourceAccordion from './components/ResourceAccordion/ResourceAccordion.vue'
 import ResourceIcon from './components/ResourceAccordion/ResourceIcon.vue'
+import ReuseCard from './components/ReuseCard.vue'
 import SimpleBanner from './components/SimpleBanner.vue'
 import StatBox from './components/StatBox.vue'
 import type { UseFetchFunction } from './functions/api'
@@ -145,9 +147,11 @@ export {
   OwnerType,
   OwnerTypeIcon,
   Pagination,
+  Placeholder,
   ReadMore,
   ResourceAccordion,
   ResourceIcon,
+  ReuseCard,
   SimpleBanner,
   StatBox,
 }
