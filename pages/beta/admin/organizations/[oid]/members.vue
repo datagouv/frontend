@@ -4,15 +4,15 @@
       <BreadcrumbItem>{{ t('Members') }}</BreadcrumbItem>
     </AdminBreadcrumb>
 
-    <h1 class="fr-h3 fr-mb-5v">
+    <h1 class="font-bold text-2xl mb-5">
       {{ t("Members") }}
     </h1>
 
     <div
-      v-if="membershipRequests && membershipRequests.length"
+      v-if="currentOrganization && membershipRequests && membershipRequests.length"
       class="mb-8"
     >
-      <h2 class="subtitle subtitle--uppercase fr-mt-5v fr-mb-5v">
+      <h2 class="text-sm font-bold uppercase mt-5 mb-5">
         {{ t("{n} requests", { n: membershipRequests.length }) }}
       </h2>
       <div class="space-y-8 max-w-6xl">
@@ -29,16 +29,16 @@
 
     <div
       v-if="organization"
-      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+      class="flex flex-wrap gap-x-4 gap-y-2 items-center"
     >
-      <div class="fr-col">
-        <h2 class="subtitle subtitle--uppercase fr-m-0">
+      <div class="flex-1">
+        <h2 class="text-sm font-bold uppercase m-0">
           {{ t("{n} members", { n: organization.members.length }) }}
         </h2>
       </div>
       <div
         v-if="isAdmin"
-        class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6"
+        class="flex-none"
       >
         <ModalWithButton
           :title="t('Add member to the organization')"
@@ -119,7 +119,6 @@
     <LoadingBlock :status>
       <AdminTable
         v-if="organization && organization.members.length > 0"
-        class="fr-table--layout-fixed"
       >
         <thead>
           <tr>

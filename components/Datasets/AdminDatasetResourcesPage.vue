@@ -1,9 +1,9 @@
 <template>
   <div class="bg-white fr-p-3w">
-    <div class="flex justify-between items-center">
+    <div class="flex flex-wrap justify-between items-center">
       <h2
         v-if="resourcesPage"
-        class="subtitle subtitle--uppercase fr-m-0"
+        class="text-sm font-bold uppercase m-0"
       >
         {{ t('{n} files', resourcesPage.total) }}
       </h2>

@@ -13,16 +13,18 @@
     </AdminBreadcrumb>
 
     <div v-if="dataservice">
-      <div class="flex items-center justify-between mb-5">
-        <h1 class="fr-h3 !mb-0">
+      <div class="flex flex-wrap items-center justify-between mb-5 gap-x-4 gap-y-2">
+        <h1 class="flex-none w-full md:flex-1 font-bold text-2xl !mb-0">
           {{ dataservice.title }}
         </h1>
-        <a
+        <BrandedButton
           :href="dataservice.self_web_url"
-          class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-grey-500 fr-btn--icon-left fr-icon-eye-line"
+          color="secondary"
+          size="xs"
+          :icon="RiEyeLine"
         >
           {{ t('See the dataservice page') }}
-        </a>
+        </BrandedButton>
       </div>
 
       <TabLinks
@@ -43,6 +45,7 @@
 
 <script setup lang="ts">
 import type { Dataservice } from '@datagouv/components'
+import { RiEyeLine } from '@remixicon/vue'
 import AdminBreadcrumb from '~/components/Breadcrumbs/AdminBreadcrumb.vue'
 import BreadcrumbItem from '~/components/Breadcrumbs/BreadcrumbItem.vue'
 import TabLinks from '~/components/TabLinks.vue'

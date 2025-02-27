@@ -12,7 +12,7 @@
       class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
     >
       <div class="fr-col">
-        <h2 class="subtitle subtitle--uppercase fr-m-0">
+        <h2 class="text-sm font-bold uppercase m-0">
           {{ t('{n} organizations', pageData.total) }}
         </h2>
       </div>
