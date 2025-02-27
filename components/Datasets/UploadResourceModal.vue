@@ -48,7 +48,7 @@
         <p class="fr-hr-or text-transform-lowercase fr-text--regular text-mention-grey fr-mt-3v">
           <span class="fr-hr-or-text">{{ $t('or') }}</span>
         </p>
-        <h2 class="subtitle subtitle--uppercase fr-mb-1w">
+        <h2 class="text-sm font-bold uppercase mb-2">
           {{ $t('Add a link') }}
         </h2>
         <InputGroup

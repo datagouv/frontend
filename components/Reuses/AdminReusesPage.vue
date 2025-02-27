@@ -4,7 +4,7 @@
       <BreadcrumbItem>{{ t('Reuses') }}</BreadcrumbItem>
     </AdminBreadcrumb>
 
-    <h1 class="fr-h3 fr-mb-5v">
+    <h1 class="font-bold text-2xl mb-5">
       {{ t("Reuses") }}
     </h1>
     <TransferRequestList
@@ -15,14 +15,14 @@
     />
     <div
       v-if="pageData"
-      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+      class="flex flex-wrap gap-x-4 gap-y-2 items-center"
     >
-      <div class="fr-col">
-        <h2 class="subtitle subtitle--uppercase fr-m-0">
+      <div class="w-full flex-none md:flex-1">
+        <h2 class="text-sm font-bold uppercase m-0">
           {{ t('{n} reuses', pageData.total) }}
         </h2>
       </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
+      <div class="flex-none">
         <AdminInput
           v-model="q"
           type="search"

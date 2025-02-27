@@ -42,14 +42,14 @@
         </ClientOnly>
       </nav>
     </div>
-    <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 h-full !px-4 sm:!px-10 pb-64">
+    <div class="fr-col-12 fr-col-md-8 fr-col-lg-9 fr-col-xl-10 md:h-full !px-4 sm:!px-10 pb-8 md:pb-16 lg:pb-64">
       <Well
         color="blue-cumulus"
         weight="regular"
         class="mt-6"
       >
-        <div class="flex space-x-8">
-          <div class="flex items-center space-x-2">
+        <div class="flex flex-wrap space-x-8">
+          <div class="w-full flex-none md:flex-1 flex items-center space-x-2">
             <RiInformationLine class="size-6 -mt-0.5" />
             <div>{{ t("You're on the new admin interface in beta.") }}</div>
           </div>

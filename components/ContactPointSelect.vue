@@ -121,7 +121,7 @@ const props = defineProps<{
   warningText?: string | null
 }>()
 
-onMounted(() => {
+watchEffect(() => {
   if (contact.value && !('id' in contact.value)) {
     contact.value = newContactForm.value
   }

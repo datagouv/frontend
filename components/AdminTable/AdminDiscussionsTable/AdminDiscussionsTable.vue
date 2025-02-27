@@ -37,7 +37,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="discussion in discussions">
+      <tr
+        v-for="discussion in discussions"
+        :key="discussion.id"
+      >
         <td>
           <p class="fr-text--bold">
             <TextClamp
@@ -65,7 +68,7 @@
             </a>
           </p>
         </td>
-        <td>
+        <td class="font-mono text-right">
           {{ discussion.discussion.length }}
         </td>
         <td>

@@ -4,7 +4,7 @@
       <BreadcrumbItem>{{ t('Datasets') }}</BreadcrumbItem>
     </AdminBreadcrumb>
 
-    <h1 class="fr-h3 fr-mb-5v">
+    <h1 class="font-bold text-2xl mb-5">
       {{ t("Datasets") }}
     </h1>
 
@@ -23,30 +23,28 @@
 
     <div
       v-if="pageData"
-      class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle"
+      class="flex flex-wrap gap-x-4 gap-y-2 items-center"
     >
-      <div class="fr-col">
-        <h2 class="subtitle subtitle--uppercase fr-m-0">
+      <div class="w-full flex-none md:flex-1">
+        <h2 class="text-sm font-bold uppercase m-0">
           {{ t('{n} datasets', pageData.total) }}
         </h2>
       </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
-        <div class="fr-col-auto fr-grid-row fr-grid-row--middle space-x-6">
-          <AdminInput
-            v-model="q"
-            type="search"
-            :icon="RiSearchLine"
-            :placeholder="$t('Search')"
-          />
-        </div>
-        <div v-if="organization">
-          <a
-            :href="pageData.total ? `/organizations/${organization.id}/datasets.csv` : undefined"
-            class="fr-btn fr-btn--sm fr-icon-download-line fr-btn--icon-left"
-          >
-            {{ t('Download catalog') }}
-          </a>
-        </div>
+      <div class="flex-none flex flex-wrap items-center md:gap-x-6 gap-2">
+        <AdminInput
+          v-model="q"
+          type="search"
+          :icon="RiSearchLine"
+          :placeholder="$t('Search')"
+        />
+        <BrandedButton
+          v-if="organization"
+          :href="pageData.total ? `/organizations/${organization.id}/datasets.csv` : undefined"
+          size="xs"
+          :icon="RiDownloadLine"
+        >
+          {{ t('Download catalog') }}
+        </BrandedButton>
       </div>
     </div>
 
@@ -101,7 +99,7 @@ import { Pagination, type Dataset, type Organization, type User } from '@datagou
 import { refDebounced } from '@vueuse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { RiSearchLine } from '@remixicon/vue'
+import { RiDownloadLine, RiSearchLine } from '@remixicon/vue'
 import TransferRequestList from '../TransferRequestList.vue'
 import AdminBreadcrumb from '../Breadcrumbs/AdminBreadcrumb.vue'
 import BreadcrumbItem from '../Breadcrumbs/BreadcrumbItem.vue'
