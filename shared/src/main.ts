@@ -31,6 +31,7 @@ import ReadMore from './components/ReadMore.vue'
 import ResourceAccordion from './components/ResourceAccordion/ResourceAccordion.vue'
 import ResourceIcon from './components/ResourceAccordion/ResourceIcon.vue'
 import SimpleBanner from './components/SimpleBanner.vue'
+import StatBox from './components/StatBox.vue'
 import type { UseFetchFunction } from './functions/api'
 
 export * from './functions/dates'
@@ -145,4 +146,5 @@ export {
   ResourceAccordion,
   ResourceIcon,
   SimpleBanner,
+  StatBox,
 }
