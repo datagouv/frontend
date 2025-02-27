@@ -19,6 +19,7 @@ import CopyButton from './components/CopyButton.vue'
 import DatasetCard from './components/DatasetCard.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
 import DatasetQuality from './components/DatasetQuality.vue'
+import DatasetQualityScore from './components/DatasetQualityScore.vue'
 import OrganizationNameWithCertificate from './components/OrganizationNameWithCertificate.vue'
 import OwnerTypeIcon from './components/OwnerTypeIcon.vue'
 import Pagination from './components/Pagination.vue'
@@ -128,6 +129,7 @@ export {
   DatasetCard,
   DatasetInformationPanel,
   DatasetQuality,
+  DatasetQualityScore,
   OrganizationNameWithCertificate,
   OwnerTypeIcon,
   Pagination,
