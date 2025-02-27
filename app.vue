@@ -7,7 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import { setupComponents, setupI18nWithExistingInstance } from '@datagouv/components'
 import { datagouv } from '@datagouv/components-next'
 import type { UseFetchFunction } from '@datagouv/components-next'
 import { NuxtLinkLocale, TextClamp } from '#components'
@@ -27,12 +26,6 @@ app.vueApp.use(datagouv, {
   textClamp: TextClamp,
   appLink: NuxtLinkLocale,
 })
-
-setupComponents({
-  default_lang: app.$i18n.locale.value,
-})
-
-setupI18nWithExistingInstance({ global: app.$i18n })
 
 useHeadSafe({
   htmlAttrs: {
