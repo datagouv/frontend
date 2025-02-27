@@ -22,7 +22,7 @@
           <div class="fr-col fr-ml-3v fr-my-0 fr-h3">
             {{ organization.name }}
             <span
-              v-if="organizationCertified"
+              v-if="isOrganizationCertified(organization)"
               class="fr-icon-success-line fr-icon--lg text-blue-400"
               :title="t('The identity of this public service is certified by {certifier}', { certifier: $config.public.title })"
               aria-hidden="true"
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { Placeholder, useOrganizationCertified, type NewOrganization, type Organization } from '@datagouv/components'
+import { Placeholder, isOrganizationCertified, type NewOrganization, type Organization } from '@datagouv/components-next'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiDeleteBin6Line } from '@remixicon/vue'
@@ -140,8 +140,6 @@ const { currentOrganization } = useCurrentOwned()
 const errors = ref([])
 
 const loading = computed(() => !props.organization)
-
-const { organizationCertified } = useOrganizationCertified(props.organization)
 
 async function deleteCurrentOrganization() {
   if (currentOrganization.value) {
