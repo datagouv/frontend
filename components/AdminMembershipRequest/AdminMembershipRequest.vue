@@ -95,11 +95,9 @@
 </template>
 
 <script setup lang="ts">
-import { Avatar } from '@datagouv/components'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiCheckLine, RiUserAddLine } from '@remixicon/vue'
-import AdminEmail from '../AdminEmail.vue'
 import InputGroup from '../InputGroup/InputGroup.vue'
 import ModalWithButton from '../Modal/ModalWithButton.vue'
 import type { PendingMembershipRequest } from '~/types/types'

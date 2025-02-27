@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { AvatarWithName } from '@datagouv/components'
+import { AvatarWithName } from '@datagouv/components-next'
 import { useI18n } from 'vue-i18n'
 import AdminTable from '../Table/AdminTable.vue'
 import AdminTableTh from '../Table/AdminTableTh.vue'
