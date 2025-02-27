@@ -97,33 +97,13 @@ const metricsReuses = ref<null | Record<string, number>>(null)
 const metricsReusesTotal = ref<null | number>(null)
 watchEffect(async () => {
   if (!props.organization.id) return
-
-  {
-    // Fetching last 12 months
-    const response = await fetch(`https://metric-api.data.gouv.fr/api/organizations/data/?organization_id__exact=${props.organization.id}&metric_month__sort=desc&page_size=12`)
-    const page = await response.json()
-
-    metricsViews.value = {}
-    metricsDownloads.value = {}
-    metricsReuses.value = {}
-
-    for (const { metric_month, monthly_download_resource, monthly_visit_dataset, monthly_visit_reuse } of page.data) {
-      metricsViews.value[metric_month] = monthly_visit_dataset
-      metricsDownloads.value[metric_month] = monthly_download_resource
-      metricsReuses.value[metric_month] = monthly_visit_reuse
-    }
-  }
-
-  {
-    // Fetching totals
-    const response = await fetch(`https://metric-api.data.gouv.fr/api/organizations_total/data/?organization_id__exact=${props.organization.id}`)
-    const page = await response.json()
-    if (page.data[0]) {
-      metricsViewsTotal.value = page.data[0].visit_dataset
-      metricsDownloadsTotal.value = page.data[0].download_resource
-      metricsReusesTotal.value = page.data[0].visit_reuse
-    }
-  }
+  const metrics = await getOrganizationMetrics(props.organization.id)
+  metricsDownloads.value = metrics.downloads
+  metricsDownloadsTotal.value = metrics.downloadsTotal
+  metricsReuses.value = metrics.reusesViews
+  metricsReusesTotal.value = metrics.reusesViewsTotal
+  metricsViews.value = metrics.datasetsViews
+  metricsViewsTotal.value = metrics.datasetsViewsTotal
 })
 
 const downloadStatsUrl = computed(() => {
@@ -131,12 +111,6 @@ const downloadStatsUrl = computed(() => {
     return null
   }
 
-  let data = 'month,visit_datasets,download_resource,visit_reuse\n'
-
-  for (const month in metricsViews.value) {
-    data += `${month},${metricsViews.value[month]},${metricsDownloads.value[month]},${metricsReuses.value[month]}\n`
-  }
-
-  return URL.createObjectURL(new Blob([data], { type: 'text/csv' }))
+  return createOrganizationMetricsUrl(metricsViews.value, metricsDownloads.value, metricsReuses.value)
 })
 </script>

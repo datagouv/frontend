@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { Well, type Reuse } from '@datagouv/components'
-import ReuseCard from '~/components/Reuses/Card/Card.vue'
+import ReuseCard from '~/components/Reuses/Card/NuxtCard.vue'
 
 defineProps<{
   reuse: Reuse

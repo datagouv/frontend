@@ -12,6 +12,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1248px;
+  --breakpoint-2xl: initial;
 
   --font-mono: "Noto Sans Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
@@ -33,8 +34,12 @@
   --color-gray-some: #f6f6f6;
   --color-gray-logo: #373c42;
   --color-default-warning: #b32000;
+  --color-blue-action-low: #dae6fd;
+  --color-blue-action-low-hover: #a9c8fb;
+  --color-blue-action-low-active: #a9c8fb;
   --color-blue-light: #e3e3fd;
   --color-blue-lighter: #eef4f8;
+  --color-blue-lightest: #f3f6fe;
   --color-blue-tint: #c1c1fd;
   --color-blue-outline: #0a76f6;
   --color-secondary-lightest: #eeeeee;
@@ -75,7 +80,7 @@
   }
 }
 
-@custom-variant aria-current-page (&[aria-current-page="page"]);
+@custom-variant aria-current-page (&[aria-current="page"]);
 
 @utility container {
   margin-inline: auto;

@@ -36,7 +36,7 @@
         />
       </div>
     </div>
-    <h1 class="text-4.5xl font-extrabold !mb-0">
+    <h1 class="!text-4.5xl !font-extrabold !mb-0">
       {{ post.name }}
     </h1>
     <template v-if="post.published || isAdmin(me)">
@@ -84,7 +84,5 @@ import type { Post } from '~/types/posts'
 const route = useRoute()
 const me = useMaybeMe()
 const url = computed(() => `/api/1/posts/${route.params.id}/`)
-const { data: post } = await useAPI<Post>(url, {
-  key: getUserBasedKey(url.value),
-})
+const { data: post } = await useAPI<Post>(url)
 </script>

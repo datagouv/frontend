@@ -18,7 +18,7 @@
     <select
       :id="id"
       v-model="model"
-      class="fr-select"
+      class="fr-select group-data-[input-color=blue]/form:!shadow-input-blue"
       :class="{ 'fr-select--error': hasError, 'fr-select--valid': isValid }"
       :aria-describedby="ariaDescribedBy"
       :aria-label="hideLabel ? label : undefined"
@@ -68,7 +68,7 @@ import Required from '~/components/Required/Required.vue'
 
 export type Option = {
   label: string
-  value: string
+  value?: string | boolean
   disabled?: boolean
   hidden?: boolean
   selected?: boolean

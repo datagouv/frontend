@@ -1,6 +1,6 @@
 <template>
   <form
-    class="pt-3 group/form"
+    class="group/form"
     data-input-color="blue"
   >
     <div
@@ -10,7 +10,7 @@
     >
       <SearchInput
         v-model="queryString"
-        :placeholder="t('Ex. 2022 presidential election')"
+        :placeholder="organization ? t('Search a dataset of the organization') : t('Ex. 2022 presidential election')"
       />
     </div>
     <div class="grid grid-cols-12 mt-2 md:mt-5">
@@ -23,7 +23,7 @@
             <template v-if="!organization">
               <SearchableSelect
                 v-model="facets.organization"
-                :options="organizations.data"
+                :options="organizations ? organizations.data : []"
                 :suggest="suggestOrganizations"
                 :label="t('Organizations')"
                 :placeholder="t('All organizations')"
@@ -77,7 +77,7 @@
               v-model="facets.format"
               :label="t('Formats')"
               :placeholder="t('All formats')"
-              :options="allowedFormats"
+              :options="allowedFormats ? allowedFormats : []"
               :loading="allowedFormatsStatus === 'pending'"
               :get-option-id="(format) => format"
               :display-value="(value) => value"
@@ -93,7 +93,7 @@
               :explanation="t('Licenses define reuse rules for published datasets. See page data.gouv.fr/licences')"
               :placeholder="t('All licenses')"
               :display-value="(value) => value.title"
-              :options="licenses"
+              :options="licenses ? licenses : []"
               :loading="licensesStatus === 'pending'"
               :multiple="false"
             >
@@ -108,7 +108,7 @@
               :display-value="(value) => value.name"
               :get-option-id="(option) => option.name"
               :placeholder="t('All schemas')"
-              :options="schemas"
+              :options="schemas ? schemas : []"
               :loading="schemasStatus === 'pending'"
               :multiple="false"
             >
@@ -139,7 +139,7 @@
               :get-option-id="(granularity) => granularity.id"
               :display-value="(value) => value.name"
               :multiple="false"
-              :options="spatialGranularities"
+              :options="spatialGranularities ? spatialGranularities : []"
               :loading="spatialGranularitiesStatus === 'pending'"
             >
               <template #option="{ option: granularity }">
@@ -219,8 +219,8 @@
         </div>
         <transition mode="out-in">
           <LoadingBlock :status="searchResultsStatus">
-            <div v-if="searchResults.data.length">
-              <ul class="mt-2 border-t border-gray-default relative z-2 list-none">
+            <div v-if="searchResults && searchResults.data.length">
+              <ul class="mt-2 p-0 border-t border-gray-default relative z-2 list-none">
                 <li
                   v-for="result in searchResults.data"
                   :key="result.id"
@@ -239,20 +239,17 @@
                 @change="changePage"
               />
               <SearchNoResults
-                v-else-if="!organization"
-                :data-search-feedback-form-url
+                v-else-if="!organization && searchResultsStatus !== 'pending'"
+                class="mt-4"
+                :forum-url
                 @reset-filters="resetForm"
               />
             </div>
-            <div
-              v-else-if="!organization"
-              class="mt-4"
-            >
-              <SearchNoResults
-                :data-search-feedback-form-url
-                @reset-filters="resetForm"
-              />
-            </div>
+            <SearchNoResults
+              v-else-if="searchResultsStatus !== 'pending'"
+              :forum-url
+              @reset-filters="resetForm"
+            />
           </LoadingBlock>
         </transition>
       </section>
@@ -265,24 +262,24 @@ import { getOrganizationTypes, OTHER, USER, type DatasetV2, type License, type O
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RiCloseCircleLine, RiDownloadLine } from '@remixicon/vue'
-import { debouncedRef } from '@vueuse/core'
+import { computedAsync, debouncedRef } from '@vueuse/core'
 import SearchInput from '~/components/Search/SearchInput.vue'
 import type { PaginatedArray, RequestStatus, SpatialGranularity, SpatialZone } from '~/types/types'
 import type { DatasetSearchParams, OrganizationOrSuggest } from '~/types/form'
 
 const props = withDefaults(defineProps<{
-  allowedFormats: Array<string>
+  allowedFormats: Array<string> | null
   allowedFormatsStatus: RequestStatus
-  dataSearchFeedbackFormUrl: string
-  licenses: Array<License>
+  forumUrl: string
+  licenses: Array<License> | null
   licensesStatus: RequestStatus
-  organizations: PaginatedArray<Organization>
+  organizations: PaginatedArray<Organization> | null
   organizationsStatus: RequestStatus
-  schemas: Array<RegisteredSchema>
+  schemas: Array<RegisteredSchema> | null
   schemasStatus: RequestStatus
-  searchResults: PaginatedArray<DatasetV2>
+  searchResults: PaginatedArray<DatasetV2> | null
   searchResultsStatus: RequestStatus
-  spatialGranularities: Array<SpatialGranularity>
+  spatialGranularities: Array<SpatialGranularity> | null
   spatialGranularitiesStatus: RequestStatus
   suggestOrganizations: (q: string) => Promise<Array<OrganizationOrSuggest>>
   suggestSpatialCoverages: (q: string) => Promise<Array<SpatialZone>>
@@ -296,14 +293,14 @@ const props = withDefaults(defineProps<{
 })
 
 type Facets = {
-  organization?: { id: string }
+  organization?: { id: string } | null
   organizationType?: { type: OrganizationTypes }
   tag?: string
-  license?: License
-  format?: string
+  license?: License | null
+  format?: string | null
   geozone?: SpatialZone
-  granularity?: SpatialGranularity
-  schema?: RegisteredSchema
+  granularity?: SpatialGranularity | null
+  schema?: RegisteredSchema | null
 }
 
 const { t } = useI18n()
@@ -338,21 +335,23 @@ const currentPage = ref(params.value.page ? parseInt(params.value.page) : 1)
 const pageSize = 20
 
 // Initialize facets from params
-const organizationFromParams = props.organizations.data.find(org => org.id === params.value.organization)
+const organizationFromParams = computed(() => props.organizations?.data.find(org => org.id === params.value.organization))
 
-let organizationFromSuggest: OrganizationOrSuggest | undefined
-if (!props.organization && !organizationFromParams && params.value.organization) {
-  const suggested = await props.suggestOrganizations(params.value.organization)
-  if (suggested && suggested.length > 0) {
-    organizationFromSuggest = suggested[0]
+const organizationFromSuggest = computedAsync<OrganizationOrSuggest | null>(async () => {
+  if (!props.organization && !organizationFromParams.value && params.value.organization) {
+    const suggested = await props.suggestOrganizations(params.value.organization)
+    if (suggested && suggested.length > 0) {
+      return suggested[0]
+    }
   }
-}
+  return null
+}, null)
 
-const organizationTypeFromParams = organizationTypes.find(type => type.type === params.value.type) as (Omit<ReturnType<typeof getOrganizationTypes>[number], 'type'> & { type: OrganizationTypes }) | undefined
+const organizationTypeFromParams = organizationTypes.find(type => type.type === params.value.organization_badge) as (Omit<ReturnType<typeof getOrganizationTypes>[number], 'type'> & { type: OrganizationTypes }) | undefined
 
-const licenseFromParams = props.licenses.find(license => license.id === params.value.license)
+const licenseFromParams = computed(() => props.licenses?.find(license => license.id === params.value.license))
 
-const schemaFromParams = props.schemas.find(schema => schema.name === params.value.schema)
+const schemaFromParams = computed(() => props.schemas?.find(schema => schema.name === params.value.schema))
 
 let spatialCoverageFromSuggest: SpatialZone | undefined
 if (params.value.geozone) {
@@ -362,17 +361,24 @@ if (params.value.geozone) {
   }
 }
 
-const granularityFromParams = props.spatialGranularities.find(granularity => granularity.id === params.value.granularity)
+const granularityFromParams = computed(() => props.spatialGranularities?.find(granularity => granularity.id === params.value.granularity))
 
 const facets = ref<Facets>({
-  organization: props.organization ?? organizationFromParams ?? organizationFromSuggest,
+  organization: null,
   organizationType: organizationTypeFromParams,
   tag: params.value.tag,
   format: params.value.format,
-  license: licenseFromParams,
-  schema: schemaFromParams,
+  license: null,
+  schema: null,
   geozone: spatialCoverageFromSuggest,
-  granularity: granularityFromParams,
+  granularity: null,
+})
+
+watchEffect(() => {
+  facets.value.organization = props.organization ?? organizationFromParams.value ?? organizationFromSuggest.value
+  facets.value.license = licenseFromParams.value
+  facets.value.schema = schemaFromParams.value
+  facets.value.granularity = granularityFromParams.value
 })
 
 /**
@@ -401,24 +407,24 @@ const scrollToTop = () => {
   }
 }
 
-const reloadFilters = ({ page = 1, sort = '', ...params }) => {
-  facets.value = { ...params, organization: props.organization || params.organization }
-  currentPage.value = page
-  searchSort.value = sort
+function reloadFilters() {
+  for (const key in facets.value) {
+    facets.value[key as keyof Facets] = undefined
+  }
+  if (props.organization) {
+    facets.value.organization = props.organization
+  }
+  currentPage.value = 1
+  searchSort.value = ''
 }
 
 const resetFilters = () => {
-  reloadFilters({})
+  reloadFilters()
 }
 
 const resetForm = () => {
-  reloadForm()
-  scrollToTop()
-}
-
-const reloadForm = ({ q = '', ...params } = {}) => {
-  queryString.value = q
-  reloadFilters(params)
+  queryString.value = ''
+  reloadFilters()
 }
 
 /**
@@ -441,16 +447,13 @@ const sortOptions = [
 // Update model params
 watchEffect(() => {
   params.value.page_size = pageSize.toFixed()
-  if (props.organization) {
-    params.value.organization = props.organization.id
-  }
-  else {
+  if (!props.organization) {
     params.value.organization = facets.value.organization?.id ?? undefined
     params.value.organization_badge = facets.value.organizationType?.type ?? undefined
   }
   params.value.tag = facets.value.tag
-  params.value.format = facets.value.format
-  params.value.type = facets.value.organizationType?.type ?? undefined
+  params.value.format = facets.value.format ?? undefined
+  params.value.organization_badge = facets.value.organizationType?.type ?? undefined
   params.value.license = facets.value.license?.id ?? undefined
   params.value.schema = facets.value.schema?.name ?? undefined
   params.value.geozone = facets.value.geozone?.id ?? undefined
