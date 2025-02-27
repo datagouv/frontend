@@ -346,8 +346,8 @@
           >
             <template v-for="(contact_point, index) in form.contact_points">
               <ContactPointSelect
-                v-if="contact_point.role == 'contact'"
-                :key="'id' in contact_point ? contact_point.id : index"
+                v-if="!contact_point || contact_point.role == 'contact'"
+                :key="(contact_point && 'id' in contact_point) ? contact_point.id : index"
                 v-model="form.contact_points[index]"
                 :organization="form.owned?.organization"
               />
