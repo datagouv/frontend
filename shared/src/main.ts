@@ -18,6 +18,7 @@ import type { User } from './types/users'
 import Avatar from './components/Avatar.vue'
 import AvatarWithName from './components/AvatarWithName.vue'
 import CopyButton from './components/CopyButton.vue'
+import DataserviceCard from './components/DataserviceCard.vue'
 import DatasetCard from './components/DatasetCard.vue'
 import DatasetInformationPanel from './components/DatasetInformationPanel.vue'
 import DatasetQuality from './components/DatasetQuality.vue'
@@ -93,6 +94,7 @@ export type PluginConfig = {
   tabularApiUrl?: string
   tabularApiPageSize?: number
   tabularAllowRemote?: boolean
+  tabularApiDataserviceId?: string
   customUseFetch?: UseFetchFunction | null
   textClamp?: string | Component | null
   appLink?: Component | null
@@ -133,6 +135,7 @@ export {
   Avatar,
   AvatarWithName,
   CopyButton,
+  DataserviceCard,
   DatasetCard,
   DatasetInformationPanel,
   DatasetQuality,

@@ -1,7 +1,6 @@
-import type { Dataset, DatasetV2, Frequency, License, RegisteredSchema, Resource } from '@datagouv/components-next'
+import type { Dataset, DatasetV2, Frequency, License, RegisteredSchema, Resource, CommunityResource } from '@datagouv/components-next'
 import type { FetchError } from 'ofetch'
 import { v4 as uuidv4 } from 'uuid'
-import type { CommunityResource } from '@datagouv/components/ts'
 
 import type { DatasetForm, FileInfo, NewDatasetForApi, ResourceForm, SpatialGranularity, SpatialZone } from '~/types/types'
 
