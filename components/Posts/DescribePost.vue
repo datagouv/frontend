@@ -9,7 +9,7 @@
         id="description-legend"
         class="fr-fieldset__legend"
       >
-        <h2 class="subtitle subtitle--uppercase !mb-3">
+        <h2 class="text-sm font-bold uppercase mb-3">
           {{ $t("Description") }}
         </h2>
       </legend>

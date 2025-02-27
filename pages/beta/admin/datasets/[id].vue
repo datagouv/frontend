@@ -14,16 +14,18 @@
 
     <div v-if="dataset">
       <div class="mb-5">
-        <div class="flex items-center justify-between mb-3">
-          <h1 class="fr-h3 !mb-0">
+        <div class="flex flex-wrap items-center justify-between mb-3 gap-x-4 gap-y-2">
+          <h1 class="flex-none w-full md:flex-1 font-bold text-2xl !mb-0">
             {{ dataset.title }}
           </h1>
-          <a
+          <BrandedButton
             :href="dataset.page"
-            class="fr-btn fr-btn--sm fr-btn--secondary fr-btn--secondary-gray-500 fr-btn--icon-left fr-icon-eye-line"
+            color="secondary"
+            size="xs"
+            :icon="RiEyeLine"
           >
             {{ t('See the dataset page') }}
-          </a>
+          </BrandedButton>
         </div>
 
         <div class="text-sm text-mentionGrey space-y-1.5">

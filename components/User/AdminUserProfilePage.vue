@@ -8,7 +8,7 @@
       {{ $t("Profile") }}
     </h1>
     <PaddedContainer class="!p-5">
-      <div class="flex items-center">
+      <div class="flex flex-wrap items-center gap-3">
         <div class="flex-none">
           <Avatar
             :user="user"
@@ -16,7 +16,7 @@
             :size="80"
           />
         </div>
-        <h2 class="flex-1 !ml-3 !mb-0 fr-h3">
+        <h2 class="w-full flex-none md:flex-1 !mb-0 fr-h3">
           {{ user.first_name }} {{ user.last_name }}
         </h2>
         <div class="flex-none">

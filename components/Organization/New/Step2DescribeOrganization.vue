@@ -1,7 +1,7 @@
 <template>
-  <div class="fr-grid-row">
+  <div class="flex">
     <Sidemenu
-      class="fr-col-12 fr-col-md-5"
+      class="w-5/12 hidden lg:block"
       :button-text="t('Help')"
       :on-right="true"
       :fixed="true"
@@ -92,7 +92,7 @@
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
-    <div class="fr-col-12 fr-col-md-7">
+    <div class="w-full lg:w-7/12">
       <PaddedContainer>
         <SimpleBanner
           v-if="showWell"
@@ -124,7 +124,7 @@
             :id="legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="text-sm font-bold uppercase mb-3">
               {{ t("Description") }}
             </h2>
           </legend>
@@ -317,7 +317,6 @@ import LinkedToAccordion from '~/components/LinkedToAccordion/LinkedToAccordion.
 import UploadGroup from '~/components/UploadGroup/UploadGroup.vue'
 import Accordion from '~/components/Accordion/Accordion.vue'
 import type { PublishingFormAccordionState } from '~/types/form'
-import Sidemenu from '~/components/Sidemenu/Sidemenu.vue'
 
 const props = withDefaults(defineProps<{
   type: 'create' | 'update'

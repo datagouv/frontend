@@ -24,7 +24,7 @@
         <AdminTableTh>
           {{ t("Rate limiting") }}
         </AdminTableTh>
-        <AdminTableTh>
+        <AdminTableTh align="right">
           {{ t("Availability") }}
         </AdminTableTh>
       </tr>
@@ -67,7 +67,9 @@
         <td>{{ formatDate(dataservice.created_at) }}</td>
         <td>{{ formatDate(dataservice.metadata_modified_at) }}</td>
         <td>{{ dataservice.rate_limiting }}</td>
-        <td><span v-if="dataservice.availability">{{ dataservice.availability }}%</span></td>
+        <td class="font-mono text-right">
+          <span v-if="dataservice.availability">{{ dataservice.availability }}%</span>
+        </td>
       </tr>
     </tbody>
   </AdminTable>

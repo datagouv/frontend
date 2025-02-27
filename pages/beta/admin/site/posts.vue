@@ -11,7 +11,7 @@
       v-if="pageData"
       class="flex items-center justify-between"
     >
-      <h2 class="subtitle subtitle--uppercase fr-m-0">
+      <h2 class="text-sm font-bold uppercase m-0">
         {{ t('{n} posts', pageData.total) }}
       </h2>
       <div class="flex space-x-2.5">

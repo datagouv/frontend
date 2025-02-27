@@ -154,7 +154,7 @@
         <td>
           {{ formatDate(dataset.last_modified) }}
         </td>
-        <td>
+        <td class="font-mono text-right">
           {{ getFilesCount(dataset) }}
         </td>
         <td>
@@ -168,19 +168,19 @@
             </template>
           </Tooltip>
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(dataset.metrics.discussions) }}
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(dataset.metrics.views) }}
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(dataset.metrics.resources_downloads ?? 0) }}
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(dataset.metrics.reuses) }}
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(dataset.metrics.followers) }}
         </td>
       </tr>

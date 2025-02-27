@@ -102,16 +102,16 @@
           </AdminBadge>
         </td>
         <td>{{ formatDate(reuse.created_at) }}</td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(reuse.datasets.length) }}
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(reuse.metrics.discussions) }}
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(reuse.metrics.views) }}
         </td>
-        <td class="font-mono">
+        <td class="font-mono text-right">
           {{ summarize(reuse.metrics.followers) }}
         </td>
       </tr>

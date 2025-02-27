@@ -1,6 +1,6 @@
 <template>
   <div class="container bg-white mx-0 py-4">
-    <h1 class="subtitle subtitle--uppercase">
+    <h1 class="text-sm font-bold uppercase">
       {{ $t("Publishing type") }}
     </h1>
     <Well

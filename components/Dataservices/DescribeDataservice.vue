@@ -1,7 +1,7 @@
 <template>
-  <div class="fr-grid-row">
+  <div class="flex">
     <Sidemenu
-      class="fr-col-12 fr-col-md-5"
+      class="w-5/12 hidden lg:block"
       :button-text="$t('Help')"
       :on-right="true"
       :fixed="true"
@@ -147,10 +147,10 @@
       </AccordionGroup>
     </Sidemenu>
     <form
-      class="fr-col-12 fr-col-md-7"
+      class="w-full lg:w-7/12"
       @submit.prevent="submit"
     >
-      <div class="fr-p-3w bg-white">
+      <div class="p-6 bg-white">
         <SimpleBanner
           v-if="type === 'create'"
           type="primary"
@@ -171,7 +171,7 @@
             </p>
           </div>
         </SimpleBanner>
-
+        <RequiredExplanation />
         <fieldset
           v-if="type === 'create'"
           class="fr-fieldset"
@@ -181,7 +181,7 @@
             id="description-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="text-sm font-bold uppercase mb-3">
               {{ $t("Producer") }}
             </h2>
           </legend>
@@ -204,7 +204,7 @@
             id="description-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="text-sm font-bold uppercase mb-3">
               {{ $t("Description") }}
             </h2>
           </legend>
@@ -329,7 +329,7 @@
             id="description-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="text-sm font-bold uppercase mb-3">
               {{ t("Access Point") }}
             </h2>
           </legend>
@@ -340,8 +340,8 @@
           >
             <template v-for="(contact_point, index) in form.contact_points">
               <ContactPointSelect
-                v-if="contact_point.role == 'contact'"
-                :key="'id' in contact_point ? contact_point.id : index"
+                v-if="!contact_point || contact_point.role == 'contact'"
+                :key="(contact_point && 'id' in contact_point) ? contact_point.id : index"
                 v-model="form.contact_points[index]"
                 :organization="form.owned?.organization"
               />
@@ -361,7 +361,7 @@
             id="description-legend"
             class="fr-fieldset__legend"
           >
-            <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+            <h2 class="text-sm font-bold uppercase mb-3">
               {{ $t("Access") }}
             </h2>
           </legend>

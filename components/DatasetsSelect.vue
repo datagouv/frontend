@@ -7,7 +7,7 @@
       id="datasets-legend"
       class="fr-fieldset__legend"
     >
-      <h2 class="subtitle subtitle--uppercase fr-mb-3v">
+      <h2 class="text-sm font-bold uppercase mb-3">
         {{ t("Associated datasets") }}
       </h2>
     </legend>

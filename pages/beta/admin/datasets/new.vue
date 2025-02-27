@@ -136,7 +136,7 @@ async function save() {
       && datasetForm.value.owned?.organization
     ) {
       for (const contactPointKey in datasetForm.value.contact_points) {
-        if (!('id' in datasetForm.value.contact_points[contactPointKey])) {
+        if (datasetForm.value.contact_points[contactPointKey] && !('id' in datasetForm.value.contact_points[contactPointKey])) {
           datasetForm.value.contact_points[contactPointKey] = await newContactPoint($api, datasetForm.value.owned?.organization, datasetForm.value.contact_points[contactPointKey])
         }
       }

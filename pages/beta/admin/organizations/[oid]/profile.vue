@@ -42,7 +42,7 @@
     <h2
       v-if="form"
       :id="form.legend"
-      class="subtitle subtitle--uppercase fr-mb-5v"
+      class="text-sm font-bold uppercase mb-5"
     >
       {{ t("Edit profile") }}
     </h2>

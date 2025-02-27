@@ -4,22 +4,15 @@
       <BreadcrumbItem>{{ t('Harvesters') }}</BreadcrumbItem>
     </AdminBreadcrumb>
 
-    <h1 class="fr-h3 fr-mb-5v">
+    <h1 class="font-bold text-2xl mb-5">
       {{ t("Harvesters") }}
     </h1>
-    <div class="fr-grid-row fr-grid-row--gutters fr-grid-row--middle">
-      <div class="fr-col">
-        <h2
-          v-if="pageData && pageData.total"
-          class="subtitle subtitle--uppercase fr-m-0"
-        >
-          {{ t('{n} harvesters', pageData.total) }}
-        </h2>
-      </div>
-      <div class="fr-col-auto fr-grid-row fr-grid-row--middle">
-        <!-- Buttons -->
-      </div>
-    </div>
+    <h2
+      v-if="pageData && pageData.total"
+      class="text-sm font-bold uppercase m-0"
+    >
+      {{ t('{n} harvesters', pageData.total) }}
+    </h2>
 
     <LoadingBlock :status>
       <div v-if="pageData && pageData.total > 0">
@@ -56,12 +49,14 @@
               <AdminTableTh
                 scope="col"
                 class="w-24"
+                align="right"
               >
                 {{ t("Datasets") }}
               </AdminTableTh>
               <AdminTableTh
                 scope="col"
                 class="w-24"
+                align="right"
               >
                 {{ t("Dataservices") }}
               </AdminTableTh>
@@ -99,10 +94,10 @@
                   {{ t('Not yet') }}
                 </template>
               </td>
-              <td>
+              <td class="font-mono text-right">
                 {{ getHarvesterDatasets(harvester) }}
               </td>
-              <td>
+              <td class="font-mono text-right">
                 {{ getHarvesterDataservices(harvester) }}
               </td>
             </tr>

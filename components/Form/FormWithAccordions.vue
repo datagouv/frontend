@@ -1,7 +1,7 @@
 <template>
-  <form class="fr-grid-row">
+  <form class="flex">
     <Sidemenu
-      class="fr-col-12 fr-col-lg-5"
+      class="w-5/12 hidden lg:block"
       :button-text="$t('Help')"
       :on-right="true"
       :fixed="true"
@@ -19,7 +19,7 @@
         class="flex flex-col"
       />
     </Sidemenu>
-    <div class="fr-col-12 fr-col-lg-7">
+    <div class="w-full lg:w-7/12">
       <div class="fr-p-3w bg-white">
         <slot />
       </div>
