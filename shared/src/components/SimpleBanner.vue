@@ -11,12 +11,13 @@
 import { computed } from 'vue'
 
 const props = defineProps<{
-  type: 'primary'
+  type: 'primary' | 'warning'
 }>()
 
 const classes = computed(() => {
   return {
     primary: 'bg-datagouv-lightest text-datagouv-dark',
+    warning: 'bg-warning3-lightest text-warning3-dark',
   }[props.type]
 })
 </script>

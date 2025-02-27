@@ -31,13 +31,13 @@
               <li>{{ $t("usable in an automated processing system : an automated processing system allows to make automatic operations, related to data exploitation (i.e. a CSV file is easily usable by an automated system unlike a PDF file).") }}</li>
             </ul>
           </div>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('resources')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning("resources") }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
         <Accordion
           :id="addDescriptionAccordionId"
@@ -57,13 +57,13 @@
               <li>{{ $t("a description of major changes.") }}</li>
             </ul>
           </div>
-          <Well
+          <SimpleBanner
             v-if="getFirstWarning('hasDocumentation')"
-            class="fr-mt-1w"
-            color="orange-terre-battue"
+            class="font-bold mt-2"
+            type="warning"
           >
             {{ getFirstWarning('hasDocumentation') }}
-          </Well>
+          </SimpleBanner>
         </Accordion>
       </AccordionGroup>
     </Sidemenu>
@@ -178,10 +178,9 @@
 </template>
 
 <script setup lang="ts">
-import { Well } from '@datagouv/components'
+import { SimpleBanner } from '@datagouv/components-next'
 import UploadResourceModal from '../UploadResourceModal.vue'
 import type { ResourceForm } from '~/types/types'
-import SimpleBanner from '~/shared/src/components/SimpleBanner.vue'
 
 const props = defineProps<{
   loading: boolean
