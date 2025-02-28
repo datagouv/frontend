@@ -216,7 +216,27 @@
                       :email="member.user.email"
                     />
                   </div>
-
+                  <form
+                    class="flex flex-wrap gap-4 items-end"
+                    @submit.prevent="updateRole(member, close)"
+                  >
+                    <div class="flex-1">
+                      <SelectGroup
+                        v-if="roles.length > 0"
+                        v-model="newRole"
+                        :label="t('Role of the member')"
+                        :options="rolesOptions"
+                      />
+                    </div>
+                    <div>
+                      <BrandedButton
+                        type="submit"
+                        :disabled="loading"
+                      >
+                        {{ t("Validate") }}
+                      </BrandedButton>
+                    </div>
+                  </form>
                   <BannerAction
                     class="mt-4"
                     type="danger"
